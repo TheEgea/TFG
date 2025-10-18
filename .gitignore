@@ -1,0 +1,63 @@
+# Archivos temporales de Office
+~$*.docx
+~$*.pptx
+~$*.xlsx
+*.tmp
+
+# Archivos de backup
+*.bak
+*.backup
+*~
+
+# Logs y archivos temporales
+*.log
+temp/
+tmp/
+
+# Archivos específicos de EVE-NG
+*.vmdk.lck
+*.vmx.lck
+vmware*.log
+*.nvram
+
+# Archivos compilados LaTeX
+*.aux
+*.fdb_latexmk
+*.fls
+*.synctex.gz
+*.toc
+*.out
+*.lof
+*.lot
+
+# Directorios de builds
+build/
+dist/
+output/
+
+# Archivos sensibles
+.env
+credentials.txt
+passwords.txt
+config/secrets/
+
+# Archivos grandes de VMs (usar Git LFS)
+*.qcow2
+*.vmdk
+*.vdi
+*.iso
+*.ova
+
+# Cache de editores
+.vscode/
+.idea/
+*.sublime-*
+
+# Archivos del sistema
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Backup local
+backup*/
+*.backup.*
