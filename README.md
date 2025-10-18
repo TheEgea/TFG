@@ -29,7 +29,7 @@ Crear un entorn de laboratori pràctic per a l'aprenentatge de conceptes de cibe
 
 ## 📁 Estructura del Repositori
 
-
+'''
 TFG/
 ├── 📄 docs/ # Documentació del TFG
 │ ├── memoria/ # Memòria del treball
@@ -66,7 +66,7 @@ TFG/
 ├── format_checkers/ # Validadors de format
 ├── build_scripts/ # Scripts de construcció
 └── utilities/ # Utilitats auxiliars
-
+'''
 ## 🧪 Laboratoris Desenvolupats
 
 1. **Reconeixement i Enumeració**
