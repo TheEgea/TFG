@@ -29,62 +29,80 @@ Crear un entorn de laboratori pràctic per a l'aprenentatge de conceptes de cibe
 
 ## 📁 Estructura del Repositori
 
-'''
 TFG/
-├── 📄 docs/ # Documentació del TFG
-│ ├── memoria/ # Memòria del treball
-│ ├── estudi_viabilitat/ # Estudis de viabilitat
-│ ├── avantprojecte/ # Avantprojecte i propostes
-│ ├── lliuraments/ # Entregues oficials
-│ ├── presentacio/ # Materials de presentació
-│ └── plantilles/ # Plantilles i documents base
-├── 📄 src/ # Codi font i desenvolupament
-│ ├── eve-ng/ # Configuracions EVE-NG
-│ │ ├── topologies/ # Fitxers .unl de laboratoris
-│ │ ├── images/ # Imatges de VMs
-│ │ └── configs/ # Configuracions de xarxa
-│ ├── scripts/ # Scripts d'automatització
-│ │ ├── automation/ # Deploy, reset, validació
-│ │ ├── setup/ # Configuració inicial
-│ │ └── utils/ # Utilitats diverses
-│ └── materials/ # Materials docents
-│ ├── manuals/ # Manuals d'usuari
-│ ├── rubrics/ # Rúbriques d'avaluació
-│ └── exercises/ # Exercicis pràctics
-├── 📄 tests/ # Testing i validació
-│ ├── unit_tests/ # Tests unitaris
-│ ├── integration_tests/ # Tests d'integració
-│ └── validation_scripts/ # Scripts de validació
-├── 📄 assets/ # Recursos multimèdia
-│ ├── images/ # Imatges de documentació
-│ └── videos/ # Materials audiovisuals
-├── 📄 research/ # Material d'investigació
-│ ├── bibliografia/ # Papers, llibres, recursos web
-│ ├── interviews/ # Entrevistes i feedback
-│ └── surveys/ # Enquestes i estudis
-└── 📄 tools/ # Eines de desenvolupament
-├── format_checkers/ # Validadors de format
-├── build_scripts/ # Scripts de construcció
-└── utilities/ # Utilitats auxiliars
-'''
+├── 🚀 tfg.sh # Launcher principal scripts
+├── 📄 README.md # Aquest fitxer
+├── 📁 docs/ # Documentació del TFG
+│ ├── 📝 memoria/ # Memòria del treball
+│ ├── 📊 estudi_viabilitat/ # Estudis de viabilitat
+│ ├── 📋 avantprojecte/ # Avantprojecte i propostes
+│ ├── 📤 lliuraments/ # Entregues oficials
+│ ├── 🎤 presentacio/ # Materials de presentació
+│ └── 📄 plantilles/ # Plantilles i documents base
+├── 📁 src/ # Codi font i desenvolupament
+│ ├── 🌐 eve-ng/ # Configuracions EVE-NG
+│ │ ├── 🗺️ topologies/ # Fitxers .unl de laboratoris
+│ │ ├── 💽 images/ # Imatges de VMs
+│ │ └── ⚙️ configs/ # Configuracions de xarxa
+│ ├── 🤖 scripts/ # Scripts d'automatització
+│ │ ├── 🔄 automation/ # Deploy, reset, validació
+│ │ ├── ⚡ setup/ # Configuració inicial
+│ │ └── 🛠️ utils/ # Utilitats diverses
+│ └── 📚 materials/ # Materials docents
+│ ├── 📖 manuals/ # Manuals d'usuari
+│ ├── 📊 rubrics/ # Rúbriques d'avaluació
+│ └── 🎯 exercises/ # Exercicis pràctics
+├── 📁 tests/ # Testing i validació
+│ ├── 🧪 unit_tests/ # Tests unitaris
+│ ├── 🔗 integration_tests/ # Tests d'integració
+│ └── ✅ validation_scripts/ # Scripts de validació
+├── 📁 assets/ # Recursos multimèdia
+│ ├── 🖼️ images/ # Imatges de documentació
+│ │ ├── 📊 diagrams/ # Diagrames tècnics
+│ │ ├── 📸 screenshots/ # Captures de pantalla
+│ │ └── 🎨 logos/ # Logotips i iconografia
+│ └── 🎥 videos/ # Materials audiovisuals
+├── 📁 research/ # Material d'investigació
+│ ├── 📚 bibliografia/ # Papers, llibres, recursos web
+│ │ ├── 📄 papers/ # Articles científics
+│ │ ├── 📖 books/ # Llibres i manuals
+│ │ └── 🌐 web_resources/ # Recursos web
+│ ├── 🎤 interviews/ # Entrevistes i feedback
+│ └── 📋 surveys/ # Enquestes i estudis
+├── 📁 tools/ # Eines de desenvolupament
+│ ├── ✔️ format_checkers/ # Validadors de format
+│ ├── 🔨 build_scripts/ # Scripts de construcció
+│ └── ⚙️ utilities/ # Utilitats auxiliars
+└── 📁 scripts-workflow/ # Scripts de workflow
+├── 🔄 sync.sh # Sincronització Git completa
+├── ⬆️ push.sh # Push ràpid
+├── ⬇️ pull.sh # Pull des de GitHub
+├── 💾 backup-smb.sh # Backup al servidor SMB
+├── ⚙️ setup-env.sh # Configuració entorn
+├── 🛠️ utils.sh # Utilitats i estadístiques
+├── 📄 Makefile # Comandos make
+└── 📚 README.md # Documentació scripts
+
+text
+
 ## 🧪 Laboratoris Desenvolupats
 
-1. **Reconeixement i Enumeració**
+1. **🔍 Reconeixement i Enumeració**
    - Descobriment de xarxes i serveis
    - Tècniques de fingerprinting
    - Eines: Nmap, Masscan, Zmap
 
-2. **Vulnerabilitats Web**
+2. **🌐 Vulnerabilitats Web**
    - Explotació d'aplicacions web (DVWA)
    - Injection attacks, XSS, CSRF
    - Eines: Burp Suite, OWASP ZAP, SQLMap
 
-3. **Anàlisi de Tràfic i Criptografia**
+3. **📡 Anàlisi de Tràfic i Criptografia**
    - Captura i anàlisi de paquets
    - Atacs criptogràfics
    - Eines: Wireshark, Hashcat, John the Ripper
 
-4. **Escalada de Privilegis**
+4. **⬆️ Escalada de Privilegis**
    - Tècniques d'elevació de permisos
    - Explotació de sistemes (Metasploitable)
    - Eines: Metasploit, Empire, PowerSploit
@@ -112,7 +130,8 @@ TFG/
 ## 📊 Estat del Projecte
 
 - [x] Estructura inicial del repositori
-- [x] Avantprojecte presentat
+- [x] Scripts de workflow automatitzats
+- [x] Configuració Git LFS
 - [ ] Primer laboratori funcional
 - [ ] Scripts d'automatització base
 - [ ] Documentació d'usuari inicial
@@ -131,34 +150,36 @@ TFG/
 - Ansible (opcional)
 
 ### Instal·lació
-
 Clonar el repositori
 git clone https://github.com/TheEgea/TFG.git
 cd TFG
 
-Instal·lar dependències Python
-pip install -r requirements.txt
+Configurar entorn de desenvolupament
+./tfg.sh setup
 
-Configurar EVE-NG (seguir guia a src/scripts/setup/)
-./src/scripts/setup/install_eve_ng.sh
+text
 
-### Ús Bàsic
+### Ús Diari
+Sincronització completa (pull + add + commit + push)
+./tfg.sh sync "docs: actualització capítol X"
 
-Desplegar un laboratori
-./src/scripts/automation/deploy.sh lab01_reconnaissance
+Push ràpid
+./tfg.sh push "feat: nou laboratori Y"
 
-Resetar laboratori
-./src/scripts/automation/reset.sh lab01_reconnaissance
+Backup al servidor SMB
+./tfg.sh backup
 
-Validar exercici
-./src/scripts/automation/validate.py lab01_reconnaissance student_id
+Veure ajuda completa
+./tfg.sh help
+
+text
 
 ## 📚 Documentació
 
 La documentació completa es troba a:
 - **Memòria del TFG:** [`docs/memoria/`](./docs/memoria/)
+- **Scripts de workflow:** [`scripts-workflow/README.md`](./scripts-workflow/README.md)
 - **Guies d'usuari:** [`src/materials/manuals/`](./src/materials/manuals/)
-- **Documentació tècnica:** [`docs/`](./docs/)
 
 ## 🤝 Contribució
 
