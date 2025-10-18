@@ -16,25 +16,25 @@ help:
 	@echo "  make stats                - Estadísticas proyecto"
 
 sync:
-	@./sync.sh "$(MSG)"
+	@../tfg.sh sync "$(MSG)"
 
 push:
-	@./push.sh "$(MSG)"
+	@../tfg.sh push "$(MSG)"
 
 pull:
-	@./pull.sh
+	@../tfg.sh pull
 
 backup:
-	@./backup-smb.sh
+	@../tfg.sh backup
 
 setup:
-	@./setup-env.sh
+	@../tfg.sh setup
 
 status:
-	@./utils.sh status
+	@../tfg.sh status
 
 clean:
-	@./utils.sh clean
+	@../tfg.sh clean
 
 stats:
-	@./utils.sh stats
+	@../tfg.sh stats
