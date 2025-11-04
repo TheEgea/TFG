@@ -61,3 +61,17 @@ desktop.ini
 # Backup local
 backup*/
 *.backup.*
+
+
+*.aux
+*.log
+*.out
+*.toc
+*.lof
+*.lot
+*.bbl
+*.blg
+*.synctex.gz
+*.pdf
+compilacion/
+
