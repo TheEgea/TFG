@@ -75,3 +75,5 @@ backup*/
 *.pdf
 compilacion/
 
+docs/avantprojecte/build/
+!docs/avantprojecte/build/*.pdf
