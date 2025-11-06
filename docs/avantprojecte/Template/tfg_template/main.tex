@@ -7,6 +7,11 @@
 
 \documentclass[a4paper, twoside, 12pt, openright]{report} % 'openright' assegura que cada capítol comença en una plana senar
 
+% ============================================================================
+% PREÀMBUL — Paquets i Configuració
+% ============================================================================
+
+\usepackage[utf8]{inputenc} % Codificació UTF-8
 \usepackage{verbatim} % Comentaris multilínea
 \usepackage{graphicx} % Per insertar imatges
 \usepackage{float} % Posicionament d'imatges
@@ -44,14 +49,15 @@
 \titleformat{\section}[block]{\normalfont\fontsize{16pt}{0pt}\bfseries}{\thesection}{1em}{}
 \titleformat{\subsection}[block]{\normalfont\fontsize{14pt}{0pt}\bfseries}{\thesubsection}{1em}{}
 
+% Configuració de hiperenllaços
 \hypersetup{
     colorlinks=true,
     linkcolor=black,
     citecolor=black,
     filecolor=magenta,      
     urlcolor=blue,
-    pdftitle={Títol TFG},
-    pdfauthor={Nom alumne},
+    pdftitle={Pentesting ètic en entorns virtualitzats amb EVE-NG},
+    pdfauthor={Eloi Egea Rada},
     pdfpagemode=FullScreen
 }
 
@@ -62,14 +68,18 @@
 
 \setlength{\parindent}{0pt} % Desactiva el sagnat dels paràgrafs
 
-% Definir carpeta d'imatges
+% Imatges
 \graphicspath{{images/}}
+
+% ============================================================================
+% PORTADA I PRELIMINARS
+% ============================================================================
 
 % Configuració de capçaleres i peus de pàgina preliminars
 \fancypagestyle{plain}{
     \fancyhf{} % Esborrem configuracions prèvies
     \fancyhead[RO,LE]{\fontsize{10}{12}\textit{\thepage}}
-    \fancyhead[RE]{\fontsize{10}{12}\textit{Títol TFG - Memòria}}
+    \fancyhead[RE]{\fontsize{10}{12}\textit{Pentesting ètic en entorns virtualitzats amb EVE-NG}}
     \fancyfoot{}
 }
 \pagestyle{plain}
@@ -102,12 +112,17 @@
 \fontsize{12pt}{0pt}
 \begin{document}
 
+% === PORTADA ===
 \maketitle
 
 \newpage
 \thispagestyle{empty} % Pàgina en blanc sense capçalera ni peu
 \null
 \newpage
+
+% ============================================================================
+% ÍNDEXS I GLOSSARI
+% ============================================================================
 
 % Estils dels índexs i numeració en xifres romanes
 \pagenumbering{Roman} % Índexs comencen amb números romans
@@ -125,6 +140,7 @@
 \setlength{\parskip}{12pt} % Espaiat anterior als paràgrafs
 
 \printglossary
+
 
 \begin{comment}
 *****************************************************************************
@@ -148,12 +164,234 @@
     \fancyhf{} % Esborrem configuracions prèvies
     \fancyhead[RO,LE]{\fontsize{10}{12}\textit{\thepage}}
     \fancyhead[LO]{\fontsize{10}{12}\textit{\nouppercase{\textit{\leftmark}}}}
-    \fancyhead[RE]{\fontsize{10}{12}\textit{Títol TFG - Memòria}}
+    \fancyhead[RE]{\fontsize{10}{12}\textit{Pentesting ètic en entorns virtualitzats amb EVE-NG - TFG}}
     \fancyfoot{}
 }
 \pagestyle{plain}
 % Canvi a numeració aràbiga per al cos principal del document
 \pagenumbering{arabic} % Comença numeració aràbiga
+
+
+% ============================================================================
+% COS PRINCIPAL DEL DOCUMENT
+% ============================================================================
+
+
+\chapter{Introducció i Context}
+
+\section{Motivació i Justificació}
+
+El pentesting ètic és una disciplina fonamental en la ciberseguretat moderna. Aquest TFG 
+es dedica a desenvolupar laboratoris pràctics virtualitzats que permeten als estudiants 
+adquirir competències pràctiques en pentesting mitjançant escenaris realistes i controlats 
+dins de la plataforma EVE-NG.
+
+\section{Estructura de la Memòria}
+
+La present memòria es divideix en els següents capítols:
+
+\begin{enumerate}
+    \item \textbf{Introducció i Context}: Motivació i estructura general.
+    \item \textbf{Objecte del TFG}: Descripció detallada del projecte.
+    \item \textbf{Estat de l'Art}: Revisió bibliogràfica i plataformes existents.
+    \item \textbf{Objectius i Abast}: Objectius específics amb KPIs mesurables.
+    \item \textbf{Metodologia}: Procés de realització i desenvolupament.
+    \item \textbf{Requeriments}: Requeriments tècnics i funcionals.
+    \item \textbf{Estudi de Viabilitat}: Análisis de viabilitat tècnica i econòmica.
+    \item \textbf{Resultats i Conclusions}: Lliurables i conclusions.
+\end{enumerate}
+
+% ============================================================================
+% CAPÍTOL 2: OBJECTE DEL TFG
+% ============================================================================
+
+\input{chapters/01_objecte}
+
+% ============================================================================
+% CAPÍTOL 3: ESTAT DE L'ART
+% ============================================================================
+
+\input{chapters/02_estat_art}
+
+% ============================================================================
+% CAPÍTOL 4: OBJECTIUS I ABAST
+% ============================================================================
+
+\input{chapters/03_objectius}
+
+% ============================================================================
+% CAPÍTOL 5: METODOLOGIA
+% ============================================================================
+
+\input{chapters/04_metodologia}
+
+% ============================================================================
+% CAPÍTOL 6: REQUERIMENTS
+% ============================================================================
+
+\input{chapters/05_requeriments}
+
+% ============================================================================
+% CAPÍTOL 7: ESTUDI DE VIABILITAT
+% ============================================================================
+
+\input{chapters/06_viabilitat}
+
+% ============================================================================
+% CAPÍTOL 8: DESENVOLUPAMENT I IMPLEMENTACIÓ (PLACEHOLDER)
+% ============================================================================
+
+\chapter{Desenvolupament i Implementació}
+
+\section{Arquitectura General}
+
+\textit{En aquesta secció es descriurà l'arquitectura dels laboratoris, la configuració 
+de les xarxes virtuals, i la implementació de les topologies EVE-NG.}
+
+\section{Laboratori 1: Reconeixement i Enumeració}
+
+\subsection{Objectius de Laboratori}
+
+\begin{itemize}
+    \item Familiarització amb eines de scanning (nmap, Nessus)
+    \item Enumeració de serveis i vulnerabilitats
+    \item Documentació de descobriments
+\end{itemize}
+
+\subsection{Topologia de Xarxa}
+
+\textit{Diagrama de la xarxa i màquines virtuals que componen aquest laboratori.}
+
+\section{Laboratori 2: Vulnerabilitats d'Aplicacions Web}
+
+\subsection{OWASP Top 10}
+
+\textit{Exploració de les vulnerabilitats més crítiques segons OWASP.}
+
+\section{Laboratori 3: Anàlisi de Tràfic i Criptografia}
+
+\textit{Anàlisi de comunicacions de xarxa amb Wireshark i tècniques de criptografia.}
+
+\section{Laboratori 4: Escalada de Privilegis}
+
+\textit{Tècniques d'escalada de privilegis a sistemes Unix i Windows.}
+
+% ============================================================================
+% CAPÍTOL 9: RESULTATS I CONCLUSIONS
+% ============================================================================
+
+\chapter{Resultats i Conclusions}
+
+\section{Lliurables Entregats}
+
+\begin{itemize}
+    \item 4 topologies EVE-NG funcionals (.unl)
+    \item 8-12 imatges de màquines virtuals optimitzades
+    \item Scripts d'automatització per a desplegament
+    \item Documentació tècnica completa per laboratori
+    \item Guies pràctiques per a estudiants
+\end{itemize}
+
+\section{Conclusions}
+
+El desenvolupament d'aquests laboratoris proporciona una base sòlida per a la formació 
+en pentesting ètic dins del Grau en Enginyeria Informàtica.
+
+\section{Recomanacions per a Treballs Futurs}
+
+\begin{itemize}
+    \item Integració amb altres plataformes educatives (Moodle)
+    \item Ampliació amb laboratoris d'IoT i xarxes 5G
+    \item Automatització de correccions i qualificacions
+\end{itemize}
+
+% ============================================================================
+% ANEXOS
+% ============================================================================
+
+\appendix
+
+\chapter{Annexo A: Infraestructura de Build LaTeX Reproducible}
+
+\section{Configuració de Docker i TeX Live}
+
+La memòria del present TFG s'ha desenvolupat usant una infraestructura de build reproducible 
+basada en TeX Live 2023, latexmk i Docker Compose. Aquesta aproximació garanteix que tots 
+els artefactes (PDF, índexs, glosaris) es generin de manera consistent.
+
+\subsection{Hores Invertides en Infraestructura}
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|l|l|r|}
+    \hline
+    \textbf{Tasca} & \textbf{Descripció} & \textbf{Hores} \\
+    \hline
+    TeX Live + Docker & Setup de compilació & 2.5h \\
+    latexmk + .latexmkrc & Build automatitzat & 1.5h \\
+    Estructura modular (chapters/) & Organització de capítols & 3.5h \\
+    Validació i testing & Compilació final & 0.5h \\
+    \hline
+    \textbf{SUBTOTAL} & & \textbf{8.0h} \\
+    \hline
+    \end{tabular}
+\end{table}
+
+\chapter{Annexo B: Infraestructura de Laboratori (Homelab)}
+
+\section{Especificacions del Homelab}
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|l|l|r|}
+    \hline
+    \textbf{Component} & \textbf{Especificació} & \textbf{Hores Setup} \\
+    \hline
+    Host VMware/Hyper-V & CPU 8-core, RAM 32GB, SSD 500GB & 3.0h \\
+    EVE-NG & Simulador de xarxes corporatiu & 4.0h \\
+    Kali Linux x3 & Màquines de pentesting & 2.5h \\
+    Windows Server & Sistema objectiu & 1.5h \\
+    Xarxes virtuals & 3 VLANS, DMZ, backend & 2.0h \\
+    \hline
+    \textbf{SUBTOTAL} & & \textbf{13.0h} \\
+    \hline
+    \end{tabular}
+\end{table}
+
+\chapter{Annexo C: Control de Hores Total}
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|l|r|r|}
+    \hline
+    \textbf{Activitat} & \textbf{Hores} & \textbf{Percentatge} \\
+    \hline
+    Infraestructura LaTeX & 8.0h & 6\% \\
+    Infraestructura Homelab & 13.0h & 10\% \\
+    Investigació i Disseny & 20.0h & 15\% \\
+    Implementació de Laboratoris & 50.0h & 37\% \\
+    Documentació & 25.0h & 19\% \\
+    Testing i Validació & 15.0h & 11\% \\
+    Gestió de Projecte & 5.0h & 4\% \\
+    \hline
+    \textbf{TOTAL ESTIMAT} & \textbf{136.0h} & \textbf{100\%} \\
+    \hline
+    \end{tabular}
+\end{table}
+
+% ============================================================================
+% BIBLIOGRAFIA
+% ============================================================================
+
+\cleardoublepage
+\phantomsection
+\addcontentsline{toc}{chapter}{Bibliografia}
+\printbibliography
+
+
+
+
+\begin{comment}
 
 \chapter{Nom capítol}
 
@@ -201,5 +439,9 @@ Això és un exemple de com citar una taula: \ref{tab:my-table}
 \phantomsection % Marca la pàgina correcta per a la taula de continguts
 \addcontentsline{toc}{chapter}{Bibliografia} % Afegeix la bibliografia al ToC
 \printbibliography % Imprimeix la bibliografia
+
+\end{document}
+
+\end{comment}
 
 \end{document}
