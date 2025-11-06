@@ -1,9 +1,9 @@
 % Plantilla LaTeX per a la redacció de Treballs de Fi de Grau (TFG)
 % Autor: Eloi Egea Rada
-
+%
 % © 2025, Eloi Egea Rada
 % Aquesta obra està sota una llicència Creative Commons Atribució-NoComercial-CompartirIgual 4.0 Internacional (CC BY-NC-SA 4.0). https://creativecommons.org/licenses/by-nc-sa/4.0/
-
+% Plantilla per als Treballs de Final de Grau del Centre Universitari TecnoCampus. Fent referencia a la plantilla original d'Aitor Juanola.
 
 \documentclass[a4paper, twoside, 12pt, openright]{report} % 'openright' assegura que cada capítol comença en una plana senar
 
@@ -23,7 +23,7 @@
 \usepackage[nottoc, numbib]{tocbibind} % Inclou bibliografia i índexs automàticament al ToC
 \usepackage[nonumberlist, toc]{glossaries} % Paquet per a la generació del glossari
 \usepackage[style=ieee, backend=biber]{biblatex} % Paquet per gestionar la bibliografia en format IEEE
-\addbibresource{references.bib} % El fitxer .bib amb les referències
+\addbibresource{resources/references.bib} % El fitxer .bib amb les referències
 
 % Carregar les definicions del glossari des d'un fitxer extern
 % El fitxer real està a `docs/avantprojecte/Template/tfg_template/resources/glossary.tex` — usem una ruta relativa des de la plantilla
@@ -34,7 +34,6 @@
 \setacronymstyle{long-short}
 
 \makeglossaries
-
 % Reduir espai abans i després de cada capítol
 \titleformat{\chapter}[block]{\normalfont\fontsize{18pt}{0pt}\bfseries}{\thechapter}{1em}{}
 \titlespacing*{\chapter}{0pt}{0pt}{\baselineskip}
@@ -48,7 +47,7 @@
     citecolor=black,
     filecolor=magenta,      
     urlcolor=blue,
-    pdftitle={Títol TFG},
+    pdftitle={Pentesting ètic en entorns virtualitzats amb EVE-NG},
     pdfauthor={Nom alumne},
     pdfpagemode=FullScreen
 }
@@ -92,10 +91,10 @@
 }
 \author{
 \fontsize{14pt}{0pt}
-\textbf{Nom alumne} \\
+\textbf{Eloi Egea Rada} \\
 \textbf{Tutor: Pere Vidiella i Catalan}
 }
-\date{Gener 2024}
+\date{Gener 2026}
 
 \fontsize{12pt}{0pt}
 \begin{document}
