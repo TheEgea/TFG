@@ -24,16 +24,21 @@ if [ -z "$SRC" ]; then
   exit 2
 fi
 
-OUT="docs/avantprojecte/build"
+# Construir rutas absolutas para que latexmk -cd no rompa los paths
+SRC_DIR_ABS=$(cd "$(dirname "$SRC")" && pwd)
+SRC_BASENAME=$(basename "$SRC")
+OUT="$SRC_DIR_ABS/build"
 AUX="$OUT/aux"
 
 mkdir -p "$OUT" "$AUX"
 
 echo "Usando fuente: $SRC"
+echo "Directorio de salida: $OUT"
 
+# -- Usamos -cd y pasamos solo el basename para compilar desde el directorio del .tex
 latexmk -cd -pdf -interaction=nonstopmode -file-line-error \
   -outdir="$OUT" \
   -auxdir="$AUX" \
-  "$SRC"
+  "$SRC_DIR_ABS/$SRC_BASENAME"
 
 echo "PDF generado en: $OUT/$(basename "$SRC" .tex).pdf"
