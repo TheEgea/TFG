@@ -226,7 +226,7 @@ Sortida esperada:
 Si vols, afegeixo aquestes opcions al script.
 
 
-## �📚 Documentació
+##  Documentació
 
 La documentació completa es troba a:
 - **Memòria del TFG:** [`docs/memoria/`](./docs/memoria/)
