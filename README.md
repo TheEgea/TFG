@@ -174,7 +174,59 @@ Veure ajuda completa
 
 text
 
-## 📚 Documentació
+## �️ Estructura detallada del repositori
+
+Aquest projecte es compon de diverses àrees principals. A continuació tens una vista més detallada de les rutes més importants i la seva finalitat:
+
+```
+TFG/
+├── scripts-workflow/            # Scripts d'automatització i utilitats (inclou build-plantilla.sh)
+├── docs/                        # Documentació (plantilles, avantprojecte, memòria, presentació)
+│   ├── avantprojecte/
+│   │   ├── Template/
+│   │   │   └── tfg_template/    # Plantilla de la memòria (main.tex, resources, chapters)
+│   │   └── build/                # (ignore) sortida de builds (PDFs)
+├── src/                         # Codi i materials docents
+├── assets/                      # Imatges i vídeos
+└── tools/                       # Eines i scripts auxiliars
+```
+
+## 🛠️ Build de la plantilla (plantilla tfg_template)
+
+S'hi ha afegit un script pràctic per compilar la plantilla del TFG de manera automàtica:
+
+- Ruta: `scripts-workflow/build-plantilla.sh`
+- Comportament principal:
+   - Busca diverses rutes candidates per al `main.tex` i prioritza `docs/avantprojecte/Template/tfg_template/main.tex` si existeix.
+   - Crea un directori `build` al costat del `main.tex` seleccionat i un subdirectori `build/aux` perquè `latexmk` i `biber` hi escriguin fitxers auxiliars.
+   - Executa `latexmk -cd` amb rutes absolutes per garantir que els `\input{...}` es resolguin respecte del directori de la plantilla.
+
+### Com utilitzar-lo
+
+Des de la arrel del repositori, simplement:
+
+```bash
+bash scripts-workflow/build-plantilla.sh
+```
+
+Sortida esperada:
+
+- El script mostrarà la ruta del `main.tex` que ha seleccionat i el directori de sortida.
+- El PDF final quedarà a: `.../tfg_template/build/main.pdf` (és a dir, dins del `build` creat al costat del `main.tex`).
+
+### Notes i punts a tenir en compte
+
+- El build pot requerir eines típiques de TeX (TeX Live, latexmk, biber). Si falten paquets d'idioma o paquets externs, LaTeX avisarà.
+- El script ja gestiona Biber (biblatex) i fa les re-execucions necessàries con `latexmk`.
+- Si la plantilla utilitza un glossary extern, el script canvia al directori del `main.tex` perquè les rutes relatives a `\input{...}` es resolguin correctament. Si tens el fitxer `glossary.tex` en una altra ubicació, o prefereixes tenir-lo dins de la plantilla, copia o crea un enllaç simbòlic abans de compilar.
+- Opcions que podem afegir (si vols):
+   - `--clean` per netejar el `build` abans de compilar.
+   - Opció per forçar una ruta concreta de `main.tex` (p.ex. `BUILD_SRC=path/to/main.tex bash ...`).
+
+Si vols, afegeixo aquestes opcions al script.
+
+
+## �📚 Documentació
 
 La documentació completa es troba a:
 - **Memòria del TFG:** [`docs/memoria/`](./docs/memoria/)
