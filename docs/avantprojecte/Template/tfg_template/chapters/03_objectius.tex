@@ -1,0 +1,188 @@
+\section{Objectius i Abast}
+
+\subsection{Objectiu Principal}
+
+Desenvolupar, implementar i validar un paquet docent reutilitzable de laboratoris pràctics de ciberseguretat basat en EVE-NG, que permeti als estudiants de l'assignatura ``Introduction to Cybersecurity'' adquirir competències pràctiques en pentesting ètic mitjançant escenaris realistes i automatitzats.
+
+\subsection{Objectius Específics (Mesurables amb KPIs)}
+
+\subsubsection{OE1: Dissenyar i Implementar Laboratoris EVE-NG}
+
+\textbf{Descripció}: Crear quatre laboratoris temàtics funcionals i interconnectats.
+
+\textbf{KPIs Mesurables}:
+\begin{itemize}
+\item 4 topologies .unl completament funcionals (100\%)
+\item Temps de desplegament $\leq$ 2 minuts per laboratori (95\% dels casos)
+\item Taxa d'èxit en el boot de VMs $\geq$ 95\%
+\item Compatibilitat amb EVE-NG Community i Professional editions
+\end{itemize}
+
+\textbf{Lliurables}:
+\begin{itemize}
+\item 4 fitxers .unl (topologies)
+\item 8-12 imatges de màquines virtuals optimitzades
+\item Documentació tècnica de configuració per laboratori
+\end{itemize}
+
+\subsubsection{OE2: Desenvolupar Scripts d'Automatització}
+
+\textbf{Descripció}: Crear un sistema d'automatització complet per al cicle de vida dels laboratoris.
+
+\textbf{KPIs Mesurables}:
+\begin{itemize}
+\item 12 scripts funcionals (3 per laboratori: deploy, reset, validate)
+\item Temps d'execució del reset $\leq$ 30 segons per laboratori
+\item Cobertura de validació automàtica $\geq$ 80\% dels components crítics
+\item Zero errors en 10 execucions consecutives del cicle complet
+\end{itemize}
+
+\textbf{Lliurables}:
+\begin{itemize}
+\item Scripts de desplegament (Bash/Python)
+\item Scripts de reset automatitzat
+\item Scripts de validació i verificació d'estat
+\end{itemize}
+
+\subsubsection{OE3: Crear Material Docent Estructurat}
+
+\textbf{Descripció}: Desenvolupar documentació completa per a estudiants i professorat.
+
+\textbf{KPIs Mesurables}:
+\begin{itemize}
+\item 4 manuals d'usuari (1 per laboratori), mínim 15 pàgines cadascun
+\item 4 rúbriques d'avaluació amb criteris quantificables
+\item 1 guia de docent amb instruccions de desplegament
+\item Temps de configuració inicial per docent $\leq$ 1 hora
+\end{itemize}
+
+\textbf{Lliurables}:
+\begin{itemize}
+\item Manual de l'alumne (anglès, format markdown/PDF)
+\item Guia del professor amb instruccions detallades
+\item Rúbriques d'avaluació estruturades
+\item README tècnic amb requisits i instruccions
+\end{itemize}
+
+\subsubsection{OE4: Validar la Usabilitat i Eficàcia Educativa}
+
+\textbf{Descripció}: Verificar que el paquet compleix els requisits educatius i tècnics.
+
+\textbf{KPIs Mesurables}:
+\begin{itemize}
+\item Temps mitjà de resolució per laboratori: 90-120 minuts
+\item Taxa de finalització exitosa $\geq$ 85\% (pilot amb 10 usuaris)
+\item Puntuació de satisfacció usuaris $\geq$ 4/5
+\item Zero incidències crítiques en entorn de producció
+\end{itemize}
+
+\textbf{Lliurables}:
+\begin{itemize}
+\item Informe de validació pilot
+\item Mètriques d'usabilitat i rendiment
+\item Recomanacions de millora implementades
+\end{itemize}
+
+\subsection{Definició del Client i Usuari Final}
+
+\subsubsection{Client Principal}
+
+\begin{itemize}
+\item \textbf{Professor responsable}: Pere Vidiella i Catalan
+\item \textbf{Assignatura}: Introduction to Cybersecurity (GEISI, Tecnocampus)
+\item \textbf{Context}: Docència de grau en ciberseguretat pràctica
+\end{itemize}
+
+\subsubsection{Usuaris Finals Primaris}
+
+\begin{itemize}
+\item \textbf{Estudiants de GEISI}: 25-30 alumnes per edició
+\item \textbf{Perfil}: Coneixements bàsics en xarxes i sistemes operatius
+\item \textbf{Objectiu}: Aprendre pentesting ètic de forma pràctica i segura
+\end{itemize}
+
+\subsubsection{Usuaris Finals Secundaris}
+
+\begin{itemize}
+\item \textbf{Professorat de ciberseguretat}: Altres docents interessats en reutilitzar el material
+\item \textbf{Estudiants de postgrau}: Possibles extensions del material per a nivells avançats
+\end{itemize}
+
+\subsection{Públic Potencial}
+
+\subsubsection{Àmbit Intern (Tecnocampus)}
+
+\begin{itemize}
+\item Altres assignatures relacionades amb ciberseguretat
+\item Projectes de recerca en seguretat informàtica
+\item Formació contínua i certificacions professionals
+\end{itemize}
+
+\subsubsection{Àmbit Extern}
+
+\begin{itemize}
+\item Institucions educatives amb formació en ciberseguretat
+\item Centres de formació professional especialitzats
+\item Empreses amb programes de formació interna en seguretat
+\end{itemize}
+
+\subsection{KPIs i Indicadors Clau de Rendiment}
+
+\subsubsection{Indicadors Tècnics}
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{|l|l|l|}
+\hline
+\textbf{Mètrica} & \textbf{Objectiu} & \textbf{Mètode de Mesura} \\
+\hline
+Temps desplegament laboratori & $\leq$ 2 min & Cronometratge automatitzat \\
+\hline
+Taxa d'èxit boot VMs & $\geq$ 95\% & Logs de sistema + scripts validació \\
+\hline
+Temps reset complet & $\leq$ 30 seg & Scripts amb timestamps \\
+\hline
+Reproducibilitat escenaris & 100\% & Tests automatitzats \\
+\hline
+\end{tabular}
+\end{table}
+
+\subsubsection{Indicadors Educatius}
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{|l|l|l|}
+\hline
+\textbf{Mètrica} & \textbf{Objectiu} & \textbf{Mètode de Mesura} \\
+\hline
+Temps resolució laboratori & 90-120 min & Tracking temporal en pilot \\
+\hline
+Taxa de finalització exitosa & $\geq$ 85\% & Seguiment progressió usuaris pilot \\
+\hline
+Satisfacció usuaris & $\geq$ 4/5 & Enquesta post-utilització \\
+\hline
+Comprensió conceptes clau & $\geq$ 80\% correcte & Qüestionari d'avaluació \\
+\hline
+\end{tabular}
+\end{table}
+
+\subsubsection{Indicadors de Qualitat}
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{|l|l|l|}
+\hline
+\textbf{Mètrica} & \textbf{Objectiu} & \textbf{Mètode de Mesura} \\
+\hline
+Cobertura documentació & 100\% funcionalitats & Checklist de verificació \\
+\hline
+Errors crítics & 0 & Testing exhaustiu \\
+\hline
+Compatibilitat versions EVE-NG & 100\% & Tests en múltiples entorns \\
+\hline
+Usabilitat interfície & $\geq$ 4/5 & Avaluació heurística UX \\
+\hline
+\end{tabular}
+\end{table}
+
+\noindent \textbf{Nota}: Tots els KPIs seran mesurats durant la fase de validació pilot (abril-maig 2026) i documentats en l'informe final del TFG.
