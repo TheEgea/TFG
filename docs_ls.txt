@@ -4,14 +4,14 @@ drwxrwxr-x 11 overleaf overleaf 4096 Nov  5 16:25 .
 drwxrwxr-x  3 overleaf overleaf 4096 Nov  3 21:00 ..
 drwxrwxr-x  4 overleaf overleaf 4096 Nov  3 21:00 assets
 drwxrwxr-x  7 overleaf overleaf 4096 Nov  5 16:39 docs
--rw-rw-r--  1 overleaf overleaf    0 Nov  6 09:12 docs_ls.txt
-drwxrwxr-x  8 overleaf overleaf 4096 Nov  6 09:08 .git
+-rw-rw-r--  1 overleaf overleaf    0 Nov  6 12:42 docs_ls.txt
+drwxrwxr-x  8 overleaf overleaf 4096 Nov  6 12:09 .git
 -rw-rw-r--  1 overleaf overleaf  365 Nov  3 21:00 .gitattributes
 -rw-rw-r--  1 overleaf overleaf  796 Nov  4 08:27 .gitignore
 -rw-rw-r--  1 overleaf overleaf 7175 Nov  3 21:00 README.md
 drwxrwxr-x  5 overleaf overleaf 4096 Nov  3 21:00 research
 drwxrwxr-x  2 overleaf overleaf 4096 Nov  4 08:25 .scripts
-drwxrwxr-x  3 overleaf overleaf 4096 Nov  6 09:05 scripts-workflow
+drwxrwxr-x  3 overleaf overleaf 4096 Nov  6 10:08 scripts-workflow
 drwxrwxr-x  5 overleaf overleaf 4096 Nov  3 21:00 src
 drwxrwxr-x  5 overleaf overleaf 4096 Nov  3 21:00 tests
 -rw-rw-r--  1 overleaf overleaf 1826 Nov  3 21:00 tfg.sh
@@ -60,7 +60,7 @@ drwxrwxr-x 4 overleaf overleaf 4096 Nov  3 21:00 ..
 total 28
 drwxrwxr-x  7 overleaf overleaf 4096 Nov  5 16:39 .
 drwxrwxr-x 11 overleaf overleaf 4096 Nov  5 16:25 ..
-drwxrwxr-x  4 overleaf overleaf 4096 Nov  4 08:25 avantprojecte
+drwxrwxr-x  4 overleaf overleaf 4096 Nov  6 12:06 avantprojecte
 drwxrwxr-x  4 overleaf overleaf 4096 Nov  4 07:52 docs
 drwxrwxr-x  2 overleaf overleaf 4096 Nov  3 21:00 estudi_viabilitat
 drwxrwxr-x  2 overleaf overleaf 4096 Nov  3 21:00 memoria
@@ -68,103 +68,117 @@ drwxrwxr-x  2 overleaf overleaf 4096 Nov  3 21:00 presentacio
 
 ./docs/avantprojecte:
 total 16
-drwxrwxr-x 4 overleaf overleaf 4096 Nov  4 08:25 .
+drwxrwxr-x 4 overleaf overleaf 4096 Nov  6 12:06 .
 drwxrwxr-x 7 overleaf overleaf 4096 Nov  5 16:39 ..
-drwxrwxr-x 3 overleaf overleaf 4096 Nov  4 15:57 build
+drwxrwxr-x 3 overleaf overleaf 4096 Nov  6 12:06 build
 -rw-rw-r-- 1 overleaf overleaf    0 Nov  3 21:00 .gitkeep
 drwxrwxr-x 3 overleaf overleaf 4096 Nov  3 21:07 Template
 
 ./docs/avantprojecte/build:
-total 184
-drwxrwxr-x 3 overleaf overleaf   4096 Nov  4 15:57 .
-drwxrwxr-x 4 overleaf overleaf   4096 Nov  4 08:25 ..
-drwxrwxr-x 2 overleaf overleaf   4096 Nov  4 15:57 aux
--rw-rw-r-- 1 overleaf overleaf 175237 Nov  4 15:57 main.pdf
+total 12
+drwxrwxr-x 3 overleaf overleaf 4096 Nov  6 12:06 .
+drwxrwxr-x 4 overleaf overleaf 4096 Nov  6 12:06 ..
+drwxrwxr-x 2 overleaf overleaf 4096 Nov  6 12:06 aux
 
 ./docs/avantprojecte/build/aux:
-total 240
-drwxrwxr-x 2 overleaf overleaf   4096 Nov  4 15:57 .
-drwxrwxr-x 3 overleaf overleaf   4096 Nov  4 15:57 ..
--rw-rw-r-- 1 overleaf overleaf   2240 Nov  4 15:57 main.aux
--rw-rw-r-- 1 overleaf overleaf   1175 Nov  4 15:57 main.bbl
--rw-rw-r-- 1 overleaf overleaf 107225 Nov  4 15:57 main.bcf
--rw-rw-r-- 1 overleaf overleaf   1189 Nov  4 15:57 main.blg
--rw-rw-r-- 1 overleaf overleaf  20520 Nov  4 15:57 main.fdb_latexmk
--rw-rw-r-- 1 overleaf overleaf  24240 Nov  4 15:57 main.fls
--rw-rw-r-- 1 overleaf overleaf     91 Nov  4 15:57 main.glo
--rw-rw-r-- 1 overleaf overleaf    892 Nov  4 15:57 main.ist
--rw-rw-r-- 1 overleaf overleaf    160 Nov  4 15:57 main.lof
--rw-rw-r-- 1 overleaf overleaf  34567 Nov  4 15:57 main.log
--rw-rw-r-- 1 overleaf overleaf    155 Nov  4 15:57 main.lot
--rw-rw-r-- 1 overleaf overleaf   1089 Nov  4 15:57 main.out
--rw-rw-r-- 1 overleaf overleaf   2402 Nov  4 15:57 main.run.xml
--rw-rw-r-- 1 overleaf overleaf    647 Nov  4 15:57 main.toc
+total 8
+drwxrwxr-x 2 overleaf overleaf 4096 Nov  6 12:06 .
+drwxrwxr-x 3 overleaf overleaf 4096 Nov  6 12:06 ..
 
 ./docs/avantprojecte/Template:
 total 168
 drwxrwxr-x 3 overleaf overleaf   4096 Nov  3 21:07 .
-drwxrwxr-x 4 overleaf overleaf   4096 Nov  4 08:25 ..
-drwxrwxr-x 3 overleaf overleaf   4096 Nov  5 16:38 tfg_template
+drwxrwxr-x 4 overleaf overleaf   4096 Nov  6 12:06 ..
+drwxrwxr-x 5 overleaf overleaf   4096 Nov  6 11:55 tfg_template
 -rw-rw-r-- 1 overleaf overleaf 157081 Nov  3 21:04 tfg_template (1).zip
 
 ./docs/avantprojecte/Template/tfg_template:
-total 44
-drwxrwxr-x 3 overleaf overleaf  4096 Nov  5 16:38 .
+total 52
+drwxrwxr-x 5 overleaf overleaf  4096 Nov  6 11:55 .
 drwxrwxr-x 3 overleaf overleaf  4096 Nov  3 21:07 ..
+drwxrwxr-x 3 overleaf overleaf  4096 Nov  6 09:52 docs
 drwxrwxr-x 2 overleaf overleaf  4096 Nov  3 21:07 images
 -rw-rw-r-- 1 overleaf overleaf 20849 Nov  6 08:50 LICENSE
--rw-rw-r-- 1 overleaf overleaf  7111 Nov  6 09:00 main.tex
+-rw-rw-r-- 1 overleaf overleaf  7456 Nov  6 12:07 main.tex
+drwxrwxr-x 2 overleaf overleaf  4096 Nov  6 11:55 resources
+
+./docs/avantprojecte/Template/tfg_template/docs:
+total 12
+drwxrwxr-x 3 overleaf overleaf 4096 Nov  6 09:52 .
+drwxrwxr-x 5 overleaf overleaf 4096 Nov  6 11:55 ..
+drwxrwxr-x 3 overleaf overleaf 4096 Nov  6 09:52 avantprojecte
+
+./docs/avantprojecte/Template/tfg_template/docs/avantprojecte:
+total 12
+drwxrwxr-x 3 overleaf overleaf 4096 Nov  6 09:52 .
+drwxrwxr-x 3 overleaf overleaf 4096 Nov  6 09:52 ..
+drwxrwxr-x 3 overleaf overleaf 4096 Nov  6 12:07 build
+
+./docs/avantprojecte/Template/tfg_template/docs/avantprojecte/build:
+total 184
+drwxrwxr-x 3 overleaf overleaf   4096 Nov  6 12:07 .
+drwxrwxr-x 3 overleaf overleaf   4096 Nov  6 09:52 ..
+drwxrwxr-x 2 overleaf overleaf   4096 Nov  6 12:07 aux
+-rw-rw-r-- 1 overleaf overleaf 176100 Nov  6 12:07 main.pdf
+
+./docs/avantprojecte/Template/tfg_template/docs/avantprojecte/build/aux:
+total 236
+drwxrwxr-x 2 overleaf overleaf   4096 Nov  6 12:07 .
+drwxrwxr-x 3 overleaf overleaf   4096 Nov  6 12:07 ..
+-rw-rw-r-- 1 overleaf overleaf   2214 Nov  6 12:07 main.aux
+-rw-rw-r-- 1 overleaf overleaf   1175 Nov  6 12:06 main.bbl
+-rw-rw-r-- 1 overleaf overleaf 107235 Nov  6 12:07 main.bcf
+-rw-rw-r-- 1 overleaf overleaf   1192 Nov  6 12:06 main.blg
+-rw-rw-r-- 1 overleaf overleaf  19912 Nov  6 12:07 main.fdb_latexmk
+-rw-rw-r-- 1 overleaf overleaf  23476 Nov  6 12:07 main.fls
+-rw-rw-r-- 1 overleaf overleaf     91 Nov  6 12:07 main.glo
+-rw-rw-r-- 1 overleaf overleaf    892 Nov  6 12:07 main.ist
+-rw-rw-r-- 1 overleaf overleaf    160 Nov  6 12:07 main.lof
+-rw-rw-r-- 1 overleaf overleaf  34490 Nov  6 12:07 main.log
+-rw-rw-r-- 1 overleaf overleaf    155 Nov  6 12:07 main.lot
+-rw-rw-r-- 1 overleaf overleaf   1073 Nov  6 12:07 main.out
+-rw-rw-r-- 1 overleaf overleaf   2412 Nov  6 12:07 main.run.xml
+-rw-rw-r-- 1 overleaf overleaf    641 Nov  6 12:07 main.toc
 
 ./docs/avantprojecte/Template/tfg_template/images:
 total 180
 drwxrwxr-x 2 overleaf overleaf   4096 Nov  3 21:07 .
-drwxrwxr-x 3 overleaf overleaf   4096 Nov  5 16:38 ..
+drwxrwxr-x 5 overleaf overleaf   4096 Nov  6 11:55 ..
 -rw-rw-r-- 1 overleaf overleaf 175364 Nov  3 21:07 logo-tecnocampus.png
+
+./docs/avantprojecte/Template/tfg_template/resources:
+total 16
+drwxrwxr-x 2 overleaf overleaf 4096 Nov  6 11:55 .
+drwxrwxr-x 5 overleaf overleaf 4096 Nov  6 11:55 ..
+-rw-rw-r-- 1 overleaf overleaf  722 Nov  6 10:03 glossary.tex
+-rw-rw-r-- 1 overleaf overleaf 1157 Nov  6 12:05 references.bib
 
 ./docs/docs:
 total 16
 drwxrwxr-x 4 overleaf overleaf 4096 Nov  4 07:52 .
 drwxrwxr-x 7 overleaf overleaf 4096 Nov  5 16:39 ..
-drwxrwxr-x 5 overleaf overleaf 4096 Nov  5 16:43 avantprojecte
+drwxrwxr-x 4 overleaf overleaf 4096 Nov  6 10:03 avantprojecte
 drwxrwxr-x 2 overleaf overleaf 4096 Nov  4 07:52 memoria
 
 ./docs/docs/avantprojecte:
-total 40
-drwxrwxr-x 5 overleaf overleaf 4096 Nov  5 16:43 .
+total 24
+drwxrwxr-x 4 overleaf overleaf 4096 Nov  6 10:03 .
 drwxrwxr-x 4 overleaf overleaf 4096 Nov  4 07:52 ..
-drwxrwxr-x 3 overleaf overleaf 4096 Nov  5 16:37 build
--rw-rw-r-- 1 overleaf overleaf  730 Nov  3 21:07 glossary.tex
 drwxrwxr-x 2 overleaf overleaf 4096 Nov  5 16:34 images
--rw-rw-r-- 1 overleaf overleaf 7151 Nov  5 16:34 main.tex
 -rw-rw-r-- 1 overleaf overleaf  490 Nov  4 07:52 README.md
 drwxrwxr-x 2 overleaf overleaf 4096 Nov  5 16:33 recursos
 -rw-rw-r-- 1 overleaf overleaf 1209 Nov  3 21:07 references.bib
 
-./docs/docs/avantprojecte/build:
-total 12
-drwxrwxr-x 3 overleaf overleaf 4096 Nov  5 16:37 .
-drwxrwxr-x 5 overleaf overleaf 4096 Nov  5 16:43 ..
-drwxrwxr-x 2 overleaf overleaf 4096 Nov  5 16:37 aux
-
-./docs/docs/avantprojecte/build/aux:
-total 72
-drwxrwxr-x 2 overleaf overleaf  4096 Nov  5 16:37 .
-drwxrwxr-x 3 overleaf overleaf  4096 Nov  5 16:37 ..
--rw-rw-r-- 1 overleaf overleaf    32 Nov  5 16:37 main.aux
--rw-rw-r-- 1 overleaf overleaf 13751 Nov  5 16:37 main.fdb_latexmk
--rw-rw-r-- 1 overleaf overleaf 16127 Nov  5 16:37 main.fls
--rw-rw-r-- 1 overleaf overleaf 27261 Nov  5 16:37 main.log
-
 ./docs/docs/avantprojecte/images:
 total 180
 drwxrwxr-x 2 overleaf overleaf   4096 Nov  5 16:34 .
-drwxrwxr-x 5 overleaf overleaf   4096 Nov  5 16:43 ..
+drwxrwxr-x 4 overleaf overleaf   4096 Nov  6 10:03 ..
 -rw-rw-r-- 1 overleaf overleaf 175364 Nov  5 16:34 logo-tecnocampus.png
 
 ./docs/docs/avantprojecte/recursos:
 total 44
 drwxrwxr-x 2 overleaf overleaf 4096 Nov  5 16:33 .
-drwxrwxr-x 5 overleaf overleaf 4096 Nov  5 16:43 ..
+drwxrwxr-x 4 overleaf overleaf 4096 Nov  6 10:03 ..
 -rw-rw-r-- 1 overleaf overleaf 3887 Nov  4 07:52 01_objecte.md
 -rw-rw-r-- 1 overleaf overleaf  224 Nov  4 07:52 02_estat_art.md
 -rw-rw-r-- 1 overleaf overleaf 5037 Nov  4 07:52 03_objectius.md
@@ -199,19 +213,19 @@ drwxrwxr-x 7 overleaf overleaf 4096 Nov  5 16:39 ..
 
 ./.git:
 total 68
-drwxrwxr-x  8 overleaf overleaf 4096 Nov  6 09:08 .
+drwxrwxr-x  8 overleaf overleaf 4096 Nov  6 12:09 .
 drwxrwxr-x 11 overleaf overleaf 4096 Nov  5 16:25 ..
 drwxrwxr-x  2 overleaf overleaf 4096 Nov  3 21:00 branches
--rw-rw-r--  1 overleaf overleaf    5 Nov  6 09:08 COMMIT_EDITMSG
+-rw-rw-r--  1 overleaf overleaf  108 Nov  6 12:09 COMMIT_EDITMSG
 -rw-rw-r--  1 overleaf overleaf  284 Nov  3 21:01 config
 -rw-rw-r--  1 overleaf overleaf   73 Nov  3 21:00 description
--rw-rw-r--  1 overleaf overleaf  209 Nov  6 09:09 FETCH_HEAD
+-rw-rw-r--  1 overleaf overleaf  209 Nov  6 12:42 FETCH_HEAD
 -rw-rw-r--  1 overleaf overleaf   21 Nov  3 21:00 HEAD
 drwxrwxr-x  2 overleaf overleaf 4096 Nov  3 21:00 hooks
--rw-rw-r--  1 overleaf overleaf 7680 Nov  6 09:08 index
+-rw-rw-r--  1 overleaf overleaf 7674 Nov  6 12:09 index
 drwxrwxr-x  2 overleaf overleaf 4096 Nov  3 21:00 info
 drwxrwxr-x  3 overleaf overleaf 4096 Nov  3 21:00 logs
-drwxrwxr-x 49 overleaf overleaf 4096 Nov  6 09:09 objects
+drwxrwxr-x 69 overleaf overleaf 4096 Nov  6 12:42 objects
 -rw-rw-r--  1 overleaf overleaf   41 Nov  6 09:08 ORIG_HEAD
 -rw-rw-r--  1 overleaf overleaf  310 Nov  3 21:00 packed-refs
 drwxrwxr-x  5 overleaf overleaf 4096 Nov  3 21:00 refs
@@ -219,12 +233,12 @@ drwxrwxr-x  5 overleaf overleaf 4096 Nov  3 21:00 refs
 ./.git/branches:
 total 8
 drwxrwxr-x 2 overleaf overleaf 4096 Nov  3 21:00 .
-drwxrwxr-x 8 overleaf overleaf 4096 Nov  6 09:08 ..
+drwxrwxr-x 8 overleaf overleaf 4096 Nov  6 12:09 ..
 
 ./.git/hooks:
 total 72
 drwxrwxr-x 2 overleaf overleaf 4096 Nov  3 21:00 .
-drwxrwxr-x 8 overleaf overleaf 4096 Nov  6 09:08 ..
+drwxrwxr-x 8 overleaf overleaf 4096 Nov  6 12:09 ..
 -rwxrwxr-x 1 overleaf overleaf  478 Nov  3 21:00 applypatch-msg.sample
 -rwxrwxr-x 1 overleaf overleaf  896 Nov  3 21:00 commit-msg.sample
 -rwxrwxr-x 1 overleaf overleaf 4726 Nov  3 21:00 fsmonitor-watchman.sample
@@ -243,14 +257,14 @@ drwxrwxr-x 8 overleaf overleaf 4096 Nov  6 09:08 ..
 ./.git/info:
 total 12
 drwxrwxr-x 2 overleaf overleaf 4096 Nov  3 21:00 .
-drwxrwxr-x 8 overleaf overleaf 4096 Nov  6 09:08 ..
+drwxrwxr-x 8 overleaf overleaf 4096 Nov  6 12:09 ..
 -rw-rw-r-- 1 overleaf overleaf  240 Nov  3 21:00 exclude
 
 ./.git/logs:
 total 16
 drwxrwxr-x 3 overleaf overleaf 4096 Nov  3 21:00 .
-drwxrwxr-x 8 overleaf overleaf 4096 Nov  6 09:08 ..
--rw-rw-r-- 1 overleaf overleaf 1218 Nov  6 09:08 HEAD
+drwxrwxr-x 8 overleaf overleaf 4096 Nov  6 12:09 ..
+-rw-rw-r-- 1 overleaf overleaf 1758 Nov  6 12:09 HEAD
 drwxrwxr-x 4 overleaf overleaf 4096 Nov  3 21:00 refs
 
 ./.git/logs/refs:
@@ -264,7 +278,7 @@ drwxrwxr-x 3 overleaf overleaf 4096 Nov  3 21:00 remotes
 total 12
 drwxrwxr-x 2 overleaf overleaf 4096 Nov  3 21:00 .
 drwxrwxr-x 4 overleaf overleaf 4096 Nov  3 21:00 ..
--rw-rw-r-- 1 overleaf overleaf 1218 Nov  6 09:08 main
+-rw-rw-r-- 1 overleaf overleaf 1758 Nov  6 12:09 main
 
 ./.git/logs/refs/remotes:
 total 12
@@ -277,52 +291,72 @@ total 16
 drwxrwxr-x 2 overleaf overleaf 4096 Nov  4 07:20 .
 drwxrwxr-x 3 overleaf overleaf 4096 Nov  3 21:00 ..
 -rw-rw-r-- 1 overleaf overleaf  174 Nov  3 21:00 HEAD
--rw-rw-r-- 1 overleaf overleaf 1029 Nov  6 09:08 main
+-rw-rw-r-- 1 overleaf overleaf 1470 Nov  6 12:09 main
 
 ./.git/objects:
-total 196
-drwxrwxr-x 49 overleaf overleaf 4096 Nov  6 09:09 .
-drwxrwxr-x  8 overleaf overleaf 4096 Nov  6 09:08 ..
+total 276
+drwxrwxr-x 69 overleaf overleaf 4096 Nov  6 12:42 .
+drwxrwxr-x  8 overleaf overleaf 4096 Nov  6 12:09 ..
 drwxrwxr-x  2 overleaf overleaf 4096 Nov  6 09:08 08
 drwxrwxr-x  2 overleaf overleaf 4096 Nov  4 07:43 10
 drwxrwxr-x  2 overleaf overleaf 4096 Nov  4 07:43 11
 drwxrwxr-x  2 overleaf overleaf 4096 Nov  6 09:08 12
+drwxrwxr-x  2 overleaf overleaf 4096 Nov  6 10:08 14
 drwxrwxr-x  2 overleaf overleaf 4096 Nov  5 16:46 17
 drwxrwxr-x  2 overleaf overleaf 4096 Nov  5 16:46 18
+drwxrwxr-x  2 overleaf overleaf 4096 Nov  6 10:01 19
 drwxrwxr-x  2 overleaf overleaf 4096 Nov  4 07:20 1b
+drwxrwxr-x  2 overleaf overleaf 4096 Nov  6 12:09 23
+drwxrwxr-x  2 overleaf overleaf 4096 Nov  6 10:08 24
+drwxrwxr-x  2 overleaf overleaf 4096 Nov  6 10:08 27
 drwxrwxr-x  2 overleaf overleaf 4096 Nov  4 07:20 32
 drwxrwxr-x  2 overleaf overleaf 4096 Nov  5 16:46 33
+drwxrwxr-x  2 overleaf overleaf 4096 Nov  6 12:09 38
 drwxrwxr-x  2 overleaf overleaf 4096 Nov  4 07:20 39
 drwxrwxr-x  2 overleaf overleaf 4096 Nov  4 07:20 3e
 drwxrwxr-x  2 overleaf overleaf 4096 Nov  6 09:08 3f
+drwxrwxr-x  2 overleaf overleaf 4096 Nov  6 12:09 45
 drwxrwxr-x  2 overleaf overleaf 4096 Nov  5 16:46 4e
 drwxrwxr-x  2 overleaf overleaf 4096 Nov  6 09:08 50
-drwxrwxr-x  2 overleaf overleaf 4096 Nov  5 16:46 51
+drwxrwxr-x  2 overleaf overleaf 4096 Nov  6 10:01 51
 drwxrwxr-x  2 overleaf overleaf 4096 Nov  4 07:43 57
 drwxrwxr-x  2 overleaf overleaf 4096 Nov  4 07:54 58
 drwxrwxr-x  2 overleaf overleaf 4096 Nov  5 16:46 5d
 drwxrwxr-x  2 overleaf overleaf 4096 Nov  4 07:20 5f
-drwxrwxr-x  2 overleaf overleaf 4096 Nov  5 16:46 64
-drwxrwxr-x  2 overleaf overleaf 4096 Nov  4 08:28 65
+drwxrwxr-x  2 overleaf overleaf 4096 Nov  6 10:01 64
+drwxrwxr-x  2 overleaf overleaf 4096 Nov  6 12:09 65
 drwxrwxr-x  2 overleaf overleaf 4096 Nov  4 08:28 66
 drwxrwxr-x  2 overleaf overleaf 4096 Nov  6 09:08 69
-drwxrwxr-x  2 overleaf overleaf 4096 Nov  6 09:08 73
+drwxrwxr-x  2 overleaf overleaf 4096 Nov  6 12:09 73
 drwxrwxr-x  2 overleaf overleaf 4096 Nov  6 09:08 78
 drwxrwxr-x  2 overleaf overleaf 4096 Nov  4 08:28 7d
+drwxrwxr-x  2 overleaf overleaf 4096 Nov  6 10:01 7f
+drwxrwxr-x  2 overleaf overleaf 4096 Nov  6 12:09 96
+drwxrwxr-x  2 overleaf overleaf 4096 Nov  6 12:09 97
 drwxrwxr-x  2 overleaf overleaf 4096 Nov  4 07:20 9d
+drwxrwxr-x  2 overleaf overleaf 4096 Nov  6 10:01 a3
 drwxrwxr-x  2 overleaf overleaf 4096 Nov  4 08:28 a8
 drwxrwxr-x  2 overleaf overleaf 4096 Nov  4 07:54 a9
 drwxrwxr-x  2 overleaf overleaf 4096 Nov  6 09:08 ac
+drwxrwxr-x  2 overleaf overleaf 4096 Nov  6 10:01 af
+drwxrwxr-x  2 overleaf overleaf 4096 Nov  6 10:08 b1
 drwxrwxr-x  2 overleaf overleaf 4096 Nov  4 07:20 b6
 drwxrwxr-x  2 overleaf overleaf 4096 Nov  5 16:46 c1
-drwxrwxr-x  2 overleaf overleaf 4096 Nov  4 07:20 c5
+drwxrwxr-x  2 overleaf overleaf 4096 Nov  6 10:01 c2
+drwxrwxr-x  2 overleaf overleaf 4096 Nov  6 10:01 c5
 drwxrwxr-x  2 overleaf overleaf 4096 Nov  4 08:28 c7
 drwxrwxr-x  2 overleaf overleaf 4096 Nov  6 09:08 cb
-drwxrwxr-x  2 overleaf overleaf 4096 Nov  4 07:54 d1
+drwxrwxr-x  2 overleaf overleaf 4096 Nov  6 10:08 d1
 drwxrwxr-x  2 overleaf overleaf 4096 Nov  5 16:46 d7
+drwxrwxr-x  2 overleaf overleaf 4096 Nov  6 10:01 db
 drwxrwxr-x  2 overleaf overleaf 4096 Nov  3 21:14 e0
-drwxrwxr-x  2 overleaf overleaf 4096 Nov  4 07:20 e7
-drwxrwxr-x  2 overleaf overleaf 4096 Nov  6 09:08 f0
+drwxrwxr-x  2 overleaf overleaf 4096 Nov  6 10:08 e6
+drwxrwxr-x  2 overleaf overleaf 4096 Nov  6 10:08 e7
+drwxrwxr-x  2 overleaf overleaf 4096 Nov  6 10:08 e8
+drwxrwxr-x  2 overleaf overleaf 4096 Nov  6 10:01 e9
+drwxrwxr-x  2 overleaf overleaf 4096 Nov  6 10:08 ec
+drwxrwxr-x  2 overleaf overleaf 4096 Nov  6 12:09 ed
+drwxrwxr-x  2 overleaf overleaf 4096 Nov  6 12:09 f0
 drwxrwxr-x  2 overleaf overleaf 4096 Nov  4 07:43 f4
 drwxrwxr-x  2 overleaf overleaf 4096 Nov  6 09:08 f6
 drwxrwxr-x  2 overleaf overleaf 4096 Nov  6 09:08 f8
@@ -334,288 +368,419 @@ drwxrwxr-x  2 overleaf overleaf 4096 Nov  3 21:00 pack
 ./.git/objects/08:
 total 16
 drwxrwxr-x  2 overleaf overleaf 4096 Nov  6 09:08 .
-drwxrwxr-x 49 overleaf overleaf 4096 Nov  6 09:09 ..
+drwxrwxr-x 69 overleaf overleaf 4096 Nov  6 12:42 ..
 -r--r--r--  1 overleaf overleaf  189 Nov  4 07:20 19d6076f307e96660a058f377d58db33c76b75
 -r--r--r--  1 overleaf overleaf  155 Nov  6 09:08 54aea485aeb2d7861242b23bef7432edd804c2
 
 ./.git/objects/10:
 total 12
 drwxrwxr-x  2 overleaf overleaf 4096 Nov  4 07:43 .
-drwxrwxr-x 49 overleaf overleaf 4096 Nov  6 09:09 ..
+drwxrwxr-x 69 overleaf overleaf 4096 Nov  6 12:42 ..
 -r--r--r--  1 overleaf overleaf  376 Nov  4 07:43 4e9190489c7289f4723efe2caa817d0dba45da
 
 ./.git/objects/11:
 total 12
 drwxrwxr-x  2 overleaf overleaf 4096 Nov  4 07:43 .
-drwxrwxr-x 49 overleaf overleaf 4096 Nov  6 09:09 ..
+drwxrwxr-x 69 overleaf overleaf 4096 Nov  6 12:42 ..
 -r--r--r--  1 overleaf overleaf  320 Nov  4 07:43 8e3f1da88ba4363a35a50da31711eba8b53293
 
 ./.git/objects/12:
 total 12
 drwxrwxr-x  2 overleaf overleaf 4096 Nov  6 09:08 .
-drwxrwxr-x 49 overleaf overleaf 4096 Nov  6 09:09 ..
+drwxrwxr-x 69 overleaf overleaf 4096 Nov  6 12:42 ..
 -r--r--r--  1 overleaf overleaf  387 Nov  6 09:08 d25e48bab62d6e962384b9f460e76cf526c7f8
+
+./.git/objects/14:
+total 12
+drwxrwxr-x  2 overleaf overleaf 4096 Nov  6 10:08 .
+drwxrwxr-x 69 overleaf overleaf 4096 Nov  6 12:42 ..
+-r--r--r--  1 overleaf overleaf  158 Nov  6 10:08 40bb409114fe9c64a794bf1900d9af24274717
 
 ./.git/objects/17:
 total 12
 drwxrwxr-x  2 overleaf overleaf 4096 Nov  5 16:46 .
-drwxrwxr-x 49 overleaf overleaf 4096 Nov  6 09:09 ..
+drwxrwxr-x 69 overleaf overleaf 4096 Nov  6 12:42 ..
 -r--r--r--  1 overleaf overleaf   87 Nov  5 16:46 fd3228371e845ce8feea0f2ff72bbe81e57a37
 
 ./.git/objects/18:
 total 12
 drwxrwxr-x  2 overleaf overleaf 4096 Nov  5 16:46 .
-drwxrwxr-x 49 overleaf overleaf 4096 Nov  6 09:09 ..
+drwxrwxr-x 69 overleaf overleaf 4096 Nov  6 12:42 ..
 -r--r--r--  1 overleaf overleaf  401 Nov  5 16:46 435be00a72e36a6777bca71a62094d205dec4d
+
+./.git/objects/19:
+total 12
+drwxrwxr-x  2 overleaf overleaf 4096 Nov  6 10:01 .
+drwxrwxr-x 69 overleaf overleaf 4096 Nov  6 12:42 ..
+-r--r--r--  1 overleaf overleaf 3103 Nov  6 10:01 39b46fc0be0d36047cb660ab9e16ddca65fbab
 
 ./.git/objects/1b:
 total 12
 drwxrwxr-x  2 overleaf overleaf 4096 Nov  4 07:20 .
-drwxrwxr-x 49 overleaf overleaf 4096 Nov  6 09:09 ..
+drwxrwxr-x 69 overleaf overleaf 4096 Nov  6 12:42 ..
 -r--r--r--  1 overleaf overleaf  173 Nov  4 07:20 f9f70bb1a50ba97489ae447c4b84621cab80b6
+
+./.git/objects/23:
+total 12
+drwxrwxr-x  2 overleaf overleaf 4096 Nov  6 12:09 .
+drwxrwxr-x 69 overleaf overleaf 4096 Nov  6 12:42 ..
+-r--r--r--  1 overleaf overleaf  689 Nov  6 12:09 d7da414e7afc771523ce7285c9b93c17994660
+
+./.git/objects/24:
+total 12
+drwxrwxr-x  2 overleaf overleaf 4096 Nov  6 10:08 .
+drwxrwxr-x 69 overleaf overleaf 4096 Nov  6 12:42 ..
+-r--r--r--  1 overleaf overleaf   57 Nov  6 10:08 e926e974aa3c411ccb19d66f35681993d147cd
+
+./.git/objects/27:
+total 12
+drwxrwxr-x  2 overleaf overleaf 4096 Nov  6 10:08 .
+drwxrwxr-x 69 overleaf overleaf 4096 Nov  6 12:42 ..
+-r--r--r--  1 overleaf overleaf   55 Nov  6 10:08 54343b5c85deef091dffe3b61d711083ee08b7
 
 ./.git/objects/32:
 total 12
 drwxrwxr-x  2 overleaf overleaf 4096 Nov  4 07:20 .
-drwxrwxr-x 49 overleaf overleaf 4096 Nov  6 09:09 ..
+drwxrwxr-x 69 overleaf overleaf 4096 Nov  6 12:42 ..
 -r--r--r--  1 overleaf overleaf   92 Nov  4 07:20 e8e6767589aa225b1433590386a482c5a4c070
 
 ./.git/objects/33:
 total 12
 drwxrwxr-x  2 overleaf overleaf 4096 Nov  5 16:46 .
-drwxrwxr-x 49 overleaf overleaf 4096 Nov  6 09:09 ..
+drwxrwxr-x 69 overleaf overleaf 4096 Nov  6 12:42 ..
 -r--r--r--  1 overleaf overleaf   92 Nov  5 16:46 c3488e5e475c1b568f38367b69d550732fc7ae
+
+./.git/objects/38:
+total 12
+drwxrwxr-x  2 overleaf overleaf 4096 Nov  6 12:09 .
+drwxrwxr-x 69 overleaf overleaf 4096 Nov  6 12:42 ..
+-r--r--r--  1 overleaf overleaf  150 Nov  6 12:09 1821eca48cf127680368d7ad508de93ee5f3c0
 
 ./.git/objects/39:
 total 12
 drwxrwxr-x  2 overleaf overleaf 4096 Nov  4 07:20 .
-drwxrwxr-x 49 overleaf overleaf 4096 Nov  6 09:09 ..
+drwxrwxr-x 69 overleaf overleaf 4096 Nov  6 12:42 ..
 -r--r--r--  1 overleaf overleaf 3122 Nov  5 16:46 0534d90d98d7d44155b501e778c72c4e9b39da
 
 ./.git/objects/3e:
 total 12
 drwxrwxr-x  2 overleaf overleaf 4096 Nov  4 07:20 .
-drwxrwxr-x 49 overleaf overleaf 4096 Nov  6 09:09 ..
+drwxrwxr-x 69 overleaf overleaf 4096 Nov  6 12:42 ..
 -r--r--r--  1 overleaf overleaf  437 Nov  4 07:20 0225be51190bbfc905fe52b82ce06802801d6a
 
 ./.git/objects/3f:
 total 12
 drwxrwxr-x  2 overleaf overleaf 4096 Nov  6 09:08 .
-drwxrwxr-x 49 overleaf overleaf 4096 Nov  6 09:09 ..
+drwxrwxr-x 69 overleaf overleaf 4096 Nov  6 12:42 ..
 -r--r--r--  1 overleaf overleaf  150 Nov  6 09:08 2418cd89677c3585138f5e07b4e7e155a53c20
+
+./.git/objects/45:
+total 12
+drwxrwxr-x  2 overleaf overleaf 4096 Nov  6 12:09 .
+drwxrwxr-x 69 overleaf overleaf 4096 Nov  6 12:42 ..
+-r--r--r--  1 overleaf overleaf  149 Nov  6 12:09 78c9f9cfc976da09b0d3980f4492105cf2b46c
 
 ./.git/objects/4e:
 total 16
 drwxrwxr-x  2 overleaf overleaf 4096 Nov  5 16:46 .
-drwxrwxr-x 49 overleaf overleaf 4096 Nov  6 09:09 ..
+drwxrwxr-x 69 overleaf overleaf 4096 Nov  6 12:42 ..
 -r--r--r--  1 overleaf overleaf  318 Nov  5 16:46 1d9f04dadb60930fc94cd212b40f96f7e84d59
 -r--r--r--  1 overleaf overleaf  157 Nov  5 16:46 a92f7cae1fc26db26b4036e1fc6c1f33dfb5f5
 
 ./.git/objects/50:
 total 12
 drwxrwxr-x  2 overleaf overleaf 4096 Nov  6 09:08 .
-drwxrwxr-x 49 overleaf overleaf 4096 Nov  6 09:09 ..
+drwxrwxr-x 69 overleaf overleaf 4096 Nov  6 12:42 ..
 -r--r--r--  1 overleaf overleaf  229 Nov  6 09:08 44eedf171fffaf64a4e2f2cb9afff342ca2a7c
 
 ./.git/objects/51:
-total 12
-drwxrwxr-x  2 overleaf overleaf 4096 Nov  5 16:46 .
-drwxrwxr-x 49 overleaf overleaf 4096 Nov  6 09:09 ..
+total 16
+drwxrwxr-x  2 overleaf overleaf 4096 Nov  6 10:01 .
+drwxrwxr-x 69 overleaf overleaf 4096 Nov  6 12:42 ..
+-r--r--r--  1 overleaf overleaf   87 Nov  6 10:01 1109419d40393fa22bbd5177fd11cf5bf1db20
 -r--r--r--  1 overleaf overleaf  387 Nov  5 16:46 1c44c1c14406e6da9bdc09c2f616f4a506bb8d
 
 ./.git/objects/57:
 total 12
 drwxrwxr-x  2 overleaf overleaf 4096 Nov  4 07:43 .
-drwxrwxr-x 49 overleaf overleaf 4096 Nov  6 09:09 ..
+drwxrwxr-x 69 overleaf overleaf 4096 Nov  6 12:42 ..
 -r--r--r--  1 overleaf overleaf  367 Nov  4 07:43 3cd7328dc3d053c13cd1883a7d288a2a2f4516
 
 ./.git/objects/58:
 total 12
 drwxrwxr-x  2 overleaf overleaf 4096 Nov  4 07:54 .
-drwxrwxr-x 49 overleaf overleaf 4096 Nov  6 09:09 ..
+drwxrwxr-x 69 overleaf overleaf 4096 Nov  6 12:42 ..
 -r--r--r--  1 overleaf overleaf  150 Nov  4 07:54 28b5f2076847d522665357afac3ee2c58a1cdb
 
 ./.git/objects/5d:
 total 12
 drwxrwxr-x  2 overleaf overleaf 4096 Nov  5 16:46 .
-drwxrwxr-x 49 overleaf overleaf 4096 Nov  6 09:09 ..
+drwxrwxr-x 69 overleaf overleaf 4096 Nov  6 12:42 ..
 -r--r--r--  1 overleaf overleaf  224 Nov  5 16:46 2c0fe317b1e9682173f83ee8b0b52c8b2b21ea
 
 ./.git/objects/5f:
 total 12
 drwxrwxr-x  2 overleaf overleaf 4096 Nov  4 07:20 .
-drwxrwxr-x 49 overleaf overleaf 4096 Nov  6 09:09 ..
+drwxrwxr-x 69 overleaf overleaf 4096 Nov  6 12:42 ..
 -r--r--r--  1 overleaf overleaf  693 Nov  5 16:46 f2186f7175425b8492d06a798dd0da34416aab
 
 ./.git/objects/64:
-total 12
-drwxrwxr-x  2 overleaf overleaf 4096 Nov  5 16:46 .
-drwxrwxr-x 49 overleaf overleaf 4096 Nov  6 09:09 ..
+total 16
+drwxrwxr-x  2 overleaf overleaf 4096 Nov  6 10:01 .
+drwxrwxr-x 69 overleaf overleaf 4096 Nov  6 12:42 ..
 -r--r--r--  1 overleaf overleaf  118 Nov  5 16:46 103833dadfd242e2b37af75d6a2f24051eaae6
+-r--r--r--  1 overleaf overleaf   93 Nov  6 10:01 125adb9f2f240d6c7441dac857c6ba30525c50
 
 ./.git/objects/65:
-total 12
-drwxrwxr-x  2 overleaf overleaf 4096 Nov  4 08:28 .
-drwxrwxr-x 49 overleaf overleaf 4096 Nov  6 09:09 ..
+total 16
+drwxrwxr-x  2 overleaf overleaf 4096 Nov  6 12:09 .
+drwxrwxr-x 69 overleaf overleaf 4096 Nov  6 12:42 ..
+-r--r--r--  1 overleaf overleaf 3280 Nov  6 12:09 96a4c54bb297e515f5f800efc3ec3ece62224d
 -r--r--r--  1 overleaf overleaf  155 Nov  4 08:28 b22e3c9ec7d0a68974c557bced99c554337049
 
 ./.git/objects/66:
 total 16
 drwxrwxr-x  2 overleaf overleaf 4096 Nov  4 08:28 .
-drwxrwxr-x 49 overleaf overleaf 4096 Nov  6 09:09 ..
+drwxrwxr-x 69 overleaf overleaf 4096 Nov  6 12:42 ..
 -r--r--r--  1 overleaf overleaf  461 Nov  4 08:28 0a9028df6c33b61fde2f47f3822cdc567e745c
 -r--r--r--  1 overleaf overleaf  347 Nov  3 21:14 9b3aa7ebdbf6058990a8a7c0e8f791a61d746b
 
 ./.git/objects/69:
 total 16
 drwxrwxr-x  2 overleaf overleaf 4096 Nov  6 09:08 .
-drwxrwxr-x 49 overleaf overleaf 4096 Nov  6 09:09 ..
+drwxrwxr-x 69 overleaf overleaf 4096 Nov  6 12:42 ..
 -r--r--r--  1 overleaf overleaf 3102 Nov  6 09:08 e29df31f5158a444a3834cfa24673825d2375f
 -r--r--r--  1 overleaf overleaf  501 Nov  5 16:46 eea7d001ab0a4f04839480088113e0e796e1db
 
 ./.git/objects/73:
-total 16
-drwxrwxr-x  2 overleaf overleaf 4096 Nov  6 09:08 .
-drwxrwxr-x 49 overleaf overleaf 4096 Nov  6 09:09 ..
+total 20
+drwxrwxr-x  2 overleaf overleaf 4096 Nov  6 12:09 .
+drwxrwxr-x 69 overleaf overleaf 4096 Nov  6 12:42 ..
 -r--r--r--  1 overleaf overleaf  117 Nov  6 09:08 02101e897c2727ee918a465640a015cd28dddf
+-r--r--r--  1 overleaf overleaf   93 Nov  6 12:09 555d8fbf978abd69a3cc3d23c45039fa366746
 -r--r--r--  1 overleaf overleaf   55 Nov  5 16:46 a04b2a685267be12fed7b55d7fb0b139ff78b8
 
 ./.git/objects/78:
 total 12
 drwxrwxr-x  2 overleaf overleaf 4096 Nov  6 09:08 .
-drwxrwxr-x 49 overleaf overleaf 4096 Nov  6 09:09 ..
+drwxrwxr-x 69 overleaf overleaf 4096 Nov  6 12:42 ..
 -r--r--r--  1 overleaf overleaf  159 Nov  6 09:08 a703e477985fa6bc81cfb4e2f737f5e338b38d
 
 ./.git/objects/7d:
 total 12
 drwxrwxr-x  2 overleaf overleaf 4096 Nov  4 08:28 .
-drwxrwxr-x 49 overleaf overleaf 4096 Nov  6 09:09 ..
+drwxrwxr-x 69 overleaf overleaf 4096 Nov  6 12:42 ..
 -r--r--r--  1 overleaf overleaf  229 Nov  5 16:46 30a72dfcf24c9faad9f9d85b68f4a106e186fc
+
+./.git/objects/7f:
+total 12
+drwxrwxr-x  2 overleaf overleaf 4096 Nov  6 10:01 .
+drwxrwxr-x 69 overleaf overleaf 4096 Nov  6 12:42 ..
+-r--r--r--  1 overleaf overleaf  150 Nov  6 10:01 5856dda5b4290d23495495a1bb4a237d3b0fa4
+
+./.git/objects/96:
+total 12
+drwxrwxr-x  2 overleaf overleaf 4096 Nov  6 12:09 .
+drwxrwxr-x 69 overleaf overleaf 4096 Nov  6 12:42 ..
+-r--r--r--  1 overleaf overleaf   88 Nov  6 12:09 e0c1607311e68ed7885573bae29c5f993bda4d
+
+./.git/objects/97:
+total 12
+drwxrwxr-x  2 overleaf overleaf 4096 Nov  6 12:09 .
+drwxrwxr-x 69 overleaf overleaf 4096 Nov  6 12:42 ..
+-r--r--r--  1 overleaf overleaf  401 Nov  6 12:09 a3f26a921ed235e9d606ebb5aa6193c879d117
 
 ./.git/objects/9d:
 total 12
 drwxrwxr-x  2 overleaf overleaf 4096 Nov  4 07:20 .
-drwxrwxr-x 49 overleaf overleaf 4096 Nov  6 09:09 ..
+drwxrwxr-x 69 overleaf overleaf 4096 Nov  6 12:42 ..
 -r--r--r--  1 overleaf overleaf  154 Nov  4 07:20 646f86564377a436e4bd081b97963f5e225089
+
+./.git/objects/a3:
+total 12
+drwxrwxr-x  2 overleaf overleaf 4096 Nov  6 10:01 .
+drwxrwxr-x 69 overleaf overleaf 4096 Nov  6 12:42 ..
+-r--r--r--  1 overleaf overleaf  542 Nov  6 10:01 9568c50e7825ec5a869e741c28827c5c093633
 
 ./.git/objects/a8:
 total 12
 drwxrwxr-x  2 overleaf overleaf 4096 Nov  4 08:28 .
-drwxrwxr-x 49 overleaf overleaf 4096 Nov  6 09:09 ..
+drwxrwxr-x 69 overleaf overleaf 4096 Nov  6 12:42 ..
 -r--r--r--  1 overleaf overleaf  368 Nov  4 08:28 e7f3049cd6de83d2b89cf251e9ec7732fb99ba
 
 ./.git/objects/a9:
 total 12
 drwxrwxr-x  2 overleaf overleaf 4096 Nov  4 07:54 .
-drwxrwxr-x 49 overleaf overleaf 4096 Nov  6 09:09 ..
+drwxrwxr-x 69 overleaf overleaf 4096 Nov  6 12:42 ..
 -r--r--r--  1 overleaf overleaf  367 Nov  4 07:54 f26d88596e0d9a4a727e54b2937c78049d00da
 
 ./.git/objects/ac:
 total 12
 drwxrwxr-x  2 overleaf overleaf 4096 Nov  6 09:08 .
-drwxrwxr-x 49 overleaf overleaf 4096 Nov  6 09:09 ..
+drwxrwxr-x 69 overleaf overleaf 4096 Nov  6 12:42 ..
 -r--r--r--  1 overleaf overleaf   92 Nov  6 09:08 46d63728376be6c68bda1b126b449198b48837
+
+./.git/objects/af:
+total 12
+drwxrwxr-x  2 overleaf overleaf 4096 Nov  6 10:01 .
+drwxrwxr-x 69 overleaf overleaf 4096 Nov  6 12:42 ..
+-r--r--r--  1 overleaf overleaf  118 Nov  6 10:01 8990b3cab6ec7d77d3eefdcda00755c3265a01
+
+./.git/objects/b1:
+total 16
+drwxrwxr-x  2 overleaf overleaf 4096 Nov  6 10:08 .
+drwxrwxr-x 69 overleaf overleaf 4096 Nov  6 12:42 ..
+-r--r--r--  1 overleaf overleaf 3178 Nov  6 10:08 0b9167930ecb084d11b5d2fae1c801cfcc311a
+-r--r--r--  1 overleaf overleaf  354 Nov  6 10:08 aa806b96adbe45b3313697866c220a56c28e6a
 
 ./.git/objects/b6:
 total 164
 drwxrwxr-x  2 overleaf overleaf   4096 Nov  4 07:20 .
-drwxrwxr-x 49 overleaf overleaf   4096 Nov  6 09:09 ..
+drwxrwxr-x 69 overleaf overleaf   4096 Nov  6 12:42 ..
 -r--r--r--  1 overleaf overleaf 157019 Nov  4 07:20 dd2b89d17cb0a1caf222022c6462e92f091b18
 
 ./.git/objects/c1:
 total 16
 drwxrwxr-x  2 overleaf overleaf 4096 Nov  5 16:46 .
-drwxrwxr-x 49 overleaf overleaf 4096 Nov  6 09:09 ..
+drwxrwxr-x 69 overleaf overleaf 4096 Nov  6 12:42 ..
 -r--r--r--  1 overleaf overleaf 4447 Nov  5 16:46 c1db4284c76ceccbf9cb828b23be7f0395608e
 
+./.git/objects/c2:
+total 12
+drwxrwxr-x  2 overleaf overleaf 4096 Nov  6 10:01 .
+drwxrwxr-x 69 overleaf overleaf 4096 Nov  6 12:42 ..
+-r--r--r--  1 overleaf overleaf  154 Nov  6 10:01 e34dbd6bea2e886b57dd720a6b3ea15c609851
+
 ./.git/objects/c5:
-total 152
-drwxrwxr-x  2 overleaf overleaf   4096 Nov  4 07:20 .
-drwxrwxr-x 49 overleaf overleaf   4096 Nov  6 09:09 ..
+total 156
+drwxrwxr-x  2 overleaf overleaf   4096 Nov  6 10:01 .
+drwxrwxr-x 69 overleaf overleaf   4096 Nov  6 12:42 ..
+-r--r--r--  1 overleaf overleaf    386 Nov  6 10:01 b0d6fbce1adea655a6f7f34082a5c7cae2324a
 -r--r--r--  1 overleaf overleaf 145296 Nov  5 16:46 fc78c6488019c3f2376ec3b6a423b59e89e14d
 
 ./.git/objects/c7:
 total 12
 drwxrwxr-x  2 overleaf overleaf 4096 Nov  4 08:28 .
-drwxrwxr-x 49 overleaf overleaf 4096 Nov  6 09:09 ..
+drwxrwxr-x 69 overleaf overleaf 4096 Nov  6 12:42 ..
 -r--r--r--  1 overleaf overleaf  391 Nov  4 08:28 48c9b3d42a995291a543c0441bf7687765dda3
 
 ./.git/objects/cb:
 total 16
 drwxrwxr-x  2 overleaf overleaf 4096 Nov  6 09:08 .
-drwxrwxr-x 49 overleaf overleaf 4096 Nov  6 09:09 ..
+drwxrwxr-x 69 overleaf overleaf 4096 Nov  6 12:42 ..
 -r--r--r--  1 overleaf overleaf 7444 Nov  6 09:08 e5ad1670406e4402217edfb82d2c56af7e8631
 
 ./.git/objects/d1:
-total 12
-drwxrwxr-x  2 overleaf overleaf 4096 Nov  4 07:54 .
-drwxrwxr-x 49 overleaf overleaf 4096 Nov  6 09:09 ..
+total 16
+drwxrwxr-x  2 overleaf overleaf 4096 Nov  6 10:08 .
+drwxrwxr-x 69 overleaf overleaf 4096 Nov  6 12:42 ..
 -r--r--r--  1 overleaf overleaf  155 Nov  4 07:54 b70095ced68c05988a640db39ed47548b7d660
+-r--r--r--  1 overleaf overleaf   93 Nov  6 10:08 dcc2b93c06bffde8626215c7a33d83ff9f9e61
 
 ./.git/objects/d7:
 total 12
 drwxrwxr-x  2 overleaf overleaf 4096 Nov  5 16:46 .
-drwxrwxr-x 49 overleaf overleaf 4096 Nov  6 09:09 ..
+drwxrwxr-x 69 overleaf overleaf 4096 Nov  6 12:42 ..
 -r--r--r--  1 overleaf overleaf  150 Nov  5 16:46 1280a43692e126048641f9ca46a912b1d0e448
+
+./.git/objects/db:
+total 16
+drwxrwxr-x  2 overleaf overleaf 4096 Nov  6 10:01 .
+drwxrwxr-x 69 overleaf overleaf 4096 Nov  6 12:42 ..
+-r--r--r--  1 overleaf overleaf 5588 Nov  6 10:01 38baa0376cc7a01afb2d900e7421400a6cc5a2
 
 ./.git/objects/e0:
 total 12
 drwxrwxr-x  2 overleaf overleaf 4096 Nov  3 21:14 .
-drwxrwxr-x 49 overleaf overleaf 4096 Nov  6 09:09 ..
+drwxrwxr-x 69 overleaf overleaf 4096 Nov  6 12:42 ..
 -r--r--r--  1 overleaf overleaf  368 Nov  3 21:14 2e38097e1d193f5c6c7eb1bc82876c1daf9e5a
 
+./.git/objects/e6:
+total 12
+drwxrwxr-x  2 overleaf overleaf 4096 Nov  6 10:08 .
+drwxrwxr-x 69 overleaf overleaf 4096 Nov  6 12:42 ..
+-r--r--r--  1 overleaf overleaf  401 Nov  6 10:08 301cdd5bdc43d7bd31a69137081e9b74a02c9d
+
 ./.git/objects/e7:
-total 16
-drwxrwxr-x  2 overleaf overleaf 4096 Nov  4 07:20 .
-drwxrwxr-x 49 overleaf overleaf 4096 Nov  6 09:09 ..
+total 20
+drwxrwxr-x  2 overleaf overleaf 4096 Nov  6 10:08 .
+drwxrwxr-x 69 overleaf overleaf 4096 Nov  6 12:42 ..
 -r--r--r--  1 overleaf overleaf   88 Nov  4 07:20 1705bca2acbcd989cc6abe3246badfc1cf61f2
+-r--r--r--  1 overleaf overleaf  152 Nov  6 10:08 dd7a977b16b5122eadc774401eb9ea758a1c9d
 -r--r--r--  1 overleaf overleaf  368 Nov  4 07:20 e20eb19ce37c3ca34bec13b8f8a7138fcdd41f
 
-./.git/objects/f0:
+./.git/objects/e8:
 total 12
-drwxrwxr-x  2 overleaf overleaf 4096 Nov  6 09:08 .
-drwxrwxr-x 49 overleaf overleaf 4096 Nov  6 09:09 ..
+drwxrwxr-x  2 overleaf overleaf 4096 Nov  6 10:08 .
+drwxrwxr-x 69 overleaf overleaf 4096 Nov  6 12:42 ..
+-r--r--r--  1 overleaf overleaf  497 Nov  6 10:08 07f18ddc1d0bf6149fd0599b3c4bfcf9a198de
+
+./.git/objects/e9:
+total 12
+drwxrwxr-x  2 overleaf overleaf 4096 Nov  6 10:01 .
+drwxrwxr-x 69 overleaf overleaf 4096 Nov  6 12:42 ..
+-r--r--r--  1 overleaf overleaf  401 Nov  6 10:01 d3031c8af52c2c28b2a1113bf7144646aa53fc
+
+./.git/objects/ec:
+total 16
+drwxrwxr-x  2 overleaf overleaf 4096 Nov  6 10:08 .
+drwxrwxr-x 69 overleaf overleaf 4096 Nov  6 12:42 ..
+-r--r--r--  1 overleaf overleaf  150 Nov  6 10:08 5896cfa7df0389a8434f6d3eaa8d82fe991756
+-r--r--r--  1 overleaf overleaf   88 Nov  6 10:08 8bc0f873025ec8de69d41bbaca69857037e719
+
+./.git/objects/ed:
+total 12
+drwxrwxr-x  2 overleaf overleaf 4096 Nov  6 12:09 .
+drwxrwxr-x 69 overleaf overleaf 4096 Nov  6 12:42 ..
+-r--r--r--  1 overleaf overleaf  221 Nov  6 12:09 76d8aa545e301116d49bc5fbe069be098ff4c3
+
+./.git/objects/f0:
+total 20
+drwxrwxr-x  2 overleaf overleaf 4096 Nov  6 12:09 .
+drwxrwxr-x 69 overleaf overleaf 4096 Nov  6 12:42 ..
+-r--r--r--  1 overleaf overleaf  149 Nov  6 10:08 08e69ad8049893fc5205180adccff0619e0b87
+-r--r--r--  1 overleaf overleaf   95 Nov  6 12:09 70d14376e7dbe94a0982443535d14fa29d3201
 -r--r--r--  1 overleaf overleaf  401 Nov  6 09:08 bdac1f13bec5c22400ccef6a60169e0ad3b68e
 
 ./.git/objects/f4:
 total 12
 drwxrwxr-x  2 overleaf overleaf 4096 Nov  4 07:43 .
-drwxrwxr-x 49 overleaf overleaf 4096 Nov  6 09:09 ..
+drwxrwxr-x 69 overleaf overleaf 4096 Nov  6 12:42 ..
 -r--r--r--  1 overleaf overleaf  154 Nov  4 07:43 0ea6849155dd339cda241c1ea6ce45e66dd8af
 
 ./.git/objects/f6:
 total 12
 drwxrwxr-x  2 overleaf overleaf 4096 Nov  6 09:08 .
-drwxrwxr-x 49 overleaf overleaf 4096 Nov  6 09:09 ..
+drwxrwxr-x 69 overleaf overleaf 4096 Nov  6 12:42 ..
 -r--r--r--  1 overleaf overleaf  401 Nov  6 09:08 1836c7f30e1a2b57747f558a6b9d9d19593be4
 
 ./.git/objects/f8:
 total 12
 drwxrwxr-x  2 overleaf overleaf 4096 Nov  6 09:08 .
-drwxrwxr-x 49 overleaf overleaf 4096 Nov  6 09:09 ..
+drwxrwxr-x 69 overleaf overleaf 4096 Nov  6 12:42 ..
 -r--r--r--  1 overleaf overleaf   88 Nov  6 09:08 660724fb0fbd0f8af93d5a3de2f2cb33f5b9c6
 
 ./.git/objects/f9:
 total 12
 drwxrwxr-x  2 overleaf overleaf 4096 Nov  4 07:20 .
-drwxrwxr-x 49 overleaf overleaf 4096 Nov  6 09:09 ..
+drwxrwxr-x 69 overleaf overleaf 4096 Nov  6 12:42 ..
 -r--r--r--  1 overleaf overleaf   65 Nov  5 16:46 14ca2452af00ccedec923a43c06135e3b57d4c
 
 ./.git/objects/fe:
 total 16
 drwxrwxr-x  2 overleaf overleaf 4096 Nov  4 07:20 .
-drwxrwxr-x 49 overleaf overleaf 4096 Nov  6 09:09 ..
+drwxrwxr-x 69 overleaf overleaf 4096 Nov  6 12:42 ..
 -r--r--r--  1 overleaf overleaf 7053 Nov  4 07:20 463e0f7888bbf8b82e42d55f5743508ddafb7e
 
 ./.git/objects/info:
 total 8
 drwxrwxr-x  2 overleaf overleaf 4096 Nov  3 21:00 .
-drwxrwxr-x 49 overleaf overleaf 4096 Nov  6 09:09 ..
+drwxrwxr-x 69 overleaf overleaf 4096 Nov  6 12:42 ..
 
 ./.git/objects/pack:
 total 40
 drwxrwxr-x  2 overleaf overleaf  4096 Nov  3 21:00 .
-drwxrwxr-x 49 overleaf overleaf  4096 Nov  6 09:09 ..
+drwxrwxr-x 69 overleaf overleaf  4096 Nov  6 12:42 ..
 -r--r--r--  1 overleaf overleaf  2948 Nov  3 21:00 pack-025afa68af145eca0156d492a455c97e481d4397.idx
 -r--r--r--  1 overleaf overleaf 21984 Nov  5 16:46 pack-025afa68af145eca0156d492a455c97e481d4397.pack
 -r--r--r--  1 overleaf overleaf   320 Nov  3 21:00 pack-025afa68af145eca0156d492a455c97e481d4397.rev
@@ -623,29 +788,29 @@ drwxrwxr-x 49 overleaf overleaf  4096 Nov  6 09:09 ..
 ./.git/refs:
 total 20
 drwxrwxr-x 5 overleaf overleaf 4096 Nov  3 21:00 .
-drwxrwxr-x 8 overleaf overleaf 4096 Nov  6 09:08 ..
-drwxrwxr-x 2 overleaf overleaf 4096 Nov  6 09:08 heads
+drwxrwxr-x 8 overleaf overleaf 4096 Nov  6 12:09 ..
+drwxrwxr-x 2 overleaf overleaf 4096 Nov  6 12:09 heads
 drwxrwxr-x 3 overleaf overleaf 4096 Nov  3 21:00 remotes
 drwxrwxr-x 2 overleaf overleaf 4096 Nov  3 21:00 tags
 
 ./.git/refs/heads:
 total 12
-drwxrwxr-x 2 overleaf overleaf 4096 Nov  6 09:08 .
+drwxrwxr-x 2 overleaf overleaf 4096 Nov  6 12:09 .
 drwxrwxr-x 5 overleaf overleaf 4096 Nov  3 21:00 ..
--rw-rw-r-- 1 overleaf overleaf   41 Nov  6 09:08 main
+-rw-rw-r-- 1 overleaf overleaf   41 Nov  6 12:09 main
 
 ./.git/refs/remotes:
 total 12
 drwxrwxr-x 3 overleaf overleaf 4096 Nov  3 21:00 .
 drwxrwxr-x 5 overleaf overleaf 4096 Nov  3 21:00 ..
-drwxrwxr-x 2 overleaf overleaf 4096 Nov  6 09:08 origin
+drwxrwxr-x 2 overleaf overleaf 4096 Nov  6 12:09 origin
 
 ./.git/refs/remotes/origin:
 total 16
-drwxrwxr-x 2 overleaf overleaf 4096 Nov  6 09:08 .
+drwxrwxr-x 2 overleaf overleaf 4096 Nov  6 12:09 .
 drwxrwxr-x 3 overleaf overleaf 4096 Nov  3 21:00 ..
 -rw-rw-r-- 1 overleaf overleaf   30 Nov  3 21:00 HEAD
--rw-rw-r-- 1 overleaf overleaf   41 Nov  6 09:08 main
+-rw-rw-r-- 1 overleaf overleaf   41 Nov  6 12:09 main
 
 ./.git/refs/tags:
 total 8
@@ -704,11 +869,10 @@ drwxrwxr-x  2 overleaf overleaf 4096 Nov  4 08:25 .
 drwxrwxr-x 11 overleaf overleaf 4096 Nov  5 16:25 ..
 
 ./scripts-workflow:
-total 56
-drwxrwxr-x  3 overleaf overleaf 4096 Nov  6 09:05 .
+total 52
+drwxrwxr-x  3 overleaf overleaf 4096 Nov  6 10:08 .
 drwxrwxr-x 11 overleaf overleaf 4096 Nov  5 16:25 ..
--rw-rw-r--  1 overleaf overleaf 1923 Nov  3 21:00 backup-smb.sh
--rwxrwxr-x  1 overleaf overleaf  311 Nov  6 09:08 build-plantilla.sh
+-rwxrwxr-x  1 overleaf overleaf  912 Nov  6 09:50 build-plantilla.sh
 -rw-rw-r--  1 overleaf overleaf  550 Nov  3 21:00 check-smb-shares.sh
 -rw-rw-r--  1 overleaf overleaf  612 Nov  3 21:00 check-smb-simple.sh
 drwxrwxr-x  3 overleaf overleaf 4096 Nov  6 09:05 docs
@@ -723,7 +887,7 @@ drwxrwxr-x  3 overleaf overleaf 4096 Nov  6 09:05 docs
 ./scripts-workflow/docs:
 total 12
 drwxrwxr-x 3 overleaf overleaf 4096 Nov  6 09:05 .
-drwxrwxr-x 3 overleaf overleaf 4096 Nov  6 09:05 ..
+drwxrwxr-x 3 overleaf overleaf 4096 Nov  6 10:08 ..
 drwxrwxr-x 3 overleaf overleaf 4096 Nov  6 09:05 avantprojecte
 
 ./scripts-workflow/docs/avantprojecte:
