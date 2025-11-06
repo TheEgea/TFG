@@ -5,9 +5,6 @@ set -euo pipefail
 POSSIBLE_SRC=(
   # Priorizar la plantilla 'tfg_template' — el usuario indicó que quiere usarla
   "docs/avantprojecte/Template/tfg_template/main.tex"
-  "docs/avantprojecte/Template/main.tex"
-  "docs/docs/avantprojecte/main.tex"
-  "avantprojecte/avantprojecte.tex"
 )
 
 # Selecciona la primera ruta existente
