@@ -32,8 +32,8 @@ mkdir -p "$OUT" "$AUX"
 echo "Usando fuente: $SRC"
 echo "Directorio de salida: $OUT"
 
-# -- Usamos -cd y pasamos solo el basename para compilar desde el directorio del .tex
-latexmk -cd -pdf -interaction=nonstopmode -file-line-error \
+# -- Cambio: reemplazar -pdf por -xelatex para activar XeLaTeX
+latexmk -cd -xelatex -interaction=nonstopmode -file-line-error \
   -outdir="$OUT" \
   -auxdir="$AUX" \
   "$SRC_DIR_ABS/$SRC_BASENAME"

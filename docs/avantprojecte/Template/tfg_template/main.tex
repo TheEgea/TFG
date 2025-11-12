@@ -5,51 +5,114 @@
 % Aquesta obra està sota una llicència Creative Commons Atribució-NoComercial-CompartirIgual 4.0 Internacional (CC BY-NC-SA 4.0). https://creativecommons.org/licenses/by-nc-sa/4.0/
 % Plantilla per als Treballs de Final de Grau del Centre Universitari TecnoCampus. Fent referencia a la plantilla original d'Aitor Juanola.
 
+
 \documentclass[a4paper, twoside, 12pt, openright]{report} % 'openright' assegura que cada capítol comença en una plana senar
+
 
 % ============================================================================
 % PREÀMBUL — Paquets i Configuració
 % ============================================================================
 
-\usepackage[utf8]{inputenc} % Codificació UTF-8
+
+% --- Tipografía con XeLaTeX/LuaLaTeX ---
+\usepackage{fontspec}           % Gestiona fuentes OpenType/TrueType
+
+
+% NO usar inputenc amb XeLaTeX/LuaLaTeX
+% \usepackage[utf8]{inputenc} % Codificació UTF-8
+
+
 \usepackage{verbatim} % Comentaris multilínea
 \usepackage{graphicx} % Per insertar imatges
 \usepackage{float} % Posicionament d'imatges
 
+
 \usepackage[english]{babel} % Idioma del document
 \usepackage{csquotes}  % Recomanat per biblatex amb babel/english
-\usepackage{hyperref}
+
 
 \usepackage{fancyhdr} % Per personalitzar capçaleres i peus de pàgina
 \usepackage{etoolbox} % Per canviar estils de numeració
 \usepackage{geometry} % Per ajustar marges
-%\usepackage{emptypage} % Per evitar capçaleres/peus a pàgines en blanc
-\usepackage{hyperref} % Afegeix glossari a la taula de continguts
 \usepackage{setspace} % Per ajustar l'interlineat
 \usepackage{titlesec} % Paquet per personalitzar els títols
-\usepackage{times} % Paquet per fonts Times New Roman
 \usepackage[nottoc, numbib]{tocbibind} % Inclou bibliografia i índexs automàticament al ToC
 \usepackage[nonumberlist, toc]{glossaries} % Paquet per a la generació del glossari
 \usepackage[style=ieee, backend=biber]{biblatex} % Paquet per gestionar la bibliografia en format IEEE
 \addbibresource{resources/references.bib} % El fitxer .bib amb les referències
 
+
+% Hiperenllaços (carrega-ho DESPRÉS de geometry, setspace, etc.)
+\usepackage{hyperref}
+
+
+% ============================================================================
+% SELECCIÓN DE FONTS OPENDYSLEXIC (carregat DESPRÉS de tots els paquets)
+% ============================================================================
+
+
+% Usar rutas explícitas a archivos OTF para evitar WOFF
+\setmainfont{OpenDyslexic}[
+    Path = /usr/share/fonts/opentype/opendyslexic/,
+    Extension = .otf,
+    UprightFont = *-Regular,
+    BoldFont = *-Bold,
+    ItalicFont = *-Italic,
+    BoldItalicFont = *-BoldItalic
+]
+
+\setsansfont{OpenDyslexicAlta}[
+    Path = /usr/share/fonts/opentype/opendyslexic/,
+    Extension = .otf,
+    UprightFont = *-Regular,
+    BoldFont = *-Bold,
+    ItalicFont = *-Italic,
+    BoldItalicFont = *-BoldItalic
+]
+
+\setmonofont{OpenDyslexicMono}[
+    Path = /usr/share/fonts/opentype/opendyslexic/,
+    Extension = .otf,
+    UprightFont = *-Regular
+]
+
+
+% ============================================================================
+% CARREGAR GLOSSARI
+% ============================================================================
+
+
 % Carregar les definicions del glossari des d'un fitxer extern
-% El fitxer real està a `docs/avantprojecte/Template/tfg_template/resources/glossary.tex` — usem una ruta relativa des de la plantilla
 \input{resources/glossary.tex}
+
 
 % Aplicar l'estil personalitzat
 \setglossarystyle{altlist}
 \setacronymstyle{long-short}
 
+
 \makeglossaries
+
+
+% ============================================================================
+% CONFIGURACIÓ DE TITOLS
+% ============================================================================
+
+
 % Reduir espai abans i després de cada capítol
 \titleformat{\chapter}[block]{\normalfont\fontsize{18pt}{0pt}\bfseries}{\thechapter}{1em}{}
 \titlespacing*{\chapter}{0pt}{0pt}{\baselineskip}
 
+
 \titleformat{\section}[block]{\normalfont\fontsize{16pt}{0pt}\bfseries}{\thesection}{1em}{}
 \titleformat{\subsection}[block]{\normalfont\fontsize{14pt}{0pt}\bfseries}{\thesubsection}{1em}{}
 
-% Configuració de hiperenllaços
+
+% ============================================================================
+% CONFIGURACIÓ DE HIPERENLLAÇOS
+% ============================================================================
+
+
 \hypersetup{
     colorlinks=true,
     linkcolor=black,
@@ -61,19 +124,29 @@
     pdfpagemode=FullScreen
 }
 
-% Configuració dels marges
+
+% ============================================================================
+% CONFIGURACIÓ DE MARGES
+% ============================================================================
+
+
 \geometry{top=3cm, bottom=2.54cm, left=3cm, right=2.54cm, bindingoffset=0.46cm}
+
 
 \setlength{\headheight}{14.5pt} % Augmentar l'altura de la capçalera
 
+
 \setlength{\parindent}{0pt} % Desactiva el sagnat dels paràgrafs
+
 
 % Imatges
 \graphicspath{{images/}}
 
+
 % ============================================================================
 % PORTADA I PRELIMINARS
 % ============================================================================
+
 
 % Configuració de capçaleres i peus de pàgina preliminars
 \fancypagestyle{plain}{
@@ -83,6 +156,7 @@
     \fancyfoot{}
 }
 \pagestyle{plain}
+
 
 \title{
         \begin{figure}
@@ -94,11 +168,15 @@
         
         \vspace*{3cm}
 
+
         \textbf{Pentesting ètic en entorns virtualitzats amb EVE-NG} \\
+
 
         \vspace*{1.5cm}
 
+
         \textbf{Memòria}
+
 
         \vspace*{5cm}
 }
@@ -109,37 +187,48 @@
 }
 \date{Gener 2026}
 
+
 \fontsize{12pt}{0pt}
 \begin{document}
 
+
 % === PORTADA ===
 \maketitle
+
 
 \newpage
 \thispagestyle{empty} % Pàgina en blanc sense capçalera ni peu
 \null
 \newpage
 
+
 % ============================================================================
 % ÍNDEXS I GLOSSARI
 % ============================================================================
 
+
 % Estils dels índexs i numeració en xifres romanes
 \pagenumbering{Roman} % Índexs comencen amb números romans
 
+
 \tableofcontents
+
 
 
 % Portada o altres planes sense numeració
 %\listoffigures
 
+
 %\listoftables
+
 
 % Definir interlineat de 1,5 espais i espaiat anterior de 12pt
 \onehalfspacing % Interlineat de 1,5
 \setlength{\parskip}{12pt} % Espaiat anterior als paràgrafs
 
+
 \printglossary
+
 
 
 \begin{comment}
@@ -172,93 +261,142 @@
 \pagenumbering{arabic} % Comença numeració aràbiga
 
 
+
 % ============================================================================
 % COS PRINCIPAL DEL DOCUMENT
 % ============================================================================
 
 
-\chapter{Introducció i Context}
 
-\section{Motivació i Justificació}
+%\chapter{Introducció i Context}
+\chapter{Introduction and Context}
 
-El pentesting ètic és una disciplina fonamental en la ciberseguretat moderna. Aquest TFG 
-es dedica a desenvolupar laboratoris pràctics virtualitzats que permeten als estudiants 
-adquirir competències pràctiques en pentesting mitjançant escenaris realistes i controlats 
-dins de la plataforma EVE-NG.
 
-\section{Estructura de la Memòria}
+%\section{Motivació i Justificació}
+\section{Motivation and Justification}
 
-La present memòria es divideix en els següents capítols:
+Ethical hacking, or pentesting, is a critical skill in today's cybersecurity landscape. With the increasing 
+reliance on virtualized environments, there is a growing need for practical training platforms that simulate 
+real-world scenarios. While platforms such as HackTheBox and TryHackMe have become increasingly popular for 
+cybersecurity training, they often focus on isolated challenges and gamified scenarios that may not directly 
+reflect the practical application of computer science fundamentals taught in a degree program. EVE-NG 
+(Emulated Virtual Environment Next Generation) offers a complementary and more customizable approach, 
+providing a robust solution for creating controlled, hands-on learning environments.
+
+This project aims to develop a series of practical laboratories using EVE-NG that explicitly bridge the 
+foundational concepts covered throughout the degree program---including databases, network protocols, and 
+operating system internals---with real-world security vulnerabilities and pentesting techniques. By 
+demonstrating how these academic concepts can be exploited, students gain a deeper appreciation for 
+defensive security practices and the critical importance of secure system design. This approach transforms 
+abstract knowledge into hands-on experience where students can observe the direct consequences of security 
+misconfigurations and understand why rigorous cybersecurity practices are essential.
+
+Furthermore, by leveraging EVE-NG, this project seeks to fill a gap in comprehensive educational resources 
+that integrate multiple pentesting tools and attack scenarios into a cohesive learning environment aligned 
+with the Computer Engineering curriculum. This reproducible, risk-free, and fully customizable approach 
+provides students with the opportunity to practice ethical hacking in a controlled setting, progressively 
+building upon prior learning while preparing them for the professional responsibility of securing the 
+systems they will design and manage in their careers.
+
+
+
+
+%\section{Estructura de la Memòria}
+\section{Structure of the Report}
+
+
+This report is divided into the following chapters:
+
 
 \begin{enumerate}
-    \item \textbf{Dedicatoria}: A qui va dirigit el treball, agraïments i reflexió personal.
-    \item \textbf{Introducció i Context}: Motivació i estructura general.
-    \item \textbf{Objecte del TFG}: Descripció detallada del projecte.
-    \item \textbf{Estat de l'Art}: Revisió bibliogràfica i plataformes existents.
-    \item \textbf{Objectius i Abast}: Objectius específics amb KPIs mesurables.
-    \item \textbf{Metodologia}: Procés de realització i desenvolupament.
-    \item \textbf{Requeriments}: Requeriments tècnics i funcionals.
-    \item \textbf{Estudi de Viabilitat}: Análisis de viabilitat tècnica i econòmica.
-    \item \textbf{Resultats i Conclusions}: Lliurables i conclusions.
+    \item \textbf{Dedicatoria}: To whom the work is dedicated, acknowledgments, and personal reflection.
+    \item \textbf{Introduction and Context}: Motivation and overall structure.
+    \item \textbf{Object of the TFG}: Detailed description of the project.
+    \item \textbf{State of the Art}: Literature review and existing platforms.
+    \item \textbf{Objectives and Scope}: Specific objectives with measurable KPIs.
+    \item \textbf{Methodology}: Process of realization and development.
+    \item \textbf{Requirements}: Technical and functional requirements.
+    \item \textbf{Feasibility Study}: Analysis of technical and economic feasibility.
+    \item \textbf{Results and Conclusions}: Deliverables and conclusions.
 \end{enumerate}
 
 \newpage
-% ============================================================================ç
+% ============================================================================
 % CAPÍTOL 1: DEDICATÒRIA
 % ============================================================================
 
+
 \input{chapters/dedicatoria}
+
 
 % ============================================================================
 % CAPÍTOL 2: OBJECTE DEL TFG
 % ============================================================================
 
+
 \input{chapters/01_objecte}
+
 
 % ============================================================================
 % CAPÍTOL 3: ESTAT DE L'ART
 % ============================================================================
 
+
 \input{chapters/02_estat_art}
+
 
 % ============================================================================
 % CAPÍTOL 4: OBJECTIUS I ABAST
 % ============================================================================
 
+
 \input{chapters/03_objectius}
+
 
 % ============================================================================
 % CAPÍTOL 5: METODOLOGIA
 % ============================================================================
 
+
 \input{chapters/04_metodologia}
+
 
 % ============================================================================
 % CAPÍTOL 6: REQUERIMENTS
 % ============================================================================
 
+
 \input{chapters/05_requeriments}
+
 
 % ============================================================================
 % CAPÍTOL 7: ESTUDI DE VIABILITAT
 % ============================================================================
 
+
 \input{chapters/06_viabilitat}
+
 
 % ============================================================================
 % CAPÍTOL 8: DESENVOLUPAMENT I IMPLEMENTACIÓ (PLACEHOLDER)
 % ============================================================================
 
+
 \chapter{Desenvolupament i Implementació}
 
+
 \section{Arquitectura General}
+
 
 \textit{En aquesta secció es descriurà l'arquitectura dels laboratoris, la configuració 
 de les xarxes virtuals, i la implementació de les topologies EVE-NG.}
 
+
 \section{Laboratori 1: Reconeixement i Enumeració}
 
+
 \subsection{Objectius de Laboratori}
+
 
 \begin{itemize}
     \item Familiarització amb eines de scanning (nmap, Nessus)
@@ -266,31 +404,44 @@ de les xarxes virtuals, i la implementació de les topologies EVE-NG.}
     \item Documentació de descobriments
 \end{itemize}
 
+
 \subsection{Topologia de Xarxa}
+
 
 \textit{Diagrama de la xarxa i màquines virtuals que componen aquest laboratori.}
 
+
 \section{Laboratori 2: Vulnerabilitats d'Aplicacions Web}
+
 
 \subsection{OWASP Top 10}
 
+
 \textit{Exploració de les vulnerabilitats més crítiques segons OWASP.}
+
 
 \section{Laboratori 3: Anàlisi de Tràfic i Criptografia}
 
+
 \textit{Anàlisi de comunicacions de xarxa amb Wireshark i tècniques de criptografia.}
+
 
 \section{Laboratori 4: Escalada de Privilegis}
 
+
 \textit{Tècniques d'escalada de privilegis a sistemes Unix i Windows.}
+
 
 % ============================================================================
 % CAPÍTOL 9: RESULTATS I CONCLUSIONS
 % ============================================================================
 
+
 \chapter{Resultats i Conclusions}
 
+
 \section{Lliurables Entregats}
+
 
 \begin{itemize}
     \item 4 topologies EVE-NG funcionals (.unl)
@@ -300,12 +451,16 @@ de les xarxes virtuals, i la implementació de les topologies EVE-NG.}
     \item Guies pràctiques per a estudiants
 \end{itemize}
 
+
 \section{Conclusions}
+
 
 El desenvolupament d'aquests laboratoris proporciona una base sòlida per a la formació 
 en pentesting ètic dins del Grau en Enginyeria Informàtica.
 
+
 \section{Recomanacions per a Treballs Futurs}
+
 
 \begin{itemize}
     \item Integració amb altres plataformes educatives (Moodle)
@@ -313,21 +468,28 @@ en pentesting ètic dins del Grau en Enginyeria Informàtica.
     \item Automatització de correccions i qualificacions
 \end{itemize}
 
+
 % ============================================================================
 % ANEXOS
 % ============================================================================
 
+
 \appendix
+
 
 \chapter{Annexo A: Infraestructura de Build LaTeX Reproducible}
 
+
 \section{Configuració de Docker i TeX Live}
+
 
 La memòria del present TFG s'ha desenvolupat usant una infraestructura de build reproducible 
 basada en TeX Live 2023, latexmk i Docker Compose. Aquesta aproximació garanteix que tots 
 els artefactes (PDF, índexs, glosaris) es generin de manera consistent.
 
+
 \subsection{Hores Invertides en Infraestructura}
+
 
 \begin{table}[H]
     \centering
@@ -345,9 +507,12 @@ els artefactes (PDF, índexs, glosaris) es generin de manera consistent.
     \end{tabular}
 \end{table}
 
+
 \chapter{Annexo B: Infraestructura de Laboratori (Homelab)}
 
+
 \section{Especificacions del Homelab}
+
 
 \begin{table}[H]
     \centering
@@ -366,7 +531,9 @@ els artefactes (PDF, índexs, glosaris) es generin de manera consistent.
     \end{tabular}
 \end{table}
 
+
 \chapter{Annexo C: Control de Hores Total}
+
 
 \begin{table}[H]
     \centering
@@ -387,69 +554,16 @@ els artefactes (PDF, índexs, glosaris) es generin de manera consistent.
     \end{tabular}
 \end{table}
 
+
 % ============================================================================
 % BIBLIOGRAFIA
 % ============================================================================
+
 
 \cleardoublepage
 \phantomsection
 \addcontentsline{toc}{chapter}{Bibliografia}
 \printbibliography
 
-
-
-
-\begin{comment}
-
-\chapter{Nom capítol}
-
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-
-\section{Nom secció}
-
-Això és un exemple de referència al glossari: \gls{api_rest}.
-
-\subsection{Nom subsecció}
-
-Això és un exemple de referència bibliogràfica: \cite{tcm_web_presentation}.
-Això és un altre exemple de referència bibliogràfica: \cite{smith2019}.
-\chapter{Figures i taules}
-
-\section{Exemple figura}
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=1\linewidth]{images/logo-tecnocampus.png}
-    \caption{Logo Tecnocampus}
-    \label{fig:logo-tecnocampus}
-\end{figure}
-
-Això és un exemple de com citar una figura: \ref{fig:logo-tecnocampus}.
-
-\section{Exemple taula}
-
-
-\begin{table}[H]
-    \centering
-    \begin{tabular}{ccc}
-        A & B & C\\
-        D & E & F\\
-        G & H & I\\
-    \end{tabular}
-    \caption{Exemple taula}
-    \label{tab:my-table}
-\end{table}
-
-Això és un exemple de com citar una taula: \ref{tab:my-table}
-
-
-\cleardoublepage % Garanteix que la bibliografia comenci en una pàgina imparell
-\phantomsection % Marca la pàgina correcta per a la taula de continguts
-\addcontentsline{toc}{chapter}{Bibliografia} % Afegeix la bibliografia al ToC
-\printbibliography % Imprimeix la bibliografia
-
-\end{document}
-
-\end{comment}
 
 \end{document}
