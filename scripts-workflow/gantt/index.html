@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestor de Planificación TFG - Pentesting Ético</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Panel Izquierdo: Control -->
+        <aside class="control-panel">
+            <h2>Panel de Control</h2>
+            
+            <div class="control-buttons">
+                <button class="btn btn--primary" id="addTaskBtn">➕ Añadir Tarea</button>
+                <button class="btn btn--secondary" id="resetBtn">🔄 Restaurar Valores Iniciales</button>
+                <button class="btn btn--secondary" id="exportBtn">⬇️ Exportar a CSV</button>
+                <button class="btn btn--secondary" id="importBtn">⬆️ Importar CSV</button>
+                <input type="file" id="importFile" accept=".csv" style="display: none;">
+                <button class="btn btn--secondary" id="statsBtn">📊 Estadísticas</button>
+            </div>
+            
+            <div class="summary-section">
+                <h3>Resumen del Proyecto</h3>
+                <div class="summary-item">
+                    <span class="summary-label">Total de horas:</span>
+                    <span class="summary-value" id="totalHours">500</span>
+                </div>
+                <div class="summary-item">
+                    <span class="summary-label">Número de tareas:</span>
+                    <span class="summary-value" id="totalTasks">26</span>
+                </div>
+                <div class="summary-item">
+                    <span class="summary-label">Fecha de inicio:</span>
+                    <span class="summary-value" id="projectStart">15/10/2025</span>
+                </div>
+                <div class="summary-item">
+                    <span class="summary-label">Fecha de fin:</span>
+                    <span class="summary-value" id="projectEnd">19/06/2026</span>
+                </div>
+                <div class="summary-item">
+                    <span class="summary-label">Duración total:</span>
+                    <span class="summary-value" id="projectDuration">247 días (35 semanas)</span>
+                </div>
+                <div class="summary-item">
+                    <span class="summary-label">% completado:</span>
+                    <span class="summary-value" id="completionRate">0%</span>
+                </div>
+                <div class="summary-item">
+                    <span class="summary-label">Hitos completados:</span>
+                    <span class="summary-value" id="milestonesCompleted">0/4</span>
+                </div>
+            </div>
+            
+            <div class="filter-section">
+                <h3>Filtros</h3>
+                <div class="form-group">
+                    <label class="form-label" for="categoryFilter">Categoría:</label>
+                    <select class="form-control" id="categoryFilter">
+                        <option value="all">Todas las categorías</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="hideCompletedFilter" checked>
+                        Mostrar tareas completadas
+                    </label>
+                </div>
+            </div>
+        </aside>
+        
+        <!-- Área Central: Tabla Editable -->
+        <main class="editor-panel">
+            <h2>Tareas del Proyecto</h2>
+            <div class="table-container">
+                <table class="task-table" id="taskTable">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Tarea</th>
+                            <th>Categoría</th>
+                            <th>Horas</th>
+                            <th>F. Inicio</th>
+                            <th>F. Fin</th>
+                            <th>%</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="taskTableBody">
+                        <!-- Tareas se cargan dinámicamente -->
+                    </tbody>
+                </table>
+            </div>
+        </main>
+        
+        <!-- Panel Derecho: Gantt -->
+        <section class="gantt-panel">
+            <h2>Diagrama de Gantt</h2>
+            <div class="gantt-container" id="ganttContainer">
+                <canvas id="ganttCanvas"></canvas>
+            </div>
+            <div class="gantt-legend" id="ganttLegend">
+                <!-- Leyenda se genera dinámicamente -->
+            </div>
+        </section>
+    </div>
+    
+    <!-- Modal para añadir tarea -->
+    <div class="modal" id="addTaskModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Añadir Nueva Tarea</h3>
+                <button class="modal-close" id="closeModalBtn">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label" for="taskName">Nombre de la tarea:</label>
+                    <input type="text" class="form-control" id="taskName" placeholder="Ej: 1.1 Estado del arte">
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="taskCategory">Categoría:</label>
+                    <select class="form-control" id="taskCategory">
+                        <!-- Categorías se cargan dinámicamente -->
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="taskHours">Horas:</label>
+                    <input type="number" class="form-control" id="taskHours" min="1" value="10">
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="taskStartDate">Fecha de inicio:</label>
+                    <input type="date" class="form-control" id="taskStartDate">
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="taskEndDate">Fecha de fin:</label>
+                    <input type="date" class="form-control" id="taskEndDate">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn--secondary" id="cancelModalBtn">Cancelar</button>
+                <button class="btn btn--primary" id="createTaskBtn">Crear</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Modal para estadísticas -->
+    <div class="modal" id="statsModal">
+        <div class="modal-content modal-large">
+            <div class="modal-header">
+                <h3>Estadísticas del Proyecto</h3>
+                <button class="modal-close" id="closeStatsModalBtn">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div id="statsContent">
+                    <!-- Estadísticas se generan dinámicamente -->
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Tooltip para Gantt -->
+    <div class="gantt-tooltip" id="ganttTooltip" style="display: none;"></div>
+    
+    <script src="app.js"></script>
+</body>
+</html>
