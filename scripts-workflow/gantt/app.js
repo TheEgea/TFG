@@ -48,6 +48,28 @@ const CATEGORIES = {
 let tasks = JSON.parse(JSON.stringify(INITIAL_TASKS));
 let selectedTaskId = null;
 let editingCell = null;
+let exportHistory = [];
+let studentInfo = {
+  name: '',
+  tutor: '',
+  projectName: 'Pentesting Ético en Entorns Virtualitzats amb EVE-NG'
+};
+
+// Configuración de exportación
+const exportSettings = {
+  resolution: 'standard',
+  format: 'png',
+  includeWatermark: true,
+  includeLegend: true,
+  includeStats: true,
+  backgroundColor: 'white'
+};
+
+const resolutions = {
+  normal: { width: 1920, height: 1080 },
+  standard: { width: 2560, height: 1440 },
+  high: { width: 3840, height: 2160 }
+};
 
 // Inicialización
 document.addEventListener('DOMContentLoaded', () => {
@@ -61,6 +83,8 @@ function initializeApp() {
   updateSummary();
   setupEventListeners();
   renderLegend();
+  renderExportHistory();
+  loadStudentInfo();
 }
 
 // Poblar filtros de categoría
@@ -620,6 +644,27 @@ function setupEventListeners() {
   // Modal estadísticas
   document.getElementById('closeStatsModalBtn').addEventListener('click', closeStatsModal);
   
+  // Botones de exportación
+  document.getElementById('exportPngBtn').addEventListener('click', exportAsImage);
+  document.getElementById('exportOptionsBtn').addEventListener('click', openExportOptionsModal);
+  document.getElementById('closeExportOptionsBtn').addEventListener('click', closeExportOptionsModal);
+  document.getElementById('cancelExportOptionsBtn').addEventListener('click', closeExportOptionsModal);
+  document.getElementById('confirmExportBtn').addEventListener('click', exportWithOptions);
+  document.getElementById('clearHistoryBtn').addEventListener('click', clearExportHistory);
+  
+  // Modal de comparación
+  document.getElementById('closeCompareModalBtn').addEventListener('click', closeCompareModal);
+  
+  // Student info
+  document.getElementById('studentName').addEventListener('input', (e) => {
+    studentInfo.name = e.target.value;
+    saveStudentInfo();
+  });
+  document.getElementById('tutorName').addEventListener('input', (e) => {
+    studentInfo.tutor = e.target.value;
+    saveStudentInfo();
+  });
+  
   // Cerrar modales al hacer clic fuera
   window.addEventListener('click', (e) => {
     if (e.target.classList.contains('modal')) {
@@ -822,4 +867,572 @@ function showStatistics() {
 // Cerrar modal de estadísticas
 function closeStatsModal() {
   document.getElementById('statsModal').classList.remove('active');
+}
+
+// Funciones de información del estudiante
+function loadStudentInfo() {
+  // Student info is maintained in memory during the session
+  document.getElementById('studentName').value = studentInfo.name || '';
+  document.getElementById('tutorName').value = studentInfo.tutor || '';
+}
+
+function saveStudentInfo() {
+  // Student info is maintained in memory (no storage APIs used)
+  // Information persists during the current session only
+}
+
+// Funciones de exportación de imagen mejoradas
+async function exportAsImage() {
+  await performExport();
+}
+
+function openExportOptionsModal() {
+  document.getElementById('exportOptionsModal').classList.add('active');
+  
+  // Cargar configuración actual
+  document.getElementById('exportResolution').value = exportSettings.resolution;
+  document.getElementById('exportFormat').value = exportSettings.format;
+  document.getElementById('includeWatermark').checked = exportSettings.includeWatermark;
+  document.getElementById('includeLegend').checked = exportSettings.includeLegend;
+  document.getElementById('includeStats').checked = exportSettings.includeStats;
+  document.getElementById('exportBgColor').value = exportSettings.backgroundColor;
+}
+
+function closeExportOptionsModal() {
+  document.getElementById('exportOptionsModal').classList.remove('active');
+}
+
+async function exportWithOptions() {
+  // Actualizar configuración
+  exportSettings.resolution = document.getElementById('exportResolution').value;
+  exportSettings.format = document.getElementById('exportFormat').value;
+  exportSettings.includeWatermark = document.getElementById('includeWatermark').checked;
+  exportSettings.includeLegend = document.getElementById('includeLegend').checked;
+  exportSettings.includeStats = document.getElementById('includeStats').checked;
+  exportSettings.backgroundColor = document.getElementById('exportBgColor').value;
+  
+  closeExportOptionsModal();
+  await performExport();
+}
+
+// NUEVA FUNCIÓN: Renderizar Gantt en canvas de alta resolución
+function renderGanttToCanvas(width, height) {
+  const canvas = document.createElement('canvas');
+  canvas.width = width;
+  canvas.height = height;
+  const ctx = canvas.getContext('2d');
+  
+  // Configuración escalada
+  const scale = width / 2560; // Base: 2560px de ancho
+  const ROW_HEIGHT = 60 * scale;
+  const PADDING = 40 * scale;
+  const LABEL_WIDTH = 400 * scale;
+  const HEADER_HEIGHT = 120 * scale;
+  const MARGIN = 40 * scale;
+  
+  // Fondo
+  ctx.fillStyle = exportSettings.backgroundColor === 'white' ? '#ffffff' : '#f5f5f5';
+  ctx.fillRect(0, 0, width, height);
+  
+  // Calcular rango de fechas
+  const dates = tasks.flatMap(t => [new Date(t.start_date), new Date(t.end_date)]);
+  const minDate = new Date(Math.min(...dates));
+  const maxDate = new Date(Math.max(...dates));
+  minDate.setDate(1);
+  maxDate.setMonth(maxDate.getMonth() + 1);
+  maxDate.setDate(0);
+  
+  const totalDays = Math.ceil((maxDate - minDate) / (1000 * 60 * 60 * 24));
+  const dayWidth = (width - LABEL_WIDTH - MARGIN * 2) / totalDays;
+  
+  let yOffset = MARGIN;
+  
+  // HEADER con info del proyecto
+  ctx.fillStyle = '#134252';
+  ctx.font = `bold ${32 * scale}px Arial, sans-serif`;
+  ctx.fillText('Diagrama de Gantt - TFG', MARGIN, yOffset + 30 * scale);
+  
+  ctx.fillStyle = '#626C71';
+  ctx.font = `${20 * scale}px Arial, sans-serif`;
+  ctx.fillText(studentInfo.projectName || 'Pentesting Ético en Entorns Virtualitzats amb EVE-NG', MARGIN, yOffset + 60 * scale);
+  
+  ctx.font = `${14 * scale}px Arial, sans-serif`;
+  if (studentInfo.name) {
+    ctx.fillText(`Estudiante: ${studentInfo.name}`, MARGIN, yOffset + 85 * scale);
+  }
+  if (studentInfo.tutor) {
+    ctx.fillText(`Tutor: ${studentInfo.tutor}`, MARGIN + 400 * scale, yOffset + 85 * scale);
+  }
+  
+  const dateStr = new Date().toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+  ctx.fillText(`Generado: ${dateStr}`, MARGIN, yOffset + 105 * scale);
+  
+  yOffset += HEADER_HEIGHT;
+  
+  // Línea separadora
+  ctx.strokeStyle = '#cccccc';
+  ctx.lineWidth = 2 * scale;
+  ctx.beginPath();
+  ctx.moveTo(MARGIN, yOffset);
+  ctx.lineTo(width - MARGIN, yOffset);
+  ctx.stroke();
+  
+  yOffset += 20 * scale;
+  
+  // TIMELINE - Encabezado de meses
+  ctx.fillStyle = '#f5f5f5';
+  ctx.fillRect(LABEL_WIDTH, yOffset, width - LABEL_WIDTH - MARGIN, 40 * scale);
+  
+  ctx.fillStyle = '#333333';
+  ctx.font = `bold ${14 * scale}px Arial, sans-serif`;
+  ctx.textAlign = 'center';
+  
+  let currentDate = new Date(minDate);
+  while (currentDate <= maxDate) {
+    const daysSinceStart = Math.ceil((currentDate - minDate) / (1000 * 60 * 60 * 24));
+    const x = LABEL_WIDTH + daysSinceStart * dayWidth;
+    const monthName = currentDate.toLocaleDateString('es-ES', { month: 'short', year: 'numeric' });
+    
+    // Nombre del mes
+    ctx.fillText(monthName.toUpperCase(), x + 60 * scale, yOffset + 25 * scale);
+    
+    // Línea vertical divisoria
+    ctx.strokeStyle = '#dddddd';
+    ctx.lineWidth = 1 * scale;
+    ctx.beginPath();
+    ctx.moveTo(x, yOffset);
+    ctx.lineTo(x, height - MARGIN);
+    ctx.stroke();
+    
+    currentDate.setMonth(currentDate.getMonth() + 1);
+  }
+  
+  yOffset += 50 * scale;
+  
+  // Línea de HOY
+  const today = new Date();
+  if (today >= minDate && today <= maxDate) {
+    const daysSinceStart = Math.ceil((today - minDate) / (1000 * 60 * 60 * 24));
+    const todayX = LABEL_WIDTH + daysSinceStart * dayWidth;
+    ctx.strokeStyle = '#FF0000';
+    ctx.lineWidth = 3 * scale;
+    ctx.setLineDash([5 * scale, 5 * scale]);
+    ctx.beginPath();
+    ctx.moveTo(todayX, yOffset);
+    ctx.lineTo(todayX, yOffset + tasks.length * ROW_HEIGHT);
+    ctx.stroke();
+    ctx.setLineDash([]);
+  }
+  
+  // TAREAS Y BARRAS
+  ctx.textAlign = 'left';
+  tasks.forEach((task, index) => {
+    const taskY = yOffset + index * ROW_HEIGHT;
+    
+    // Fondo alternado de filas
+    if (index % 2 === 0) {
+      ctx.fillStyle = '#fafafa';
+      ctx.fillRect(MARGIN, taskY, width - MARGIN * 2, ROW_HEIGHT);
+    }
+    
+    // Etiqueta de la tarea
+    ctx.fillStyle = '#333333';
+    ctx.font = `${13 * scale}px Arial, sans-serif`;
+    const taskName = task.name.length > 45 ? task.name.substring(0, 42) + '...' : task.name;
+    ctx.fillText(taskName, MARGIN + 5 * scale, taskY + ROW_HEIGHT / 2 + 5 * scale);
+    
+    // Calcular posición y tamaño de la barra
+    const startDate = new Date(task.start_date);
+    const endDate = new Date(task.end_date);
+    const startDays = Math.ceil((startDate - minDate) / (1000 * 60 * 60 * 24));
+    const durationDays = Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24));
+    
+    const barX = LABEL_WIDTH + startDays * dayWidth;
+    const barWidth = Math.max(dayWidth * 2, durationDays * dayWidth);
+    const barHeight = ROW_HEIGHT * 0.6;
+    const barY = taskY + (ROW_HEIGHT - barHeight) / 2;
+    
+    // Color de la categoría
+    const categoryColor = CATEGORIES[task.category]?.color || '#CCCCCC';
+    
+    // Dibujar barra
+    ctx.fillStyle = categoryColor;
+    ctx.fillRect(barX, barY, barWidth, barHeight);
+    
+    // Borde de la barra (más grueso si es crítica)
+    ctx.strokeStyle = task.critical ? '#000000' : '#666666';
+    ctx.lineWidth = task.critical ? 3 * scale : 1.5 * scale;
+    ctx.strokeRect(barX, barY, barWidth, barHeight);
+    
+    // Patrón de completado
+    if (task.completed === 100) {
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.3)';
+      for (let i = 0; i < barWidth; i += 5 * scale) {
+        ctx.fillRect(barX + i, barY, 2 * scale, barHeight);
+      }
+    }
+    
+    // Patrón diagonal para tareas críticas
+    if (task.critical) {
+      ctx.strokeStyle = 'rgba(255, 0, 0, 0.4)';
+      ctx.lineWidth = 2 * scale;
+      for (let i = 0; i < barWidth; i += 8 * scale) {
+        ctx.beginPath();
+        ctx.moveTo(barX + i, barY);
+        ctx.lineTo(barX + i + 8 * scale, barY + barHeight);
+        ctx.stroke();
+      }
+    }
+    
+    // Texto de horas dentro de la barra (si hay espacio)
+    if (barWidth > 60 * scale) {
+      ctx.fillStyle = '#ffffff';
+      ctx.font = `bold ${11 * scale}px Arial, sans-serif`;
+      ctx.textAlign = 'center';
+      ctx.fillText(`${task.hours}h`, barX + barWidth / 2, barY + barHeight / 2 + 4 * scale);
+      ctx.textAlign = 'left';
+    }
+    
+    // Línea separadora de fila
+    ctx.strokeStyle = '#eeeeee';
+    ctx.lineWidth = 1 * scale;
+    ctx.beginPath();
+    ctx.moveTo(MARGIN, taskY + ROW_HEIGHT);
+    ctx.lineTo(width - MARGIN, taskY + ROW_HEIGHT);
+    ctx.stroke();
+  });
+  
+  const legendY = yOffset + tasks.length * ROW_HEIGHT + 30 * scale;
+  
+  // ESTADÍSTICAS (si está habilitado)
+  if (exportSettings.includeStats) {
+    const statsY = legendY;
+    const totalHours = tasks.reduce((sum, t) => sum + t.hours, 0);
+    const completedTasks = tasks.filter(t => t.completed === 100).length;
+    const completionRate = Math.round((completedTasks / tasks.length) * 100);
+    
+    ctx.fillStyle = 'rgba(33, 128, 141, 0.1)';
+    ctx.fillRect(MARGIN, statsY, width - MARGIN * 2, 80 * scale);
+    
+    ctx.fillStyle = '#134252';
+    ctx.font = `bold ${24 * scale}px Arial, sans-serif`;
+    ctx.textAlign = 'center';
+    
+    const statWidth = (width - MARGIN * 2) / 4;
+    ctx.fillText(`${totalHours}h`, MARGIN + statWidth * 0.5, statsY + 35 * scale);
+    ctx.fillText(`${tasks.length}`, MARGIN + statWidth * 1.5, statsY + 35 * scale);
+    ctx.fillText(`${completedTasks}`, MARGIN + statWidth * 2.5, statsY + 35 * scale);
+    ctx.fillText(`${completionRate}%`, MARGIN + statWidth * 3.5, statsY + 35 * scale);
+    
+    ctx.fillStyle = '#626C71';
+    ctx.font = `${12 * scale}px Arial, sans-serif`;
+    ctx.fillText('Total horas', MARGIN + statWidth * 0.5, statsY + 55 * scale);
+    ctx.fillText('Tareas', MARGIN + statWidth * 1.5, statsY + 55 * scale);
+    ctx.fillText('Completadas', MARGIN + statWidth * 2.5, statsY + 55 * scale);
+    ctx.fillText('Progreso', MARGIN + statWidth * 3.5, statsY + 55 * scale);
+    
+    ctx.textAlign = 'left';
+  }
+  
+  // LEYENDA (si está habilitada)
+  if (exportSettings.includeLegend) {
+    const legendStartY = exportSettings.includeStats ? legendY + 100 * scale : legendY;
+    
+    ctx.fillStyle = '#333333';
+    ctx.font = `bold ${14 * scale}px Arial, sans-serif`;
+    ctx.fillText('LEYENDA:', MARGIN, legendStartY + 20 * scale);
+    
+    ctx.font = `${12 * scale}px Arial, sans-serif`;
+    let x = MARGIN;
+    let y = legendStartY + 45 * scale;
+    let col = 0;
+    
+    Object.entries(CATEGORIES).forEach(([name, colors]) => {
+      // Cuadrado de color
+      ctx.fillStyle = colors.color;
+      ctx.fillRect(x, y - 12 * scale, 16 * scale, 16 * scale);
+      ctx.strokeStyle = '#999999';
+      ctx.lineWidth = 1 * scale;
+      ctx.strokeRect(x, y - 12 * scale, 16 * scale, 16 * scale);
+      
+      // Nombre de categoría
+      ctx.fillStyle = '#333333';
+      ctx.fillText(name, x + 22 * scale, y);
+      
+      col++;
+      if (col % 4 === 0) {
+        x = MARGIN;
+        y += 25 * scale;
+      } else {
+        x += 180 * scale;
+      }
+    });
+  }
+  
+  return canvas;
+}
+
+async function performExport() {
+  showNotification('⏳ Generando imagen...', 'info');
+  
+  try {
+    // Calcular dimensiones según resolución
+    const resolution = resolutions[exportSettings.resolution];
+    const baseWidth = resolution.width;
+    const tasksHeight = tasks.length * 60 * (baseWidth / 2560);
+    const baseHeight = 120 + 50 + 40 + tasksHeight + 100 + (exportSettings.includeStats ? 100 : 0) + (exportSettings.includeLegend ? 120 : 0) + 80;
+    
+    // Renderizar Gantt en canvas de alta resolución
+    const canvas = renderGanttToCanvas(baseWidth, baseHeight);
+    
+    // Convertir a blob y descargar
+    canvas.toBlob((blob) => {
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      const timestamp = new Date().toISOString().replace(/[:.]/g, '-').split('T');
+      const dateStr = timestamp[0].replace(/-/g, '');
+      const timeStr = timestamp[1].split('-')[0].replace(/-/g, '');
+      link.download = `Gantt_TFG_${dateStr}_${timeStr}.${exportSettings.format}`;
+      link.href = url;
+      link.click();
+      URL.revokeObjectURL(url);
+      
+      // Guardar en historial
+      saveToHistory(canvas);
+      
+      showNotification('✓ Imagen descargada correctamente', 'success');
+    }, `image/${exportSettings.format}`, 0.95);
+    
+  } catch (error) {
+    console.error('Error exporting image:', error);
+    showNotification('❌ Error al generar la imagen', 'error');
+  }
+}
+
+function saveToHistory(canvas) {
+  const totalHours = tasks.reduce((sum, t) => sum + t.hours, 0);
+  const completedTasks = tasks.filter(t => t.completed === 100).length;
+  const completionRate = Math.round((completedTasks / tasks.length) * 100);
+  
+  const historyItem = {
+    id: Date.now(),
+    timestamp: new Date().toISOString(),
+    image: canvas.toDataURL('image/png'),
+    totalHours,
+    completionRate,
+    taskCount: tasks.length,
+    tasksSnapshot: JSON.parse(JSON.stringify(tasks))
+  };
+  
+  exportHistory.unshift(historyItem);
+  
+  // Limitar a 10 exportaciones
+  if (exportHistory.length > 10) {
+    exportHistory = exportHistory.slice(0, 10);
+  }
+  
+  renderExportHistory();
+}
+
+function renderExportHistory() {
+  const container = document.getElementById('exportHistory');
+  const clearBtn = document.getElementById('clearHistoryBtn');
+  
+  if (exportHistory.length === 0) {
+    container.innerHTML = '<p style="text-align: center; color: var(--color-text-secondary); font-size: var(--font-size-sm);">No hay exportaciones todavía</p>';
+    clearBtn.style.display = 'none';
+    return;
+  }
+  
+  clearBtn.style.display = 'block';
+  
+  container.innerHTML = '';
+  exportHistory.forEach((item, index) => {
+    const div = document.createElement('div');
+    div.className = 'history-item';
+    div.innerHTML = `
+      <img src="${item.image}" class="history-thumbnail" alt="Exportación ${index + 1}">
+      <div class="history-info">
+        <div class="history-date">${new Date(item.timestamp).toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' })}</div>
+        <div class="history-stats">${item.totalHours}h • ${item.taskCount} tareas • ${item.completionRate}% completado</div>
+      </div>
+      <div class="history-actions">
+        <button class="history-btn" onclick="viewFullSize(${item.id})">👁️ Ver</button>
+        <button class="history-btn" onclick="compareWithCurrent(${item.id})">🔍 Comparar</button>
+        <button class="history-btn" onclick="downloadAgain(${item.id})">⬇️ Descargar</button>
+      </div>
+    `;
+    container.appendChild(div);
+  });
+}
+
+function viewFullSize(id) {
+  const item = exportHistory.find(h => h.id === id);
+  if (!item) return;
+  
+  const win = window.open('', '_blank');
+  win.document.write(`
+    <html>
+      <head>
+        <title>Exportación TFG</title>
+        <style>
+          body { margin: 0; padding: 20px; background: #f5f5f5; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
+          img { max-width: 100%; height: auto; box-shadow: 0 4px 12px rgba(0,0,0,0.15); border-radius: 8px; background: white; }
+        </style>
+      </head>
+      <body>
+        <img src="${item.image}" alt="Gantt TFG">
+      </body>
+    </html>
+  `);
+}
+
+function compareWithCurrent(id) {
+  const previousItem = exportHistory.find(h => h.id === id);
+  if (!previousItem) return;
+  
+  document.getElementById('compareModal').classList.add('active');
+  
+  // Calcular estadísticas actuales
+  const currentHours = tasks.reduce((sum, t) => sum + t.hours, 0);
+  const currentCompleted = tasks.filter(t => t.completed === 100).length;
+  const currentRate = Math.round((currentCompleted / tasks.length) * 100);
+  
+  // Calcular diferencias
+  const hoursDiff = currentHours - previousItem.totalHours;
+  const tasksDiff = tasks.length - previousItem.taskCount;
+  const rateDiff = currentRate - previousItem.completionRate;
+  
+  // Analizar cambios en tareas
+  const previousTasks = previousItem.tasksSnapshot;
+  const addedTasks = tasks.filter(t => !previousTasks.find(pt => pt.id === t.id));
+  const removedTasks = previousTasks.filter(pt => !tasks.find(t => t.id === pt.id));
+  const modifiedTasks = tasks.filter(t => {
+    const prev = previousTasks.find(pt => pt.id === t.id);
+    if (!prev) return false;
+    return prev.hours !== t.hours || prev.start_date !== t.start_date || prev.end_date !== t.end_date;
+  });
+  
+  const compareContent = document.getElementById('compareContent');
+  compareContent.innerHTML = `
+    <div class="compare-grid">
+      <div class="compare-panel">
+        <h4>📅 Versión Anterior</h4>
+        <img src="${previousItem.image}" class="compare-image" alt="Anterior">
+        <div class="compare-stats">
+          <div class="stat-row">
+            <span>Fecha:</span>
+            <span>${new Date(previousItem.timestamp).toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit', year: 'numeric' })}</span>
+          </div>
+          <div class="stat-row">
+            <span>Total horas:</span>
+            <span>${previousItem.totalHours}h</span>
+          </div>
+          <div class="stat-row">
+            <span>Tareas:</span>
+            <span>${previousItem.taskCount}</span>
+          </div>
+          <div class="stat-row">
+            <span>Completitud:</span>
+            <span>${previousItem.completionRate}%</span>
+          </div>
+        </div>
+      </div>
+      
+      <div class="compare-panel">
+        <h4>📊 Versión Actual</h4>
+        <canvas id="tempGanttCanvas" style="width: 100%; border: 1px solid #ddd; border-radius: 8px; margin-bottom: 12px;"></canvas>
+        <div class="compare-stats">
+          <div class="stat-row">
+            <span>Fecha:</span>
+            <span>${new Date().toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit', year: 'numeric' })}</span>
+          </div>
+          <div class="stat-row">
+            <span>Total horas:</span>
+            <span>${currentHours}h <span class="stat-diff ${hoursDiff >= 0 ? 'positive' : 'negative'}">${hoursDiff >= 0 ? '+' : ''}${hoursDiff}h</span></span>
+          </div>
+          <div class="stat-row">
+            <span>Tareas:</span>
+            <span>${tasks.length} <span class="stat-diff ${tasksDiff >= 0 ? 'positive' : 'negative'}">${tasksDiff >= 0 ? '+' : ''}${tasksDiff}</span></span>
+          </div>
+          <div class="stat-row">
+            <span>Completitud:</span>
+            <span>${currentRate}% <span class="stat-diff ${rateDiff >= 0 ? 'positive' : 'negative'}">${rateDiff >= 0 ? '+' : ''}${rateDiff}%</span></span>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="compare-summary">
+      <h4>📈 Resumen de Cambios</h4>
+      <ul>
+        ${addedTasks.length > 0 ? `<li><strong>${addedTasks.length} tarea(s) añadida(s):</strong> ${addedTasks.map(t => t.name).join(', ')}</li>` : ''}
+        ${removedTasks.length > 0 ? `<li><strong>${removedTasks.length} tarea(s) eliminada(s):</strong> ${removedTasks.map(t => t.name).join(', ')}</li>` : ''}
+        ${modifiedTasks.length > 0 ? `<li><strong>${modifiedTasks.length} tarea(s) modificada(s):</strong> ${modifiedTasks.map(t => t.name).join(', ')}</li>` : ''}
+        ${hoursDiff !== 0 ? `<li><strong>Cambio en horas totales:</strong> ${hoursDiff > 0 ? '+' : ''}${hoursDiff} horas</li>` : ''}
+        ${rateDiff !== 0 ? `<li><strong>Cambio en completitud:</strong> ${rateDiff > 0 ? '+' : ''}${rateDiff}%</li>` : ''}
+        ${addedTasks.length === 0 && removedTasks.length === 0 && modifiedTasks.length === 0 && hoursDiff === 0 ? '<li>No se detectaron cambios significativos</li>' : ''}
+      </ul>
+    </div>
+  `;
+  
+  // Renderizar Gantt actual en miniatura
+  setTimeout(() => {
+    const tempCanvas = document.getElementById('tempGanttCanvas');
+    if (tempCanvas) {
+      const mainCanvas = document.getElementById('ganttCanvas');
+      tempCanvas.width = mainCanvas.width;
+      tempCanvas.height = mainCanvas.height;
+      const ctx = tempCanvas.getContext('2d');
+      ctx.drawImage(mainCanvas, 0, 0);
+    }
+  }, 100);
+}
+
+function downloadAgain(id) {
+  const item = exportHistory.find(h => h.id === id);
+  if (!item) return;
+  
+  const link = document.createElement('a');
+  const timestamp = new Date(item.timestamp).toISOString().replace(/[:.]/g, '-').split('T');
+  const dateStr = timestamp[0].replace(/-/g, '');
+  const timeStr = timestamp[1].split('-')[0].replace(/-/g, '');
+  link.download = `Gantt_TFG_${dateStr}_${timeStr}.png`;
+  link.href = item.image;
+  link.click();
+  
+  showNotification('✓ Imagen descargada correctamente', 'success');
+}
+
+function clearExportHistory() {
+  if (confirm('¿Estás seguro de que deseas eliminar todo el historial de exportaciones?')) {
+    exportHistory = [];
+    renderExportHistory();
+    showNotification('✓ Historial limpiado', 'success');
+  }
+}
+
+function closeCompareModal() {
+  document.getElementById('compareModal').classList.remove('active');
+}
+
+function showNotification(message, type = 'success') {
+  const notification = document.createElement('div');
+  notification.className = 'export-notification';
+  notification.textContent = message;
+  
+  if (type === 'error') {
+    notification.style.backgroundColor = 'var(--color-error)';
+  } else if (type === 'info') {
+    notification.style.backgroundColor = 'var(--color-info)';
+  }
+  
+  document.body.appendChild(notification);
+  
+  setTimeout(() => {
+    notification.classList.add('hide');
+    setTimeout(() => {
+      document.body.removeChild(notification);
+    }, 300);
+  }, 3000);
 }
