@@ -18,7 +18,21 @@
                 <button class="btn btn--secondary" id="exportBtn">⬇️ Exportar a CSV</button>
                 <button class="btn btn--secondary" id="importBtn">⬆️ Importar CSV</button>
                 <input type="file" id="importFile" accept=".csv" style="display: none;">
+                <button class="btn btn--primary" id="exportPngBtn">📸 Exportar como PNG</button>
+                <button class="btn btn--secondary" id="exportOptionsBtn">⚙️ Opciones Exportación</button>
                 <button class="btn btn--secondary" id="statsBtn">📊 Estadísticas</button>
+            </div>
+            
+            <div class="summary-section">
+                <h3>Información del Proyecto</h3>
+                <div class="form-group">
+                    <label class="form-label" for="studentName">Estudiante:</label>
+                    <input type="text" class="form-control" id="studentName" placeholder="Tu nombre">
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="tutorName">Tutor:</label>
+                    <input type="text" class="form-control" id="tutorName" placeholder="Nombre del tutor">
+                </div>
             </div>
             
             <div class="summary-section">
@@ -67,6 +81,14 @@
                         Mostrar tareas completadas
                     </label>
                 </div>
+            </div>
+            
+            <div class="summary-section">
+                <h3>📈 Historial de Exportaciones</h3>
+                <div id="exportHistory" class="export-history">
+                    <p style="text-align: center; color: var(--color-text-secondary); font-size: var(--font-size-sm);">No hay exportaciones todavía</p>
+                </div>
+                <button class="btn btn--secondary" id="clearHistoryBtn" style="margin-top: 12px; display: none;">🗑️ Limpiar Historial</button>
             </div>
         </aside>
         
@@ -144,6 +166,77 @@
         </div>
     </div>
     
+    <!-- Modal para opciones de exportación -->
+    <div class="modal" id="exportOptionsModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>⚙️ Opciones de Exportación</h3>
+                <button class="modal-close" id="closeExportOptionsBtn">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label">Resolución:</label>
+                    <select class="form-control" id="exportResolution">
+                        <option value="normal">Normal (1920x1080)</option>
+                        <option value="standard" selected>Estándar (2560x1440)</option>
+                        <option value="high">Alta (3840x2160)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Formato:</label>
+                    <select class="form-control" id="exportFormat">
+                        <option value="png" selected>PNG</option>
+                        <option value="jpeg">JPEG</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="includeWatermark" checked>
+                        Incluir marca de agua con fecha
+                    </label>
+                </div>
+                <div class="form-group">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="includeLegend" checked>
+                        Incluir leyenda de categorías
+                    </label>
+                </div>
+                <div class="form-group">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="includeStats" checked>
+                        Incluir estadísticas del proyecto
+                    </label>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Color de fondo:</label>
+                    <select class="form-control" id="exportBgColor">
+                        <option value="white" selected>Blanco</option>
+                        <option value="lightgray">Gris claro</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn--secondary" id="cancelExportOptionsBtn">Cancelar</button>
+                <button class="btn btn--primary" id="confirmExportBtn">Descargar</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Modal para comparación -->
+    <div class="modal" id="compareModal">
+        <div class="modal-content modal-large">
+            <div class="modal-header">
+                <h3>🔍 Comparación de Versiones</h3>
+                <button class="modal-close" id="closeCompareModalBtn">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div id="compareContent" class="compare-container">
+                    <!-- Contenido de comparación -->
+                </div>
+            </div>
+        </div>
+    </div>
+    
     <!-- Modal para estadísticas -->
     <div class="modal" id="statsModal">
         <div class="modal-content modal-large">
@@ -162,6 +255,7 @@
     <!-- Tooltip para Gantt -->
     <div class="gantt-tooltip" id="ganttTooltip" style="display: none;"></div>
     
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="app.js"></script>
 </body>
 </html>
