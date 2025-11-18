@@ -31,17 +31,23 @@ const INITIAL_TASKS = [
 
 const CATEGORIES = {
   "Estado del arte": { color: "#B3D9FF", darkColor: "#4D94FF" },
-  "Análisis VMs": { color: "#6699FF", darkColor: "#3366CC" },
-  "Diseño": { color: "#B3FFB3", darkColor: "#66CC66" },
-  "Implementación": { color: "#FFB366", darkColor: "#FF9900" },
-  "Automatización": { color: "#FF9999", darkColor: "#FF6666" },
-  "Validación": { color: "#D9B3FF", darkColor: "#B366FF" },
-  "Documentación": { color: "#CCCCCC", darkColor: "#999999" },
-  "Defensa": { color: "#FFFF99", darkColor: "#FFFF00" },
-  "Hito 1": { color: "#FF6666", darkColor: "#CC0000" },
-  "Hito 2": { color: "#FF6666", darkColor: "#CC0000" },
-  "Hito 3": { color: "#FF6666", darkColor: "#CC0000" },
-  "Hito 4": { color: "#FF6666", darkColor: "#CC0000" }
+  "Análisis VMs":    { color: "#6699FF", darkColor: "#3366CC" },
+  "Diseño":          { color: "#B3FFB3", darkColor: "#66CC66" },
+  "Implementación":  { color: "#FFB366", darkColor: "#FF9900" },
+  "Automatización":  { color: "#FF9999", darkColor: "#FF6666" },
+  "Validación":      { color: "#D9B3FF", darkColor: "#B366FF" },
+  "Documentación":   { color: "#CCCCCC", darkColor: "#999999" },
+  "Defensa":         { color: "#FFFF99", darkColor: "#FFFF00" },
+  "Hito 1":          { color: "#FF6666", darkColor: "#CC0000" },
+  "Hito 2":          { color: "#FF6666", darkColor: "#CC0000" },
+  "Hito 3":          { color: "#FF6666", darkColor: "#CC0000" },
+  "Hito 4":          { color: "#FF6666", darkColor: "#CC0000" },
+
+  // Categorías del CSV MIX
+  "Preparación":     { color: "#B2EBF2", darkColor: "#00ACC1" }, // cian suave
+  "Análisis":        { color: "#9FA8DA", darkColor: "#3949AB" }, // índigo suave
+  "Desarrollo":      { color: "#FFCCBC", darkColor: "#F4511E" }, // naranja coral
+  "Testing":         { color: "#E6EE9C", darkColor: "#9E9D24" }  // lima suave
 };
 
 // Estado de la aplicación
