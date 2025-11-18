@@ -242,9 +242,7 @@ function confirmEdit(newValue) {
       task.hours = hours;
       task.end_date = calculateEndDate(task.start_date, hours);
       
-      if (task.hours > 100) {
-        alert('⚠️ Advertencia: La tarea tiene más de 100 horas asignadas.');
-      }
+      // Permitir cualquier cantidad de horas sin bloqueo
     }
   } else if (field === 'start_date') {
     task.start_date = newValue;
@@ -349,17 +347,19 @@ function updateSummary() {
   const duration = calculateWorkingDays(minDate.toISOString().split('T')[0], maxDate.toISOString().split('T')[0]);
   const weeks = Math.round(duration / 7);
   
-  document.getElementById('totalHours').textContent = totalHours;
+  // NO BLOQUEAR si > 500h, solo ADVERTIR
+  let hoursWarning = '';
+  if (totalHours > 500) {
+    hoursWarning = ` ⚠️ (+${totalHours - 500}h sobre 500h)`;
+  }
+  
+  document.getElementById('totalHours').textContent = totalHours + 'h' + hoursWarning;
   document.getElementById('totalTasks').textContent = tasks.length;
   document.getElementById('projectStart').textContent = formatDate(minDate.toISOString().split('T')[0]);
   document.getElementById('projectEnd').textContent = formatDate(maxDate.toISOString().split('T')[0]);
   document.getElementById('projectDuration').textContent = `${duration} días (${weeks} semanas)`;
   document.getElementById('completionRate').textContent = `${Math.round((completedTasks / tasks.length) * 100)}%`;
   document.getElementById('milestonesCompleted').textContent = `${completedMilestones}/${milestones.length}`;
-  
-  if (totalHours > 500) {
-    alert('⚠️ Advertencia: El total de horas supera las 500 horas planificadas.');
-  }
 }
 
 // Verificar tareas críticas
@@ -604,28 +604,37 @@ function renderLegend() {
   `;
 }
 
+// Restaurar valores iniciales
+function resetToInitialTasks() {
+  const confirmed = confirm(
+    '⚠️ ¿Está seguro?\n\n' +
+    'Se eliminarán todos los cambios y se restaurarán las tareas iniciales.'
+  );
+  
+  if (confirmed) {
+    tasks = JSON.parse(JSON.stringify(INITIAL_TASKS));
+    document.getElementById('categoryFilter').value = 'all';
+    document.getElementById('hideCompletedFilter').checked = true;
+    renderTaskTable();
+    renderGantt();
+    updateSummary();
+    alert('✅ Tareas restauradas a valores iniciales');
+  }
+}
+
 // Event Listeners
 function setupEventListeners() {
   // Botón añadir tarea
   document.getElementById('addTaskBtn').addEventListener('click', openAddTaskModal);
   
-  // Botón resetear
-  document.getElementById('resetBtn').addEventListener('click', () => {
-    if (confirm('¿Estás seguro de que deseas restaurar los valores iniciales? Se perderán todos los cambios.')) {
-      tasks = JSON.parse(JSON.stringify(INITIAL_TASKS));
-      renderTaskTable();
-      renderGantt();
-      updateSummary();
-    }
-  });
+  // Botón restaurar valores iniciales
+  document.getElementById('restoreBtn').addEventListener('click', resetToInitialTasks);
   
   // Botón exportar
   document.getElementById('exportBtn').addEventListener('click', exportToCSV);
   
-  // Botón importar
-  document.getElementById('importBtn').addEventListener('click', () => {
-    document.getElementById('importFile').click();
-  });
+  // Botón importar CSV
+  document.getElementById('importCSVBtn').addEventListener('click', importCSV);
   
   document.getElementById('importFile').addEventListener('change', importFromCSV);
   
@@ -639,7 +648,15 @@ function setupEventListeners() {
   // Modal añadir tarea
   document.getElementById('closeModalBtn').addEventListener('click', closeAddTaskModal);
   document.getElementById('cancelModalBtn').addEventListener('click', closeAddTaskModal);
-  document.getElementById('createTaskBtn').addEventListener('click', createTask);
+  document.getElementById('createTaskBtn').addEventListener('click', addNewTask);
+  
+  // Cerrar modal con Escape
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      const modals = document.querySelectorAll('.modal.active');
+      modals.forEach(modal => modal.classList.remove('active'));
+    }
+  });
   
   // Modal estadísticas
   document.getElementById('closeStatsModalBtn').addEventListener('click', closeStatsModal);
@@ -684,44 +701,71 @@ function closeAddTaskModal() {
   document.getElementById('addTaskModal').classList.remove('active');
 }
 
-// Crear tarea
-function createTask() {
+// Añadir nueva tarea con validación completa
+function addNewTask() {
+  const modal = document.getElementById('addTaskModal');
   const name = document.getElementById('taskName').value.trim();
   const category = document.getElementById('taskCategory').value;
   const hours = parseInt(document.getElementById('taskHours').value);
   const startDate = document.getElementById('taskStartDate').value;
   const endDate = document.getElementById('taskEndDate').value;
   
-  if (!name || !category || !hours || !startDate || !endDate) {
-    alert('Por favor, completa todos los campos.');
+  // Validaciones
+  if (!name) {
+    alert('❌ Por favor ingresa nombre de tarea');
     return;
   }
-  
+  if (!category || !CATEGORIES[category]) {
+    alert('❌ Por favor selecciona categoría válida');
+    return;
+  }
+  if (!hours || hours <= 0) {
+    alert('❌ Las horas deben ser mayor a 0');
+    return;
+  }
+  if (!startDate || !endDate) {
+    alert('❌ Por favor ingresa fechas inicio y fin');
+    return;
+  }
   if (new Date(endDate) < new Date(startDate)) {
-    alert('La fecha de fin no puede ser anterior a la fecha de inicio.');
+    alert('❌ La fecha fin no puede ser anterior a fecha inicio');
     return;
   }
   
+  // Crear tarea
   const newTask = {
-    id: Math.max(...tasks.map(t => t.id)) + 1,
-    name,
-    category,
-    hours,
+    id: Math.max(...tasks.map(t => t.id), 0) + 1,
+    name: name,
+    category: category,
+    hours: hours,
     start_date: startDate,
     end_date: endDate,
     completed: 0,
     critical: false
   };
   
+  // Agregar
   tasks.push(newTask);
-  closeAddTaskModal();
+  
+  // Limpiar y cerrar
+  document.getElementById('taskName').value = '';
+  document.getElementById('taskHours').value = '10';
+  document.getElementById('taskStartDate').value = '';
+  document.getElementById('taskEndDate').value = '';
+  modal.style.display = 'none';
+  modal.classList.remove('active');
+  
+  // Actualizar UI
   renderTaskTable();
   renderGantt();
   updateSummary();
   
-  // Limpiar formulario
-  document.getElementById('taskName').value = '';
-  document.getElementById('taskHours').value = '10';
+  alert('✅ Tarea añadida correctamente');
+}
+
+// Mantener compatibilidad con función antigua
+function createTask() {
+  addNewTask();
 }
 
 // Exportar a CSV
@@ -743,7 +787,102 @@ function exportToCSV() {
   document.body.removeChild(link);
 }
 
-// Importar desde CSV
+// Parser CSV robusto
+function parseCSVToTasks(csvContent) {
+  const lines = csvContent.trim().split('\n');
+  const tasks = [];
+  
+  // Saltar header (línea 1)
+  for (let i = 1; i < lines.length; i++) {
+    const line = lines[i].trim();
+    if (!line) continue;
+    
+    // Parse CSV: manejar comillas y campos
+    const regex = /"([^"]*)"|([^,]+)/g;
+    const fields = [];
+    let match;
+    while ((match = regex.exec(line)) !== null) {
+      fields.push((match[1] !== undefined ? match[1] : match[2]).trim());
+    }
+    
+    if (fields.length < 7) continue;
+    
+    // Validar categoría
+    if (!CATEGORIES[fields[1]]) {
+      console.warn(`Categoría no válida: ${fields[1]}`);
+      continue;
+    }
+    
+    // Parse fields
+    const task = {
+      id: tasks.length + 1,
+      name: fields[0],
+      category: fields[1],
+      hours: parseInt(fields[2]) || 0,
+      start_date: fields[3],
+      end_date: fields[4],
+      completed: parseInt(fields[5]) || 0,
+      critical: fields[6].toLowerCase() === 'true' || fields[6] === '1'
+    };
+    
+    if (task.hours > 0) {
+      tasks.push(task);
+    }
+  }
+  
+  return tasks;
+}
+
+// Importar CSV con validación mejorada
+function importCSV() {
+  const input = document.createElement('input');
+  input.type = 'file';
+  input.accept = '.csv';
+  
+  input.onchange = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    
+    const reader = new FileReader();
+    
+    reader.onload = (event) => {
+      try {
+        const newTasks = parseCSVToTasks(event.target.result);
+        
+        if (newTasks.length === 0) {
+          alert('❌ No se encontraron tareas válidas en el CSV.\n\nVerifica que el formato sea:\nTarea,Categoría,Horas,Fecha Inicio,Fecha Fin,%,Crítica');
+          return;
+        }
+        
+        const totalHours = newTasks.reduce((sum, t) => sum + t.hours, 0);
+        
+        // Confirmar
+        const confirmed = confirm(
+          `✅ Se encontraron ${newTasks.length} tareas válidas.\n` +
+          `Total de horas: ${totalHours}h\n\n` +
+          `¿Reemplazar tareas actuales con las importadas?`
+        );
+        
+        if (confirmed) {
+          tasks = newTasks;
+          renderTaskTable();
+          renderGantt();
+          updateSummary();
+          alert('✅ CSV importado correctamente');
+        }
+      } catch (error) {
+        alert('❌ Error al importar CSV: ' + error.message + '\n\nVerifica el formato del archivo.');
+        console.error(error);
+      }
+    };
+    
+    reader.readAsText(file);
+  };
+  
+  input.click();
+}
+
+// Mantener compatibilidad con input file existente
 function importFromCSV(e) {
   const file = e.target.files[0];
   if (!file) return;
@@ -751,45 +890,25 @@ function importFromCSV(e) {
   const reader = new FileReader();
   reader.onload = (event) => {
     try {
-      const csv = event.target.result;
-      const lines = csv.split('\n');
-      const newTasks = [];
+      const newTasks = parseCSVToTasks(event.target.result);
       
-      for (let i = 1; i < lines.length; i++) {
-        if (!lines[i].trim()) continue;
-        
-        const match = lines[i].match(/"([^"]*)","([^"]*)",([^,]*),([^,]*),([^,]*),([^,]*),([^,\n]*)/);        if (match) {
-          newTasks.push({
-            id: i,
-            name: match[1],
-            category: match[2],
-            hours: parseInt(match[3]),
-            start_date: match[4],
-            end_date: match[5],
-            completed: parseInt(match[6]),
-            critical: match[7].trim() === 'true'
-          });
-        }
+      if (newTasks.length === 0) {
+        alert('❌ No se encontraron tareas válidas en el CSV.');
+        return;
       }
       
-      if (newTasks.length > 0) {
-        if (confirm(`Se importarán ${newTasks.length} tareas. ¿Deseas reemplazar las tareas actuales o fusionarlas?\n\nOK = Reemplazar | Cancelar = Fusionar`)) {
-          tasks = newTasks;
-        } else {
-          const maxId = Math.max(...tasks.map(t => t.id));
-          newTasks.forEach((task, index) => {
-            task.id = maxId + index + 1;
-          });
-          tasks = [...tasks, ...newTasks];
-        }
-        
+      const totalHours = newTasks.reduce((sum, t) => sum + t.hours, 0);
+      
+      if (confirm(`Se importarán ${newTasks.length} tareas (${totalHours}h total). ¿Reemplazar tareas actuales?`)) {
+        tasks = newTasks;
         renderTaskTable();
         renderGantt();
         updateSummary();
-        alert('Importación completada con éxito.');
+        alert('✅ Importación completada con éxito.');
       }
     } catch (error) {
-      alert('Error al importar el archivo CSV. Verifica el formato.');
+      alert('❌ Error al importar el archivo CSV. Verifica el formato.');
+      console.error(error);
     }
   };
   
