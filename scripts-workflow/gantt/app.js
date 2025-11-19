@@ -125,6 +125,12 @@ function renderTaskTable() {
   
   filteredTasks.forEach((task, index) => {
     const row = document.createElement('tr');
+    row.setAttribute('draggable', 'true');
+    row.setAttribute('data-task-index', index);
+    row.ondragstart = () => handleDragStart(index);
+    row.ondragend = () => handleDragEnd();
+    row.ondragover = (e) => handleDragOver(e);
+    row.ondrop = (e) => handleDrop(e, index);
     row.dataset.taskId = task.id;
     if (task.completed === 100) row.classList.add('completed');
     if (task.id === selectedTaskId) row.classList.add('selected');
@@ -1560,4 +1566,41 @@ function showNotification(message, type = 'success') {
       document.body.removeChild(notification);
     }, 300);
   }, 3000);
+}
+
+// ==================== DRAG & DROP ====================
+let draggedTaskIndex = null;
+
+function handleDragStart(index) {
+    draggedTaskIndex = index;
+    const row = document.querySelector(`tr[data-task-index="${index}"]`);
+    if(row) row.classList.add('dragging');
+}
+
+function handleDragEnd() {
+    document.querySelectorAll('tr.dragging').forEach(row => row.classList.remove('dragging'));
+    draggedTaskIndex = null;
+}
+
+function handleDragOver(e) {
+    e.preventDefault();
+}
+
+function handleDrop(e, targetIndex) {
+    e.preventDefault();
+    if(draggedTaskIndex === null || draggedTaskIndex === targetIndex) return;
+    const [movedTask] = tasks.splice(draggedTaskIndex, 1);
+    tasks.splice(targetIndex, 0, movedTask);
+    localStorage.setItem("tasks", JSON.stringify(tasks));
+    renderTaskTable();
+    renderGantt();
+}
+
+function moveTaskUpDown(index, direction) {
+    const newIndex = index + direction;
+    if(newIndex < 0 || newIndex >= tasks.length) return;
+    [tasks[index], tasks[newIndex]] = [tasks[newIndex], tasks[index]];
+    localStorage.setItem("tasks", JSON.stringify(tasks));
+    renderTaskTable();
+    renderGantt();
 }
