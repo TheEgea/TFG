@@ -1528,3 +1528,38 @@ html, body {
     grid-template-columns: 1fr;
   }
 }
+
+/* ==================== DRAG & DROP ==================== */
+tr[draggable="true"] {
+    cursor: grab;
+    transition: background-color 0.2s ease;
+}
+
+tr[draggable="true"]:active {
+    cursor: grabbing;
+}
+
+tr.dragging {
+    opacity: 0.6;
+    background-color: #e3f2fd !important;
+    border: 2px dashed #1976d2 !important;
+}
+
+tr[draggable="true"]:hover:not(.dragging) {
+    background-color: #f5f5f5;
+}
+
+button.move-btn {
+    font-size: 1.1em;
+    font-weight: bold;
+    padding: 4px 8px;
+    margin: 0 2px;
+    background-color: #e8f4f8;
+    border: 1px solid #90caf9;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button.move-btn:hover {
+    background-color: #bbdefb;
+}
