@@ -41,6 +41,10 @@
 \usepackage[style=ieee, backend=biber]{biblatex} % Paquet per gestionar la bibliografia en format IEEE
 \addbibresource{resources/references.bib} % El fitxer .bib amb les referències
 
+% Paquets per taules complexes que usa l'apèndix de registre de temps
+\usepackage{array}
+\usepackage{tabularx}
+
 
 % Hiperenllaços (carrega-ho DESPRÉS de geometry, setspace, etc.)
 \usepackage{hyperref}
@@ -567,7 +571,7 @@ els artefactes (PDF, índexs, glosaris) es generin de manera consistent.
 
 \begin{appendix}
 % Incluir el appendici de registre de temps si existeix (evita fallades si falta)
-\IfFileExists{appendix_time_log.tex}{\input{appendix_time_log.tex}}{}
+\IfFileExists{resources/appendix_time_log.tex}{\input{resources/appendix_time_log.tex}}{}
 \end{appendix}
 
 
