@@ -565,5 +565,11 @@ els artefactes (PDF, índexs, glosaris) es generin de manera consistent.
 \addcontentsline{toc}{chapter}{Bibliografia}
 \printbibliography
 
+\begin{appendix}
+% Incluir el appendici de registre de temps si existeix (evita fallades si falta)
+\IfFileExists{appendix_time_log.tex}{\input{appendix_time_log.tex}}{}
+\end{appendix}
+
+
 
 \end{document}
