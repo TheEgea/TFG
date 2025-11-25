@@ -1,30 +1,30 @@
-% Plantilla LaTeX per a la redacció de Treballs de Fi de Grau (TFG)
-% Autor: Eloi Egea Rada
+% LaTeX template for writing a Final Degree Project (TFG)
+% Author: Eloi Egea Rada
 %
 % © 2025, Eloi Egea Rada
-% Aquesta obra està sota una llicència Creative Commons Atribució-NoComercial-CompartirIgual 4.0 Internacional (CC BY-NC-SA 4.0). https://creativecommons.org/licenses/by-nc-sa/4.0/
-% Plantilla per als Treballs de Final de Grau del Centre Universitari TecnoCampus. Fent referencia a la plantilla original d'Aitor Juanola.
+% This work is licensed under a Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0). https://creativecommons.org/licenses/by-nc-sa/4.0/
+% Template for Final Degree Projects at Centre Universitari TecnoCampus. Based on the original template by Aitor Juanola.
 
 
 \documentclass[a4paper, twoside, 12pt, openright]{report} % 'openright' assegura que cada capítol comença en una plana senar
 
 
 % ============================================================================
-% PREÀMBUL — Paquets i Configuració
+% PREAMBLE — Packages and configuration
 % ============================================================================
 
 
-% --- Tipografía con XeLaTeX/LuaLaTeX ---
-\usepackage{fontspec}           % Gestiona fuentes OpenType/TrueType
+% --- Typography with XeLaTeX/LuaLaTeX ---
+\usepackage{fontspec}           % Manage OpenType/TrueType fonts
 
 
-% NO usar inputenc amb XeLaTeX/LuaLaTeX
-% \usepackage[utf8]{inputenc} % Codificació UTF-8
+% Do NOT use inputenc with XeLaTeX/LuaLaTeX
+% \usepackage[utf8]{inputenc} % UTF-8 encoding (not needed with XeLaTeX)
 
 
-\usepackage{verbatim} % Comentaris multilínea
-\usepackage{graphicx} % Per insertar imatges
-\usepackage{float} % Posicionament d'imatges
+\usepackage{verbatim} % Multi-line comments
+\usepackage{graphicx} % For inserting images
+\usepackage{float} % Image placement control
 
 
 \usepackage[english]{babel} % Idioma del document
@@ -46,16 +46,16 @@
 \usepackage{tabularx}
 
 
-% Hiperenllaços (carrega-ho DESPRÉS de geometry, setspace, etc.)
+% Hyperlinks (load AFTER geometry, setspace, etc.)
 \usepackage{hyperref}
 
 
 % ============================================================================
-% SELECCIÓN DE FONTS OPENDYSLEXIC (carregat DESPRÉS de tots els paquets)
+% OPENDYSLEXIC FONTS SELECTION (loaded AFTER other packages)
 % ============================================================================
 
 
-% Usar rutas explícitas a archivos OTF para evitar WOFF
+% Use explicit paths to OTF files to avoid WOFF issues
 \setmainfont{OpenDyslexic}[
     Path = /usr/share/fonts/opentype/opendyslexic/,
     Extension = .otf,
@@ -82,18 +82,17 @@
 
 
 % ============================================================================
-% CARREGAR GLOSSARI
+% LOAD GLOSSARY
 % ============================================================================
 
 
-% Carregar les definicions del glossari des d'un fitxer extern
+% Load glossary definitions from an external file
 \input{resources/glossary.tex}
 
 
-% Aplicar l'estil personalitzat
+% Apply glossary and acronym styles
 \setglossarystyle{altlist}
 \setacronymstyle{long-short}
-
 
 \makeglossaries
 
@@ -152,11 +151,11 @@
 % ============================================================================
 
 
-% Configuració de capçaleres i peus de pàgina preliminars
+% Preliminary header/footer configuration
 \fancypagestyle{plain}{
-    \fancyhf{} % Esborrem configuracions prèvies
+    \fancyhf{} % Clear previous settings
     \fancyhead[RO,LE]{\fontsize{10}{12}\textit{\thepage}}
-    \fancyhead[RE]{\fontsize{10}{12}\textit{Pentesting ètic en entorns virtualitzats amb EVE-NG}}
+    \fancyhead[RE]{\fontsize{10}{12}\textit{Pentesting in virtualized environments with EVE-NG}}
     \fancyfoot{}
 }
 \pagestyle{plain}
@@ -168,28 +167,28 @@
             \includegraphics[width=0.85\linewidth]{images/logo-tecnocampus.png}
         \end{figure}
         
-        \fontsize{14pt}{0pt}\textbf{Grau en Enginyeria Informàtica de Gestió i Sistemes d'Informació} \\
+        \fontsize{14pt}{0pt}\textbf{Bachelor in Computer Engineering — Management and Information Systems} \\
         
         \vspace*{3cm}
 
 
-        \textbf{Pentesting ètic en entorns virtualitzats amb EVE-NG} \\
+        \textbf{Ethical Pentesting in Virtualized Environments with EVE-NG} \\
 
 
         \vspace*{1.5cm}
 
 
-        \textbf{Memòria}
+        \textbf{Final Degree Project Report}
 
 
         \vspace*{5cm}
 }
 \author{
 \fontsize{14pt}{0pt}
-\textbf{Eloi Egea Rada} \\
-\textbf{Tutor: Pere Vidiella i Catalan}
+	extbf{Eloi Egea Rada} \\
+	extbf{Supervisor: Pere Vidiella i Catalan}
 }
-\date{Gener 2026}
+\date{January 2026}
 
 
 \fontsize{12pt}{0pt}
@@ -238,26 +237,24 @@
 \begin{comment}
 *****************************************************************************
 *                           IMPORTANT!!!                                    *
-*   Les següents dues comandes (\newpage, \null) estàn destinades a crear   *
-*   una pàgina buida, això és degut a que en realitzar el canvi de          *
-*   numeració (de romana a aràbiga), en crear un nou \chapter, no detecta   *
-*   automàticament si la última pàgina es parell o imparell, per tant, un   *
-*   cop acabat el glossari, cal comprovar si acaba en pàgina parell o       *
-*   imparell, en aquest últim cas, cal afegir manualment una pàgina         *
-*   en blanc, doncs sino es pot donar el cas que el glossari acabi en       *
-*   la pàgina IX, i la següent pàgina sigui la 1, tractades les dues com    *
-*   imparells.                                                              *
+*   The following two commands (\newpage, \null) are used to create a blank *
+*   page. This is necessary because when switching page numbering (from      *
+*   Roman to Arabic), creating a new \chapter does not automatically detect *
+*   whether the last page is even or odd. After the glossary finishes, you  *
+*   should check if it ends on an even or odd page; if it ends on an odd    *
+*   page, add a blank page manually to ensure chapters begin on the correct  *
+*   side.
 *****************************************************************************
 \end{comment}
 \newpage % Afegir nova pàgina, només en cas que el glossari acabi en pàgina imparell
 \null
 \newpage % Comença una nova pàgina per assegurar que la numeració sigui consistent
-% Configuració de capçaleres i peus de pàgina principals
+% Main header/footer configuration
 \fancypagestyle{plain}{
-    \fancyhf{} % Esborrem configuracions prèvies
+    \fancyhf{} % Clear previous settings
     \fancyhead[RO,LE]{\fontsize{10}{12}\textit{\thepage}}
     \fancyhead[LO]{\fontsize{10}{12}\textit{\nouppercase{\textit{\leftmark}}}}
-    \fancyhead[RE]{\fontsize{10}{12}\textit{Pentesting ètic en entorns virtualitzats amb EVE-NG - TFG}}
+    \fancyhead[RE]{\fontsize{10}{12}\textit{Pentesting in virtualized environments with EVE-NG - TFG}}
     \fancyfoot{}
 }
 \pagestyle{plain}
@@ -386,7 +383,7 @@ This report is divided into the following chapters:
 % ============================================================================
 
 
-\chapter{Desenvolupament i Implementació}
+\chapter{Development and Implementation}
 
 
 \section{Arquitectura General}
@@ -441,7 +438,7 @@ de les xarxes virtuals, i la implementació de les topologies EVE-NG.}
 % ============================================================================
 
 
-\chapter{Resultats i Conclusions}
+\chapter{Results and Conclusions}
 
 
 \section{Lliurables Entregats}
@@ -481,7 +478,7 @@ en pentesting ètic dins del Grau en Enginyeria Informàtica.
 \appendix
 
 
-\chapter{Annexo A: Infraestructura de Build LaTeX Reproducible}
+\chapter{Appendix A: Reproducible LaTeX Build Infrastructure}
 
 
 \section{Configuració de Docker i TeX Live}
@@ -512,7 +509,7 @@ els artefactes (PDF, índexs, glosaris) es generin de manera consistent.
 \end{table}
 
 
-\chapter{Annexo B: Infraestructura de Laboratori (Homelab)}
+\chapter{Appendix B: Laboratory Infrastructure (Homelab)}
 
 
 \section{Especificacions del Homelab}
@@ -536,7 +533,7 @@ els artefactes (PDF, índexs, glosaris) es generin de manera consistent.
 \end{table}
 
 
-\chapter{Annexo C: Control de Hores Total}
+\chapter{Appendix C: Total Time Tracking}
 
 
 \begin{table}[H]
