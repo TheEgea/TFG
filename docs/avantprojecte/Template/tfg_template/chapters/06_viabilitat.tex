@@ -1,61 +1,515 @@
-%\section{Estudi de la Viabilitat del Projecte}
-\section{Feasibility Study of the Project}
+\chapter{Feasibility Study}
 
-%\subsection{Planificació Initial}
-\subsection{Initial Planning}
+\section{Initial Planning}
 
-%\subsubsection{Definició de Tasques}
-\subsubsection{Task Definition}
+\subsection{Task Definition}
 
-% Secció pendent de desenvolupament
+The project has been structured in 37 tasks distributed across three main phases: Preparation (Phase 0), Avantprojecte (Phase 1), and Implementation and Final Delivery (Phases 2 and 3). Each task has been carefully defined with the following attributes:
 
-%\subsubsection{Diagrama de Gantt}
-\subsubsection{Gantt Chart}
+\begin{itemize}
+    \item \textbf{Task identifier}: Unique numeric code (e.g., 0.1, 1.0, 2.1, 3.4)
+    \item \textbf{Task name}: Descriptive title of the activity
+    \item \textbf{Category}: Classification (Preparation, Analysis, Documentation, Development, Testing, Implementation, Milestones)
+    \item \textbf{Estimated hours}: Time allocation based on complexity and dependencies
+    \item \textbf{Start and end dates}: Temporal boundaries for execution
+    \item \textbf{Completion percentage}: Current progress indicator
+    \item \textbf{Critical path flag}: Identification of tasks that directly impact delivery deadlines
+\end{itemize}
 
-% Secció pendent de desenvolupament
+\subsubsection{Task Categories}
 
-%\subsubsection{Camins Crítics}
-\subsubsection{Critical Paths}
+The 37 tasks have been distributed across 7 categories:
 
-% Secció pendent de desenvolupament
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|l|r|r|}
+    \hline
+    \textbf{Category} & \textbf{Number of Tasks} & \textbf{Total Hours} \\
+    \hline
+    Preparation & 4 & 105h \\
+    Analysis & 5 & 49h \\
+    Documentation & 6 & 95h \\
+    Development & 8 & 178h \\
+    Testing & 5 & 123h \\
+    Implementation & 6 & 220h \\
+    Milestones & 3 & 95h \\
+    \hline
+    \textbf{TOTAL} & \textbf{37} & \textbf{820h} \\
+    \hline
+    \end{tabular}
+    \caption{Distribution of tasks by category}
+\end{table}
 
-%\subsection{Pressupost}
-\subsection{Budget}
+\subsubsection{Phase Breakdown}
 
-%\subsubsection{Cost de Recursos Humans}
-\subsubsection{Cost of Human Resources}
+\textbf{Phase 0: Preparation (July - November 2025)}
 
-% Secció pendent de desenvolupament
+\begin{itemize}
+    \item Task 0.1: HomeLab Initialization Setup (64h) - \textbf{100\% completed}
+    \item Task 0.2: VSCode Setup for thesis development (18h) - \textbf{100\% completed}
+    \item Task 0.3: Kali Linux Setup and Basic Tools (15h) - \textbf{100\% completed}
+    \item Task 0.4: Home Lab As-Built Documentation (8h) - \textbf{100\% completed}
+\end{itemize}
 
-%\subsubsection{Cost de Recursos Hardware i Software}
-\subsubsection{Cost of Hardware and Software Resources}
+This phase established the technical infrastructure necessary for project development, including virtualization environment (EVE-NG), development tools (VSCode, LaTeX), and pentesting platform (Kali Linux).
 
-% Secció pendent de desenvolupament
+\textbf{Phase 1: Avantprojecte (October 2025 - January 2026)}
 
-%\subsubsection{Altres Costos}
-\subsubsection{Other Costs}
+\begin{itemize}
+    \item Task 1.0: Thesis Development (22h) - \textbf{100\% completed}
+    \item Task 1.1: SMART Objectives Definition (4h) - \textbf{100\% completed}
+    \item Task 1.2: State of the Art: Frameworks and Tools (15h) - \textbf{75\% in progress}
+    \item Task 1.3: Functional and Non-Functional Requirements (10h) - \textbf{80\% in progress}
+    \item Task 1.4: Pentesting Methodology and Validation (8h) - \textbf{0\% pending - CRITICAL}
+    \item Task 1.5: Design Decisions and Justification (5h) - \textbf{0\% pending}
+    \item Task 1.6: Gantt Chart Development (20h) - \textbf{100\% completed}
+    \item Task 1.7: Risk Analysis and Mitigation Plan (15h) - \textbf{0\% pending}
+    \item Task 1.8: Resource Inventory (5h) - \textbf{0\% pending}
+    \item Task 1.9: Hackathon CTF Participation (25h) - \textbf{40\% in progress}
+    \item \textbf{Milestone 1.10: Preliminary Project (40h)} - \textbf{50\% in progress - Delivery: January 16, 2026}
+\end{itemize}
 
-% Secció pendent de desenvolupament
+This phase focuses on conceptual design, requirements analysis, and detailed planning. Critical tasks for the January 16 deadline include completing the pentesting methodology, risk analysis, and resource inventory.
 
-\subsection{Feasibility Analysis}
+\textbf{Phase 2: Interim Report (January - March 2026)}
 
-\subsubsection{Technical Feasibility}
+\begin{itemize}
+    \item Task 2.1: Lab 1 Research - Reconnaissance (14h) - \textbf{CRITICAL}
+    \item Task 2.2: Lab 2 Research - Web Vulnerabilities (14h) - \textbf{CRITICAL}
+    \item Task 2.3: Lab 3 Research - Privilege Escalation (14h) - \textbf{CRITICAL}
+    \item Task 2.4: Technical Write-ups Labs 1 \& 2 (13h)
+    \item Task 2.5: Topology Adjustments (30h)
+    \item Task 2.6: Pre-validation with Pilot Users (20h) - \textbf{CRITICAL}
+    \item Task 2.6.1: Pre-validation Revision (6h) - \textbf{CRITICAL}
+    \item Task 2.7: Analyze and Write Hackathon Results (17h)
+    \item Task 2.8: Interim Report Formalization (40h)
+    \item Task 2.9: Set Up Servers, VMs and EVE-NG (20h)
+    \item Task 2.10: Backup and Documentation of EVE-NG (10h)
+    \item \textbf{Milestone 2.11: Intermediate Thesis (50h)} - \textbf{Delivery: March 20, 2026}
+\end{itemize}
 
-% Secció pendent de desenvolupament
+This phase implements the first three laboratories and validates them with pilot users. Total estimated hours: 212h.
 
-\subsubsection{Economic Feasibility}
+\textbf{Phase 3: Final Delivery (March - May 2026)}
 
-% Secció pendent de desenvolupament
+\begin{itemize}
+    \item Task 3.1: Lab 4 Research - Post-Exploitation (16h) - \textbf{CRITICAL}
+    \item Task 3.2: Lab 3 Validation with Users (12h)
+    \item Task 3.3: Technical Write-ups Labs 3 \& 4 (19h)
+    \item Task 3.4: Penetration Testing Phase 1 (Labs 1-2-3) (30h) - \textbf{CRITICAL}
+    \item Task 3.5: Penetration Testing Phase 2 (All Labs) (25h) - \textbf{CRITICAL}
+    \item Task 3.6: Python Automation Scripts (30h)
+    \item Task 3.7: Final Validation with Pilot Users (18h)
+    \item Task 3.8: Final Review and Project Polishing (25h)
+    \item Task 3.9: TFG Report Writing I (15h) - \textbf{CRITICAL}
+    \item Task 3.10: TFG Report Writing II (40h) - \textbf{CRITICAL}
+    \item Task 3.11: TFG Report Writing III (35h) - \textbf{CRITICAL}
+    \item Task 3.12: Final Revision (15h)
+    \item Task 3.13: Final Report Preparation (20h)
+    \item \textbf{Milestone 3.14: Final Report (5h)} - \textbf{Delivery: May 27, 2026}
+\end{itemize}
 
-\subsubsection{Environmental Feasibility}
+This phase completes the fourth laboratory, performs exhaustive testing, develops automation scripts, and writes the final report. Total estimated hours: 315h.
+
+\subsection{Gantt Chart}
+
+The complete project planning has been managed using an interactive web-based Gantt chart application developed specifically for this TFG. The tool provides:
+
+\begin{itemize}
+    \item Visualization of all 37 tasks across the project timeline
+    \item Identification of 13 critical path tasks
+    \item Progress tracking through completion percentages
+    \item Task categorization into 7 groups
+    \item CSV import/export functionality
+    \item High-resolution PNG export for documentation
+    \item Version history tracking
+\end{itemize}
+\newpage
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{images/gantt_planning.png}
+    \caption{Complete Gantt chart of TFG project planning (exported from interactive tool)}
+    \label{fig:gantt_complete}
+\end{figure}
 
 
-% Secció pendent de desenvolupament
+\subsection{Critical Paths}
 
-\subsubsection{Legal Aspects}
+Critical path tasks are those that directly impact the delivery deadlines and cannot be delayed without affecting subsequent milestones. The project has identified \textbf{13 critical tasks}:
 
-% Secció pendent de desenvolupament
+\begin{table}[H]
+    \centering
+    \small
+    \begin{tabularx}{\textwidth}{|l|X|c|c|}
+    \hline
+    \textbf{ID} & \textbf{Critical Task} & \textbf{Hours} & \textbf{Deadline} \\
+    \hline
+    1.4 & Pentesting Methodology and Validation & 8h & Nov 26, 2025 \\
+    1.10 & Milestone: Preliminary Project & 40h & Jan 16, 2026 \\
+    2.1 & Lab 1 Research & 14h & Jan 26, 2026 \\
+    2.2 & Lab 2 Research & 14h & Jan 31, 2026 \\
+    2.3 & Lab 3 Research & 14h & Feb 7, 2026 \\
+    2.6 & Pre-validation with Pilot Users & 20h & Feb 23, 2026 \\
+    2.6.1 & Pre-validation Revision & 6h & Mar 1, 2026 \\
+    3.1 & Lab 4 Research & 16h & Mar 23, 2026 \\
+    3.4 & Penetration Testing Phase 1 & 30h & Apr 16, 2026 \\
+    3.5 & Penetration Testing Phase 2 & 25h & Apr 30, 2026 \\
+    3.9 & TFG Report Writing I & 15h & May 1, 2026 \\
+    3.10 & TFG Report Writing II & 40h & May 20, 2026 \\
+    3.11 & TFG Report Writing III & 35h & May 25, 2026 \\
+    \hline
+    \multicolumn{2}{|l|}{\textbf{TOTAL CRITICAL PATH}} & \textbf{277h} & \\
+    \hline
+    \end{tabularx}
+    \caption{Critical path tasks requiring strict adherence to deadlines}
+\end{table}
 
-\subsubsection{Gender and Diversity Perspective}
+Any delay in these tasks will cascade to subsequent activities and potentially jeopardize milestone delivery dates.
+ Special monitoring and contingency planning are allocated to these tasks.
 
-% Secció pendent de desenvolupament
+\section{Budget}
+
+\subsection{Cost of Human Resources}
+
+The total estimated effort for the TFG is \textbf{820 hours}, corresponding to the 20 ECTS credits
+ assigned to the subject (25 hours per ECTS). The distribution is as follows:
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|l|r|r|r|}
+    \hline
+    \textbf{Phase} & \textbf{Hours} & \textbf{Hourly Rate} & \textbf{Total Cost} \\
+    \hline
+    Phase 0: Preparation & 105h & 15 \euro/h & 1,575 \euro \\
+    Phase 1: Avantprojecte & 188h & 15 \euro/h & 2,820 \euro \\
+    Phase 2: Interim Report & 212h & 15 \euro/h & 3,180 \euro \\
+    Phase 3: Final Delivery & 315h & 15 \euro/h & 4,725 \euro \\
+    \hline
+    \textbf{TOTAL} & \textbf{820h} & & \textbf{12,300 \euro} \\
+    \hline
+    \end{tabular}
+    \caption{Human resources cost estimation based on junior engineer hourly rate}
+\end{table}
+
+The hourly rate of 15 \euro/hour corresponds to a junior cybersecurity engineer or IT student performing
+ practical work, based on market rates in Spain for internships and entry-level positions in 2025-2026.
+ Despite this, the cost remains theoretical, as the TFG is not a commercial
+ project but an academic exercise. Also, considering the educational context,
+ this cost is not billed to any entity and less being 15 €/hour.
+
+\subsection{Cost of Hardware and Software Resources}
+
+\subsubsection{Hardware Infrastructure}
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|l|r|r|r|}
+    \hline
+    \textbf{Resource} & \textbf{Quantity} & \textbf{Unit Cost} & \textbf{Total} \\
+    \hline
+    HomeLab Server (CPU 28-core, 32GB RAM, +32TB SSD) & 1 & 800 \euro & 800 \euro \\
+    Development Workstation (Laptop + Desktop Computer) & 1 & 1200 \euro & 1200 \euro \\
+    Network Equipment (Router, Switch) & 1 set & 150 \euro & 150 \euro \\
+    External Storage (Backup) & 1 & 100 \euro & 100 \euro \\
+    \hline
+    \textbf{SUBTOTAL Hardware} & & & \textbf{2,250 \euro} \\
+    \hline
+    \end{tabular}
+    \caption{Hardware infrastructure costs}
+\end{table}
+\textbf{Note}: The HomeLab server is a one-time investment that will be reused for future projects and courses,
+ amortizing its cost over multiple years. The development workstation and network equipment are also reusable assets.
+ Although that the use of the HomeLab server, a laptop and a desktop computer is already assumed on Phase 0,
+ and its cost is not directly billed to the project, it's included here for completeness.
+\subsubsection{Software and Licenses}
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|l|r|r|r|}
+    \hline
+    \textbf{Resource} & \textbf{License Type} & \textbf{Unit Cost} & \textbf{Total} \\
+    \hline
+    EVE-NG Community Edition & Free/Open Source & 0 \euro & 0 \euro \\
+    Kali Linux & Free/Open Source & 0 \euro & 0 \euro \\
+    VMware Workstation Pro (Educational) & Educational License & 0 \euro & 0 \euro \\
+    Metasploitable VMs & Free/Open Source & 0 \euro & 0 \euro \\
+    DVWA (Damn Vulnerable Web App) & Free/Open Source & 0 \euro & 0 \euro \\
+    Visual Studio Code & Free/Open Source & 0 \euro & 0 \euro \\
+    LaTeX (TeX Live) & Free/Open Source & 0 \euro & 0 \euro \\
+    Git + GitHub (Student Pack) & Free/Student & 0 \euro & 0 \euro \\
+    Burp Suite Community & Free & 0 \euro & 0 \euro \\
+    Wireshark & Free/Open Source & 0 \euro & 0 \euro \\
+    \hline
+    \textbf{SUBTOTAL Software} & & & \textbf{0 \euro} \\
+    \hline
+    \end{tabular}
+    \caption{Software and license costs (all free/open-source for educational use)}
+\end{table}
+
+A significant advantage of this project is the reliance on free and open-source tools,
+ which reduces costs to zero for software licensing while maintaining professional-grade capabilities.
+
+\subsection{Other Costs}
+%there's no cost on printing and binding, as it's all digital submission
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|l|r|}
+    \hline
+    \textbf{Concept} & \textbf{Cost} \\
+    \hline
+    Electricity consumption (820h × 0.15 kWh × 0.20 \euro/kWh) & 25 \euro \\
+    Internet connectivity (9 months × 40 \euro/month) & 360 \euro \\
+    Documentation printing and binding (3 copies) & 60 \euro \\
+    Contingency fund (5\% of total) & 635 \euro \\
+    \hline
+    \textbf{TOTAL Other Costs} & \textbf{1,080 \euro} \\
+    \hline
+    \end{tabular}
+    \caption{Additional operational costs}
+\end{table}
+
+\subsection{Total Budget Summary}
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|l|r|}
+    \hline
+    \textbf{Category} & \textbf{Total Cost} \\
+    \hline
+    Human Resources & 12,300 \euro \\
+    Hardware Resources & 2,250 \euro \\
+    Software Resources & 0 \euro \\
+    Other Costs & 1,080 \euro \\
+    \hline
+    \textbf{TOTAL PROJECT BUDGET} & \textbf{15,630 \euro} \\
+    \hline
+    \end{tabular}
+    \caption{Complete project budget breakdown}
+\end{table}
+
+\section{Feasibility Analysis}
+
+\subsection{Technical Feasibility}
+
+\subsubsection{Infrastructure Availability}
+
+The project demonstrates \textbf{high technical feasibility} due to the following factors:
+
+\begin{itemize}
+    \item \textbf{Completed Infrastructure Setup}: Phase 0 (Preparation) has been 100\% completed, with HomeLab server, EVE-NG platform, Kali Linux, and development environment fully operational and documented.
+    
+    \item \textbf{Open-Source Ecosystem}: All software components (EVE-NG, Kali Linux, vulnerable VMs, pentesting tools) are mature, well-documented, and widely adopted in professional cybersecurity training.
+    
+    \item \textbf{Proven Technology Stack}: The selected technologies (VMware/EVE-NG for virtualization, Python/Bash for scripting, LaTeX for documentation) are industry-standard and have established best practices.
+    
+    \item \textbf{Academic Support}: Access to institutional resources at Tecnocampus, including academic licenses for software (VMware Workstation Pro), library resources for research, and tutor expertise in cybersecurity and network administration.
+\end{itemize}
+
+\subsubsection{Technical Competencies}
+
+The project requires competencies in multiple areas:
+
+\begin{table}[H]
+    \centering
+    \begin{tabularx}{\textwidth}{|l|X|c|}
+    \hline
+    \textbf{Area} & \textbf{Required Competency} & \textbf{Level} \\
+    \hline
+    Network Administration & Configuration of virtual networks, VLANs, routing, firewall rules & Intermediate \\
+    Operating Systems & Linux administration, Windows Server configuration & Intermediate \\
+    Virtualization & EVE-NG topology design, VM management, resource optimization & Advanced \\
+    Pentesting & Reconnaissance, exploitation, privilege escalation, web vulnerabilities & Intermediate \\
+    Scripting & Python and Bash for automation and validation & Intermediate \\
+    Documentation & LaTeX, technical writing, academic formatting & Intermediate \\
+    \hline
+    \end{tabularx}
+    \caption{Required technical competencies and current proficiency level}
+\end{table}
+
+The student has demonstrated competence in these areas through completed courses
+ (Network Administration, Operating Systems, Software Engineering) and the successful completion of
+  Phase 0 infrastructure setup.
+
+\subsubsection{Risk Mitigation}
+
+Technical risks have been identified and mitigation strategies established:
+
+\begin{itemize}
+    \item \textbf{EVE-NG Performance Issues}: Risk mitigated through hardware dimensioning (32GB RAM, 8-core CPU), resource optimization techniques, and documented fallback to VirtualBox if needed.
+    
+    \item \textbf{VM Incompatibility}: Risk mitigated through early testing of all VM images (Metasploitable, DVWA, Kali Linux), use of standardized formats (QCOW2, VMDK), and maintenance of alternative image repository.
+    
+    \item \textbf{Knowledge Gaps}: Risk mitigated through structured research phase (Task 1.2: State of the Art, 15h), continuous learning during implementation, and access to tutor expertise.
+\end{itemize}
+
+\textbf{Conclusion}: The project is \textbf{technically viable} with a well-prepared infrastructure, appropriate technology stack, and adequate competency level. The main technical challenges are manageable with proper planning and contingency measures.
+
+\subsection{Economic Feasibility}
+
+\subsubsection{Cost-Benefit Analysis}
+
+The project presents \textbf{excellent economic feasibility} for the following reasons:
+
+\begin{itemize}
+    \item \textbf{Zero Software Licensing Costs}: The exclusive use of free and open-source software eliminates recurring licensing expenses, making the solution sustainable for long-term educational use.
+    
+    \item \textbf{Low Infrastructure Investment}: The hardware infrastructure (2,250 \euro) is a one-time investment that can be reused across multiple academic years and courses, amortizing costs over 3-5 years.
+    
+    \item \textbf{Reusability and Scalability}: The teaching package is designed to be reused in multiple course editions (Introduction to Cybersecurity) with minimal maintenance costs, generating value beyond the initial development.
+    
+    \item \textbf{Institutional Value}: The deliverable provides long-term value to Tecnocampus by establishing a reproducible, automated laboratory infrastructure that reduces preparation time for faculty and enhances learning outcomes for students.
+\end{itemize}
+
+\subsubsection{Cost Comparison with Alternatives}
+
+\begin{table}[H]
+    \centering
+    \small
+    \begin{tabularx}{\textwidth}{|l|X|r|}
+    \hline
+    \textbf{Alternative} & \textbf{Description} & \textbf{Annual Cost} \\
+    \hline
+    This Project & Custom EVE-NG labs with automation, tailored to curriculum & 0 \euro/year* \\
+    HackTheBox Academy & Commercial platform with pre-built labs and guided exercises & 1,200 \euro/year \\
+    TryHackMe Education & Gamified learning platform with structured learning paths & 800 \euro/year \\
+    Cybrary for Teams & Video-based training with labs and certification prep & 1,500 \euro/year \\
+    Custom Enterprise Labs & Outsourced lab development by specialized company & 8,000-15,000 \euro \\
+    \hline
+    \end{tabularx}
+    \caption{Cost comparison with commercial alternatives (*excludes initial development)}
+\end{table}
+
+While commercial platforms offer convenience, they lack customization to specific curriculum needs, do not integrate with institutional learning management systems, and incur recurring annual costs. This project provides a tailored, cost-effective, and sustainable solution.
+
+\textbf{Conclusion}: The project demonstrates \textbf{high economic feasibility} with minimal ongoing costs, significant institutional value, and favorable comparison to commercial alternatives.
+
+\subsection{Environmental Feasibility}
+
+\subsubsection{Energy Consumption Analysis}
+
+The environmental impact of this project is primarily related to energy consumption during development and operation:
+
+\begin{itemize}
+    \item \textbf{Development Phase (820 hours)}: 
+    \begin{itemize}
+        \item HomeLab server power consumption: 150W average
+        \item Development workstation: 65W average
+        \item Network equipment: 15W
+        \item Total power: 230W × 820h = 188.6 kWh
+        \item CO₂ emissions (Spain avg. 0.25 kg CO₂/kWh): 47.15 kg CO₂
+    \end{itemize}
+    
+    \item \textbf{Operational Phase (per academic year)}:
+    \begin{itemize}
+        \item Estimated usage: 4 laboratory sessions × 30 students × 3 hours = 360 hours/year
+        \item Power consumption: 230W × 360h = 82.8 kWh/year
+        \item CO₂ emissions: 20.7 kg CO₂/year
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{Comparison with Traditional Alternatives}
+
+\begin{table}[H]
+    \centering
+    \begin{tabularx}{\textwidth}{|l|X|r|}
+    \hline
+    \textbf{Scenario} & \textbf{Description} & \textbf{Annual CO₂} \\
+    \hline
+    This Project & Virtualized labs on shared HomeLab infrastructure & 20.7 kg \\
+    Individual VMs & Each student runs labs on personal computer (30 × 200W × 12h) & 180 kg \\
+    Cloud-Based Labs & AWS/Azure hosted environments (datacenter PUE 1.5) & 95 kg \\
+    Physical Network Lab & Dedicated hardware devices (switches, routers, servers) & 450 kg \\
+    \hline
+    \end{tabularx}
+    \caption{CO₂ emissions comparison across different laboratory approaches}
+\end{table}
+
+\subsubsection{Sustainability Measures}
+
+The project incorporates several sustainability practices:
+
+\begin{itemize}
+    \item \textbf{Resource Optimization}: VMs are configured with minimal resource allocation, suspended when idle, and share infrastructure efficiently through virtualization.
+    
+    \item \textbf{Digital Documentation}: All documentation is maintained in digital format (LaTeX source, PDF outputs), avoiding paper waste except for required printed thesis copies (3 units).
+    
+    \item \textbf{Hardware Longevity}: The HomeLab server is designed for longevity (3-5 years) with modular components that can be upgraded rather than replaced entirely.
+    
+    \item \textbf{Open-Source Philosophy}: Reliance on open-source software reduces electronic waste by extending the lifespan of existing hardware that might be considered obsolete for commercial software requirements.
+\end{itemize}
+
+\textbf{Conclusion}: The project presents \textbf{good environmental feasibility} with significantly lower carbon footprint compared to physical lab alternatives or individual VM deployments. The virtualized approach maximizes resource efficiency and minimizes environmental impact.
+
+\subsection{Legal Aspects}
+
+\subsubsection{Intellectual Property and Licensing}
+
+The project complies with intellectual property regulations:
+
+\begin{itemize}
+    \item \textbf{Open-Source Software}: All utilized software (EVE-NG, Kali Linux, Metasploitable, DVWA) is licensed under permissive open-source licenses (GPL, MIT, Apache 2.0) that explicitly allow educational use, modification, and redistribution.
+    
+    \item \textbf{Virtual Machine Images}: Vulnerable VMs (Metasploitable, DVWA) are provided by their respective projects with explicit permission for cybersecurity training and research purposes.
+    
+    \item \textbf{Documentation Ownership}: Per UPF regulations (Article 10), intellectual property of the TFG belongs to the student. Exploitation rights default to the student unless otherwise agreed with the tutor and institution.
+    
+    \item \textbf{Third-Party Content}: All references, citations, and external resources used in documentation follow IEEE citation standards, ensuring proper attribution and avoiding plagiarism.
+\end{itemize}
+
+\subsubsection{Ethical and Legal Considerations for Pentesting}
+
+The project adheres to ethical hacking principles and legal boundaries:
+
+\begin{itemize}
+    \item \textbf{Controlled Environment}: All pentesting activities are conducted within isolated virtualized environments (EVE-NG sandbox), with no connection to production networks or systems outside the lab.
+    
+    \item \textbf{Authorized Targets}: Only intentionally vulnerable systems (Metasploitable, DVWA) designed explicitly for pentesting training are used as targets.
+    
+    \item \textbf{Educational Purpose}: The project is conducted under academic supervision (Pere Vidiella i Catalan, tutor) within the scope of the "Introduction to Cybersecurity" course curriculum, satisfying the educational exception for security research.
+    
+    \item \textbf{Data Privacy}: No personally identifiable information (PII) or sensitive data is processed during laboratory exercises. All scenarios use synthetic data or publicly available test datasets.
+    
+    \item \textbf{Responsible Disclosure}: In the unlikely event that previously unknown vulnerabilities are discovered in open-source software during testing, they will be reported responsibly to the respective maintainers following coordinated disclosure practices.
+\end{itemize}
+
+\subsubsection{Compliance with Academic Regulations}
+
+The project follows Tecnocampus ESUPT TFG regulations (approved September 30, 2021):
+
+\begin{itemize}
+    \item \textbf{Plagiarism Prevention}: All work is original, properly cited, and verified using plagiarism detection tools. Adherence to Article 11 (Plagiarism) ensuring academic integrity.
+    
+    \item \textbf{Evaluation Criteria}: The project structure follows Chapter 9 (Evaluation) requirements, including continuous assessment (avantprojecte, interim report, final delivery) and tribunal defense.
+    
+    \item \textbf{Documentation Standards}: Formatting adheres to the "Guia per a la redacció i edició del TFG" (ESUPT guidelines), ensuring compliance with submission requirements.
+\end{itemize}
+
+\textbf{Conclusion}: The project demonstrates \textbf{full legal compliance} with intellectual property regulations, ethical hacking principles, and institutional academic standards.
+
+\subsection{Gender and Diversity Perspective}
+
+\subsubsection{Inclusive Language and Representation}
+
+The project incorporates gender and diversity considerations:
+
+\begin{itemize}
+    \item \textbf{Inclusive Language}: All documentation (thesis, technical write-ups, student guides) uses gender-neutral language where possible, avoiding gender-biased assumptions.
+    
+    \item \textbf{Diverse Examples}: Laboratory scenarios and fictional user accounts employ diverse names and backgrounds, reflecting the multicultural and gender-diverse nature of the cybersecurity profession.
+    
+    \item \textbf{Accessibility}: Documentation is structured to be accessible to students with diverse learning needs, including clear formatting, descriptive headings, and optional use of dyslexia-friendly fonts (OpenDyslexic) in LaTeX template.
+\end{itemize}
+
+\subsubsection{Addressing the Gender Gap in Cybersecurity}
+
+Cybersecurity remains a male-dominated field. This project contributes to bridging the gender gap:
+
+\begin{itemize}
+    \item \textbf{Accessible Entry Point}: Well-documented, structured laboratories lower barriers to entry for students traditionally underrepresented in technical fields, providing a supportive learning environment.
+    
+    \item \textbf{Ethical Framework}: Emphasizing the ethical aspects of cybersecurity (responsible disclosure, defensive security, societal impact) may appeal to a broader demographic beyond the stereotype of "hacker culture."
+    
+    \item \textbf{Collaborative Learning}: The design encourages collaborative problem-solving and knowledge sharing rather than competitive dynamics, fostering an inclusive learning culture.
+\end{itemize}
+
+\textbf{Conclusion}: The project demonstrates \textbf{awareness and commitment} to gender and diversity considerations, incorporating inclusive language, diverse representation, and accessibility measures that align with modern educational best practices.
