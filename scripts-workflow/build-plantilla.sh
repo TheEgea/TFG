@@ -1,40 +1,21 @@
-#!/usr/bin/env bash
-set -euo pipefail
+#!/bin/bash
+# ============================================================================
+# TFG BUILD-PLANTILLA.SH — Build Template (Reference Only)
+# ============================================================================
+# Este script es de REFERENCIA solamente.
+# Para compilar, usa los targets de Makefile:
+#   make memoria       → Compila memoria final
+#   make avant         → Compila avantprojecte
+#   make all           → Compila ambos
+# 
+# Ubicación de templates: docs/plantilla/ (reference only)
+# ============================================================================
 
-# Posibles rutas al archivo principal .tex (añadir otras según convenga)
-POSSIBLE_SRC=(  
-  "docs/avantprojecte/Template/tfg_template/main.tex"
-)
-
-# Selecciona la primera ruta existente
-SRC=""
-for p in "${POSSIBLE_SRC[@]}"; do
-  if [ -f "$p" ]; then
-    SRC="$p"
-    break
-  fi
-done
-
-if [ -z "$SRC" ]; then
-  echo "Error: no se encontró el archivo fuente .tex. Busqué en: ${POSSIBLE_SRC[*]}" >&2
-  exit 2
-fi
-
-# Construir rutas absolutas para que latexmk -cd no rompa los paths
-SRC_DIR_ABS=$(cd "$(dirname "$SRC")" && pwd)
-SRC_BASENAME=$(basename "$SRC")
-OUT="$SRC_DIR_ABS/build"
-AUX="$OUT/aux"
-
-mkdir -p "$OUT" "$AUX"
-
-echo "Usando fuente: $SRC"
-echo "Directorio de salida: $OUT"
-
-# -- Cambio: reemplazar -pdf por -xelatex para activar XeLaTeX
-latexmk -cd -xelatex -interaction=nonstopmode -file-line-error \
-  -outdir="$OUT" \
-  -auxdir="$AUX" \
-  "$SRC_DIR_ABS/$SRC_BASENAME"
-
-echo "PDF generado en: $OUT/$(basename "$SRC" .tex).pdf"
+echo "ℹ️  Este script es de referencia."
+echo "Para compilar el TFG, usa:"
+echo ""
+echo "  make memoria    → docs/memoria/main.tex"
+echo "  make avant      → docs/avantprojecte/avantprojecte.tex"
+echo "  make all        → Ambos"
+echo ""
+echo "Ver: Makefile (raíz del repo)"
