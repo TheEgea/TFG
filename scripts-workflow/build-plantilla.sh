@@ -2,8 +2,7 @@
 set -euo pipefail
 
 # Posibles rutas al archivo principal .tex (añadir otras según convenga)
-POSSIBLE_SRC=(
-  # Priorizar la plantilla 'tfg_template' — el usuario indicó que quiere usarla
+POSSIBLE_SRC=(  
   "docs/avantprojecte/Template/tfg_template/main.tex"
 )
 
