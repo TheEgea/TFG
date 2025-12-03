@@ -1,29 +1,32 @@
 #!/bin/bash
-# Script de sincronización rápida Git + Backup SMB
-# Uso: ./sync.sh "mensaje de commit"
+# ============================================================================
+# TFG SYNC.SH — Git Synchronization Script
+# ============================================================================
+# Sincronización completa: pull + commit + push
+# Estructura: docs/memoria/ + docs/avantprojecte/ + scripts-workflow/
+# 
+# Uso: ./scripts-workflow/sync.sh "Commit message"
+# Uso desde Makefile: make sync MSG="tu mensaje"
+# ============================================================================
 
-echo "🚀 Sync TFG - $(date)"
-echo "=================="
+set -e
 
-# Pull últimos cambios
-echo "📥 Pulling cambios desde GitHub..."
-git pull origin main
+MSG="${1:-Sincronización TFG}"
 
-# Añadir todos los cambios
-echo "📝 Añadiendo cambios..."
-git add .
+echo "🔄 Git Sync: $MSG"
+echo ""
 
-# Commit con mensaje
-if [ -n "$1" ]; then
-    git commit -m "$1"
-else
-    echo "💬 Introduce mensaje de commit:"
-    read commit_msg
-    git commit -m "$commit_msg"
-fi
+# Pull desde remoto
+echo "📥 Pull desde GitHub..."
+git pull origin main || { echo "❌ Pull fallido"; exit 1; }
 
-# Push a GitHub
-echo "📤 Pushing a GitHub..."
-git push origin main
+# Commit cambios
+echo "📝 Commit: $MSG"
+git add -A
+git commit -m "$MSG" || echo "ℹ️  Nada que commitear"
 
-echo "✅ Sincronización completada!"
+# Push a remoto
+echo "📤 Push a GitHub..."
+git push origin main || { echo "❌ Push fallido"; exit 1; }
+
+echo "✅ Sincronización completada"

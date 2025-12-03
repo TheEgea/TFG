@@ -1,54 +1,69 @@
-# Scripts de Workflow TFG 🛠️
+# 🔧 scripts-workflow/ — Workflow Automation
 
-Utilitats automatitzades per gestionar el desenvolupament del Treball Final de Grau.
+## Descripción
 
-## 📋 Scripts Disponibles
+Conjunto de scripts bash para automatizar el flujo de trabajo del TFG:
+- Git synchronization (sync, push, pull)
+- Environment setup
+- Utility functions (status, stats, clean)
 
-### 🚀 Scripts Principals de Git
+## Estructura
 
-#### `sync.sh` - Sincronització Completa
-**Ús:** `./sync.sh "missatge de commit"`  
-**Descripció:** Realitza pull, add, commit i push en una sola operació.
-Exemples:
-./sync.sh "docs: actualització capítol introducció"
-./sync.sh "feat: nou laboratori DVWA"
-./sync.sh "fix: correcció scripts automatització"
+'''
+scripts-workflow/
+├── sync.sh # Sincronización completa (pull + commit + push)
+├── push.sh # Push rápido
+├── pull.sh # Pull desde GitHub
+├── utils.sh # Funciones auxiliares
+├── setup-env.sh # Configuración del entorno
+├── build-plantilla.sh # Referencia (deprecated)
+└── README.md # Esta documentación
 
-#### `push.sh` - Push Ràpid
-**Ús:** `./push.sh "missatge de commit"`  
-**Descripció:** Commit i push ràpid sense pull previ.
+'''
 
-#### `pull.sh` - Pull Ràpid
-**Ús:** `./pull.sh`  
-**Descripció:** Baixa últims canvis de GitHub i mostra l'estat.
+## Uso Directo
 
-### 💾 Scripts de Backup
+```bash
+# Sincronización completa
+./scripts-workflow/sync.sh "Commit message"
 
-#### `backup-smb.sh` - Backup al Servidor SMB
-**Ús:** `./backup-smb.sh`  
-**Descripció:** Crea backup completa del projecte al servidor SMB amb timestamp.
+# Push rápido
+./scripts-workflow/push.sh "Commit message"
 
-### ⚙️ Scripts d'Utilitats
+# Pull desde GitHub
+./scripts-workflow/pull.sh
 
-#### `setup-env.sh` - Configuració de l'Entorn
-**Ús:** `./setup-env.sh`  
-**Descripció:** Configura l'entorn de desenvolupament complet.
+# Usar desde Makefile (RECOMENDADO)
+make sync MSG="docs: actualización"
+make push MSG="feat: nuevo laboratorio"
+make pull
+make status
+make stats
+Dependencias
+bash 4.0+
 
-#### `utils.sh` - Utilitats i Estadístiques
-**Ús:** `./utils.sh [comando]`  
-**Comandos:** help, status, clean, stats
+git
 
----
+xelatex, latexmk, biber (para compilación LaTeX)
 
-## 🎯 Workflow Diari Recomanat
+Setup
+'''
+bash
+# Configurar entorno
+make setup
+# o
+./scripts-workflow/setup-env.sh
+'''
+ota sobre Nueva Estructura
+Estos scripts ahora funcionan con:
 
-### Launcher Principal (des de la raíz)
+docs/memoria/main.tex (Memoria final)
 
-Usar el launcher tfg.sh des de la raíz:
-./tfg.sh sync "docs: capítol metodologia completat"
-./tfg.sh push "feat: implementació lab01 reconeixement"
-./tfg.sh backup
-./tfg.sh setup # Obre VSCode automàticament
----
+docs/avantprojecte/avantprojecte.tex (Propuesta inicial)
 
-*Scripts de Workflow TFG v1.0 - Octubre 2025*
+docs/chapters/ (Capítulos compartidos)
+
+docs/resources/ (Recursos compartidos)
+
+Ver ../Makefile para targets de compilación.
+
