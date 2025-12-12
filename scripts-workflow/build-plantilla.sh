@@ -57,6 +57,7 @@ build_document() {
     return 1
   fi
   
+  
   # Construir rutas absolutas
   local src_dir_abs=$(cd "$(dirname "$src_file")" && pwd)
   local src_basename=$(basename "$src_file")
