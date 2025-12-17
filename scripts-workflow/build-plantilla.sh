@@ -4,6 +4,7 @@ set -euo pipefail
 # Posibles rutas al archivo principal .tex (añadir otras según convenga)
 POSSIBLE_SRC=(  
   "docs/avantprojecte/Template/tfg_template/main.tex"
+  "docs/avantprojecte/main.tex"
 )
 
 # Selecciona la primera ruta existente
