@@ -8,27 +8,11 @@
 
 set -euo pipefail
 
-# FUNCIÓN: Mostrar ayuda
-show_help() {
-  echo ""
-  echo "📚 TFG Build Script"
-  echo "=================="
-  echo ""
-  echo "Uso: $0 [memoria|avant|all|clean|help]"
-  echo ""
-  echo "Comandos:"
-  echo "  memoria    → Compila docs/memoria/main.tex → memoria_FINAL.pdf"
-  echo "  avant      → Compila docs/avantprojecte/main.tex → avantprojecte_FINAL.pdf"
-  echo "  all        → Compila ambos"
-  echo "  clean      → Limpia archivos temporales"
-  echo "  help       → Muestra esta ayuda"
-  echo ""
-  echo "Ejemplos:"
-  echo "  $0 memoria"
-  echo "  $0 avant"
-  echo "  $0 all"
-  echo ""
-}
+# Posibles rutas al archivo principal .tex (añadir otras según convenga)
+POSSIBLE_SRC=(  
+  "docs/avantprojecte/Template/tfg_template/main.tex"
+  "docs/avantprojecte/main.tex"
+)
 
 # FUNCIÓN: Compilar un documento
 build_document() {
