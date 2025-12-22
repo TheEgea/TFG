@@ -39,7 +39,7 @@
 \usepackage[nottoc, numbib]{tocbibind} % Inclou bibliografia i índexs automàticament al ToC
 \usepackage[nonumberlist, toc]{glossaries} % Paquet per a la generació del glossari
 \usepackage[style=ieee, backend=biber]{biblatex} % Paquet per gestionar la bibliografia en format IEEE
-\addbibresource{resources/references.bib} % El fitxer .bib amb les referències
+\addbibresource{../resources/references.bib} % El fitxer .bib amb les referències
 
 % Paquets per taules complexes que usa l'apèndix de registre de temps
 \usepackage{array}
@@ -87,7 +87,7 @@
 
 
 % Load glossary definitions from an external file
-\input{resources/glossary.tex}
+\input{../resources/glossary.tex}
 
 
 % Apply glossary and acronym styles
@@ -143,7 +143,7 @@
 
 
 % Imatges
-\graphicspath{{images/}}
+\graphicspath{{../images/}}
 
 
 % ============================================================================
@@ -164,7 +164,7 @@
 \title{
         \begin{figure}
             \centering
-            \includegraphics[width=0.85\linewidth]{images/logo-tecnocampus.png}
+            \includegraphics[width=0.85\linewidth]{../images/logo-tecnocampus.png}
         \end{figure}
         
         \fontsize{14pt}{0pt}\textbf{Bachelor in Computer Engineering — Management and Information Systems} \\
@@ -185,8 +185,8 @@
 }
 \author{
 \fontsize{14pt}{0pt}
-	extbf{Eloi Egea Rada} \\
-	extbf{Supervisor: Pere Vidiella i Catalan}
+	\textbf{Eloi Egea Rada} \\
+	\textbf{Supervisor: Pere Vidiella i Catalan}
 }
 \date{January 2026}
 
@@ -327,7 +327,7 @@ This report is divided into the following chapters:
 % ============================================================================
 
 
-\input{chapters/dedicatoria}
+\input{../chapters/dedicatoria}
 
 
 % ============================================================================
@@ -335,7 +335,7 @@ This report is divided into the following chapters:
 % ============================================================================
 
 
-\input{chapters/01_objecte}
+\input{../chapters/01_objecte}
 
 
 % ============================================================================
@@ -343,7 +343,7 @@ This report is divided into the following chapters:
 % ============================================================================
 
 
-\input{chapters/02_estat_art}
+\input{../chapters/02_estat_art}
 
 
 % ============================================================================
@@ -351,7 +351,7 @@ This report is divided into the following chapters:
 % ============================================================================
 
 
-\input{chapters/03_objectius}
+\input{../chapters/03_objectius}
 
 
 % ============================================================================
@@ -359,7 +359,7 @@ This report is divided into the following chapters:
 % ============================================================================
 
 
-\input{chapters/04_metodologia}
+\input{../chapters/04_metodologia}
 
 
 % ============================================================================
@@ -367,7 +367,7 @@ This report is divided into the following chapters:
 % ============================================================================
 
 
-\input{chapters/05_requeriments}
+\input{../chapters/05_requeriments}
 
 
 % ============================================================================
@@ -375,7 +375,7 @@ This report is divided into the following chapters:
 % ============================================================================
 
 
-\input{chapters/06_viabilitat}
+\input{../chapters/06_viabilitat}
 
 
 % ============================================================================
@@ -568,7 +568,7 @@ els artefactes (PDF, índexs, glosaris) es generin de manera consistent.
 
 
 % Incluir el appendici de registre de temps si existeix (evita fallades si falta)
-\input{resources/appendix_time_log.tex}
+\input{../resources/appendix_time_log.tex}
 
 
 
