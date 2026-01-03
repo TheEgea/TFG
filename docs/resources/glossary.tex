@@ -1,56 +1,120 @@
-% Plantilla LaTeX per a la redacció de Treballs de Fi de Grau (TFG)
-% Autor: Eloi Egea Rada
+% LaTeX Template for Bachelor's Thesis (TFG) Documentation
+% Author: Eloi Egea Rada
 %
 % © 2025, Eloi Egea Rada
-% Aquesta obra està sota una llicència Creative Commons Atribució-NoComercial-CompartirIgual 4.0 Internacional (CC BY-NC-SA 4.0).
+% This work is licensed under a Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License (CC BY-NC-SA 4.0).
+
 
 \newglossaryentry{api_rest}{
     name={API REST},
-    description={Interfície de Programació d'Aplicacions basada en el paradigma \textit{Representational State Transfer} (REST), que utilitza el protocol HTTP per facilitar la comunicació entre sistemes i permet realitzar operacions com consultar, crear, modificar i eliminar recursos de manera escalable i eficient}
+    description={Application Programming Interface grounded in the \textit{Representational State Transfer} (REST) paradigm, leveraging the HTTP protocol to facilitate inter-system communication and enabling scalable, efficient execution of resource operations—querying, creation, modification, and deletion}
 }
 
-% Afegir més entrades rellevants al TFG sobre Pentesting
+
+% Additional entries relevant to the TFG on Penetration Testing
 \newglossaryentry{pentesting}{
     name={Pentesting},
-    description={Assaig de penetració o \textit{penetration testing}, procés autoritzat de simulació d'atacs cibernètics per identificar vulnerabilitats de seguretat en sistemes, xarxes i aplicacions}
+    description={Penetration testing; an authorised, controlled simulation of cyberattacks designed to identify security vulnerabilities across systems, networks, and applications before malicious actors can exploit them}
 }
+
 
 \newglossaryentry{eve_ng}{
     name={EVE-NG},
-    description={\textit{Emulated Virtual Environment - Next Generation}, plataforma de simulació virtual que permet crear topologies de xarxa complexes amb diversos dispositius de xarxa per a propòsits educatius i de testeig}
+    description={\textit{Emulated Virtual Environment - Next Generation}; a sophisticated simulation platform enabling the construction of intricate network topologies with diverse networking devices, tailored for educational and security assessment purposes}
 }
+
 
 \newglossaryentry{kali}{
     name={Kali Linux},
-    description={Distribució Linux especialitzada en pentesting i auditoria de seguretat que inclou centenars d'eines de força bruta, sniffing, escanneig de vulnerabilitats i altres utilitats per a professionals de ciberseguretat}
+    description={A purpose-built Linux distribution tailored for penetration testing and security auditing, encompassing hundreds of specialised tools for brute-force attacks, packet sniffing, vulnerability scanning, and related cybersecurity utilities}
 }
 
+
 \newglossaryentry{vulnerability}{
-    name={Vulnerabilitat},
-    description={Debilitat o defecte en un sistema, aplicació o infraestructura que pot ser explotada per un atacant per accedir-hi sense autorització, causar danys o comprometre la seguretat dels dades}
+    name={Vulnerability},
+    description={A flaw or weakness inherent in a system, application, or infrastructure that can be exploited by an attacker to gain unauthorised access, inflict damage, or compromise data integrity and confidentiality}
 }
+
 
 \newglossaryentry{exploit}{
     name={Exploit},
-    description={Codi, tècnica o procediment que aprofita una vulnerabilitat específica per aconseguir accés no autoritzat o executar codi maliciós en un sistema objectiu}
+    description={A piece of code, technique, or procedure that strategically targets a specific vulnerability to achieve unauthorised access or execute arbitrary code on a target system}
 }
+
 
 \newglossaryentry{payload}{
     name={Payload},
-    description={Component o dades que es transmeten com a part d'un atac, contenen el codi maliciós o les instruccions que l'atacant vol executar en el sistema comprès}
+    description={The component or data transmitted as part of an attack vector, encapsulating the malicious code or instructions the attacker intends to execute within the compromised system}
 }
 
+
 \newglossaryentry{reconnaissance}{
-    name={Reconeixement},
-    description={Fase inicial d'un assaig de penetració on l'atacant recopila informació sobre l'objectiu (sistemes, usuaris, xarxes, serveis) sense accés directe, típicament mitjançant tècniques passives}
+    name={Reconnaissance},
+    description={The initial phase of a penetration test during which the attacker gathers intelligence about the target—encompassing systems, users, networks, and services—typically through passive techniques without direct system access}
 }
+
 
 \newglossaryentry{cvss}{
     name={CVSS},
-    description={\textit{Common Vulnerability Scoring System}, sistema estàndard per a avaluar la gravetat de les vulnerabilitats mitjançant una puntuació numèrica que reflecteix la facilitat d'explotació i l'impacte potencial}
+    description={\textit{Common Vulnerability Scoring System}; a standardised framework for quantifying vulnerability severity through a numerical score that reflects exploitability and potential impact}
 }
+
 
 \newglossaryentry{owasp}{
     name={OWASP},
-    description={\textit{Open Web Application Security Project}, comunitat internacional dedicada a millorar la seguretat del programari web, que publica recursos com el \textit{Top 10} de vulnerabilitats més crítigues}
+    description={\textit{Open Web Application Security Project}; an international community devoted to advancing web application security, renowned for publishing foundational resources including the \textit{Top 10} catalogue of critical vulnerabilities}
+}
+
+
+\newglossaryentry{nist_framework}{
+    name={NIST Cybersecurity Framework},
+    description={A comprehensive framework developed by the National Institute of Standards and Technology to systematically manage and mitigate cybersecurity risk across organisations}
+}
+
+
+\newglossaryentry{cis_controls}{
+    name={CIS Critical Controls},
+    description={A prioritised set of 18 defensive security practices that serve as foundational safeguards against the most prevalent and impactful cyber threats}
+}
+
+
+\newglossaryentry{network_topology}{
+    name={Network Topology},
+    description={The logical and physical arrangement of devices, nodes, and interconnections within a network infrastructure}
+}
+
+
+\newglossaryentry{enumeration}{
+    name={Enumeration},
+    description={The systematic and methodical process of identifying and cataloguing users, active services, and accessible resources within a target environment}
+}
+
+
+\newglossaryentry{privilege_escalation}{
+    name={Privilege Escalation},
+    description={A technique employed to obtain elevated permissions and access levels on a compromised system, often to achieve administrative or root-level control}
+}
+
+
+\newglossaryentry{metasploit}{
+    name={Metasploit Framework},
+    description={An open-source penetration testing platform facilitating the development, customisation, and execution of exploits against target systems}
+}
+
+
+\newglossaryentry{cryptography}{
+    name={Cryptography},
+    description={The mathematical science and practice of safeguarding information through encryption, hashing, and other cryptographic techniques}
+}
+
+
+\newglossaryentry{post_exploitation}{
+    name={Post-Exploitation},
+    description={The phase following initial system compromise, during which the attacker establishes persistence, extracts data, and escalates privileges to maintain long-term control}
+}
+
+
+\newglossaryentry{ethical_hacking}{
+    name={Ethical Hacking},
+    description={Authorised and responsibility-driven penetration testing conducted to proactively identify vulnerabilities before threat actors can weaponise them}
 }

@@ -1,11 +1,4 @@
 #!/usr/bin/env bash
-# ============================================================================
-# build-plantilla.sh - TFG Build Script (Adaptado para estructura nueva)
-# ============================================================================
-# Descripción: Compila memoria o avantprojecte desde línea de comandos
-# Uso: ./scripts-workflow/build-plantilla.sh [memoria|avant]
-# ============================================================================
-
 set -euo pipefail
 
 # Posibles rutas al archivo principal .tex (añadir otras según convenga)
@@ -14,112 +7,53 @@ POSSIBLE_SRC=(
   "docs/avantprojecte/main.tex"
 )
 
-# FUNCIÓN: Compilar un documento
-build_document() {
-  local doc_type=$1
-  local src_file=""
-  local output_name=""
-  
-  case "$doc_type" in
-    "memoria")
-      src_file="docs/memoria/main.tex"
-      output_name="memoria_FINAL"
-      ;;
-    "avant")
-      src_file="docs/avantprojecte/main.tex"
-      output_name="avantprojecte_FINAL"
-      ;;
-    *)
-      echo "❌ Error: Tipo de documento desconocido: $doc_type"
-      return 1
-      ;;
-  esac
-  
-  # Verificar que el archivo existe
-  if [ ! -f "$src_file" ]; then
-    echo "❌ Error: No encontré $src_file"
-    return 1
+# Selecciona la primera ruta existente
+SRC=""
+for p in "${POSSIBLE_SRC[@]}"; do
+  if [ -f "$p" ]; then
+    SRC="$p"
+    break
   fi
-  
-  
-  # Construir rutas absolutas
-  local src_dir_abs=$(cd "$(dirname "$src_file")" && pwd)
-  local src_basename=$(basename "$src_file")
-  local out_dir="$src_dir_abs/build"
-  local aux_dir="$out_dir/aux"
-  
-  # Crear directorios
-  mkdir -p "$out_dir" "$aux_dir"
-  
+done
+
+if [ -z "$SRC" ]; then
+  echo "Error: no se encontró el archivo fuente .tex. Busqué en: ${POSSIBLE_SRC[*]}" >&2
+  exit 2
+fi
+
+# Construir rutas absolutas para que latexmk -cd no rompa los paths
+SRC_DIR_ABS=$(cd "$(dirname "$SRC")" && pwd)
+SRC_BASENAME=$(basename "$SRC")
+OUT="$SRC_DIR_ABS/build"
+AUX="$OUT/aux"
+
+mkdir -p "$OUT" "$AUX"
+
+# Ruta del archivo de log
+LOG="$AUX/build.log"
+
+echo "Usando fuente: $SRC"
+echo "Directorio de salida: $OUT"
+echo "Log guardado en: $LOG"
+echo ""
+
+# -- Cambio: reemplazar -pdf por -xelatex para activar XeLaTeX
+# Capturar toda la salida (stdout + stderr) en el log y mostrar en terminal simultáneamente
+{
+  echo "=== Build iniciado: $(date '+%Y-%m-%d %H:%M:%S') ==="
+  echo "Fuente: $SRC"
+  echo "Directorio de salida: $OUT"
   echo ""
-  echo "📖 Compilando: $doc_type"
-  echo "   Fuente: $src_file"
-  echo "   Salida: $out_dir/$output_name.pdf"
-  echo ""
   
-  # Compilar con latexmk (XeLaTeX, optimizado para TFG)
-  cd "$src_dir_abs"
   latexmk -cd -xelatex -interaction=nonstopmode -file-line-error \
-    -outdir="$out_dir" \
-    -auxdir="$aux_dir" \
-    "$src_basename"
+    -outdir="$OUT" \
+    -auxdir="$AUX" \
+    "$SRC_DIR_ABS/$SRC_BASENAME"
   
-  # Copiar PDF a raíz del repo
-  if [ -f "$out_dir/${src_basename%.tex}.pdf" ]; then
-    cp "$out_dir/${src_basename%.tex}.pdf" "../../$output_name.pdf"
-    echo "✅ PDF generado: $output_name.pdf"
-    cd - > /dev/null
-    return 0
-  else
-    echo "❌ Error: No se generó el PDF"
-    cd - > /dev/null
-    return 1
-  fi
-}
+  echo ""
+  echo "=== Build finalizado: $(date '+%Y-%m-%d %H:%M:%S') ==="
+} 2>&1 | tee "$LOG"
 
-# FUNCIÓN: Limpiar archivos temporales
-clean_build() {
-  echo "🧹 Limpiando archivos temporales..."
-  
-  rm -rf docs/memoria/build
-  rm -rf docs/avantprojecte/build
-  rm -f memoria_FINAL.pdf
-  rm -f avantprojecte_FINAL.pdf
-  
-  echo "✅ Limpieza completa"
-}
-
-# MAIN
-main() {
-  local cmd="${1:-help}"
-  
-  case "$cmd" in
-    "memoria")
-      build_document "memoria"
-      ;;
-    "avant")
-      build_document "avant"
-      ;;
-    "all")
-      clean_build
-      build_document "memoria" || exit 1
-      build_document "avant" || exit 1
-      echo ""
-      echo "✨ BUILD COMPLETADO"
-      ls -lh memoria_FINAL.pdf avantprojecte_FINAL.pdf 2>/dev/null || true
-      ;;
-    "clean")
-      clean_build
-      ;;
-    "help"|"--help"|"-h"|"")
-      show_help
-      ;;
-    *)
-      echo "❌ Comando desconocido: $cmd"
-      echo "Usa: $0 help"
-      exit 1
-      ;;
-  esac
-}
-
-main "$@"
+echo ""
+echo "PDF generado en: $OUT/$(basename "$SRC" .tex).pdf"
+echo "Log completo en: $LOG"
