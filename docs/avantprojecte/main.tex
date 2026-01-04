@@ -112,7 +112,7 @@
     citecolor=black,
     filecolor=magenta,
     urlcolor=blue,
-    pdftitle={Avantprojecte: Pentesting ètic en entorns virtualitzats amb EVE-NG},
+    pdftitle={Avantprojecte: Ethical Pentesting in Virtualized Environments with EVE-NG},
     pdfauthor={Eloi Egea Rada},
     pdfpagemode=FullScreen
 }
@@ -143,7 +143,7 @@
 \fancypagestyle{plain}{
     \fancyhf{}
     \fancyhead[RO,LE]{\fontsize{10}{12}\textit{\thepage}}
-    \fancyhead[RE]{\fontsize{10}{12}\textit{Avantprojecte TFG — Pentesting in virtualized environments}}
+    \fancyhead[RE]{\fontsize{10}{12}\textit{Avantprojecte TFG — Ethical Pentesting in Virtualized Environments with EVE-NG}}
     \fancyfoot{}
 }
 
@@ -207,10 +207,6 @@
 \null
 \newpage
 
-% ============================================================================
-% MAIN CONTENT (1-6 Chapters only — no development/results)
-% ============================================================================
-
 \fancypagestyle{plain}{
     \fancyhf{}
     \fancyhead[RO,LE]{\fontsize{10}{12}\textit{\thepage}}
@@ -222,28 +218,6 @@
 \pagestyle{plain}
 
 \pagenumbering{arabic}
-
-% === CHAPTER 1: OBJECT ===
-\input{../chapters/01_objecte}
-
-% === CHAPTER 2: STATE OF THE ART ===
-\input{../chapters/02_estat_art}
-
-% === CHAPTER 3: OBJECTIVES ===
-\input{../chapters/03_objectius}
-
-% === CHAPTER 4: METHODOLOGY ===
-\input{../chapters/04_metodologia}
-
-% === CHAPTER 5: REQUIREMENTS ===
-\input{../chapters/05_requeriments}
-
-% === CHAPTER 6: FEASIBILITY STUDY (Complete) ===
-\input{../chapters/06_viabilitat}
-
-% ============================================================================
-% BIBLIOGRAPHY
-% ============================================================================
 
 
 
@@ -277,87 +251,61 @@ provides students with the opportunity to practice ethical hacking in a controll
 building upon prior learning while preparing them for the professional responsibility of securing the 
 systems they will design and manage in their careers.
 
-
-
-
-%\section{Estructura de la Memòria}
-\section{Structure of the Report}
-
-
-This report is divided into the following chapters:
-
-
-\begin{enumerate}
-    \item \textbf{Dedicatoria}: To whom the work is dedicated, acknowledgments, and personal reflection.
-    \item \textbf{Introduction and Context}: Motivation and overall structure.
-    \item \textbf{Object of the TFG}: Detailed description of the project.
-    \item \textbf{State of the Art}: Literature review and existing platforms.
-    \item \textbf{Objectives and Scope}: Specific objectives with measurable KPIs.
-    \item \textbf{Methodology}: Process of realization and development.
-    \item \textbf{Requirements}: Technical and functional requirements.
-    \item \textbf{Feasibility Study}: Analysis of technical and economic feasibility.
-    \item \textbf{Results and Conclusions}: Deliverables and conclusions.
-\end{enumerate}
-
-\newpage
 % ============================================================================
-% CAPÍTOL 1: DEDICATÒRIA
+% DEDICATÒRIA
+% ============================================================================
+%\input{../chapters/dedicatoria.tex}
+
+% ============================================================================
+% CAPÍTOL 1: OBJECTE DEL TFG
 % ============================================================================
 
 
-\input{../chapters/dedicatoria}
+\input{../chapters/01_objecte.tex}
 
 
 % ============================================================================
-% CAPÍTOL 2: OBJECTE DEL TFG
+% CAPÍTOL 2: ESTAT DE L'ART
 % ============================================================================
 
 
-\input{../chapters/01_objecte}
+\input{../chapters/02_estat_art.tex}
 
 
 % ============================================================================
-% CAPÍTOL 3: ESTAT DE L'ART
+% CAPÍTOL 3: OBJECTIUS I ABAST
 % ============================================================================
 
 
-\input{../chapters/02_estat_art}
+\input{../chapters/03_objectius.tex}
 
 
 % ============================================================================
-% CAPÍTOL 4: OBJECTIUS I ABAST
+% CAPÍTOL 4: METODOLOGIA
 % ============================================================================
 
 
-\input{../chapters/03_objectius}
+\input{../chapters/04_metodologia.tex}
 
 
 % ============================================================================
-% CAPÍTOL 5: METODOLOGIA
+% CAPÍTOL 5: REQUERIMENTS
 % ============================================================================
 
 
-\input{../chapters/04_metodologia}
+\input{../chapters/05_requeriments.tex}
 
 
 % ============================================================================
-% CAPÍTOL 6: REQUERIMENTS
+% CAPÍTOL 6: ESTUDI DE VIABILITAT
 % ============================================================================
 
 
-\input{../chapters/05_requeriments}
+\input{../chapters/06_viabilitat.tex}
 
 
 % ============================================================================
-% CAPÍTOL 7: ESTUDI DE VIABILITAT
-% ============================================================================
-
-
-\input{../chapters/06_viabilitat}
-
-
-% ============================================================================
-% CAPÍTOL 8: DESENVOLUPAMENT I IMPLEMENTACIÓ (PLACEHOLDER)
+% CAPÍTOL 7: DESENVOLUPAMENT I IMPLEMENTACIÓ (PLACEHOLDER)
 % ============================================================================
 
 
@@ -412,7 +360,7 @@ de les xarxes virtuals, i la implementació de les topologies EVE-NG.}
 
 
 % ============================================================================
-% CAPÍTOL 9: RESULTATS I CONCLUSIONS
+% CAPÍTOL 8: RESULTATS I CONCLUSIONS
 % ============================================================================
 
 
@@ -452,7 +400,11 @@ en pentesting ètic dins del Grau en Enginyeria Informàtica.
 % ANEXOS
 % ============================================================================
 
+\chapter{Appendix - Detailed Analysis}
 
+%\input{../appendix/avantprojecte.tex}
+
+\begin{comment}
 \appendix
 
 
@@ -532,7 +484,7 @@ els artefactes (PDF, índexs, glosaris) es generin de manera consistent.
     \hline
     \end{tabular}
 \end{table}
-
+\end{comment}
 
 % ============================================================================
 % BIBLIOGRAFIA

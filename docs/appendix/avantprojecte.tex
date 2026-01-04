@@ -70,4 +70,434 @@
 \section{Methodology}
 % Content here
 
+
+
+% ============================================================
+% APPENDIX A: DETAILED OBJECT OF THE PROJECT
+% ============================================================
+
+\section{Appendix A: Detailed Analysis of Project Object}
+
+\subsection{A.1 Scope Boundaries (Detailed)}
+
+\subsubsection{Included in this TFG:}
+
+\begin{itemize}
+    \item Design and implementation of 4 pentesting labs in EVE-NG
+    \item Integration of real vulnerabilities aligned with OWASP Top 10  
+    and CIS Critical Controls 
+    \item Automation scripts for deployment, validation, and lab reset 
+    (Bash/Python)
+    \item Complete technical documentation for instructors and future maintainers
+    \item Student guides with structured objectives and self-assessment rubrics
+    \item Assessment rubrics for evaluating lab completion and skill acquisition
+    \item Sustainability plan for institutional maintenance and updates
+\end{itemize}
+
+\subsubsection{Explicitly NOT included (out of scope):}
+
+\begin{itemize}
+    \item Integration with Learning Management Systems (Moodle, Canvas)
+    \item Development of proprietary lab management software or web interfaces
+    \item Automated grading systems beyond basic script validation
+    \item Commercial licensing or distribution models
+    \item Formal pedagogical evaluation studies (pre/post assessments)
+    \item Creation of labs beyond the four specified domains
+    \item Mobile app or cloud hosting solutions
+    \item Real-world penetration testing (legal/ethical limitations)
+\end{itemize}
+
+\subsection{A.2 Comparative Platform Analysis}
+
+\subsubsection{HackTheBox }
+
+\textbf{Strengths:}
+\begin{itemize}
+    \item Large collection of pre-built challenges (200+ machines)
+    \item Strong community support and active development
+    \item Professional-grade difficulty progression
+\end{itemize}
+
+\textbf{Limitations:}
+\begin{itemize}
+    \item Pre-built scenarios; limited topology customization
+    \item External platform dependency; no local control
+    \item Content aligned to commercial certifications, not specific curricula
+    \item Licensing costs for premium features
+\end{itemize}
+
+\textbf{Verdict:} Unsuitable for curriculum-aligned, institution-controlled labs 
+with reproducible infrastructure.
+
+\subsubsection{TryHackMe }
+
+\textbf{Strengths:}
+\begin{itemize}
+    \item Gamified learning paths; beginner-friendly progression
+    \item Large learning library (2000+ rooms)
+    \item Active teacher community
+\end{itemize}
+
+\textbf{Limitations:}
+\begin{itemize}
+    \item Content managed externally; limited customization
+    \item Platform-dependent; free tier is limited
+    \item Scenarios often oversimplified for professional preparation
+    \item Not designed for degree-level curriculum integration
+\end{itemize}
+
+\textbf{Verdict:} Useful for introduction but insufficient for integrated 
+network pentesting scenarios aligned with degree outcomes.
+
+\subsubsection{Cisco Networking Academy }
+
+\textbf{Strengths:}
+\begin{itemize}
+    \item Comprehensive, well-structured curriculum
+    \item Official certification pathway (CCENT, CCNA)
+    \item Institutional support and materials
+\end{itemize}
+
+\textbf{Limitations:}
+\begin{itemize}
+    \item Vendor lock-in (Cisco-specific focus)
+    \item Expensive licensing
+    \item Limited focus on penetration testing (networking-centric)
+    \item Less suitable for general cybersecurity education
+\end{itemize}
+
+\textbf{Verdict:} Valuable for networking curriculum but constrains institutional 
+flexibility and introduces vendor dependency.
+
+\subsubsection{GNS3 }
+
+\textbf{Strengths:}
+\begin{itemize}
+    \item Open-source; locally deployable
+    \item Supports multiple OS (Cisco, Linux, Windows)
+    \item Good network topology customization
+\end{itemize}
+
+\textbf{Limitations:}
+\begin{itemize}
+    \item Limited Docker container support
+    \item Less intuitive UI for complex topologies
+    \item Smaller user base for pentesting scenarios
+    \item Requires more manual configuration
+\end{itemize}
+
+\textbf{Verdict:} Good alternative but less suitable for penetration testing labs 
+with integrated vulnerability scenarios.
+
+\subsubsection{SEED Labs [reference to add]}
+
+\textbf{Strengths:}
+\begin{itemize}
+    \item Comprehensive, research-backed cybersecurity exercises
+    \item Docker-based portability; reproducible environments
+    \item Active community and documentation
+\end{itemize}
+
+\textbf{Limitations:}
+\begin{itemize}
+    \item Fixed scenario design; limited topology flexibility
+    \item Minimal automation for lab reset and deployment
+    \item Focuses on specific security concepts (not integrated pentesting)
+    \item Less suitable for realistic network-wide vulnerabilities
+\end{itemize}
+
+\textbf{Verdict:} Excellent for specific security concepts but less suited 
+for integrated network pentesting scenarios.
+
+\subsubsection{EVE-NG  — SELECTED PLATFORM}
+
+\textbf{Strengths:}
+\begin{itemize}
+    \item Full network topology customization; unlimited flexibility
+    \item Open-source; locally deployable on institutional infrastructure
+    \item Supports multiple virtualization hypervisors (KVM, Docker, VMware)
+    \item Vendor-independent; no licensing fees
+    \item Excellent automation capabilities (REST API, scripting)
+    \item Scalability for multi-lab, cohort-based learning
+    \item Long-term sustainability (community-driven, open ecosystem)
+\end{itemize}
+
+\textbf{Limitations:}
+\begin{itemize}
+    \item Steeper learning curve compared to commercial platforms
+    \item Requires institutional IT infrastructure (server, storage)
+    \item Smaller commercial support ecosystem
+\end{itemize}
+
+\textbf{Verdict:} \textbf{OPTIMAL} for institution-controlled, curriculum-aligned, 
+reusable, sustainable labs.
+
+\subsection{A.3 Curriculum Alignment: Theory to Practice Bridge}
+
+\subsubsection{1. Programming and Software Development}
+
+\textbf{Degree Concept:} Secure coding practices, input validation, error handling
+
+\textbf{Lab Implementation:} Web vulnerabilities lab (Lab 2) demonstrates:
+\begin{itemize}
+    \item SQL injection from insecure database queries
+    \item Cross-site scripting (XSS) from unchecked user input
+    \item Buffer overflows from improper memory handling
+\end{itemize}
+
+\textbf{Student Outcome:} Recognise that defensive programming is not an 
+afterthought but core software engineering practice.
+
+\subsubsection{2. Software Engineering}
+
+\textbf{Degree Concept:} Architectural patterns, design decisions, trade-offs
+
+\textbf{Lab Implementation:} Network topology labs (Labs 1, 3) embody secure 
+and insecure design patterns:
+\begin{itemize}
+    \item Monolithic vs. microservices (segmentation failures)
+    \item Authentication mechanisms (single vs. multi-factor)
+    \item Data separation (VLAN design, database isolation)
+\end{itemize}
+
+\textbf{Student Outcome:} Analyse how architectural decisions directly impact 
+threat landscape.
+
+\subsubsection{3. Systems and Information Engineering}
+
+\textbf{Degree Concept:} Enterprise systems design, integration, service management
+
+\textbf{Lab Implementation:} All labs integrate multiple systems realistically:
+\begin{itemize}
+    \item Databases + web servers (SQL injection scenarios)
+    \item Network services + OS-level services (privilege escalation)
+    \item Application layers + infrastructure layers
+\end{itemize}
+
+\textbf{Student Outcome:} Understand holistic security implications of 
+multi-system design.
+
+\subsubsection{4. Computer Architecture and Networks}
+
+\textbf{Degree Concept:} OS internals, memory management, network protocols
+
+\textbf{Lab Implementation:} Privilege escalation lab (Lab 4) explores:
+\begin{itemize}
+    \item OS-level vulnerabilities (buffer overflows, privilege boundaries)
+    \item Memory management flaws (heap exploitation)
+    \item Network protocol weaknesses (ARP spoofing, DNS hijacking)
+\end{itemize}
+
+\textbf{Student Outcome:} Recognise how architectural design choices create 
+or prevent vulnerabilities.
+
+\subsection{A.4 Pedagogical and Professional Justification}
+
+\subsubsection{Pedagogical Importance}
+
+\textbf{Theory-to-Practice Bridge:} Pentesting labs create the missing link 
+between theoretical coursework (algorithms, protocols, system design) and 
+professional-grade practical experience (real tools, integrated scenarios, 
+time-pressured problem-solving).
+
+\textbf{Active Learning:} Hands-on vulnerability discovery and exploitation 
+is more engaging and memorable than passive lectures or textbook study. 
+Students retain knowledge when they actively exploit vulnerabilities they 
+themselves designed to secure.
+
+\textbf{Professional Preparation:} Students gain hands-on experience with 
+industry-standard tools:
+\begin{itemize}
+    \item Kali Linux  (distribution)
+    \item Metasploit Framework  (exploitation)
+    \item Nmap  (network scanning)
+    \item Wireshark  (network analysis)
+    \item Burp Suite  and OWASP ZAP  (web application testing)
+\end{itemize}
+
+These tools are industry-standard and widely deployed in professional roles.
+
+\textbf{Assessment and Competency Verification:} Structured labs with clear 
+objectives and rubrics enable objective assessment of student competency in:
+\begin{itemize}
+    \item Information gathering and reconnaissance
+    \item Vulnerability identification
+    \item Exploitation techniques
+    \item Impact analysis
+    \item Report writing and communication
+\end{itemize}
+
+\subsubsection{Institutional Importance}
+
+\textbf{Course Enhancement:} The ``Introduction to Cybersecurity'' course 
+gains a modern, practical component that improves student satisfaction, 
+learning outcomes, and perceived career relevance.
+
+\textbf{Reduced Instructor Burden:} Automation scripts and comprehensive 
+documentation minimize preparation time. Instructors focus on learning support 
+rather than lab administration. Estimated reduction: 50\% of lab maintenance time.
+
+\textbf{Reproducibility:} Consistent lab environments ensure fair assessment 
+across multiple course sections and student cohorts. Eliminates ``it worked 
+on my machine'' issues.
+
+\textbf{Scalability:} The reusable package can serve:
+\begin{itemize}
+    \item Multiple offerings of the same course
+    \item Related courses in the degree (advanced cybersecurity, networking security)
+    \item Institutional training and professional development
+    \item Potential distribution to other educational institutions
+\end{itemize}
+
+\subsubsection{Professional Context}
+
+The cybersecurity industry demands professionals who:
+\begin{itemize}
+    \item \textbf{Recognise vulnerabilities in complex environments:} Not isolated 
+    systems but heterogeneous infrastructure (on-premises, cloud, hybrid)
+    \item \textbf{Apply defensive practices informed by attack knowledge:} 
+    Understanding real attack methodologies shapes better defensive architecture
+    \item \textbf{Operate with professional ethics:} Ethical hacking mindset, 
+    legal compliance, responsible disclosure
+    \item \textbf{Use industry standards:} OWASP , CIS , NIST  frameworks, 
+    industry certifications (CEH , OSCP, GPEN)
+\end{itemize}
+
+This project prepares students to meet these professional expectations by 
+providing realistic, integrated training that mirrors professional pentesting 
+workflows.
+
+\subsection{A.5 Expected Outcomes and Success Criteria (Detailed)}
+
+\subsubsection{Deliverables (Quantified)}
+
+\begin{itemize}
+    \item \textbf{Four fully functional EVE-NG lab topologies} (.unl files):
+    \begin{itemize}
+        \item Lab 1: Reconnaissance and Enumeration
+        \item Lab 2: Web Application Vulnerabilities (OWASP)
+        \item Lab 3: Network Analysis and Cryptography
+        \item Lab 4: Privilege Escalation
+    \end{itemize}
+    
+    \item \textbf{8-12 customised virtual machine images} including:
+    \begin{itemize}
+        \item 3x Kali Linux  (attack platforms)
+        \item 1-2x Windows Server (victim systems)
+        \item 2-3x Linux servers (web, database, services)
+        \item 1-2x Network appliances (routers, switches)
+        \item Additional specialised VMs (cryptography, analysis tools)
+    \end{itemize}
+    
+    \item \textbf{Automated deployment and validation scripts}:
+    \begin{itemize}
+        \item Bash scripts for environment initialisation
+        \item Python scripts for lab validation and health checks
+        \item Reset scripts for rapid lab re-deployment
+        \item Time to deployment: <2 minutes per lab (KPI target)
+    \end{itemize}
+    
+    \item \textbf{Technical documentation} (50-100 pages):
+    \begin{itemize}
+        \item Network architecture diagrams (topology, IP schemes, VLAN design)
+        \item Vulnerability implementation documentation
+        \item Remediation strategies and patching procedures
+        \item Maintenance procedures for future instructors
+        \item Troubleshooting guides for common issues
+    \end{itemize}
+    
+    \item \textbf{Student learning guides} (20-30 pages per lab):
+    \begin{itemize}
+        \item Clear learning objectives aligned with GEISI outcomes 
+        \item Step-by-step procedures with expected results
+        \item Self-assessment rubrics for students
+        \item Conceptual questions connecting lab to theory
+    \end{itemize}
+    
+    \item \textbf{Instructor assessment materials}:
+    \begin{itemize}
+        \item Grading rubrics (functionality, security, documentation)
+        \item Expected lab completion times
+        \item Common student mistakes and remediation
+        \item Troubleshooting guide for setup issues
+    \end{itemize}
+    
+    \item \textbf{Reproducible teaching package}:
+    \begin{itemize}
+        \item All files organised in portable Git repository
+        \item Ready for multiple course offerings
+        \item Suitable for institutional sharing or distribution
+        \item Version control and update mechanism
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{Success Criteria (Measurable)}
+
+\textbf{Technical Functionality:}
+\begin{itemize}
+    \item \textbf{Lab Deployment:} All 4 labs deploy without errors in EVE-NG 
+    Community and Professional editions
+    \item \textbf{Vulnerability Presence:} Intended vulnerabilities are exploitable 
+    per design specifications
+    \item \textbf{Automation Success Rate:} Deployment scripts succeed 95\% of the time 
+    (KPI)
+    \item \textbf{Reset Time:} Labs reset to clean state in <30 seconds (KPI)
+\end{itemize}
+
+\textbf{Documentation Completeness:}
+\begin{itemize}
+    \item \textbf{Technical Depth:} Sufficient detail for TecnoCampus IT staff to 
+    maintain and update labs independently
+    \item \textbf{Clarity:} Written for audience with networking/sysadmin background 
+    (not necessarily pentesting experts)
+    \item \textbf{Coverage:} All labs documented with architecture, vulnerabilities, 
+    remediation
+\end{itemize}
+
+\textbf{Student Usability:}
+\begin{itemize}
+    \item \textbf{Learning Guides:} Clear enough for autonomous completion with 
+    minimal instructor intervention
+    \item \textbf{Objectives:} Aligned with GEISI curriculum  and measurable
+    \item \textbf{Self-Assessment:} Students can verify their own lab completion 
+    without immediate instructor feedback
+\end{itemize}
+
+\textbf{Institutional Sustainability:}
+\begin{itemize}
+    \item \textbf{Independence:} Package maintained entirely by TecnoCampus staff 
+    with no external vendor dependencies
+    \item \textbf{Longevity:} Labs remain functional and relevant for 3-5 years 
+    without major redesign
+    \item \textbf{Adaptability:} Core architecture allows easy addition of labs, 
+    vulnerability updates, tool upgrades
+\end{itemize}
+
+\textbf{Transferability:}
+\begin{itemize}
+    \item \textbf{Portability:} Labs deployable on different host infrastructure 
+    (different hypervisors, institutional networks)
+    \item \textbf{Modularity:} Individual labs can be used independently or in sequence
+    \item \textbf{Reusability:} Entire package or individual labs can be adapted 
+    for other courses or institutions
+\end{itemize}
+
+\subsubsection{Measurement Approach}
+
+Success will be verified through:
+
+\begin{itemize}
+    \item \textbf{Deployment Testing:} Attempted deployment in fresh EVE-NG 
+    environment; success = 100\% deployment without errors
+    \item \textbf{Vulnerability Verification:} Penetration testing of each lab 
+    by project supervisor; success = all intended vulns exploitable
+    \item \textbf{Documentation Review:} Review by TecnoCampus IT and course 
+    instructor; success = sufficient for independent maintenance
+    \item \textbf{Pilot Testing:} Deployment with student cohort; success = 
+    80\%+ complete labs without instructor intervention
+    \item \textbf{Time Tracking:} Document actual deployment/reset times; 
+    success = meet KPI targets (<2 min deployment, <30 sec reset)
+\end{itemize}
+
+
 \end{document}
