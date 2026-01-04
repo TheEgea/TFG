@@ -1,0 +1,577 @@
+% LaTeX template for Avantprojecte (TFG Initial Proposal)
+% 
+% Author: Eloi Egea Rada
+% © 2025, Eloi Egea Rada
+% Licensed under CC BY-NC-SA 4.0
+% Template for Final Degree Projects at Centre Universitari TecnoCampus
+
+\documentclass[a4paper, twoside, 12pt, openright]{report}
+
+% ============================================================================
+% PREAMBLE — Packages and configuration 
+% ============================================================================
+
+% --- Typography with XeLaTeX/LuaLaTeX ---
+
+\usepackage{fontspec}
+\usepackage{verbatim}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage[english]{babel}
+\usepackage{csquotes}
+\usepackage{eurosym}
+\usepackage{fancyhdr}
+\usepackage{etoolbox}
+\usepackage{geometry}
+\usepackage{setspace}
+\usepackage{titlesec}
+\usepackage[nottoc, numbib]{tocbibind}
+\usepackage[nonumberlist, toc]{glossaries}
+\usepackage[style=ieee, backend=biber]{biblatex}
+
+% Complex tables for time tracking
+
+\usepackage{array}
+\usepackage{tabularx}
+
+% Hyperlinks
+
+\usepackage{hyperref}
+
+% ============================================================================
+% OPENDYSLEXIC FONTS SELECTION
+% ============================================================================
+
+\setmainfont{OpenDyslexic}[
+    Path = /usr/share/fonts/opentype/opendyslexic/,
+    Extension = .otf,
+    UprightFont = *-Regular,
+    BoldFont = *-Bold,
+    ItalicFont = *-Italic,
+    BoldItalicFont = *-BoldItalic
+]
+
+\setsansfont{OpenDyslexicAlta}[
+    Path = /usr/share/fonts/opentype/opendyslexic/,
+    Extension = .otf,
+    UprightFont = *-Regular,
+    BoldFont = *-Bold,
+    ItalicFont = *-Italic,
+    BoldItalicFont = *-BoldItalic
+]
+
+\setmonofont{OpenDyslexicMono}[
+    Path = /usr/share/fonts/opentype/opendyslexic/,
+    Extension = .otf,
+    UprightFont = *-Regular
+]
+
+% ============================================================================
+% BIBLIOGRAPHY
+% ============================================================================
+
+\addbibresource{../resources/references.bib}
+
+% ============================================================================
+% LOAD GLOSSARY
+% ============================================================================
+
+\input{../resources/glossary.tex}
+
+\setglossarystyle{altlist}
+
+\setacronymstyle{long-short}
+
+\makeglossaries
+
+% ============================================================================
+% TITLE FORMATTING
+% ============================================================================
+
+\titleformat{\chapter}[block]{\normalfont\fontsize{18pt}{0pt}\bfseries}{\thechapter}{1em}{}
+\titlespacing*{\chapter}{0pt}{0pt}{\baselineskip}
+
+\titleformat{\section}[block]{\normalfont\fontsize{16pt}{0pt}\bfseries}{\thesection}{1em}{}
+\titleformat{\subsection}[block]{\normalfont\fontsize{14pt}{0pt}\bfseries}{\thesubsection}{1em}{}
+
+% ============================================================================
+% HYPERLINK CONFIGURATION
+% ============================================================================
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=black,
+    citecolor=black,
+    filecolor=magenta,
+    urlcolor=blue,
+    pdftitle={Avantprojecte: Ethical Pentesting in Virtualized Environments with EVE-NG},
+    pdfauthor={Eloi Egea Rada},
+    pdfpagemode=FullScreen
+}
+
+% ============================================================================
+% PAGE MARGINS CONFIGURATION
+% ============================================================================
+
+\geometry{top=3cm, bottom=2.54cm, left=3cm, right=2.54cm, bindingoffset=0.46cm}
+\setlength{\headheight}{14.5pt}
+\setlength{\parindent}{0pt}
+
+% Imatges
+
+\graphicspath{{../images/}}
+
+
+% ============================================================================
+% COVER PAGE & PRELIMINARIES
+% ============================================================================
+
+\fancypagestyle{plain}{
+    \fancyhf{}
+    \fancyhead[RO,LE]{\fontsize{10}{12}\textit{\thepage}}
+    \fancyhead[RE]{\fontsize{10}{12}\textit{Avantprojecte TFG — Ethical Pentesting in Virtualized Environments with EVE-NG}}
+    \fancyfoot{}
+}
+
+\pagestyle{plain}
+
+\title{
+        \begin{figure}
+            \centering
+            \includegraphics[width=0.85\linewidth]{../images/logo-tecnocampus.png}
+        \end{figure}
+        
+        \fontsize{14pt}{0pt}\textbf{Bachelor in Computer Engineering — Management and Information Systems} \\
+        
+        \vspace*{3cm}
+
+
+        \textbf{Ethical Pentesting in Virtualized Environments with EVE-NG} \\
+
+
+        \vspace*{1.5cm}
+
+
+        \textbf{Final Degree Project Report}
+
+
+        \vspace*{5cm}
+}
+
+\author{
+\fontsize{14pt}{0pt}
+	\textbf{Eloi Egea Rada} \\
+	\textbf{Supervisor: Pere Vidiella i Catalan}
+}
+
+\date{December 2025}
+
+% ============================================================================
+% DOCUMENT START
+% ============================================================================
+
+\begin{document}
+
+% === COVER PAGE ===
+
+\maketitle
+
+\newpage
+\thispagestyle{empty}
+\null
+\newpage
+
+% ============================================================================
+% TABLE OF CONTENTS & PRELIMINARY PAGES
+% ============================================================================
+
+\pagenumbering{Roman}
+
+\tableofcontents
+
+\onehalfspacing
+\setlength{\parskip}{12pt}
+
+\printglossary
+
+\newpage
+\null
+\newpage
+
+% ============================================================================
+% MAIN CONTENT HEADERS (SETUP FOR BODY)
+% ============================================================================
+
+\fancypagestyle{plain}{
+
+\fancyhf{}
+
+\fancyhead[RO,LE]{\fontsize{10}{12}\textit{\thepage}}
+
+\fancyhead[LO]{\fontsize{10}{12}\textit{\nouppercase{\textit{\leftmark}}}}
+
+\fancyhead[RE]{\fontsize{10}{12}\textit{Avantprojecte TFG — Pentesting in virtualized environments}}
+
+\fancyfoot{}
+
+}
+
+\pagestyle{plain}
+
+\pagenumbering{arabic}
+
+% ============================================================================
+% CHAPTER 0: INTRODUCTION AND CONTEXT
+% ============================================================================
+
+\chapter{Introduction and Context}
+
+\section{Motivation and Justification}
+
+Ethical hacking, or pentesting, is a critical skill in today's cybersecurity landscape. With the increasing
+
+reliance on virtualized environments, there is a growing need for practical training platforms that simulate
+
+real-world scenarios. While platforms such as HackTheBox and TryHackMe have become increasingly popular for
+
+cybersecurity training, they often focus on isolated challenges and gamified scenarios that may not directly
+
+reflect the practical application of computer science fundamentals taught in a degree program. EVE-NG
+
+(Emulated Virtual Environment Next Generation) offers a complementary and more customizable approach,
+
+providing a robust solution for creating controlled, hands-on learning environments.
+
+This project aims to develop a series of practical laboratories using EVE-NG that explicitly bridge the
+
+foundational concepts covered throughout the degree program---including databases, network protocols, and
+
+operating system internals---with real-world security vulnerabilities and pentesting techniques. By
+
+demonstrating how these academic concepts can be exploited, students gain a deeper appreciation for
+
+defensive security practices and the critical importance of secure system design. This approach transforms
+
+abstract knowledge into hands-on experience where students can observe the direct consequences of security
+
+misconfigurations and understand why rigorous cybersecurity practices are essential.
+
+Furthermore, by leveraging EVE-NG, this project seeks to fill a gap in comprehensive educational resources
+
+that integrate multiple pentesting tools and attack scenarios into a cohesive learning environment aligned
+
+with the Computer Engineering curriculum. This reproducible, risk-free, and fully customizable approach
+
+provides students with the opportunity to practice ethical hacking in a controlled setting, progressively
+
+building upon prior learning while preparing them for the professional responsibility of securing the
+
+systems they will design and manage in their careers.
+
+\section{Structure of the Report}
+
+This Avantprojecte is divided into the following sections:
+
+\begin{enumerate}
+
+\item \textbf{Chapter 1: Dedication}: To whom the work is dedicated, acknowledgments, and personal reflection.
+
+\item \textbf{Chapter 2: Object of the Project}: Detailed description and justification of the TFG.
+
+\item \textbf{Chapter 3: State of the Art}: Literature review and existing platforms.
+
+\item \textbf{Chapter 4: Objectives and Scope}: Specific objectives with measurable KPIs.
+
+\item \textbf{Chapter 5: Methodology}: Process of realization and development.
+
+\item \textbf{Chapter 6: Requirements}: Technical and functional requirements.
+
+\item \textbf{Chapter 7: Feasibility Study}: Analysis of technical and economic feasibility.
+
+\item \textbf{Chapter 8: Development and Implementation}: High-level overview of planned implementation.
+
+\item \textbf{Chapter 9: Results and Conclusions}: Deliverables and conclusions.
+
+\item \textbf{Appendices}: Detailed analysis, comparative studies, and supplementary materials.
+
+\end{enumerate}
+
+Detailed analysis, comparative platform studies, and success criteria are provided in the Appendices.
+
+\newpage
+
+% ============================================================================
+
+% CHAPTER 0: DEDICATION
+
+% ============================================================================
+
+\chapter{Dedication}
+
+\input{../chapters/dedicatoria}
+
+% ============================================================================
+
+% CHAPTER 1: OBJECT OF THE PROJECT
+
+% ============================================================================
+
+\chapter{Object of the Project}
+
+\input{../chapters/01_objecte}
+
+% ============================================================================
+
+% CHAPTER 2: STATE OF THE ART
+
+% ============================================================================
+
+\chapter{State of the Art}
+
+\input{../chapters/02_estat_art}
+
+% ============================================================================
+
+% CHAPTER 3: OBJECTIVES AND SCOPE
+
+% ============================================================================
+
+\chapter{Objectives and Scope}
+
+\input{../chapters/03_objectius}
+
+% ============================================================================
+
+% CHAPTER 4: METHODOLOGY
+
+% ============================================================================
+
+\chapter{Methodology}
+
+\input{../chapters/04_metodologia}
+
+% ============================================================================
+
+% CHAPTER 5: FUNCTIONAL AND TECHNICAL REQUIREMENTS
+
+% ============================================================================
+
+\chapter{Functional and Technical Requirements}
+
+\input{../chapters/05_requeriments}
+
+% ============================================================================
+
+% CHAPTER 6: FEASIBILITY STUDY
+
+% ============================================================================
+
+\chapter{Feasibility Study}
+
+\input{../chapters/06_viabilitat}
+
+% ============================================================================
+
+% CHAPTER 7: DEVELOPMENT AND IMPLEMENTATION
+
+% ============================================================================
+
+\chapter{Development and Implementation}
+
+\section{General Architecture}
+
+\textit{En aquesta secció es descriurà l'arquitectura dels laboratoris, la configuració
+
+de les xarxes virtuals, i la implementació de les topologies EVE-NG.}
+
+\section{Lab 1: Reconnaissance and Enumeration}
+
+\subsection{Lab Objectives}
+
+\begin{itemize}
+
+\item Familiarization with scanning tools (nmap, Nessus)
+
+\item Service enumeration and vulnerability identification
+
+\item Documentation of findings
+
+\end{itemize}
+
+\subsection{Network Topology}
+
+\textit{Diagram of the network and virtual machines composing this lab.}
+
+\section{Lab 2: Web Application Vulnerabilities}
+
+\subsection{OWASP Top 10}
+
+\textit{Exploration of critical vulnerabilities according to OWASP.}
+
+\section{Lab 3: Network Traffic Analysis and Cryptography}
+
+\textit{Network communication analysis with Wireshark and cryptography techniques.}
+
+\section{Lab 4: Privilege Escalation}
+
+\textit{Privilege escalation techniques on Unix and Windows systems.}
+
+% ============================================================================
+
+% CHAPTER 8: RESULTS AND CONCLUSIONS
+
+% ============================================================================
+
+\chapter{Results and Conclusions}
+
+\section{Deliverables}
+
+\begin{itemize}
+
+\item 4 functional EVE-NG lab topologies (.unl files)
+
+\item 8-12 optimized virtual machine images
+
+\item Deployment automation scripts
+
+\item Complete technical documentation per lab
+
+\item Practical student guides
+
+\item Assessment rubrics and instructor materials
+
+\end{itemize}
+
+\section{Conclusions}
+
+The development of these laboratories provides a solid foundation for training in ethical pentesting within the Bachelor's Degree in Computer Engineering.
+
+\section{Recommendations for Future Work}
+
+\begin{itemize}
+
+\item Integration with other educational platforms (Moodle)
+
+\item Expansion with IoT and 5G network labs
+
+\item Automated assessment and grading automation
+
+\item Extension to advanced penetration testing scenarios
+
+\item Integration with capstone projects
+
+\end{itemize}
+
+% ============================================================================
+
+% APPENDICES
+
+% ============================================================================
+
+\appendix
+
+\chapter{Appendices - Detailed Analysis}
+
+\input{../appendix/avantprojecte}
+
+% ============================================================================
+
+% BIBLIOGRAPHY
+
+% ============================================================================
+
+\cleardoublepage
+
+\phantomsection
+
+\addcontentsline{toc}{chapter}{Bibliography}
+
+\printbibliography
+
+% ============================================================================
+
+% TIME LOG APPENDIX
+
+% ============================================================================
+
+\input{../resources/appendix_time_log.tex}
+
+\end{document}
+
+
+
+
+% ============================================================================
+% OLD_VERSION
+% ===========================================================================
+% 01_objecte.tex 
+\chapter{Object of the Project}
+
+\section{Problem Statement and Educational Gap}
+
+Cybersecurity education faces a critical disconnect: students learn theoretical 
+IT foundations---databases, network protocols, operating systems---yet rarely 
+experience how design flaws translate to security vulnerabilities. Current 
+training platforms (HackTheBox, TryHackMe) focus on isolated challenges that 
+abstract system complexity. Professional pentesting certifications expect 
+hands-on experience in realistic environments, yet academic programs lack such 
+environments due to cost, complexity, and vendor lock-in.
+
+Within TecnoCampus's Bachelor's Degree in Computer Engineering, the 
+``Introduction to Cybersecurity'' course lacks a structured, reusable, 
+reproducible lab environment that: (1) aligns pentesting with degree learning 
+outcomes, (2) demonstrates vulnerabilities in integrated systems, (3) enables 
+consistent assessment, (4) reduces instructor burden through automation, and 
+(5) remains cost-effective and institution-independent.
+
+\section{Project Description and Scope}
+
+This TFG develops a comprehensive teaching package of four virtualized 
+cybersecurity laboratories using EVE-NG for the ``Introduction to Cybersecurity'' 
+course. Detailed architecture and design rationale are provided in Appendix A.
+
+\textbf{High-level deliverables:}
+
+\begin{itemize}
+\item 4 functional EVE-NG lab topologies (.unl files)
+\item 8-12 customized VM images with preconfigured vulnerabilities
+\item Automated deployment and reset scripts
+\item Complete technical documentation (50-100 pages)
+\item Student learning guides with objectives and assessment rubrics
+\item Instructor materials including grading rubrics and troubleshooting
+\end{itemize}
+
+\textbf{Scope boundaries:} See Appendix A.1 for detailed inclusion/exclusion list.
+
+\section{Why EVE-NG? Selection Rationale}
+
+EVE-NG was selected through comparative analysis of alternatives 
+(HackTheBox, TryHackMe, Cisco Netacad, GNS3, SEED Labs). 
+Key advantages: full network topology customization, open-source, 
+locally deployable, vendor-independent, excellent automation. 
+Detailed comparison is provided in Appendix A.2.
+
+\section{Alignment with Computer Engineering Degree}
+
+This project creates explicit connections between four core competencies 
+taught throughout the degree and their cybersecurity applications: 
+(1) programming and secure coding, (2) software engineering architectures, 
+(3) systems and information engineering, (4) computer architecture and networks. 
+See Appendix A.3 for detailed mapping.
+
+\section{Justification and Professional Context}
+
+Cybersecurity professionals must recognize vulnerabilities in complex, 
+integrated systems using industry standards (OWASP, CIS, NIST) and 
+standard tools (Kali, Metasploit, Wireshark). This project prepares students 
+to meet these expectations. Full pedagogical and professional justification 
+is documented in Appendix A.4.
+
+\section{Expected Outcomes and Success Criteria}
+
+Four functional labs, 8-12 optimised VMs, deployment automation scripts, 
+technical documentation, student guides, assessment materials, and a 
+reproducible teaching package suitable for multiple course offerings and 
+institutional sharing. Success measured by: functionality, documentation 
+completeness, student usability, institutional sustainability, and 
+transferability. Detailed criteria in Appendix A.5.
