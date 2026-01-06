@@ -19,14 +19,6 @@
 \usepackage[english]{babel}
 \usepackage{csquotes}
 \usepackage{eurosym}
-\usepackage{fancyhdr}
-\usepackage{etoolbox}
-\usepackage{geometry}
-\usepackage{setspace}
-\usepackage{titlesec}
-\usepackage[nottoc, numbib]{tocbibind}
-\usepackage[nonumberlist, toc]{glossaries}
-\usepackage[style=ieee, backend=biber]{biblatex}
 
 \usepackage{fancyhdr} % Per personalitzar capçaleres i peus de pàgina
 \usepackage{etoolbox} % Per canviar estils de numeració
@@ -36,7 +28,6 @@
 \usepackage[nottoc, numbib]{tocbibind} % Inclou bibliografia i índexs automàticament al ToC
 \usepackage[nonumberlist, toc]{glossaries} % Paquet per a la generació del glossari
 \usepackage[style=ieee, backend=biber]{biblatex} % Paquet per gestionar la bibliografia en format IEEE
-\addbibresource{../resources/references.bib} % El fitxer .bib amb les referències
 
 % Complex tables for time tracking
 \usepackage{array}
@@ -84,13 +75,9 @@
 \setglossarystyle{altlist}
 \setacronymstyle{long-short}
 \makeglossaries
+\addbibresource{../resources/references.bib} % El fitxer .bib amb les referències
 
 
-
-% Apply glossary and acronym styles
-\setglossarystyle{altlist}
-\setacronymstyle{long-short}
-\makeglossaries
 
 % ============================================================================
 % TITLE FORMATTING
@@ -112,7 +99,7 @@
     citecolor=black,
     filecolor=magenta,
     urlcolor=blue,
-    pdftitle={Avantprojecte: Ethical Pentesting in Virtualized Environments with EVE-NG},
+    pdftitle={Ethical Pentesting in Virtualized Environments with EVE-NG},
     pdfauthor={Eloi Egea Rada},
     pdfpagemode=FullScreen
 }
@@ -143,7 +130,7 @@
 \fancypagestyle{plain}{
     \fancyhf{}
     \fancyhead[RO,LE]{\fontsize{10}{12}\textit{\thepage}}
-    \fancyhead[RE]{\fontsize{10}{12}\textit{Avantprojecte TFG — Ethical Pentesting in Virtualized Environments with EVE-NG}}
+    \fancyhead[RE]{\fontsize{10}{12}\textit{Ethical Pentesting in Virtualized Environments with EVE-NG}}
     \fancyfoot{}
 }
 
@@ -166,7 +153,7 @@
         \vspace*{1.5cm}
 
 
-        \textbf{Final Degree Project Report}
+        \textbf{Final Degree Project}
 
 
         \vspace*{5cm}
@@ -201,7 +188,7 @@
 \onehalfspacing
 \setlength{\parskip}{12pt}
 
-\printglossary
+\printglossary[title=Glossary]
 
 \newpage
 \null
@@ -211,7 +198,7 @@
     \fancyhf{}
     \fancyhead[RO,LE]{\fontsize{10}{12}\textit{\thepage}}
     \fancyhead[LO]{\fontsize{10}{12}\textit{\nouppercase{\textit{\leftmark}}}}
-    \fancyhead[RE]{\fontsize{10}{12}\textit{Avantprojecte TFG — Pentesting in virtualized environments}}
+    \fancyhead[RE]{\fontsize{10}{12}\textit{Ethical Pentesting in Virtualized Environments with EVE-NG}}
     \fancyfoot{}
 }
 
@@ -224,32 +211,86 @@
 %\chapter{Introducció i Context}
 \chapter{Introduction and Context}
 
+\section{Personal Background and Motivation}
 
-%\section{Motivació i Justificació}
-\section{Motivation and Justification}
+My interest in cybersecurity emerged from hands-on experimentation during 
+secondary education (ESO). Rather than purely theoretical learning, I discovered 
+practical vulnerabilities in institutional networks through systematic trial-and-error methods:
 
-Ethical hacking, or pentesting, is a critical skill in today's cybersecurity landscape. With the increasing 
-reliance on virtualized environments, there is a growing need for practical training platforms that simulate 
-real-world scenarios. While platforms such as HackTheBox and TryHackMe have become increasingly popular for 
-cybersecurity training, they often focus on isolated challenges and gamified scenarios that may not directly 
-reflect the practical application of computer science fundamentals taught in a degree program. EVE-NG 
-(Emulated Virtual Environment Next Generation) offers a complementary and more customizable approach, 
-providing a robust solution for creating controlled, hands-on learning environments.
+\begin{itemize}
 
-This project aims to develop a series of practical laboratories using EVE-NG that explicitly bridge the 
-foundational concepts covered throughout the degree program---including databases, network protocols, and 
-operating system internals---with real-world security vulnerabilities and pentesting techniques. By 
-demonstrating how these academic concepts can be exploited, students gain a deeper appreciation for 
-defensive security practices and the critical importance of secure system design. This approach transforms 
-abstract knowledge into hands-on experience where students can observe the direct consequences of security 
+\item \textbf{Credential Bypass:} Learning Windows 7 authentication mechanisms 
+and their weaknesses led to understanding fundamental principles of access control 
+and privilege boundaries
+
+\item \textbf{Network Access:} Connecting to private networks within the school 
+environment illustrated how network segmentation fails without proper controls
+
+\item \textbf{Device Control:} Discovering the ability to remotely control network 
+devices (access points, routers, digital whiteboards) demonstrated how operational 
+technology lacks robust security hardening
+
+\end{itemize}
+
+While these early experiments were conducted without formal authorization, they illuminated 
+a fundamental insight: \textbf{understanding how systems fail is essential for designing 
+systems that don't}. This practical, curiosity-driven learning proved far more memorable 
+and impactful than textbook-based instruction. The direct observation of security failures 
+in real infrastructure sparked sustained interest in both the technical and pedagogical 
+dimensions of cybersecurity education.
+
+\section{The Pedagogical Disconnect}
+
+Ethical hacking, or pentesting, has become a critical skill in today's cybersecurity 
+landscape. With the increasing reliance on virtualized environments, there is a growing 
+need for practical training platforms that simulate real-world scenarios. However, current 
+educational approaches present a significant challenge: while platforms such as HackTheBox\cite{hackthebox} 
+and TryHackMe\cite{tryhackme} have become increasingly popular for cybersecurity training, they often focus 
+on isolated challenges and gamified scenarios that may not directly reflect the practical 
+application of computer science fundamentals taught in a degree program.
+
+This educational disconnect manifests in several ways:
+
+\begin{enumerate}
+
+\item \textbf{Theory-to-Practice Gap:} Students learn databases, networks, and operating 
+systems in isolation. They rarely experience how misconfigurations in these foundational 
+systems translate to security vulnerabilities exploitable in real-world attacks.
+
+\item \textbf{Tool-Centric Rather Than Methodology-Centric Learning:} Commercial platforms 
+teach tool usage (``how to use Nmap'') rather than systematic penetration testing methodologies 
+(``how to conduct reconnaissance'').
+
+\item \textbf{Fragmented Learning Paths:} No comprehensive platform integrates multiple 
+pentesting domains (reconnaissance --> web vulnerabilities --> network analysis --> privilege 
+escalation) while maintaining alignment with specific degree curricula.
+
+\item \textbf{Institutional Dependencies:} External platforms introduce vendor lock-in, 
+limit customization, and reduce institutional control over assessment and content evolution.
+
+\end{enumerate}
+
+\section{The Role of EVE-NG in Bridging the Gap}
+
+EVE-NG (Emulated Virtual Environment Next Generation) offers a complementary and more 
+customizable approach, providing a robust solution for creating controlled, hands-on learning 
+environments that address these pedagogical gaps.
+
+This project aims to develop a series of practical laboratories using EVE-NG that explicitly 
+bridge the foundational concepts covered throughout the Computer Engineering degree program
+---including databases, network protocols, and operating system internals---with real-world 
+security vulnerabilities and pentesting techniques. By demonstrating how these academic 
+concepts can be exploited, students gain a deeper appreciation for defensive security practices 
+and the critical importance of secure system design. This approach transforms abstract knowledge 
+into hands-on experience where students can observe the direct consequences of security 
 misconfigurations and understand why rigorous cybersecurity practices are essential.
 
-Furthermore, by leveraging EVE-NG, this project seeks to fill a gap in comprehensive educational resources 
-that integrate multiple pentesting tools and attack scenarios into a cohesive learning environment aligned 
-with the Computer Engineering curriculum. This reproducible, risk-free, and fully customizable approach 
-provides students with the opportunity to practice ethical hacking in a controlled setting, progressively 
-building upon prior learning while preparing them for the professional responsibility of securing the 
-systems they will design and manage in their careers.
+Furthermore, by leveraging EVE-NG, this project seeks to fill a gap in comprehensive educational 
+resources that integrate multiple pentesting tools and attack scenarios into a cohesive learning 
+environment aligned with the Computer Engineering curriculum. This reproducible, risk-free, and 
+fully customizable approach provides students with the opportunity to practice ethical hacking 
+in a controlled setting, progressively building upon prior learning while preparing them for 
+the professional responsibility of securing the systems they will design and manage in their careers.
 
 % ============================================================================
 % DEDICATÒRIA
@@ -402,7 +443,7 @@ en pentesting ètic dins del Grau en Enginyeria Informàtica.
 
 \chapter{Appendix - Detailed Analysis}
 
-%\input{../appendix/avantprojecte.tex}
+\input{../appendix/avantprojecte.tex}
 
 \begin{comment}
 \appendix
@@ -498,9 +539,12 @@ els artefactes (PDF, índexs, glosaris) es generin de manera consistent.
 
 
 % Incluir el appendici de registre de temps si existeix (evita fallades si falta)
+
+\appendix
+\cleardoublepage
+\chapter*{Appendix}
+\addcontentsline{toc}{chapter}{Appendix}
+
 \input{../resources/appendix_time_log.tex}
-
-
-
 
 \end{document}
