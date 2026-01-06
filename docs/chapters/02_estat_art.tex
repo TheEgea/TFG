@@ -1,20 +1,406 @@
-%\section{Estat de l'Art}
+% ============================================================
+% CHAPTER 2: STATE OF THE ART
+% Autor: Eloi Egea Rada
+% Tema: Existing solutions, platforms, and gap analysis
+% ============================================================
+
 \chapter{State of the Art}
-\section{Context and Background}
 
-% Secció pendent de desenvolupament
+\section{Introduction: The Landscape of Cybersecurity Education}
 
-\section{Overview of the Main Theories}
+Cybersecurity education has experienced exponential growth over the past decade, driven by increasing industry demand for skilled professionals and the accessibility of online learning platforms. However, this landscape presents both opportunities and challenges: while students have unprecedented access to training resources, the fragmentation of educational approaches has created gaps between abstract theoretical knowledge and practical, integrated system security. This chapter examines existing educational platforms and methodologies, identifies gaps in current offerings, and positions this TFG project within the broader context of cybersecurity pedagogical innovation.
 
-% Secció pendent de desenvolupament
+---
 
-\section{Existing Technological Solutions}
+\section{Existing Laboratory and Training Platforms}
 
-% Secció pendent de desenvolupament
+The following section provides a comprehensive overview of major platforms used for cybersecurity education and practical training.
 
-\section{Interpretation and Reflection on the Sources}
+\subsection{HackTheBox}
 
-% Secció pendent de desenvolupament
+\textbf{Overview:} HackTheBox is a prominent online platform offering Capture-the-Flag (CTF) challenges and virtual machines designed for hands-on penetration testing practice. The platform provides a large collection of intentionally vulnerable systems with varying difficulty levels.
 
-\section{Definition of Needs}
-% Secció pendent de desenvolupament
+\textbf{Key Characteristics:}
+
+\begin{itemize}
+    \item \textbf{Challenge-based approach}: Individual machines or challenges designed to teach specific exploitation techniques
+    \item \textbf{Community-driven}: Thousands of pre-built challenges from the security community
+    \item \textbf{Difficulty levels}: Machines categorized by skill requirement (easy, medium, hard, insane)
+    \item \textbf{Free and Pro tiers}: Basic access available without cost; premium features for advanced content
+    \item \textbf{Isolated scenarios}: Each challenge focuses on a specific technique or vulnerability type
+\end{itemize}
+
+\textbf{Strengths:}
+
+\begin{itemize}
+    \item Massive library of pre-built challenges requiring minimal setup
+    \item Strong community and competitive leaderboards encourage engagement
+    \item Industry recognition: many professional certifications reference HackTheBox as supplementary training
+    \item Variety of attack vectors and operating systems
+\end{itemize}
+
+\textbf{Limitations:}
+
+\begin{itemize}
+    \item Challenges are isolated; limited networking between systems
+    \item No formal curriculum mapping to specific degree programs
+    \item Scenarios often abstract away real-world complexity
+    \item Platform dependency: students cannot deploy labs locally
+    \item Limited automation or integration with institutional learning systems
+    \item Content is not institution-controlled, making it difficult to align with specific curricula
+\end{itemize}
+
+\textbf{Pedagogical Gap:} While HackTheBox excels at teaching individual exploitation techniques, it does not effectively teach students to recognize vulnerabilities within \textit{integrated systems} or to practice complete penetration testing workflows from reconnaissance through privilege escalation within a cohesive network topology.
+
+---
+
+\subsection{TryHackMe}
+
+\textbf{Overview:} TryHackMe is a gamified cybersecurity training platform emphasizing beginner-friendly content with structured learning paths. The platform combines interactive tutorials, guided labs, and challenges within a narrative-driven framework.
+
+\textbf{Key Characteristics:}
+
+\begin{itemize}
+    \item \textbf{Gamification}: Points, levels, and achievements to motivate learners
+    \item \textbf{Structured learning paths}: Predefined sequences of rooms (lessons) organized by skill and topic
+    \item \textbf{Interactive tutorials}: Embedded guidance and step-by-step walkthroughs
+    \item \textbf{Browser-based labs}: No local installation required
+    \item \textbf{Community and Discord}: Peer support and instructor interaction
+\end{itemize}
+
+\textbf{Strengths:}
+
+\begin{itemize}
+    \item Excellent for beginners; low barrier to entry
+    \item Gamification increases student engagement and completion rates
+    \item Structured learning paths provide clear progression
+    \item Active community support
+    \item Diverse content covering defensive and offensive skills
+\end{itemize}
+
+\textbf{Limitations:}
+
+\begin{itemize}
+    \item Platform-dependent; cannot be deployed on institutional infrastructure
+    \item Free tier is heavily limited; premium subscription required for advanced content
+    \item Simplified scenarios often omit real-world system complexity
+    \item Content is externally managed; no customization for specific curricula
+    \item Scenarios are designed to be completable in short timeframes, potentially sacrificing depth
+    \item Limited focus on integrated network penetration testing
+\end{itemize}
+
+\textbf{Pedagogical Gap:} TryHackMe's strength lies in motivation and accessibility for beginners, but it is insufficiently rigorous for degree-level professional preparation. The gamification, while engaging, can obscure the seriousness and complexity of real cybersecurity work.
+
+---
+
+\subsection{Cisco Networking Academy}
+
+\textbf{Overview:} Cisco Networking Academy is a comprehensive, institution-based cybersecurity training program integrated with formal curricula worldwide. The program offers certifications (CCNA, CyberOps) and structured coursework.
+
+\textbf{Key Characteristics:}
+
+\begin{itemize}
+    \item \textbf{Corporate partnership}: Official Cisco curriculum with institutional support
+    \item \textbf{Formal certifications}: Aligned with professional certifications (CCNA)
+    \item \textbf{Network simulation}: Cisco Packet Tracer for virtual network design
+    \item \textbf{Comprehensive curriculum}: From networking fundamentals to security
+    \item \textbf{Instructor-led delivery}: Typically offered through educational institutions
+\end{itemize}
+
+\textbf{Strengths:}
+
+\begin{itemize}
+    \item Strong institutional support and curriculum design
+    \item Formal recognition through industry certifications
+    \item Network simulation tools (Packet Tracer) are powerful and realistic
+    \item Integration with degree programs
+    \item Vendor-backed expertise and resources
+\end{itemize}
+
+\textbf{Limitations:}
+
+\begin{itemize}
+    \item Primary focus is networking, not penetration testing
+    \item CyberOps certification is defensive-oriented, not offensive security
+    \item Limited hands-on exploitation and penetration testing content
+    \item Vendor lock-in to Cisco technologies
+    \item Packet Tracer is not suitable for full operating system simulation or security tool integration
+    \item Limited support for integrated penetration testing workflows
+\end{itemize}
+
+\textbf{Pedagogical Gap:} Cisco Networking Academy provides solid foundational networking knowledge but does not adequately address penetration testing methodology or ethical hacking practice. It is orthogonal to the TFG's objectives.
+
+---
+
+\subsection{SEED Labs}
+
+\textbf{Overview:} SEED (Security, Privacy, and Trust Labs) is an open-source collection of hands-on security exercises designed by researchers for academic cybersecurity education. Each lab focuses on specific security concepts (buffer overflows, SQL injection, cryptography, etc.).
+
+\textbf{Key Characteristics:}
+
+\begin{itemize}
+    \item \textbf{Research-backed design}: Developed by cybersecurity researchers at universities
+    \item \textbf{Docker-based deployment}: Portability and reproducibility through containerization
+    \item \textbf{Open-source}: Freely available; institutions can deploy locally
+    \item \textbf{Concept-focused}: Each lab teaches a specific security principle
+    \item \textbf{Comprehensive documentation}: Detailed handouts and guidelines for instructors
+\end{itemize}
+
+\textbf{Strengths:}
+
+\begin{itemize}
+    \item Highly regarded in academic communities; research-validated pedagogical approaches
+    \item Docker-based design enables easy institutional deployment
+    \item Open-source ensures no vendor lock-in
+    \item Labs cover deep technical concepts (memory safety, cryptographic protocols)
+    \item Excellent documentation and instructor support
+\end{itemize}
+
+\textbf{Limitations:}
+
+\begin{itemize}
+    \item Each lab is conceptually isolated; limited networking or integration between labs
+    \item No structured penetration testing workflows (reconnaissance → exploitation → escalation)
+    \item Requires significant instructor customization for curriculum integration
+    \item Limited automation for lab deployment and reset
+    \item Focus on security concepts rather than realistic multi-system environments
+    \item Not designed for practicing complete penetration testing methodologies
+\end{itemize}
+
+\textbf{Pedagogical Gap:} SEED Labs excel at teaching individual security concepts but do not provide the integrated network penetration testing environment that this TFG project aims to create. SEED is complementary rather than competitive.
+
+---
+
+\subsection{Game of Active Directory (GOAD)}
+
+\textbf{Overview:} GOAD is an open-source project providing intentionally vulnerable Active Directory environments designed specifically for penetration testing practice. It simulates a realistic corporate Windows domain infrastructure with multiple misconfigurations and vulnerabilities.
+
+\textbf{Key Characteristics:}
+
+\begin{itemize}
+    \item \textbf{AD-focused}: Entire lab built around Windows Active Directory
+    \item \textbf{Terraform/Vagrant-based}: Infrastructure-as-Code for reproducible deployment
+    \item \textbf{Realistic domain structure}: Simulates real corporate Active Directory environments
+    \item \textbf{Multiple exploitation paths}: Designed to teach lateral movement and privilege escalation
+    \item \textbf{Community-maintained}: Open-source with active development
+\end{itemize}
+
+\textbf{Strengths:}
+
+\begin{itemize}
+    \item Exceptional for Windows-focused penetration testing training
+    \item Highly realistic Active Directory scenarios
+    \item Excellent for teaching privilege escalation on Windows domains
+    \item Infrastructure-as-Code approach enables reproducibility
+    \item Active community and maintained codebase
+\end{itemize}
+
+\textbf{Limitations:}
+
+\begin{itemize}
+    \item Narrow focus on Windows AD; limited coverage of other platforms
+    \item Does not cover reconnaissance, web application security, or network analysis
+    \item Steep learning curve for infrastructure setup and maintenance
+    \item Not designed as a comprehensive penetration testing progression
+    \item Limited instructor resources or formal curriculum
+\end{itemize}
+
+\textbf{Pedagogical Gap:} GOAD is specialized for Windows domain penetration testing but does not provide a complete, curriculum-aligned lab environment covering reconnaissance, web vulnerabilities, and network analysis.
+
+---
+
+\subsection{VulnHub}
+
+\textbf{Overview:} VulnHub is a community-driven repository of vulnerable virtual machines designed for penetration testing practice. Users download complete VM images and deploy them locally in their own environments.
+
+\textbf{Key Characteristics:}
+
+\begin{itemize}
+    \item \textbf{Community-created}: Machines contributed by security practitioners
+    \item \textbf{Downloadable VMs}: Complete VM images for local deployment
+    \item \textbf{Diverse difficulty}: Machines range from beginner to advanced
+    \item \textbf{Topic-specific}: Machines often focus on specific techniques or vulnerabilities
+    \item \textbf{Open-ended challenges}: Minimal guidance; students must determine objectives
+\end{itemize}
+
+\textbf{Strengths:}
+
+\begin{itemize}
+    \item Excellent for self-directed learners who want complete autonomy
+    \item Machines are contributed by practicing security professionals, reflecting real-world scenarios
+    \item Local deployment avoids platform dependencies
+    \item Free and open resource
+    \item Teaches problem-solving and methodology development
+\end{itemize}
+
+\textbf{Limitations:}
+
+\begin{itemize}
+    \item Minimal formal curriculum structure; students must self-organize learning
+    \item Quality and consistency of machines varies significantly
+    \item No built-in progression or guided learning paths
+    \item Documentation is often minimal or community-driven
+    \item Difficult to integrate into institutional courses without significant instructor work
+    \item No automation for deployment, reset, or assessment
+    \item Isolated machines; limited network topology complexity
+\end{itemize}
+
+\textbf{Pedagogical Gap:} While VulnHub provides realistic challenges, it lacks the structural support, progression, and automation necessary for effective institutional integration. It is better suited for independent learners than formal classroom instruction.
+
+---
+
+\subsection{Hack4u Academy}
+
+\textbf{Overview:} Hack4u Academy is a structured online cybersecurity training platform offering comprehensive penetration testing courses. It combines video instruction, practical labs, and community support with emphasis on methodology over tool memorization.
+
+\textbf{Key Characteristics:}
+
+\begin{itemize}
+    \item \textbf{Methodology-driven}: Emphasizes PTES (Penetration Testing Execution Standard) and systematic approaches
+    \item \textbf{Progressive curriculum}: Structured from beginner to advanced levels
+    \item \textbf{Hands-on labs}: Integrated practical exercises within video-based instruction
+    \item \textbf{Video content}: Detailed walkthroughs and demonstrations
+    \item \textbf{Community support}: Discussion forums and peer learning
+\end{itemize}
+
+\textbf{Strengths:}
+
+\begin{itemize}
+    \item Strong emphasis on methodology and systematic pentesting approaches
+    \item Well-structured curriculum with clear learning progression
+    \item Active instructor engagement and community support
+    \item Balanced approach: teaches both tools and underlying concepts
+    \item Accessible to practitioners at various skill levels
+\end{itemize}
+
+\textbf{Limitations:}
+
+\begin{itemize}
+    \item Subscription-based; not free or open-source
+    \item Platform-dependent; cannot be deployed institutionally
+    \item Limited formal integration with academic curricula
+    \item Individual user focus rather than classroom-oriented design
+    \item Not designed for automated assessment or large-scale institutional deployment
+\end{itemize}
+
+\textbf{Pedagogical Gap:} Hack4u Academy provides excellent methodology training but is not designed for institutional classroom integration or automated assessment. The pedagogical approach is sound, but the delivery platform is external to academic institutions.
+
+---
+
+\section{Comparative Platform Analysis Matrix}
+
+The following table synthesizes key characteristics across platforms:
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabularx}{\textwidth}{|l|l|l|l|l|l|}
+\hline
+\textbf{Platform} & \textbf{Approach} & \textbf{Local Deploy} & \textbf{Curriculum} & \textbf{Automation} & \textbf{Network} \\
+\hline
+HackTheBox & CTF/Challenge & No & Minimal & No & Isolated \\
+\hline
+TryHackMe & Gamified & No & Structured & No & Limited \\
+\hline
+Cisco Academy & Academic & Yes (Packet Tracer) & Strong & Limited & Network-focused \\
+\hline
+SEED Labs & Concept-focused & Yes (Docker) & Concept-based & Minimal & Isolated \\
+\hline
+GOAD & AD-focused & Yes (Terraform) & None & Moderate & AD Domain \\
+\hline
+VulnHub & Community VMs & Yes & None & No & Isolated \\
+\hline
+Hack4u Academy & Methodology & External & Strong & Minimal & Limited \\
+\hline
+\end{tabularx}
+\caption{Comparative Analysis: Existing Cybersecurity Training Platforms}
+\label{tab:platform_comparison}
+\end{table}
+
+---
+
+\section{Security Frameworks and Methodologies}
+
+Beyond specific platforms, the field of cybersecurity education is informed by several authoritative frameworks and standards that guide both attack methodologies and defensive best practices.
+
+\subsection{OWASP Top 10}
+
+The OWASP (Open Web Application Security Project) Top 10 is a regularly updated list of the most critical security vulnerabilities in web applications. For educational purposes, the Top 10 provides a focused curriculum for teaching web application security without requiring exhaustive coverage of all possible vulnerabilities.
+
+\textit{Relevance to TFG:} Lab 2 (Web Application Vulnerabilities) is directly aligned with OWASP Top 10 categories, ensuring students learn vulnerabilities that represent real-world attack vectors.
+
+\subsection{CIS Critical Controls}
+
+The Center for Internet Security (CIS) publishes a prioritized set of security controls (currently version 8.0) representing the most effective defensive techniques. These controls span network defense, data protection, and incident response.
+
+\textit{Relevance to TFG:} Lab 1 (Reconnaissance) and Lab 4 (Privilege Escalation) incorporate defensive controls, teaching students not only how to attack but why specific security measures are implemented.
+
+\subsection{NIST Cybersecurity Framework}
+
+The National Institute of Standards and Technology (NIST) provides a framework organizing cybersecurity activities into five functions: Identify, Protect, Detect, Respond, Recover. This framework is widely adopted by organizations and government agencies.
+
+\textit{Relevance to TFG:} The TFG project itself, as described in Chapter 1, adheres to NIST principles by designing a framework (EVE-NG labs) that enables institutions to Identify vulnerabilities (through labs) and Protect systems (through remediation understanding).
+
+---
+
+\section{Pedagogical Approaches in Cybersecurity Education}
+
+Beyond specific platforms, several pedagogical philosophies inform effective cybersecurity training:
+
+\subsection{Active Learning and Hands-On Practice}
+
+Research in cybersecurity education consistently demonstrates that hands-on, problem-based learning is superior to lecture-based instruction for developing practical skills. Bloom's taxonomy suggests that students must progress from knowledge comprehension through application to analysis and synthesis. Pentesting labs facilitate this progression: students begin by understanding reconnaissance techniques (knowledge), apply them to specific targets (application), analyze results to infer system architecture (analysis), and ultimately synthesize complete penetration testing workflows.
+
+\subsection{Realistic System Complexity}
+
+Effective cybersecurity training must present students with systems of sufficient complexity to simulate real-world scenarios. Isolated, single-service laboratories teach tool usage but fail to prepare students for integrated environments where reconnaissance insights directly inform exploitation strategy, and initial compromise enables lateral movement.
+
+\subsection{Automation and Reproducibility}
+
+For training to be scalable and fair, identical environments must be reliably deployable. Automated deployment and reset mechanisms reduce instructor overhead and ensure consistent student experiences across multiple offering of a course.
+
+---
+
+\section{Gap Analysis: What Existing Solutions Miss}
+
+Despite the proliferation of cybersecurity training platforms, significant gaps remain:
+
+\textbf{Gap 1: Curriculum Integration}
+
+Most platforms are designed for independent learners or certification prep, not for integration into specific degree programs. No major platform explicitly aligns pentesting scenarios with the learning outcomes of a particular computer science curriculum.
+
+\textbf{Gap 2: Institution Control}
+
+Effective educational integration requires that institutions maintain control over content, deployment, and assessment. External platforms introduce dependencies and limit customization. Conversely, platforms requiring significant institutional development (Docker composition, lab orchestration) impose high maintenance burdens.
+
+\textbf{Gap 3: Integrated Network Penetration Testing}
+
+Most platforms focus on isolated services or individual techniques. Few provide realistic, integrated network topologies where reconnaissance informs the entire attack chain, lateral movement is necessary, and privilege escalation varies by system.
+
+\textbf{Gap 4: Automation and Scalability}
+
+Even platforms designed for classroom use often lack automated deployment, reset, and assessment mechanisms. This limitation makes large-scale institutional adoption difficult and increases instructor workload.
+
+\textbf{Gap 5: Balance of Guidance and Autonomy}
+
+Effective labs must strike a balance: sufficient structure to ensure students focus on intended learning outcomes, but sufficient openness to encourage problem-solving and methodology development.
+
+---
+
+\section{Conclusion: The Need for EVE-NG Based Labs}
+
+This state of the art analysis reveals that while excellent individual components exist---gamified learning (TryHackMe), challenging scenarios (HackTheBox), research-backed content (SEED Labs), specialized domains (GOAD)---no existing solution comprehensively addresses the needs of a university cybersecurity education program:
+
+\begin{itemize}
+    \item \textbf{Curriculum-aligned labs}: Mapped to specific degree learning outcomes
+    \item \textbf{Integrated network scenarios}: Multi-system penetration testing with realistic complexity
+    \item \textbf{Institutional control}: Deployable locally; customizable; maintainable by university staff
+    \item \textbf{Complete automation}: One-command deployment and reset; built-in assessment
+    \item \textbf{Openness and flexibility}: EVE-NG's platform-agnostic design enables future adaptation
+\end{itemize}
+
+The TFG project bridges this gap by leveraging EVE-NG (a platform combining network simulation capabilities with institutional independence) to create a comprehensive, reusable, automatable teaching package for cybersecurity practical labs. This solution synthesizes the pedagogical strengths of existing platforms while addressing their limitations through institutional control, curriculum alignment, and automation.
+
+---
+
+% END OF CHAPTER 2: STATE OF THE ART
