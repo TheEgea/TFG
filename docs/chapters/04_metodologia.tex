@@ -1,17 +1,448 @@
+% ============================================================
+% Autor: Eloi Egea Rada
+% Tema: Research methodology, development phases, and validation approach
+% ============================================================
+
 \chapter{Methodology}
 
-\subsection{Final Degree Project (TFG) Implementation Process}
+\section{Introduction}
 
-% Section pending development
+This chapter outlines the comprehensive methodology employed in this TFG project, encompassing research strategy, development approach, validation methods, and project lifecycle management. The project integrates principles from software engineering, cybersecurity pedagogy, and empirical research to ensure systematic development and validation of the EVE-NG-based teaching package.
 
-\subsection{Stages, Tasks and Milestones}
+\section{Research and Development Phases}
 
-% Section pending development
+The project is structured in four distinct phases, each with specific deliverables, milestones, and validation checkpoints:
 
-\subsection{Information Search Strategies}
+\subsection{Phase 0: Preparation and Infrastructure (July-November 2025)}
 
-% Section pending development
+\textbf{Objective}: Establish the technical foundation and personal capacity for the project.
 
-\subsection{Product Development Methodology}
+\textbf{Activities}:
+\begin{itemize}
+\item HomeLab infrastructure initialization (Proxmox, networking, storage)
+\item Development environment setup (VSCode, LaTeX, Git)
+\item Security tools installation (Kali Linux, Metasploit, Burp Suite)
+\item Technical documentation and baseline establishment
+\end{itemize}
 
-% Section pending development
+\textbf{Deliverables}:
+\begin{itemize}
+\item Fully operational virtualization infrastructure
+\item Development environment configuration
+\item Baseline documentation of system architecture
+\end{itemize}
+
+\textbf{Duration}: 105 hours | \textbf{Status}: 100\% completed
+
+\subsection{Phase 1: Avantprojecte and Conceptual Design (October 2025 - January 2026)}
+
+\textbf{Objective}: Define project scope, objectives, and detailed planning through comprehensive documentation.
+
+\textbf{Key Activities}:
+
+\begin{enumerate}
+
+\item \textbf{SMART Objectives Definition} (4h)
+\begin{itemize}
+\item Specification of Main Objective (MO): Develop a reusable teaching package
+\item Definition of 4 Specific Objectives (OE1-OE4) with measurable KPIs
+\item Alignment with institutional GEISI curriculum requirements
+\end{itemize}
+
+\item \textbf{State of the Art Analysis} (15h)
+\begin{itemize}
+\item Comprehensive review of 7 major cybersecurity training platforms
+\item Analysis of existing laboratory platforms: HackTheBox, TryHackMe, Cisco Academy, SEED Labs, GOAD, VulnHub, Hack4u
+\item Identification of pedagogical gaps and competitive advantages
+\item Comparative analysis matrix across multiple dimensions
+\end{itemize}
+
+\item \textbf{Functional and Non-Functional Requirements} (10h)
+\begin{itemize}
+\item RF1: Design and implement 4 EVE-NG topologies (.unl files)
+\item RF2: Implement vulnerabilities per PTES, OWASP, NIST, and CEH standards
+\item RF3: Create structured assessment materials and rubrics
+\item NFR1: Performance optimization for deployment and execution
+\item NFR2: Compliance with international security frameworks
+\item NFR3: Institutional sustainability through open-source alignment
+\end{itemize}
+
+\item \textbf{Pentesting Methodology and Validation Framework} (8h)
+\begin{itemize}
+\item Adaptation of PTES (Penetration Testing Execution Standard) for educational context
+\item Definition of ethical hacking principles (EC-Council CEH framework)
+\item Mapping of attack phases to lab objectives
+\item Validation criteria for security effectiveness
+\end{itemize}
+
+\item \textbf{Design Decisions Justification} (5h)
+\begin{itemize}
+\item Rationale for EVE-NG selection vs alternative platforms
+\item Technology stack justification (Kali Linux, Metasploit, Burp, OWASP ZAP)
+\item Pedagogical approach: hands-on labs with automation
+\end{itemize}
+
+\item \textbf{Risk Analysis and Mitigation Planning} (15h)
+\begin{itemize}
+\item Identification of 12+ project risks (technical, pedagogical, institutional)
+\item Assessment of impact and probability
+\item Definition of mitigation strategies for each critical risk
+\end{itemize}
+
+\item \textbf{Resource Inventory and Allocation} (5h)
+\begin{itemize}
+\item Hardware requirements: dual-socket server with Proxmox
+\item Software stack: EVE-NG Professional, Kali Linux images, security tools
+\item Human resources: student (320h), faculty supervisor, pilot users
+\item Budget considerations and open-source alternatives
+\end{itemize}
+
+\item \textbf{Gantt Chart and Critical Path Analysis} (20h)
+\begin{itemize}
+\item Development of detailed project timeline with 37 tasks
+\item Identification of 13 critical path tasks
+\item CSV export and interactive web-based visualization
+\item Progress tracking and milestone definition
+\end{itemize}
+
+\end{enumerate}
+
+\textbf{Deliverables}:
+\begin{itemize}
+\item Formal project proposal (Avantprojecte/Preliminary Project document)
+\item Detailed Gantt chart with critical paths
+\item Risk register and mitigation plan
+\item Requirements specification document (functional and non-functional)
+\end{itemize}
+
+\textbf{Duration}: 82 hours | \textbf{Status}: In progress (70\%)
+
+\textbf{Milestone Deadline}: January 16, 2026
+
+\subsection{Phase 2: Implementation and Interim Validation (January-March 2026)}
+
+\textbf{Objective}: Develop the first three laboratories and conduct preliminary validation with pilot users.
+
+\textbf{Key Activities}:
+
+\begin{enumerate}
+
+\item \textbf{Lab 1: Reconnaissance Development} (14h research + 20h dev)
+\begin{itemize}
+\item Scenario: Intelligence gathering phase using PTES framework
+\item Tools: Nmap, Shodan, Passive reconnaissance techniques
+\item Topology: Multi-tier network with passive monitoring capabilities
+\item Validation: Successful execution of reconnaissance workflow
+\end{itemize}
+
+\item \textbf{Lab 2: Web Vulnerabilities Development} (14h research + 25h dev)
+\begin{itemize}
+\item Scenario: OWASP Top 10 vulnerability exploitation
+\item Tools: Burp Suite, OWASP ZAP, manual testing techniques
+\item Topology: Web application server with vulnerable services
+\item Validation: Exploitation success and reporting accuracy
+\end{itemize}
+
+\item \textbf{Lab 3: Network Analysis Development} (14h research + 25h dev)
+\begin{itemize}
+\item Scenario: Network segmentation and lateral movement (NIST standards)
+\item Tools: Wireshark, tcpdump, network enumeration tools
+\item Topology: Multi-VLAN network with security monitoring
+\item Validation: Successful network traversal and analysis
+\end{itemize}
+
+\item \textbf{Pilot Validation with Users} (20h + 6h revision)
+\begin{itemize}
+\item Recruitment of 8-10 pilot users from GEISI cohort
+\item Lab execution sessions with timing and metrics collection
+\item User satisfaction surveys and usability assessment
+\item Performance metrics: completion rates, average resolution time
+\end{itemize}
+
+\item \textbf{Topology Adjustments and Optimization} (30h)
+\begin{itemize}
+\item Performance tuning based on pilot feedback
+\item VM image optimization and deployment time reduction
+\item Network configuration refinement for stability
+\end{itemize}
+
+\item \textbf{Technical Documentation} (40h)
+\begin{itemize}
+\item Student manuals for each lab (15-20 pages minimum)
+\item Teacher deployment guides and customization instructions
+\item Assessment rubrics with quantifiable criteria
+\end{itemize}
+
+\end{enumerate}
+
+\textbf{Deliverables}:
+\begin{itemize}
+\item 3 fully functional and tested EVE-NG labs
+\item Student and teacher documentation
+\item Pilot validation report with metrics
+\item Technical write-ups and learning materials
+\end{itemize}
+
+\textbf{Duration}: 188 hours | \textbf{Status}: Planned
+
+\textbf{Milestone Deadline}: March 20, 2026
+
+\subsection{Phase 3: Completion and Final Validation (March-May 2026)}
+
+\textbf{Objective}: Develop the fourth laboratory, complete automation, and conduct comprehensive final validation.
+
+\textbf{Key Activities}:
+
+\begin{enumerate}
+
+\item \textbf{Lab 4: Privilege Escalation Development} (16h research + 30h dev)
+\begin{itemize}
+\item Scenario: Post-exploitation and privilege escalation (CEH framework)
+\item Tools: Metasploit, manual exploitation, system enumeration
+\item Topology: Hardened systems with privilege escalation vectors
+\item Validation: Successful privilege elevation and system compromise
+\end{itemize}
+
+\item \textbf{Comprehensive Penetration Testing} (30h Phase 1 + 25h Phase 2)
+\begin{itemize}
+\item Phase 1: Sequential testing of Labs 1, 2, and 3
+\item Phase 2: Integrated testing across all 4 laboratories
+\item Documentation of all findings and remediation strategies
+\item Validation of security effectiveness
+\end{itemize}
+
+\item \textbf{Automation Framework Development} (30h)
+\begin{itemize}
+\item Deploy scripts (Bash/Python) for lab initialization
+\item Reset scripts for state restoration
+\item Validation scripts for automated verification
+\item Integration into CI/CD pipeline
+\end{itemize}
+
+\item \textbf{Final User Validation and Iteration} (18h)
+\begin{itemize}
+\item Extended pilot with 15-20 users over 2-week period
+\item Collection of usage metrics and satisfaction data
+\item Implementation of final improvements
+\item User acceptance testing (UAT)
+\end{itemize}
+
+\item \textbf{TFG Report Writing and Finalization} (90h)
+\begin{itemize}
+\item TFG Report Writing Phase I (15h): Introduction, Object, Literature Review
+\item TFG Report Writing Phase II (40h): Methodology, Requirements, Implementation Results
+\item TFG Report Writing Phase III (35h): Validation, Analysis, Conclusions
+\item Final revision and quality assurance (15h)
+\item Formatting, bibliography integration, and publication preparation (20h)
+\end{itemize}
+
+\end{enumerate}
+
+\textbf{Deliverables}:
+\begin{itemize}
+\item 4 fully functional and tested EVE-NG laboratories
+\item Complete automation framework (12+ scripts)
+\item Final TFG report (150-200 pages)
+\item User validation report and lessons learned
+\item Deployment package ready for institutional use
+\end{itemize}
+
+\textbf{Duration}: 315 hours | \textbf{Status}: Planned
+
+\textbf{Final Milestone Deadline}: May 27, 2026
+
+\section{Information Search Strategies}
+
+The research methodology employs multiple information gathering techniques:
+
+\subsection{Literature Review Approach}
+
+\begin{enumerate}
+
+\item \textbf{Systematic Review of Academic Databases}
+\begin{itemize}
+\item IEEE Xplore (computer science and engineering)
+\item ACM Digital Library (cybersecurity education)
+\item Scopus (multidisciplinary security research)
+\item Google Scholar (open-access research)
+\end{itemize}
+
+\item \textbf{Industry Standards and Frameworks}
+\begin{itemize}
+\item PTES (Penetration Testing Execution Standard)
+\item OWASP (Open Web Application Security Project) documentation
+\item NIST (National Institute of Standards and Technology) frameworks
+\item CIS Controls and benchmarks
+\item EC-Council CEH curriculum
+\end{itemize}
+
+\item \textbf{Platform and Tool Documentation}
+\begin{itemize}
+\item Official EVE-NG documentation and community resources
+\item Kali Linux penetration testing guide
+\item Metasploit Framework documentation
+\item OWASP ZAP and Burp Suite user guides
+\end{itemize}
+
+\item \textbf{Comparative Analysis}
+\begin{itemize}
+\item Feature comparison matrices for existing platforms
+\item User reviews and community feedback
+\item Educational effectiveness studies
+\item Cost-benefit analysis of solutions
+\end{itemize}
+
+\end{enumerate}
+
+\subsection{Primary Research Methods}
+
+\begin{enumerate}
+
+\item \textbf{User Research and Validation}
+\begin{itemize}
+\item Pilot testing with real students (10-20 participants)
+\item Qualitative feedback through interviews
+\item Quantitative metrics collection (time-on-task, completion rates)
+\item Usability assessment using standardized scales
+\end{itemize}
+
+\item \textbf{Technical Experimentation}
+\begin{itemize}
+\item Lab design iteration and refinement
+\item Performance testing and optimization
+\item Security effectiveness validation
+\item Scalability assessment
+\end{itemize}
+
+\end{enumerate}
+
+\section{Development Methodology}
+
+The project adopts an iterative, agile-inspired approach with clear phases and milestones:
+
+\subsection{Development Cycle}
+
+\begin{itemize}
+
+\item \textbf{Design}: Conceptual architecture and topology planning
+\item \textbf{Implementation}: Lab creation, vulnerability implementation, tooling
+\item \textbf{Validation}: Security testing, educational effectiveness review
+\item \textbf{Iteration}: Feedback incorporation and refinement
+\item \textbf{Documentation}: Technical and pedagogical material preparation
+
+\end{itemize}
+
+\subsection{Quality Assurance}
+
+\begin{enumerate}
+
+\item \textbf{Technical Validation}
+\begin{itemize}
+\item Automated testing of lab deployment and reset
+\item Manual security testing and penetration verification
+\item Performance benchmarking against KPI targets
+\item Compatibility testing across EVE-NG versions
+\end{itemize}
+
+\item \textbf{Pedagogical Validation}
+\begin{itemize}
+\item Alignment with GEISI learning outcomes
+\item Assessment of student understanding through rubrics
+\item Effectiveness in achieving educational objectives
+\item Feedback from faculty and student participants
+\end{itemize}
+
+\item \textbf{Usability Testing}
+\begin{itemize}
+\item User interface and documentation clarity
+\item Accessibility and ease of deployment
+\item Support and documentation adequacy
+\item User satisfaction scoring
+\end{itemize}
+
+\end{enumerate}
+
+\subsection{Documentation and Version Control}
+
+\begin{itemize}
+
+\item GitHub repository for all code, scripts, and documentation
+\item LaTeX for formal project documentation (this TFG report)
+\item Versioning system for all deliverables
+\item Change logs and improvement tracking
+\item Deployment guides and runbooks
+
+\end{itemize}
+
+\section{Validation and Success Criteria}
+
+Success measurement is based on the KPIs defined in Chapter 3 (Objectives and Scope), organized into three categories:
+
+\subsection{Technical Success Criteria}
+
+\begin{itemize}
+
+\item Lab deployment time $\leq$ 2 minutes per lab (95\% of cases)
+\item VM boot success rate $\geq$ 95\%
+\item Full reset time $\leq$ 30 seconds
+\item Scenario reproducibility: 100\% repeatability
+\item Zero critical incidents in production environment
+
+\end{itemize}
+
+\subsection{Educational Success Criteria}
+
+\begin{itemize}
+
+\item Average lab resolution time: 90-120 minutes
+\item Successful completion rate $\geq$ 85\% (pilot with 10+ users)
+\item Key concept understanding $\geq$ 80\% correct
+\item User satisfaction score $\geq$ 4/5
+\item Assessment alignment with GEISI curriculum
+
+\end{itemize}
+
+\subsection{Sustainability Success Criteria}
+
+\begin{itemize}
+
+\item Full documentation coverage (100\% of features)
+\item Open-source tools only (ensuring long-term maintainability)
+\item Compatibility with EVE-NG Community and Professional editions
+\item Institutional readiness for multi-year deployment
+\item Faculty capacity to deploy and customize
+
+\end{itemize}
+
+\section{Risk Management}
+
+Risk mitigation is embedded throughout the project phases:
+
+\subsection{Key Risks and Mitigation}
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabularx}{\textwidth}{|l|X|l|}
+\hline
+\textbf{Risk} & \textbf{Mitigation Strategy} & \textbf{Owner} \\
+\hline
+Scope creep / Feature additions & Clear scope boundaries and change management & Eloi \\
+\hline
+EVE-NG compatibility issues & Extensive testing on both Community and Pro editions & Eloi \\
+\hline
+Pilot user dropout & Clear incentives and scheduling flexibility & Pere + Eloi \\
+\hline
+Performance degradation & Early benchmarking and optimization iterations & Eloi \\
+\hline
+Documentation gaps & Peer review and user feedback cycles & Eloi + Faculty \\
+\hline
+Institutional adoption barriers & Change management plan and training support & Pere \\
+\hline
+\end{tabularx}
+\caption{Key project risks and mitigation strategies}
+\end{table}
+
+\section{Conclusion}
+
+This comprehensive methodology ensures that the TFG project is executed systematically, with clear phases, measurable deliverables, and validation checkpoints. The combination of iterative development, user-centered design, and rigorous quality assurance will result in a robust, effective, and sustainable educational tool for cybersecurity training.

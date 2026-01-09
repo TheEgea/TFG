@@ -1,58 +1,521 @@
-\chapter{Functional Requirements}
+% ============================================================
+% Autor: Eloi Egea Rada
+% Tema: Complete specification of system, technological, and quality requirements
+% ============================================================
 
-\subsection{RF1: Design EVE-NG Topologies}
+\chapter{Functional and Non-Functional Requirements}
 
-- Create 4 .unl files compatible with EVE-NG 
-- Implement OWASP  and CIS  security principles
+\section{Introduction}
 
-\subsection{RF2: Implement Vulnerabilities}
+This chapter specifies the complete requirements for the EVE-NG-based cybersecurity teaching package, encompassing functional requirements (RF) that define what the system must do, technological requirements (TR) that specify the technical environment, and non-functional requirements (NFR) that address quality attributes and compliance standards.
 
-- Lab 1: Reconnaissance tools per PTES 
-- Lab 2: OWASP Top 10  vulnerabilities
-- Lab 3: Network analysis per NIST standards 
-- Lab 4: Privilege escalation per CEH framework 
+\section{Functional Requirements}
 
-\subsection{RF3: Create Assessment Materials}
+Functional requirements define the core capabilities and behaviors expected from the teaching package.
 
-- Assessment aligned with GEISI learning outcomes 
-- Rubrics based on CIS Controls 
+\subsection{RF1: Design and Implement EVE-NG Topologies}
+
+\textbf{Description}: Create four separate, functional, and interconnected network topologies in EVE-NG format (.unl files) that simulate real-world cybersecurity scenarios.
+
+\textbf{Detailed Requirements}:
+
+\begin{itemize}
+
+\item \textbf{RF1.1}: Design 4 distinct network topologies, each targeting a specific pentesting phase:
+\begin{itemize}
+\item Lab 1: Reconnaissance topology (passive intelligence gathering)
+\item Lab 2: Web application security topology (active vulnerability discovery)
+\item Lab 3: Network analysis topology (lateral movement and monitoring)
+\item Lab 4: Privilege escalation topology (post-exploitation scenarios)
+\end{itemize}
+
+\item \textbf{RF1.2}: Each topology must include:
+\begin{itemize}
+\item Minimum 5-8 virtual machines per lab
+\item Realistic network architecture (DMZ, internal networks, monitoring zones)
+\item Vulnerable services configured per OWASP and NIST standards
+\item Network segmentation with VLANs where appropriate
+\end{itemize}
+
+\item \textbf{RF1.3}: EVE-NG compatibility requirements:
+\begin{itemize}
+\item .unl file format compatible with EVE-NG Community Edition
+\item Additional compatibility with EVE-NG Professional Edition
+\item KVM hypervisor support (Ubuntu 20.04+ LTS)
+\item Minimum host specification: 16GB RAM, 200GB storage
+\end{itemize}
+
+\item \textbf{RF1.4}: Topology documentation:
+\begin{itemize}
+\item Network diagram for each lab (logical and physical views)
+\item IP addressing scheme documented
+\item Service inventory and port mappings
+\item Attack surface identification and justification
+\end{itemize}
+
+\end{itemize}
+
+\textbf{Success Criteria}:
+\begin{itemize}
+\item All 4 .unl files deploy successfully without errors
+\item VM boot success rate greater or equal to 95 percent
+\item Network connectivity verified between all nodes
+\item Estimated deployment time: less or equal to 2 minutes per lab
+\end{itemize}
+
+\subsection{RF2: Implement Vulnerabilities and Attack Scenarios}
+
+\textbf{Description}: Implement realistic vulnerabilities and attack scenarios aligned with industry frameworks (PTES, OWASP, NIST, CEH).
+
+\textbf{Detailed Requirements}:
+
+\begin{itemize}
+
+\item \textbf{RF2.1}: Lab 1 - Reconnaissance (PTES Phase 1)
+\begin{itemize}
+\item Passive reconnaissance tools (Shodan, DNS enumeration)
+\item Active scanning tools (Nmap, banner grabbing)
+\item Service discovery scenarios
+\item Information gathering reporting
+\end{itemize}
+
+\item \textbf{RF2.2}: Lab 2 - Web Vulnerabilities (OWASP Top 10)
+\begin{itemize}
+\item Injection vulnerabilities (SQL, command injection)
+\item Authentication bypasses
+\item Session management flaws
+\item Cross-Site Scripting (XSS) scenarios
+\item Cross-Site Request Forgery (CSRF) vulnerabilities
+\item Broken Access Control
+\item Security misconfiguration examples
+\item Sensitive data exposure scenarios
+\end{itemize}
+
+\item \textbf{RF2.3}: Lab 3 - Network Analysis (NIST Standards)
+\begin{itemize}
+\item Network segmentation analysis
+\item Lateral movement techniques
+\item Man-in-the-Middle (MITM) attack scenarios
+\item Network traffic analysis with Wireshark
+\item IDS/IPS evasion scenarios
+\item VPN and encryption bypass (where applicable)
+\end{itemize}
+
+\item \textbf{RF2.4}: Lab 4 - Privilege Escalation (CEH Framework)
+\begin{itemize}
+\item Local privilege escalation vulnerabilities
+\item Kernel exploits (outdated systems)
+\item Weak file permissions and sudo misconfigurations
+\item Windows privilege escalation (UAC bypass, token impersonation)
+\item Post-exploitation persistence mechanisms
+\end{itemize}
+
+\item \textbf{RF2.5}: Vulnerability implementation standards:
+\begin{itemize}
+\item All vulnerabilities must be fixable by administrators
+\item No permanently broken or unrecoverable systems
+\item Clear reset procedure for each vulnerability state
+\item Automated scanning tools must successfully identify vulnerabilities
+\end{itemize}
+
+\end{itemize}
+
+\textbf{Success Criteria}:
+\begin{itemize}
+\item Minimum 3-4 vulnerability scenarios per lab
+\item 100 percent of implemented vulnerabilities exploitable through documented methods
+\item Average exploitation time: 15-45 minutes per vulnerability
+\item All vulnerabilities remediable with documented procedures
+\end{itemize}
+
+\subsection{RF3: Create Structured Assessment Materials}
+
+\textbf{Description}: Develop comprehensive assessment rubrics, learning objectives, and evaluation materials aligned with GEISI curriculum.
+
+\textbf{Detailed Requirements}:
+
+\begin{itemize}
+
+\item \textbf{RF3.1}: Learning outcomes definition:
+\begin{itemize}
+\item 3-4 specific learning outcomes per lab
+\item Alignment with BLOOM's taxonomy (knowledge, application, analysis)
+\item Clear connection to GEISI degree competencies
+\end{itemize}
+
+\item \textbf{RF3.2}: Assessment rubrics:
+\begin{itemize}
+\item Detailed rubrics for each lab (minimum 15 pages per lab)
+\item Quantifiable evaluation criteria
+\item Point allocation per criterion (clear grading scale)
+\item Example student responses (exemplars)
+\end{itemize}
+
+\item \textbf{RF3.3}: Support materials:
+\begin{itemize}
+\item Student lab manuals with step-by-step guidance
+\item Teacher guides with deployment and customization instructions
+\item Expected outcomes and common pitfalls documentation
+\item Troubleshooting guides for common technical issues
+\end{itemize}
+
+\item \textbf{RF3.4}: Validation materials:
+\begin{itemize}
+\item Automated validation scripts to verify successful lab completion
+\item Manual verification procedures for educators
+\item Documentation of success indicators
+\end{itemize}
+
+\end{itemize}
+
+\textbf{Success Criteria}:
+\begin{itemize}
+\item 4 complete assessment rubrics (1 per lab)
+\item 4 student manuals (minimum 15 pages each)
+\item 1 comprehensive teacher guide
+\item 100 percent of features documented with examples
+\end{itemize}
 
 \section{Technological Requirements}
 
-\subsection{TR1: Virtualization}
+Technological requirements specify the infrastructure, tools, and platforms required for system implementation and deployment.
 
-- EVE-NG Platform 
-- KVM Hypervisor
-- Network simulation capabilities
+\subsection{TR1: Virtualization Infrastructure}
 
-\subsection{TR2: Tools}
+\begin{itemize}
 
-- Kali Linux  (attacking platform)
-- Metasploit Framework  (exploitation)
-- Nmap  (reconnaissance)
-- Wireshark  (network analysis)
-- Burp Suite  (web testing)
-- OWASP ZAP  (web scanning)
+\item \textbf{TR1.1}: EVE-NG Platform
+\begin{itemize}
+\item Version: EVE-NG 5.0 or later
+\item Editions supported: Community (free) and Professional
+\item Deployment: Docker container or bare-metal installation
+\item Web interface: Accessible via HTTPS on port 443
+\item API: RESTful API for automation and integration
+\end{itemize}
 
-\subsection{TR3: Scripts}
+\item \textbf{TR1.2}: Hypervisor
+\begin{itemize}
+\item Primary: KVM (Kernel-based Virtual Machine)
+\item Host OS: Ubuntu Server 20.04 LTS or 22.04 LTS
+\item QEMU integration for VM management
+\item Nested virtualization support for advanced scenarios
+\end{itemize}
 
-- Bash scripting
-- Python automation
+\item \textbf{TR1.3}: Host System Specifications
+\begin{itemize}
+\item CPU: 2x Intel Xeon E5-2600 v3 series or equivalent (minimum 16 cores)
+\item RAM: 64GB minimum (recommended 128GB for simultaneous labs)
+\item Storage: 2TB+ NVMe or SSD (minimum 50GB per VM image)
+\item Network: Gigabit Ethernet (10Gbps preferred)
+\item Power redundancy: UPS for service continuity
+\end{itemize}
+
+\item \textbf{TR1.4}: Network Configuration
+\begin{itemize}
+\item Layer 2 switching capabilities within EVE-NG
+\item VirtualBox-based network simulation where needed
+\item VLAN support for network segmentation scenarios
+\item IPv4 and IPv6 support
+\end{itemize}
+
+\end{itemize}
+
+\subsection{TR2: Security Tools and Penetration Testing Framework}
+
+\begin{itemize}
+
+\item \textbf{TR2.1}: Attacking Platform
+\begin{itemize}
+\item Primary: Kali Linux 2024.x
+\item Alternative: Parrot Security OS
+\item Installation method: EVE-NG pre-built image or custom import
+\item Tools package: Full toolkit including reconnaissance, scanning, and exploitation
+\end{itemize}
+
+\item \textbf{TR2.2}: Core Security Tools (installed on Kali)
+\begin{itemize}
+\item \textbf{Reconnaissance}: Nmap, Shodan CLI, Amass, Sublist3r
+\item \textbf{Scanning}: Nessus (optional), OpenVAS, Nikto
+\item \textbf{Exploitation}: Metasploit Framework 6.x, ExploitDB, Searchsploit
+\item \textbf{Web Testing}: Burp Suite Community/Professional, OWASP ZAP
+\item \textbf{Network Analysis}: Wireshark, tcpdump, mitmproxy
+\item \textbf{Post-Exploitation}: Mimikatz, Rubeus, BloodHound
+\item \textbf{Programming}: Python 3.10+, Bash scripting
+\end{itemize}
+
+\item \textbf{TR2.3}: Target System Images
+\begin{itemize}
+\item Ubuntu Server 18.04/20.04 LTS (Linux targets)
+\item CentOS 7/8 (enterprise Linux)
+\item Windows Server 2016/2019 (Windows targets)
+\item Vulnerable applications: DVWA, WebGoat, Juice Shop, Mutillidae
+\end{itemize}
+
+\item \textbf{TR2.4}: Compliance and Documentation
+\begin{itemize}
+\item All tools must be freely available or have educational licenses
+\item Open-source preference for long-term sustainability
+\item Tool version specifications documented
+\item Legal and ethical use guidelines included
+\end{itemize}
+
+\end{itemize}
+
+\subsection{TR3: Scripting and Automation Framework}
+
+\begin{itemize}
+
+\item \textbf{TR3.1}: Languages
+\begin{itemize}
+\item Bash scripting for system automation (deployment, reset, validation)
+\item Python 3.10+ for complex automation and integration
+\item Optional: Go or Rust for performance-critical components
+\end{itemize}
+
+\item \textbf{TR3.2}: Automation Scripts
+\begin{itemize}
+\item Deploy scripts: Initialize lab topologies and configurations
+\item Reset scripts: Restore lab to initial vulnerable state
+\item Validation scripts: Verify security effectiveness and readiness
+\item Monitoring scripts: Track lab health and performance
+\end{itemize}
+
+\item \textbf{TR3.3}: Integration Points
+\begin{itemize}
+\item EVE-NG API integration for programmatic lab management
+\item Webhook support for event-driven automation
+\item Container orchestration (Docker) for microservices
+\item Version control integration (Git, GitHub)
+\end{itemize}
+
+\end{itemize}
 
 \section{Non-Functional Requirements}
 
-\subsection{NFR1: Performance}
+Non-functional requirements specify quality attributes and operational characteristics.
 
-- Deployment per EVE-NG specifications 
-- Boot times optimized for lab workflow
+\subsection{NFR1: Performance and Efficiency}
 
-\subsection{NFR2: Compliance}
+\begin{itemize}
 
-- NIST principles 
-- CIS Controls 
-- OWASP methodologies 
+\item \textbf{NFR1.1}: Deployment Performance
+\begin{itemize}
+\item Lab deployment time: less or equal to 2 minutes from topology load to ready state
+\item VM boot time: less or equal to 90 seconds per VM (95 percent of cases)
+\item Reset operation: less or equal to 30 seconds to restore to initial state
+\item Concurrent lab instances: Support minimum 5 simultaneous labs
+\end{itemize}
 
-\subsection{NFR3: Institutional Sustainability}
+\item \textbf{NFR1.2}: Resource Optimization
+\begin{itemize}
+\item VM image sizes: less or equal to 5GB per image (compressed)
+\item Memory footprint: less or equal to 6GB per lab instance during execution
+\item Network bandwidth: Minimal external dependencies (all local simulation)
+\end{itemize}
 
-- Alignment with GEISI curriculum 
-- Open-source tools to ensure long-term maintainability
+\item \textbf{NFR1.3}: Scalability
+\begin{itemize}
+\item Support for 20+ simultaneous students (1 lab per student minimum)
+\item Support for 30+ concurrent educational deployments
+\item Horizontal scaling through distributed EVE-NG nodes
+\end{itemize}
+
+\end{itemize}
+
+\subsection{NFR2: Compliance with Security Frameworks}
+
+\begin{itemize}
+
+\item \textbf{NFR2.1}: NIST Cybersecurity Framework Alignment
+\begin{itemize}
+\item Core Functions: Identify, Protect, Detect, Respond, Recover
+\item Implementation mapped to lab exercises
+\item Assessment procedures aligned with NIST guidelines
+\end{itemize}
+
+\item \textbf{NFR2.2}: CIS Critical Controls Coverage
+\begin{itemize}
+\item Controls 1-18 incorporated where pedagogically appropriate
+\item Assessment rubrics aligned with CIS benchmarks
+\item Remediation procedures follow CIS recommendations
+\end{itemize}
+
+\item \textbf{NFR2.3}: OWASP Standards Integration
+\begin{itemize}
+\item OWASP Top 10 vulnerabilities fully covered
+\item OWASP Testing Guide methodology integrated
+\item OWASP Development Practices reflected in lab design
+\end{itemize}
+
+\item \textbf{NFR2.4}: Penetration Testing Standards
+\begin{itemize}
+\item PTES (Penetration Testing Execution Standard) phases mapped to labs
+\item CEH (Certified Ethical Hacker) curriculum alignment
+\item Ethical hacking principles strictly enforced
+\end{itemize}
+
+\end{itemize}
+
+\subsection{NFR3: Reliability and Availability}
+
+\begin{itemize}
+
+\item \textbf{NFR3.1}: System Reliability
+\begin{itemize}
+\item Mean Time Between Failures (MTBF): greater or equal to 100 hours continuous operation
+\item Mean Time To Recovery (MTTR): less or equal to 5 minutes
+\item Scenario reproducibility: 100 percent (deterministic behavior)
+\item Bug severity: Zero critical bugs at release
+\end{itemize}
+
+\item \textbf{NFR3.2}: Data Integrity
+\begin{itemize}
+\item No unintended data loss during lab operations
+\item Snapshot and restore functionality for state management
+\item Backup procedures for sensitive configurations
+\end{itemize}
+
+\item \textbf{NFR3.3}: Availability
+\begin{itemize}
+\item Planned maintenance windows: Weekends only
+\item System availability: greater or equal to 99 percent during instructional periods
+\item Graceful degradation if resources become limited
+\end{itemize}
+
+\end{itemize}
+
+\subsection{NFR4: Security and Ethical Compliance}
+
+\begin{itemize}
+
+\item \textbf{NFR4.1}: Educational Sandbox Isolation
+\begin{itemize}
+\item Complete network isolation from production systems
+\item No outbound internet access from lab environments
+\item Contained attack scenarios (no external targets)
+\end{itemize}
+
+\item \textbf{NFR4.2}: Access Control and Accountability
+\begin{itemize}
+\item Role-based access control (RBAC) for lab management
+\item Audit logs of all student actions (where applicable)
+\item Clear identification of authorized vs. unauthorized activities
+\end{itemize}
+
+\item \textbf{NFR4.3}: Ethical Guardrails
+\begin{itemize}
+\item Mandatory ethics training and certification before lab access
+\item Written agreements regarding responsible use
+\item Monitoring and escalation procedures for suspicious activities
+\end{itemize}
+
+\end{itemize}
+
+\subsection{NFR5: Usability and Support}
+
+\begin{itemize}
+
+\item \textbf{NFR5.1}: Ease of Use
+\begin{itemize}
+\item Average time to deploy a lab: 5-10 minutes for faculty
+\item Intuitive web interface with clear navigation
+\item Context-sensitive help and tooltips
+\item Minimal technical prerequisites for students
+\end{itemize}
+
+\item \textbf{NFR5.2}: Documentation and Support
+\begin{itemize}
+\item Comprehensive user manuals and quick-start guides
+\item Video tutorials for complex procedures (2-3 minutes each)
+\item FAQ documentation (minimum 50 entries)
+\item Responsive support channel (email, discussion forum, chat)
+\end{itemize}
+
+\item \textbf{NFR5.3}: Accessibility
+\begin{itemize}
+\item WCAG 2.1 Level AA compliance for web interfaces
+\item Screen reader compatibility
+\item Keyboard navigation support
+\item Clear contrast ratios for visual elements
+\end{itemize}
+
+\end{itemize}
+
+\subsection{NFR6: Institutional Sustainability}
+
+\begin{itemize}
+
+\item \textbf{NFR6.1}: Long-term Maintainability
+\begin{itemize}
+\item All components open-source or freely available tools
+\item No vendor lock-in dependencies
+\item Source code in GitHub with clear documentation
+\item Backward compatibility with older EVE-NG versions where feasible
+\end{itemize}
+
+\item \textbf{NFR6.2}: Curriculum Alignment
+\begin{itemize}
+\item Explicit mapping to GEISI degree learning outcomes
+\item Integration with existing course structures
+\item Flexible customization for different instructional contexts
+\item Support for multi-level deployment (100/300/400-level courses)
+\end{itemize}
+
+\item \textbf{NFR6.3}: Scalability for Institutional Adoption
+\begin{itemize}
+\item Deployable on institutional infrastructure (not SaaS-dependent)
+\item Support for multiple faculty deployments simultaneously
+\item Resource reservation and scheduling capabilities
+\item Reporting and analytics for institutional assessment
+\end{itemize}
+
+\end{itemize}
+
+\section{Requirements Traceability Matrix}
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabularx}{\textwidth}{|l|l|X|l|}
+\hline
+\textbf{ID} & \textbf{Type} & \textbf{Requirement} & \textbf{Lab} \\
+\hline
+RF1.1 & Functional & Design 4 topologies & All \\
+\hline
+RF1.2 & Functional & 5-8 VMs per topology & All \\
+\hline
+RF2.1 & Functional & Lab 1 reconnaissance & Lab 1 \\
+\hline
+RF2.2 & Functional & Lab 2 OWASP vulnerabilities & Lab 2 \\
+\hline
+RF2.3 & Functional & Lab 3 network analysis & Lab 3 \\
+\hline
+RF2.4 & Functional & Lab 4 privilege escalation & Lab 4 \\
+\hline
+RF3.1 & Functional & Learning outcomes & All \\
+\hline
+RF3.2 & Functional & Assessment rubrics & All \\
+\hline
+TR1.1 & Technical & EVE-NG 5.0+ & Platform \\
+\hline
+TR1.3 & Technical & Host 64GB RAM, 2TB storage & Infrastructure \\
+\hline
+TR2.1 & Technical & Kali Linux 2024 & Tools \\
+\hline
+NFR1.1 & Non-Func & Deploy less/equal 2 min & Performance \\
+\hline
+NFR2.1 & Non-Func & NIST alignment & Compliance \\
+\hline
+NFR3.1 & Non-Func & MTBF greater/equal 100h & Reliability \\
+\hline
+NFR4.1 & Non-Func & Network isolation & Security \\
+\hline
+NFR6.1 & Non-Func & Open-source tools & Sustainability \\
+\hline
+\end{tabularx}
+\caption{Requirements traceability matrix}
+\end{table}
+
+\section{Conclusion}
+
+These comprehensive functional, technological, and non-functional requirements provide the complete specification for the EVE-NG-based cybersecurity teaching package. Adherence to these requirements ensures that the deliverables meet educational objectives, technical quality standards, and institutional sustainability criteria.
