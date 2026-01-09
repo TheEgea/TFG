@@ -1,15 +1,137 @@
-\section{Bibliography}
+% ============================================================
+% CHAPTER: BIBLIOGRAPHY
+% Autor: Eloi Egea Rada
+% Tema: Complete bibliography and references
+% ============================================================
 
-\subsection{Books and Manuals}
+\chapter{Bibliography}
 
-% Section pending development
-\subsection{Scientific Articles}
+% LaTeX Bibliography Integration
+% This chapter manages all references used throughout this TFG.
+% References are formatted according to IEEE style.
+% For technical details on IEEE citation format, see:
+% - IEEE Editorial Style Manual: https://ieeeauthorcenter.ieee.org/
+% - IEEE Reference Examples: https://ieee-dataport.org/sites/default/files/analysis/27/IEEE%20Citation%20Guidelines.pdf
 
-% Section pending development
+% The bibliography is generated from references.bib using BibTeX
+% Compilation sequence: pdflatex -> bibtex -> pdflatex -> pdflatex
 
-\subsection{Academic Web Resources}
+\nocite{*}  % Include all entries from references.bib (optional - remove if using specific citations)
 
-% Section pending development
+% Bibliography style (IEEE format preferred for engineering/CS)
+\bibliographystyle{IEEE}
 
-\subsection{Technical Documentation}
-% Section pending development
+% Input bibliography from references.bib file
+\bibliography{references}
+
+\newpage
+
+\section{Bibliography Notes}
+
+This bibliography compiles all sources referenced throughout this Final Degree Project (TFG).
+References are organized using the IEEE citation style, which is the standard for computer science
+and engineering publications. The complete reference database is maintained in \texttt{references.bib}.
+
+\subsection{Reference Categories}
+
+The bibliography includes references across the following categories:
+
+\begin{itemize}
+
+\item \textbf{Cybersecurity Frameworks and Standards}
+\begin{itemize}
+\item NIST Cybersecurity Framework
+\item OWASP (Open Web Application Security Project) guidelines
+\item CIS Critical Controls and benchmarks
+\item PTES (Penetration Testing Execution Standard)
+\item CEH (Certified Ethical Hacker) framework documentation
+\end{itemize}
+
+\item \textbf{Penetration Testing and Ethical Hacking}
+\begin{itemize}
+\item Penetration testing methodologies
+\item Vulnerability assessment techniques
+\item Exploitation frameworks and tools
+\item Post-exploitation and privilege escalation
+\item Network security and defense mechanisms
+\end{itemize}
+
+\item \textbf{Cybersecurity Education and Pedagogy}
+\begin{itemize}
+\item Hands-on learning and laboratory design
+\item Security education effectiveness research
+\item Cybersecurity curriculum development
+\item Active learning strategies
+\item Assessment methodologies for technical competencies
+\end{itemize}
+
+\item \textbf{Virtualization and Laboratory Platforms}
+\begin{itemize}
+\item EVE-NG (Emulated Virtual Environment - Next Generation)
+\item KVM and Linux virtualization
+\item Network simulation and emulation
+\item Alternative platforms: HackTheBox, TryHackMe, Cisco Academy, SEED Labs, GOAD
+\end{itemize}
+
+\item \textbf{Penetration Testing Tools and Technologies}
+\begin{itemize}
+\item Kali Linux and security tool collections
+\item Metasploit Framework and exploitation
+\item Burp Suite and web application testing
+\item Nmap and network reconnaissance
+\item Wireshark and network analysis
+\item OWASP ZAP and automated scanning
+\end{itemize}
+
+\item \textbf{Academic and Industry Publications}
+\begin{itemize}
+\item IEEE Xplore publications on cybersecurity
+\item ACM Digital Library research papers
+\item Conference proceedings (InfoSecCD, ASEE, etc.)
+\item Industry white papers and technical reports
+\item Case studies of security incidents and lessons learned
+\end{itemize}
+
+\end{itemize}
+
+\subsection{How to Use This Bibliography}
+
+\begin{enumerate}
+
+\item \textbf{Citation in Text}: Use \verb|\cite{key}| where \texttt{key} is the BibTeX identifier
+\begin{verbatim}
+Example: According to the NIST Cybersecurity Framework \cite{NIST_CSF_2018},
+organizations must implement controls across five core functions.
+\end{verbatim}
+
+\item \textbf{Multiple References}: Use multiple identifiers separated by commas
+\begin{verbatim}
+Example: Several frameworks address cybersecurity governance \cite{NIST_CSF_2018,CIS_Controls_2018,ISO_27001}.
+\end{verbatim}
+
+\item \textbf{Reference Format Verification}: All references maintain IEEE format:
+\begin{itemize}
+\item Author(s) names in order
+\item Title of work in quotes for articles, italics for books
+\item Publication details (journal, conference, publisher)
+\item Date and page numbers
+\item DOI or URL where available
+\end{itemize}
+
+\end{enumerate}
+
+\subsection{Accessing Referenced Materials}
+
+Many of the referenced materials are available through the following channels:
+
+\begin{itemize}
+
+\item \textbf{NIST Publications}: https://www.nist.gov/publications
+\item \textbf{OWASP Resources}: https://owasp.org/
+\item \textbf{CIS Benchmarks}: https://www.cisecurity.org/cis-benchmarks/
+\item \textbf{IEEE Xplore}: https://ieeexplore.ieee.org/
+\item \textbf{ACM Digital Library}: https://dl.acm.org/
+\item \textbf{GitHub}: https://github.com/ (for open-source tools and documentation)
+\item \textbf{Official Tool Documentation}: Specific URLs maintained in references.bib
+
+\end{itemize}
