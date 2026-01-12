@@ -1,0 +1,235 @@
+% LaTeX template for Avantprojecte (TFG Initial Proposal)
+% 
+% Author: Eloi Egea Rada
+% © 2025, Eloi Egea Rada
+% Licensed under CC BY-NC-SA 4.0
+% Template for Final Degree Projects at Centre Universitari TecnoCampus
+
+\documentclass[a4paper, twoside, 12pt, openright]{report}
+
+% ============================================================================
+% PREAMBLE — Packages and configuration
+% ============================================================================
+
+% --- Typography with XeLaTeX/LuaLaTeX ---
+\usepackage{fontspec}
+\usepackage{verbatim}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage[english]{babel}
+\usepackage{csquotes}
+\usepackage{eurosym}
+
+\usepackage{fancyhdr} % Per personalitzar capçaleres i peus de pàgina
+\usepackage{etoolbox} % Per canviar estils de numeració
+\usepackage{geometry} % Per ajustar marges
+\usepackage{setspace} % Per ajustar l'interlineat
+\usepackage{titlesec} % Paquet per personalitzar els títols
+\usepackage[nottoc, numbib]{tocbibind} % Inclou bibliografia i índexs automàticament al ToC
+\usepackage[nonumberlist, toc]{glossaries} % Paquet per a la generació del glossari
+\usepackage[style=ieee, backend=biber]{biblatex} % Paquet per gestionar la bibliografia en format IEEE
+
+
+% Complex tables for time tracking
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{longtable}
+\usepackage{multirow}
+\usepackage{booktabs}
+
+% Hyperlinks (load AFTER other packages)
+\usepackage{hyperref}
+
+% ============================================================================
+% OPENDYSLEXIC FONTS SELECTION
+% ============================================================================
+
+\setmainfont{OpenDyslexic}[
+    Path = /usr/share/fonts/opentype/opendyslexic/,
+    Extension = .otf,
+    UprightFont = *-Regular,
+    BoldFont = *-Bold,
+    ItalicFont = *-Italic,
+    BoldItalicFont = *-BoldItalic
+]
+
+\setsansfont{OpenDyslexicAlta}[
+    Path = /usr/share/fonts/opentype/opendyslexic/,
+    Extension = .otf,
+    UprightFont = *-Regular,
+    BoldFont = *-Bold,
+    ItalicFont = *-Italic,
+    BoldItalicFont = *-BoldItalic
+]
+
+\setmonofont{OpenDyslexicMono}[
+    Path = /usr/share/fonts/opentype/opendyslexic/,
+    Extension = .otf,
+    UprightFont = *-Regular
+]
+
+% ============================================================================
+% LOAD GLOSSARY
+% ============================================================================
+
+
+
+% Load glossary definitions from an external file
+\input{../../resources/glossary.tex}
+\setglossarystyle{altlist}
+\setacronymstyle{long-short}
+\makeglossaries 
+\addbibresource{../../resources/references.bib} % El fitxer .bib amb les referències
+
+% ============================================================================
+% TITLE FORMATTING
+% ============================================================================
+
+\titleformat{\chapter}[block]{\normalfont\fontsize{18pt}{0pt}\bfseries}{\thechapter}{1em}{}
+\titlespacing*{\chapter}{0pt}{0pt}{\baselineskip}
+
+\titleformat{\section}[block]{\normalfont\fontsize{16pt}{0pt}\bfseries}{\thesection}{1em}{}
+\titleformat{\subsection}[block]{\normalfont\fontsize{14pt}{0pt}\bfseries}{\thesubsection}{1em}{}
+
+% ============================================================================
+% HYPERLINK CONFIGURATION
+% ============================================================================
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=black,
+    citecolor=black,
+    filecolor=magenta,
+    urlcolor=blue,
+    pdftitle={Ethical Pentesting in Virtualized Environments with EVE-NG},
+    pdfauthor={Eloi Egea Rada},
+    pdfpagemode=FullScreen
+}
+
+% ============================================================
+% PAGE MARGINS AND SECTION SPACING
+% ============================================================
+
+\geometry{top=3cm, bottom=2.54cm, left=3cm, right=2.54cm, bindingoffset=0.46cm}
+
+% Define section spacing and indentation
+\titlespacing*{\section}{0pt}{12pt}{6pt}
+\titlespacing*{\subsection}{0pt}{10pt}{4pt}
+\titlespacing*{\subsubsection}{0pt}{8pt}{2pt}
+
+% Adjust paragraph spacing
+\setlength{\parskip}{6pt}
+\setlength{\parindent}{0pt}
+\setlength{\headheight}{14.5pt} 
+
+
+\setlength{\parindent}{0pt}
+
+
+% Imatges
+\graphicspath{{../../images/}}
+
+
+% ============================================================================
+% COVER PAGE & PRELIMINARIES
+% ============================================================================
+
+\fancypagestyle{plain}{
+    \fancyhf{}
+    \fancyhead[RO,LE]{\fontsize{10}{12}\textit{\thepage}}
+    \fancyhead[RE]{\fontsize{10}{12}\textit{Ethical Pentesting in Virtualized Environments with EVE-NG}}
+    \fancyfoot{}
+}
+
+\pagestyle{plain}
+
+\title{
+        \begin{figure}
+            \centering
+            \includegraphics[width=0.85\linewidth]{../../images/logo-tecnocampus.png}
+        \end{figure}
+        
+        \fontsize{14pt}{0pt}\textbf{Bachelor in Computer Engineering — Management and Information Systems} \\
+        
+        \vspace*{2cm}
+
+        \textbf{Ethical Pentesting in Virtualized Environments with EVE-NG} \\
+
+        \vspace*{1cm}
+
+        \textbf{Feasibility Study} \\
+        \textbf{Volume II}
+
+        \vspace*{5cm}
+}
+
+\author{
+\fontsize{14pt}{0pt}
+	\textbf{Eloi Egea Rada} \\
+	\textbf{Supervisor: Pere Vidiella i Catalan}
+}
+
+\date{December 2025}
+
+\begin{document}
+
+% === COVER PAGE ===
+\maketitle
+
+\newpage
+\thispagestyle{empty}
+\null
+\newpage
+
+% ============================================================================
+% TABLE OF CONTENTS & PRELIMINARY PAGES
+% ============================================================================
+
+\pagenumbering{Roman}
+
+\tableofcontents
+
+\listoftables
+\listoffigures
+
+\onehalfspacing
+%\setlength{\parskip}{12pt}
+
+\printglossary[title=Glossary]
+
+\newpage
+\null
+\newpage
+
+\fancypagestyle{plain}{
+    \fancyhf{}
+    \fancyhead[RO,LE]{\fontsize{10}{12}\textit{\thepage}}
+    \fancyhead[LO]{\fontsize{10}{12}\textit{\nouppercase{\textit{\leftmark}}}}
+    \fancyhead[RE]{\fontsize{10}{12}\textit{Ethical Pentesting in Virtualized Environments with EVE-NG}}
+    \fancyfoot{}
+}
+
+\pagestyle{plain}
+
+\pagenumbering{arabic}
+
+
+\input{../../chapters/06_viabilitat.tex}
+
+
+
+
+% ============================================================================
+% BIBLIOGRAFIA
+% ============================================================================
+
+
+\cleardoublepage
+\phantomsection
+
+
+
+
+
+
+\end{document}
