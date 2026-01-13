@@ -47,28 +47,29 @@ The 37 tasks have been distributed across 7 categories:
 \textbf{Phase 0: Preparation (July - November 2025)}
 
 \begin{itemize}
-    \item Task 0.1: HomeLab Initialization Setup (64h) - \textbf{100\% completed}
-    \item Task 0.2: VSCode Setup for thesis development (18h) - \textbf{100\% completed}
-    \item Task 0.3: Kali Linux Setup and Basic Tools (15h) - \textbf{100\% completed}
-    \item Task 0.4: Home Lab As-Built Documentation (8h) - \textbf{100\% completed}
+    \item Task 0.1: HomeLab Initialization Setup (64h)
+    \item Task 0.2: VSCode Setup for thesis development (18h) 
+    \item Task 0.3: Kali Linux Setup and Basic Tools (15h) 
+    \item Task 0.4: Home Lab As-Built Documentation (8h) 
 \end{itemize}
 
 This phase established the technical infrastructure necessary for project development, including virtualization environment (EVE-NG)\cite{eve_ng}, development tools (VSCode, LaTeX)\cite{vscode,latex_project}, and pentesting platform (Kali Linux)\cite{kali_linux}.
+Although this infrastructure consolidation phase extended through November, it should not be formally counted as bachelor's thesis work. The virtualization environment, development tools, and pentesting platform were pre-existing components already deployed on personal hardware. 
+This phase primarily involved migrating and centralizing these tools onto a dedicated server infrastructure for enhanced accessibility and project organization, rather than engineering or developing new systems specifically for the bachelor's thesis.
 
 \textbf{Phase 1: Avantprojecte (October 2025 - January 2026)}
 
 \begin{itemize}
-    \item Task 1.0: Thesis Development (22h) - \textbf{100\% completed}
-    \item Task 1.1: SMART Objectives Definition (4h) - \textbf{100\% completed}
-    \item Task 1.2: State of the Art: Frameworks and Tools (15h) - \textbf{75\% in progress}
-    \item Task 1.3: Functional and Non-Functional Requirements (10h) - \textbf{80\% in progress}
-    \item Task 1.4: Pentesting Methodology and Validation (8h) - \textbf{0\% pending - CRITICAL}
-    \item Task 1.5: Design Decisions and Justification (5h) - \textbf{0\% pending}
-    \item Task 1.6: Gantt Chart Development (20h) - \textbf{100\% completed}
-    \item Task 1.7: Risk Analysis and Mitigation Plan (15h) - \textbf{0\% pending}
-    \item Task 1.8: Resource Inventory (5h) - \textbf{0\% pending}
-    \item Task 1.9: Hackathon CTF Participation (25h) - \textbf{40\% in progress}
-    \item \textbf{Milestone 1.10: Preliminary Project (40h)} - \textbf{50\% in progress - Delivery: January 16, 2026}
+    \item Task 1.0: Thesis Development (22h) 
+    \item Task 1.1: SMART Objectives Definition (4h) 
+    \item Task 1.2: State of the Art: Frameworks and Tools (15h) 
+    \item Task 1.3: Functional and Non-Functional Requirements (10h) 
+    \item Task 1.4: Pentesting Methodology and Validation (8h) 
+    \item Task 1.5: Design Decisions and Justification (5h) 
+    \item Task 1.6: Gantt Chart Development (20h) 
+    \item Task 1.7: Risk Analysis and Mitigation Plan (15h) 
+    \item Task 1.8: Resource Inventory (5h)
+    \item \textbf{Milestone 1.10: Preliminary Project (40h)} - \textbf{Delivery: January 16, 2026}
 \end{itemize}
 
 This phase focuses on conceptual design, requirements analysis, and detailed planning. Critical tasks for the January 16 deadline include completing the pentesting methodology, risk analysis, and resource inventory.
@@ -304,15 +305,15 @@ A significant advantage of this project is the reliance on free and open-source 
 The project demonstrates \textbf{high technical feasibility} due to the following factors:
 
 \begin{itemize}
-    \item \textbf{Completed Infrastructure Setup}: Phase 0 (Preparation) has been 100\% completed, with HomeLab server, EVE-NG platform, Kali Linux, and development environment fully operational and documented\cite{eve_ng,kali_linux,vscode,latex_project}.
+    \item \textbf{Completed Infrastructure Setup}: Phase 0 (Preparation) has been 100\% completed, with HomeLab server, EVE-NG platform, Kali Linux, and development environment fully operational and documented.
     
-    \item \textbf{Open-Source Ecosystem}: All software components (EVE-NG, Kali Linux, vulnerable VMs, pentesting tools) are mature, well-documented, and widely adopted in professional cybersecurity training.\cite{eve_ng,kali_linux,metasploit,sponj2021,conti2019}
+    \item \textbf{Open-Source Ecosystem}: All software components (EVE-NG, Kali Linux, vulnerable VMs, pentesting tools) are mature, well-documented, and widely adopted in professional cybersecurity training.\cite{metasploit}
     
-    \item \textbf{Proven Technology Stack}: The selected technologies (VMware/EVE-NG for virtualization, Python/Bash for scripting, LaTeX for documentation) are industry-standard and have established best practices.\cite{latex_project,murphy2018}
+    \item \textbf{Proven Technology Stack}: The selected technologies (VMware/EVE-NG for virtualization, Python/Bash for scripting, LaTeX for documentation) are industry-standard and have established best practices.\cite{murphy2018}
     
     \item \textbf{Academic Support}: Access to institutional resources at Tecnocampus, including academic licenses for software (VMware Workstation Pro), library resources for research, and tutor expertise in cybersecurity and network administration.
 \end{itemize}
-
+\newpage
 \subsection{Technical Competencies}
 
 The project requires competencies in multiple areas:
@@ -325,10 +326,10 @@ The project requires competencies in multiple areas:
     \hline
     Network Administration & Configuration of virtual networks, VLANs, routing, firewall rules & Intermediate \\
     Operating Systems & Linux administration, Windows Server configuration & Intermediate \\
-    Virtualization & EVE-NG\cite{eve_ng} topology design, VM management, resource optimization & Advanced \\
+    Virtualization & EVE-NG topology design, VM management, resource optimization & Advanced \\
     Pentesting & Reconnaissance, exploitation, privilege escalation, web vulnerabilities & Intermediate \\
     Scripting & Python and Bash for automation and validation & Intermediate \\
-    Documentation & LaTeX\cite{latex_project}, technical writing, academic formatting & Intermediate \\
+    Documentation & LaTeX, technical writing, academic formatting & Intermediate \\
     \hline
     \end{tabularx}
     \caption{Required technical competencies and current proficiency level}
@@ -338,20 +339,239 @@ The project requires competencies in multiple areas:
 The student has demonstrated competence in these areas through completed courses
  (Network Administration, Operating Systems, Software Engineering) and the successful completion of
   Phase 0 infrastructure setup.
+\subsection{Risk Assessment Framework}
 
-\subsection{Risk Mitigation}
+Following the five-phase risk assessment methodology defined in NIST SP 800-30, this section systematically identifies, evaluates, and prioritizes technical risks to ensure appropriate mitigation strategies.
 
-Technical risks have been identified and mitigation strategies established:
+\subsubsection{Phase 1: Asset Identification and Scope Definition}
 
+The project's critical assets have been identified and categorized according to the CIA triad (Confidentiality, Integrity, Availability):
+
+\textbf{Hardware Assets}:
 \begin{itemize}
-    \item \textbf{EVE-NG Performance Issues}: Risk mitigated through hardware dimensioning (32GB RAM, 8-core CPU), resource optimization techniques, and documented fallback to VirtualBox if needed.
-    
-    \item \textbf{VM Incompatibility}: Risk mitigated through early testing of all VM images (Metasploitable, DVWA, Kali Linux)\cite{metasploit,dvwa,kali_linux}, use of standardized formats (QCOW2, VMDK), and maintenance of alternative image repository.
-    
-    \item \textbf{Knowledge Gaps}: Risk mitigated through structured research phase (Task 1.2: State of the Art, 15h), continuous learning during implementation, and access to tutor expertise.
+    \item HomeLab server (28-core CPU, 32GB RAM, 32TB SSD) - Availability critical
+    \item Development workstations (laptop + desktop) - Integrity critical
+    \item Network equipment (router, switch) - Availability critical
+    \item External storage devices (backup) - Confidentiality + Availability critical
 \end{itemize}
 
-\textbf{Conclusion}: The project is \textbf{technically viable} with a well-prepared infrastructure, appropriate technology stack, and adequate competency level. The main technical challenges are manageable with proper planning and contingency measures.
+\textbf{Software Assets}:
+\begin{itemize}
+    \item EVE-NG community edition - Availability critical
+    \item Kali Linux distribution - Integrity critical
+    \item Vulnerable VMs (Metasploitable, DVWA) - Integrity critical
+    \item Development tools (VSCode, Git, LaTeX) - Integrity critical
+\end{itemize}
+
+\textbf{Data Assets}:
+\begin{itemize}
+    \item Thesis source code and documentation - Confidentiality + Integrity critical
+    \item Lab topology configurations - Integrity + Availability critical
+    \item Student learning materials - Availability critical
+    \item Project research findings - Confidentiality + Integrity critical
+\end{itemize}
+
+\textbf{Infrastructure Assets}:
+\begin{itemize}
+    \item Virtual network topology (EVE-NG) - Availability critical
+    \item Network segmentation (VLANs) - Integrity critical
+    \item Backup systems - Availability critical
+\end{itemize}
+
+\textbf{Scope Definition}: The risk assessment focuses on infrastructure and technical risks within the controlled laboratory environment. Excluded from scope: organizational risks (staffing, budget), regulatory risks (compliance), and external threats beyond the academic context.
+
+\subsubsection{Phase 2: Threat and Vulnerability Identification}
+
+\textbf{Threat Identification}:
+
+Threats are categorized by source according to NIST SP 800-30\cite{nist_sp80030}:
+
+\begin{itemize}
+    \item \textbf{Hardware Threats}: Disk failures, power supply degradation, CPU overheating, memory exhaustion
+    
+    \item \textbf{Software/Configuration Threats}: Outdated VM images, incompatible software versions, configuration drift, EVE-NG platform crashes
+    
+    \item \textbf{Knowledge Gap Threats}: Insufficient expertise in advanced networking, virtualization optimization, security best practices
+    
+    \item \textbf{Resource Constraint Threats}: Limited RAM for simultaneous VM operations, storage capacity limits, bandwidth limitations
+    
+    \item \textbf{Integration Threats}: EVE-NG network compatibility issues with host systems, tool interoperability problems
+    
+    \item \textbf{Data Loss Threats}: Accidental deletion, corruption, hardware failure causing data unavailability
+\end{itemize}
+
+\textbf{Vulnerability Identification}:
+
+Vulnerabilities are the weaknesses that allow threats to impact assets:
+
+\begin{itemize}
+    \item \textbf{Hardware Vulnerabilities}: 
+    \begin{itemize}
+        \item Aging server components (3-5 year lifespan approaching end-of-life)
+        \item Single point of failure in HomeLab infrastructure (no redundancy)
+        \item Limited RAM capacity for production-scale virtualization
+    \end{itemize}
+    
+    \item \textbf{Software Vulnerabilities}:
+    \begin{itemize}
+        \item EVE-NG community edition limitations (no commercial support)
+        \item Outdated VM image libraries
+        \item Dependency on end-of-life operating system versions
+    \end{itemize}
+    
+    \item \textbf{Operational Vulnerabilities}:
+    \begin{itemize}
+        \item Inadequate documentation of network topology state
+        \item Limited backup redundancy (single backup location)
+        \item No automated disaster recovery procedures
+    \end{itemize}
+    
+    \item \textbf{Competency Vulnerabilities}:
+    \begin{itemize}
+        \item Limited hands-on experience with large-scale virtualization
+        \item Advanced network configuration knowledge gaps
+        \item Insufficient production-grade infrastructure management experience
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{Phase 3: Impact and Likelihood Analysis}
+
+Risk assessment requires evaluating both likelihood (probability) and impact (consequence) of each identified threat exploiting a vulnerability. Scales follow NIST SP 800-30:
+
+\textbf{Probability Scale}:
+\begin{itemize}
+    \item \textbf{Low}: < 25\% probability within project timeline
+    \item \textbf{Medium}: 25-75\% probability
+    \item \textbf{High}: > 75\% probability
+\end{itemize}
+
+\textbf{Impact Scale}:
+\begin{itemize}
+    \item \textbf{Low}: Minor delays, easy workarounds possible
+    \item \textbf{Medium}: Project delays, workarounds required
+    \item \textbf{High}: Project jeopardy, timeline at significant risk
+\end{itemize}
+
+\textbf{Risk Assessment Matrix}:
+
+\begin{table}[H]
+    \centering
+    \small
+    \begin{tabularx}{\textwidth}{|X|X|X|X|X|}
+    \hline
+    \textbf{Risk Scenario} & \textbf{Probability} & \textbf{Impact} & \textbf{Risk Level} & \textbf{Primary Asset} \\
+    \hline
+    EVE-NG Performance Issues & Medium & High & HIGH & Infrastructure, Labs \\
+    VM Image Incompatibility & Medium & Medium & MEDIUM & Development, Labs \\
+    Knowledge Gaps in Advanced Networking & Medium & Medium & MEDIUM & Development, Timeline \\
+    Hardware Degradation/Disk Failure & Low & High & MEDIUM & Infrastructure \\
+    Data Loss (insufficient backup) & Low & High & MEDIUM & Documentation \\
+    Configuration Documentation Gaps & Medium & Medium & MEDIUM & Operations \\
+    \hline
+    \end{tabularx}
+    \caption{Risk assessment matrix with probability and impact evaluation (NIST SP 800-30)}
+    \label{tab:risk_matrix}
+\end{table}
+
+\subsubsection{Phase 4: Risk Evaluation and Prioritization}
+
+Based on the impact-likelihood analysis, risks are prioritized to guide mitigation investment:
+
+\textbf{HIGH Priority Risks}:
+
+\begin{enumerate}
+    \item \textbf{EVE-NG Performance Issues} - Infrastructure bottlenecks causing lab functionality failures. Medium probability, high impact. Requires immediate resource optimization and monitoring implementation.
+\end{enumerate}
+
+\textbf{MEDIUM Priority Risks}:
+
+\begin{enumerate}
+    \item \textbf{VM Incompatibility} - Disparate image formats and versions causing integration problems. Medium probability, medium impact.
+    
+    \item \textbf{Knowledge Gaps} - Team experience gaps in advanced networking and virtualization. Medium probability, medium impact on timeline.
+    
+    \item \textbf{Configuration Documentation} - Inadequate topology documentation complicating troubleshooting and knowledge transfer. Medium probability, medium impact.
+    
+    \item \textbf{Data Loss} - Insufficient backup redundancy creating single point of failure. Low probability, high impact if occurs.
+\end{enumerate}
+
+\textbf{LOW Priority Risks}:
+
+\begin{enumerate}
+    \item \textbf{Hardware Degradation} - Aging server components approaching end-of-life. Low probability, manageable through preventive maintenance.
+\end{enumerate}
+
+\subsubsection{Phase 5: Mitigation Strategies}
+
+For each identified risk, mitigation strategies follow NIST SP 800-30 response approaches:
+
+\textbf{HIGH Priority Risk Mitigation}:
+
+\begin{itemize}
+    \item \textbf{EVE-NG Performance Issues} [REDUCTION Strategy]:
+    \begin{itemize}
+        \item Hardware dimensioning: Allocate 32GB RAM, 8-core CPU dedicated to EVE-NG to prevent resource exhaustion
+        \item Resource optimization: Implement memory tuning, network simulation limits, VM suspension when idle
+        \item Monitoring implementation: Deploy Prometheus + Grafana (Phase 2) for real-time performance alerting
+        \item Documented fallback: Maintain VirtualBox installation as alternative hypervisor if critical failure occurs
+        \item Result: Reduces probability from Medium to Low
+    \end{itemize}
+\end{itemize}
+
+\textbf{MEDIUM Priority Risk Mitigation}:
+
+\begin{itemize}
+    \item \textbf{VM Incompatibility} [PREVENTION Strategy]:
+    \begin{itemize}
+        \item Early testing: Validate all VM images (Metasploitable, DVWA, Kali Linux)\cite{dvwa} in target environment before production use
+        \item Format standardization: Standardize on QCOW2 for EVE-NG compatibility
+        \item Image redundancy: Maintain alternative repositories (VulnHub, GitHub) for rapid replacement
+        \item Result: Reduces probability from Medium to Low
+    \end{itemize}
+
+    \item \textbf{Knowledge Gaps} [PREVENTION + REDUCTION]:
+    \begin{itemize}
+        \item Structured learning: Task 1.2 (State of the Art: 15h) provides comprehensive research on frameworks and tools
+        \item Continuous upskilling: Learning during implementation phases (Labs 1-4 research tasks)
+        \item Expert consultation: Access to tutor expertise in cybersecurity and network administration
+        \item Technical references: NIST SP 800-115\cite{nist_sp800115}, OWASP Testing Guide\cite{owasp_testing_guide}
+        \item Result: Reduces impact from Medium to Low-Medium
+    \end{itemize}
+
+    \item \textbf{Configuration Documentation} [PREVENTION]:
+    \begin{itemize}
+        \item Continuous documentation: Update topology diagrams during development
+        \item Automated export: Use EVE-NG built-in topology export functionality
+        \item Version control: All network configs via Git repository
+        \item Enforcement: All topology changes require corresponding documentation updates before milestone completion
+        \item Result: Reduces probability from Medium to Low
+    \end{itemize}
+
+    \item \textbf{Data Loss} [REDUCTION]:
+    \begin{itemize}
+        \item Daily automated backups: Encrypt and backup critical files to external storage device
+        \item Version control: All source code and documentation in Git repository with commit history
+        \item Off-site backup: Cloud storage (student account) with encryption for geographic redundancy
+        \item Restore testing: Quarterly restore tests to verify backup integrity
+        \item Result: Reduces both probability and impact (Low probability, Low impact)
+    \end{itemize}
+\end{itemize}
+
+\textbf{LOW Priority Risk Mitigation}:
+
+\begin{itemize}
+    \item \textbf{Hardware Degradation} [PREVENTION]:
+    \begin{itemize}
+        \item Preventive maintenance: Quarterly hardware diagnostics (disk health, temperature monitoring)
+        \item Component monitoring: Automated alerts for disk S.M.A.R.T. errors, CPU temperature thresholds
+        \item Replacement planning: Component procurement plan with 6-month horizon for critical parts
+        \item Result: Enables early detection and prevents critical failure
+    \end{itemize}
+\end{itemize}
+
+\textbf{Risk Assessment Conclusion}:
+
+All identified risks have been systematically evaluated and assigned appropriate mitigation strategies. No individual risk is considered project-blocking. The comprehensive mitigation plan following NIST SP 800-30 methodology ensures the project can proceed with acceptable technical risk levels. The infrastructure is well-prepared, technology stack is appropriate, and mitigation strategies are concrete and implementable. Main technical challenges are manageable with proper planning and documented contingency measures.
 
 \chapter{Economic Feasibility}
 
@@ -368,7 +588,7 @@ The project presents \textbf{excellent economic feasibility} for the following r
     
     \item \textbf{Institutional Value}: The deliverable provides long-term value to Tecnocampus by establishing a reproducible, automated laboratory infrastructure that reduces preparation time for faculty and enhances learning outcomes for students.
 \end{itemize}
-
+\newpage
 \section{Cost Comparison with Alternatives}
 
 \begin{table}[H]
@@ -378,7 +598,7 @@ The project presents \textbf{excellent economic feasibility} for the following r
     \hline
     \textbf{Alternative} & \textbf{Description} & \textbf{Annual Cost} \\
     \hline
-    This Project & Custom EVE-NG\cite{eve_ng} labs with automation, tailored to curriculum & 0 \euro/year* \\
+    This Project & Custom EVE-NG labs with automation, tailored to curriculum & 0 \euro/year* \\
     HackTheBox Academy\cite{hackthebox} & Commercial platform with pre-built labs and guided exercises & 1,200 \euro/year \\
     TryHackMe Education\cite{tryhackme} & Gamified learning platform with structured learning paths & 800 \euro/year \\
     Cybrary for Teams & Video-based training with labs and certification prep & 1,500 \euro/year \\
@@ -407,6 +627,14 @@ The environmental impact of this project is primarily related to energy consumpt
         \item Network equipment: 15W
         \item Total power: 230W × 820h = 188.6 kWh
         \item CO\textsuperscript{2} emissions (Spain avg. 0.25 kg CO\textsuperscript{2}/kWh): 47.15 kg CO\textsuperscript{2}\cite{red_electrica}
+        \item \textbf{Solar Energy Offset (Home Installation)}: Home infrastructure powered by 5kWp rooftop solar installation:
+        \begin{itemize}
+            \item 2025 annual generation: 6,634.9 kWh (real data from Can Regasol installation)
+            \item 2025 household consumption: 7,708.9 kWh (grid + solar)
+            \item Daily average generation during development: \(\sim\)18.2 kWh/day
+            \item Estimated solar offset for development phase: 34\% of 188.6 kWh (\(\sim\)64.1 kWh from solar)
+            \item Adjusted CO\textsuperscript{2} emissions (with solar): 31.95 kg CO\textsuperscript{2} (32\% reduction)\cite{red_electrica, murugesan2008}
+        \end{itemize}
     \end{itemize}
     
     \item \textbf{Operational Phase (per academic year)}:
@@ -421,17 +649,19 @@ The environmental impact of this project is primarily related to energy consumpt
 
 \begin{table}[H]
     \centering
-    \begin{tabularx}{\textwidth}{|l|X|r|}
+    \small
+    \begin{tabularx}{\textwidth}{|l|X|r|r|}
     \hline
-    \textbf{Scenario} & \textbf{Description} & \textbf{Annual CO\textsubscript{2}} \\
+    \textbf{Scenario} & \textbf{Description} & \textbf{Annual CO\textsubscript{2}} & \textbf{With Solar*} \\
     \hline
-    This Project & Virtualized labs on shared HomeLab infrastructure & 20.7 kg \\
-    Individual VMs & Each student runs labs on personal computer (30 × 200W × 12h) & 180 kg \\
-    Cloud-Based Labs & AWS/Azure hosted environments (datacenter PUE 1.5) & 95 kg \\
-    Physical Network Lab & Dedicated hardware devices (switches, routers, servers) & 450 kg \\
+    This Project & Virtualized labs on shared HomeLab infrastructure & 20.7 kg & 14.1 kg \\
+    This Project (Dev) & Development phase with solar offset (6.6 MWh/year avg) & 47.15 kg & 31.95 kg \\
+    Individual VMs & Each student runs labs on personal computer (30 × 200W × 12h) & 180 kg & -- \\
+    Cloud-Based Labs & AWS/Azure hosted environments (datacenter PUE 1.5) & 95 kg & -- \\
+    Physical Network Lab & Dedicated hardware devices (switches, routers, servers) & 450 kg & -- \\
     \hline
     \end{tabularx}
-    \caption{CO\textsuperscript{2} emissions comparison across different laboratory approaches}
+    \caption{CO\textsuperscript{2} emissions comparison across laboratory approaches (*Solar offset based on 5kWp installation producing 6.6 MWh/year)}
     \label{tab:co2_comparison}
 \end{table}
 
@@ -440,6 +670,8 @@ The environmental impact of this project is primarily related to energy consumpt
 The project incorporates several sustainability practices:
 
 \begin{itemize}
+    \item \textbf{Renewable Energy Integration (Solar-Powered Infrastructure)}: The entire HomeLab and development environment operates on a 5kWp rooftop photovoltaic installation located at Can Regasol (Catalunya, Spain). Real operational data from 2025 demonstrates 6,634.9 kWh annual generation with household consumption of 7,708.9 kWh, indicating robust solar capacity with 3,796.4 kWh annual export to grid. This configuration offsets approximately 34\% of development phase energy consumption (64.1 kWh from 188.6 kWh total), reducing CO\textsuperscript{2} emissions by 32\% compared to grid-only scenarios. The installation demonstrates practical implementation of distributed renewable energy for academic research infrastructure\cite{murugesan2008, red_electrica}.
+    
     \item \textbf{Resource Optimization}: VMs are configured with minimal resource allocation, suspended when idle, and share infrastructure efficiently through virtualization.
     
     \item \textbf{Digital Documentation}: All documentation is maintained in digital format (LaTeX source, PDF outputs), avoiding paper waste except for required printed thesis copies (3 units).
@@ -472,7 +704,7 @@ The project complies with intellectual property regulations:
 The project adheres to ethical hacking principles and legal boundaries:
 
 \begin{itemize}
-    \item \textbf{Controlled Environment}: All pentesting activities are conducted within isolated virtualized environments (EVE-NG sandbox)\cite{eve_ng}, with no connection to production networks or systems outside the lab.
+    \item \textbf{Controlled Environment}: All pentesting activities are conducted within isolated virtualized environments (EVE-NG sandbox), with no connection to production networks or systems outside the lab.
     
     \item \textbf{Authorized Targets}: Only intentionally vulnerable systems (Metasploitable, DVWA) designed explicitly for pentesting training are used as targets\cite{dvwa}.
     
@@ -534,7 +766,7 @@ Cybersecurity remains a male-dominated field. This project contributes to bridgi
 
 
 % Only cite references actually used in Feasibility Study
-%\nocite{owasp2021, nist_framework, cis_controls, nist_sp800115, nist_sp80053, owasp_testing_guide, ptes, ceh_framework, oscp_exam, hackthebox, tryhackme, seedlabs, vulnhub, goad, cisco_netacad, eve_ng, eve_ng_docs, gns3, docker, proxmox, vmware_esxi, kali_linux, metasploit, nmap, wireshark, burp_suite, owasp_zap, sqlmap, john_the_ripper, hashcat, aircrack_ng, tecnocampus_normativa, geisi_curriculum, ub_tfg_guide, sponj2021, conti2019, okafor2020, almohannadi2016, toppo2015, cole2015, murphy2018, owasp_api_security, dvwa, webgoat, rfc3339, rfc5246, rfc791, issa, isaca, sans_institute, ec_council, nvd, cve, cwe, exploit_db, nist_sp800861, owasp_secure_coding, mcgraw2006, linux_kernel, windows_defender, aws_pricing, aws_reserved_instances, smith2023, weee_directive, murugesan2008, williams2012, red_electrica, vscode, latex_project}
+
 \nocite{*}
 % Print bibliography using biblatex (NOT \bibliography{})
 \printbibliography[title=Bibliography]
