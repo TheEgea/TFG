@@ -3,7 +3,7 @@
 
 # Array de proyectos a compilar
 pathsToBuild=(
-  #"/home/overleaf/TFG/TFG/docs/main/memory/memory-main.tex"
+  "/home/overleaf/TFG/TFG/docs/main/memory/memory-main.tex"
   "/home/overleaf/TFG/TFG/docs/main/viabilitat/viabilitat-main.tex"
   #"/home/overleaf/TFG/TFG/docs/main/appendix/avantprojecte-main.tex"
 )
