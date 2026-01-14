@@ -77,6 +77,7 @@
 \makeglossaries 
 \addbibresource{../../resources/references.bib} % El fitxer .bib amb les referències
 
+
 % ============================================================================
 % TITLE FORMATTING
 % ============================================================================
@@ -179,11 +180,15 @@
 \pagenumbering{Roman}
 
 \tableofcontents
+%\listoffigures
+\listoftables
+
+
 
 \onehalfspacing
 \setlength{\parskip}{12pt}
+\printglossaries
 
-\printglossary[title=Glossary]
 
 \newpage
 \null
@@ -200,7 +205,6 @@
 \pagestyle{plain}
 
 \pagenumbering{arabic}
-
 
 
 %\chapter{Introducció i Context}
@@ -331,13 +335,13 @@ the professional responsibility of securing the systems they will design and man
 
 \input{../../chapters/05_requeriments.tex}
 
-
+\begin{comment}
 % ============================================================================
 % CAPÍTOL 6: ESTUDI DE VIABILITAT
 % ============================================================================
 
 
-\input{../../chapters/06_viabilitat.tex}
+%\input{../../chapters/06_viabilitat.tex}
 
 
 % ============================================================================
