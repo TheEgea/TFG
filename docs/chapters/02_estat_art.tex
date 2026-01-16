@@ -5,11 +5,10 @@
 
 \chapter{State of the Art}
 
-\section{Introduction: The Landscape of Cybersecurity Education}
+%\section{Introduction: The Landscape of Cybersecurity Education}
 
 Cybersecurity education has experienced exponential growth over the past decade, driven by increasing industry demand for skilled professionals and the accessibility of online learning platforms. However, this landscape presents both opportunities and challenges: while students have unprecedented access to training resources, the fragmentation of educational approaches has created gaps between abstract theoretical knowledge and practical, integrated system security. This chapter examines existing educational platforms and methodologies, identifies gaps in current offerings, and positions this bachelor's thesis within the broader context of cybersecurity pedagogical innovation.
 
----
 
 \section{Existing Laboratory and Training Platforms}
 
@@ -51,7 +50,7 @@ The following section provides a comprehensive overview of major platforms used 
 
 \textbf{Pedagogical Gap:} While HackTheBox excels at teaching individual exploitation techniques, it does not effectively teach students to recognize vulnerabilities within \textit{integrated systems} or to practice complete penetration testing workflows from reconnaissance through privilege escalation within a cohesive network topology.
 
----
+
 
 \subsection{TryHackMe}
 
@@ -90,7 +89,6 @@ The following section provides a comprehensive overview of major platforms used 
 
 \textbf{Pedagogical Gap:} TryHackMe's strength lies in motivation and accessibility for beginners, but it is insufficiently rigorous for degree-level professional preparation. The gamification, while engaging, can obscure the seriousness and complexity of real cybersecurity work.
 
----
 
 \subsection{Cisco Networking Academy}
 
@@ -129,7 +127,6 @@ The following section provides a comprehensive overview of major platforms used 
 
 \textbf{Pedagogical Gap:} Cisco Networking Academy provides solid foundational networking knowledge but does not adequately address penetration testing methodology or ethical hacking practice. It is orthogonal to the bachelor's thesis objectives.
 
----
 
 \subsection{SEED Labs}
 
@@ -168,7 +165,6 @@ The following section provides a comprehensive overview of major platforms used 
 
 \textbf{Pedagogical Gap:} SEED Labs excel at teaching individual security concepts but do not provide the integrated network penetration testing environment that this bachelor's thesis project aims to create. SEED is complementary rather than competitive.
 
----
 
 \subsection{Game of Active Directory (GOAD)}
 
@@ -206,7 +202,6 @@ The following section provides a comprehensive overview of major platforms used 
 
 \textbf{Pedagogical Gap:} GOAD is specialized for Windows domain penetration testing but does not provide a complete, curriculum-aligned lab environment covering reconnaissance, web vulnerabilities, and network analysis.
 
----
 
 \subsection{VulnHub}
 
@@ -246,7 +241,6 @@ The following section provides a comprehensive overview of major platforms used 
 
 \textbf{Pedagogical Gap:} While VulnHub provides realistic challenges, it lacks the structural support, progression, and automation necessary for effective institutional integration. It is better suited for independent learners than formal classroom instruction.
 
----
 
 \subsection{Hack4u Academy}
 
@@ -284,7 +278,6 @@ The following section provides a comprehensive overview of major platforms used 
 
 \textbf{Pedagogical Gap:} Hack4u Academy provides excellent methodology training but is not designed for institutional classroom integration or automated assessment. The pedagogical approach is sound, but the delivery platform is external to academic institutions.
 
----
 
 \section{Comparative Platform Analysis Matrix}
 
@@ -316,7 +309,6 @@ Hack4u Academy & Methodology & External & Strong & Minimal & Limited \\
 \label{tab:platform_comparison}
 \end{table}
 
----
 
 \section{Security Frameworks and Methodologies}
 
@@ -340,7 +332,6 @@ The National Institute of Standards and Technology (NIST) provides a framework o
 
 \textit{Relevance to bachelor's thesis:} The bachelor's thesis project itself, as described in Chapter 1, adheres to NIST principles by designing a framework (EVE-NG labs) that enables institutions to Identify vulnerabilities (through labs) and Protect systems (through remediation understanding).
 
----
 
 \section{Pedagogical Approaches in Cybersecurity Education}
 
@@ -358,7 +349,6 @@ Effective cybersecurity training must present students with systems of sufficien
 
 For training to be scalable and fair, identical environments must be reliably deployable. Automated deployment and reset mechanisms reduce instructor overhead and ensure consistent student experiences across multiple offering of a course.
 
----
 
 \section{Gap Analysis: What Existing Solutions Miss}
 
@@ -384,9 +374,7 @@ Even platforms designed for classroom use often lack automated deployment, reset
 
 Effective labs must strike a balance: sufficient structure to ensure students focus on intended learning outcomes, but sufficient openness to encourage problem-solving and methodology development.
 
----
-
-\section{Conclusion: The Need for EVE-NG Based Labs}
+\section{The Need for EVE-NG Based Labs}
 
 This state of the art analysis reveals that while excellent individual components exist---gamified learning (TryHackMe), challenging scenarios (HackTheBox), research-backed content (SEED Labs), specialized domains (GOAD)---no existing solution comprehensively addresses the needs of a university cybersecurity education program:
 
@@ -400,6 +388,5 @@ This state of the art analysis reveals that while excellent individual component
 
 The bachelor's thesis project bridges this gap by leveraging EVE-NG (a platform combining network simulation capabilities with institutional independence) to create a comprehensive, reusable, automatable teaching package for cybersecurity practical labs. This solution synthesizes the pedagogical strengths of existing platforms while addressing their limitations through institutional control, curriculum alignment, and automation.
 
----
 
 % END OF CHAPTER 2: STATE OF THE ART
