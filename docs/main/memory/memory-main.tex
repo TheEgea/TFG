@@ -32,7 +32,8 @@
 % Complex tables for time tracking
 \usepackage{array}
 \usepackage{tabularx}
-
+\usepackage{booktabs}
+\usepackage{longtable}
 % Hyperlinks (load AFTER other packages)
 \usepackage{hyperref}
 
@@ -74,7 +75,7 @@
 \input{../../resources/glossary.tex}
 \setglossarystyle{altlist}
 \setacronymstyle{long-short}
-\makeglossaries 
+%\makeglossaries 
 \addbibresource{../../resources/references.bib} % El fitxer .bib amb les referències
 
 
@@ -187,7 +188,7 @@
 
 \onehalfspacing
 \setlength{\parskip}{12pt}
-\printglossaries
+%\printglossaries
 
 
 \newpage
@@ -206,7 +207,7 @@
 
 \pagenumbering{arabic}
 
-
+\begin{comment}
 %\chapter{Introducció i Context}
 \chapter{Introduction and Context}
 
@@ -290,7 +291,7 @@ environment aligned with the Computer Engineering curriculum. This reproducible,
 fully customizable approach provides students with the opportunity to practice ethical hacking 
 in a controlled setting, progressively building upon prior learning while preparing them for 
 the professional responsibility of securing the systems they will design and manage in their careers.
-
+\end{comment}
 % ============================================================================
 % DEDICATÒRIA
 % ============================================================================

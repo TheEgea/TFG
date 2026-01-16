@@ -5,7 +5,7 @@
 
 \chapter{Functional and Non-Functional Requirements}
 
-\section{Introduction}
+%\section{Introduction}
 
 This chapter specifies the complete requirements for the EVE-NG-based cybersecurity teaching package, encompassing functional requirements (RF) that define what the system must do, technological requirements (TR) that specify the technical environment, and non-functional requirements (NFR) that address quality attributes and compliance standards.
 
@@ -474,48 +474,38 @@ Non-functional requirements specify quality attributes and operational character
 \section{Requirements Traceability Matrix}
 
 \begin{table}[H]
-\centering
-\small
-\begin{tabularx}{\textwidth}{|l|l|X|l|}
-\hline
-\textbf{ID} & \textbf{Type} & \textbf{Requirement} & \textbf{Lab} \\
-\hline
-RF1.1 & Functional & Design 4 topologies & All \\
-\hline
-RF1.2 & Functional & 5-8 VMs per topology & All \\
-\hline
-RF2.1 & Functional & Lab 1 reconnaissance & Lab 1 \\
-\hline
-RF2.2 & Functional & Lab 2 OWASP vulnerabilities & Lab 2 \\
-\hline
-RF2.3 & Functional & Lab 3 network analysis & Lab 3 \\
-\hline
-RF2.4 & Functional & Lab 4 privilege escalation & Lab 4 \\
-\hline
-RF3.1 & Functional & Learning outcomes & All \\
-\hline
-RF3.2 & Functional & Assessment rubrics & All \\
-\hline
-TR1.1 & Technical & EVE-NG 5.0+ & Platform \\
-\hline
-TR1.3 & Technical & Host 64GB RAM, 2TB storage & Infrastructure \\
-\hline
-TR2.1 & Technical & Kali Linux 2024 & Tools \\
-\hline
-NFR1.1 & Non-Func & Deploy less/equal 2 min & Performance \\
-\hline
-NFR2.1 & Non-Func & NIST alignment & Compliance \\
-\hline
-NFR3.1 & Non-Func & MTBF greater/equal 100h & Reliability \\
-\hline
-NFR4.1 & Non-Func & Network isolation & Security \\
-\hline
-NFR6.1 & Non-Func & Open-source tools & Sustainability \\
-\hline
-\end{tabularx}
-\caption{Requirements traceability matrix}
+  \centering
+  \small
+  \setlength{\tabcolsep}{4pt}
+  \renewcommand{\arraystretch}{1.1}
+  \begin{tabularx}{\textwidth}{l l X l}
+    \toprule
+    \textbf{ID} & \textbf{Type} & \textbf{Requirement} & \textbf{Scope} \\
+    \midrule
+    RF1.1  & Functional   & Design 4 EVE-NG topologies                    & All labs     \\
+    RF1.2  & Functional   & 5–8 VMs per topology                          & All labs     \\
+    RF2.1  & Functional   & Lab 1 reconnaissance scenarios                & Lab 1        \\
+    RF2.2  & Functional   & Lab 2 OWASP vulnerabilities                    & Lab 2        \\
+    RF2.3  & Functional   & Lab 3 network analysis                         & Lab 3        \\
+    RF2.4  & Functional   & Lab 4 privilege escalation                     & Lab 4        \\
+    RF3.1  & Functional   & Learning outcomes defined                      & All labs     \\
+    RF3.2  & Functional   & Assessment rubrics                             & All labs     \\
+    TR1.1  & Technical    & EVE-NG 5.0+                                    & Platform     \\
+    TR1.3  & Technical    & Host 64GB RAM, 2TB storage                     & Infrastructure \\
+    TR2.1  & Technical    & Kali Linux 2024 as attacking platform         & Tools        \\
+    NFR1.1 & Non-Func.    & Deploy in $\leq$ 2 minutes                     & Performance  \\
+    NFR2.1 & Non-Func.    & NIST alignment                                 & Compliance   \\
+    NFR3.1 & Non-Func.    & MTBF $\geq$ 100h                               & Reliability  \\
+    NFR4.1 & Non-Func.    & Network isolation                              & Security     \\
+    NFR6.1 & Non-Func.    & Open-source tools                              & Sustainability \\
+    \bottomrule
+  \end{tabularx}
+  \caption[Requirements traceability]{Requirements traceability matrix for the EVE-NG laboratory platform}
+  \label{tab:requirements_traceability}
 \end{table}
 
+\begin{comment}
 \section{Conclusion}
 
 These comprehensive functional, technological, and non-functional requirements provide the complete specification for the EVE-NG-based cybersecurity teaching package. Adherence to these requirements ensures that the deliverables meet educational objectives, technical quality standards, and institutional sustainability criteria.
+\end{comment}

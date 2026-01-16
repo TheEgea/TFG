@@ -126,28 +126,60 @@ Develop, implement, and validate a reusable teaching package of practical cybers
 \item Companies with internal training programs in security
 \end{itemize}
 
+\section{Scope Boundaries}
+
+\textbf{Included in this bachelor's thesis:}
+
+\begin{itemize}
+    \item Design and implementation of 4 pentesting labs in EVE-NG
+    \item Integration of real vulnerabilities and techniques aligned with 
+          OWASP Top 10 and CIS Critical Controls\cite{cis_controls}
+    \item Automation scripts for deployment, validation, and lab reset
+    \item Complete technical documentation for instructors and future maintainers
+    \item Student guides and learning objectives for each lab
+    \item Assessment rubrics for evaluating student lab completion
+\end{itemize}
+
+\textbf{Explicitly NOT included (out of scope):}
+
+\begin{itemize}
+    \item Integration with third-party Learning Management Systems (LMS) or Moodle
+    \item Development of proprietary lab management software or web interfaces
+    \item Creation of automated grading systems beyond basic script validation
+    \item Commercial licensing or distribution models
+    \item Formal pedagogical evaluation studies 
+          (e.g., pre/post learning assessments)
+    \item Creation of labs beyond the four specified domains
+\end{itemize}
+
+
 \section{KPIs and Performance Indicators}
 
-\section{Technical Indicators}
+\subsection{Technical Indicators}
 
-\begin{table}[h!]
-\centering
-\begin{tabular}{|l|l|l|}
-\hline
-\textbf{Mètrica} & \textbf{Objectiu} & \textbf{Mètode de Mesura} \\
-\hline
+\begin{table}[H]
+  \centering
+  \small
+  \setlength{\tabcolsep}{4pt}
+  \renewcommand{\arraystretch}{1.1}
+  \begin{tabularx}{\textwidth}{l l X}
+    \toprule
+\textbf{Metric} & \textbf{Objective} & \textbf{Measurement Method} \\
+\midrule
 Lab deployment time & $\leq$ 2 min & Automated timing \\
-\hline
+\midrule
 VM boot success rate & $\geq$ 95\% & System logs + validation scripts \\
-\hline
+\midrule
 Full reset time & $\leq$ 30 seg & Scripts with timestamps \\
-\hline
+\midrule
 Scenario reproducibility & 100\% & Automated tests \\
-\hline
-\end{tabular}
+\bottomrule
+\end{tabularx}
+  \caption[Technical KPIs]{Technical key performance indicators for EVE-NG lab deployment}
+  \label{tab:kpi_technical}
 \end{table}
 
-\section{Educational Indicators}
+\subsection{Educational Indicators}
 
 \begin{table}[h!]
 \centering
@@ -164,9 +196,11 @@ User satisfaction & $\geq$ 4/5 & Post-use survey \\
 Key concept understanding & $\geq$ 80\% correcte & Assessment questionnaire \\
 \hline
 \end{tabular}
+\caption[Educational KPIs]{Educational key performance indicators for lab effectiveness}
+\label{tab:kpi_educational}
 \end{table}
 
-\section{Quality Indicators}
+\subsection{Quality Indicators}
 
 \begin{table}[h!]
 \centering
@@ -183,6 +217,8 @@ EVE-NG version compatibility & 100\% & Tests in multiple environments \\
 Interface usability & $\geq$ 4/5 & UX heuristic evaluation \\
 \hline
 \end{tabular}
+\caption[Quality KPIs]{Quality key performance indicators for lab package}
+\label{tab:kpi_quality}
 \end{table}
 
 \noindent \textbf{Note}: All KPIs will be measured during the pilot validation phase (April-May 2026) and documented in the final bachelor's thesis report.

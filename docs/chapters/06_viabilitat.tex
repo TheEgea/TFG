@@ -141,32 +141,35 @@ The complete project planning has been managed using an interactive web-based Ga
 Critical path tasks are those that directly impact the delivery deadlines and cannot be delayed without affecting subsequent milestones. The project has identified \textbf{13 critical tasks}:
 
 \begin{table}[H]
-    \centering
-    \small
-    \begin{tabularx}{\textwidth}{|X|X|c|c|}
-    \hline
+  \centering
+  \small
+  \setlength{\tabcolsep}{4pt}
+  \renewcommand{\arraystretch}{1.1}
+  \begin{tabularx}{\textwidth}{lXcc}
+    \toprule
     \textbf{ID} & \textbf{Critical Task} & \textbf{Hours} & \textbf{Deadline} \\
-    \hline
-    1.4 & Pentesting Methodology and Validation & 8h & Nov 26, 2025 \\
-    1.10 & Milestone: Preliminary Project & 40h & Jan 16, 2026 \\
-    2.1 & Lab 1 Research & 14h & Jan 26, 2026 \\
-    2.2 & Lab 2 Research & 14h & Jan 31, 2026 \\
-    2.3 & Lab 3 Research & 14h & Feb 7, 2026 \\
-    2.6 & Pre-validation with Pilot Users & 20h & Feb 23, 2026 \\
-    2.6.1 & Pre-validation Revision & 6h & Mar 1, 2026 \\
-    3.1 & Lab 4 Research & 16h & Mar 23, 2026 \\
-    3.4 & Penetration Testing Phase 1 & 30h & Apr 16, 2026 \\
-    3.5 & Penetration Testing Phase 2 & 25h & Apr 30, 2026 \\
-    3.9 & Bachelor's thesis Report Writing I & 15h & May 1, 2026 \\
-    3.10 & Bachelor's thesis Report Writing II & 40h & May 20, 2026 \\
-    3.11 & Bachelor's thesis Report Writing III & 35h & May 25, 2026 \\
-    \hline
-    \multicolumn{2}{|l|}{\textbf{TOTAL CRITICAL PATH}} & \textbf{277h} & \\
-    \hline
-    \end{tabularx}
-    \caption{Critical path tasks requiring strict adherence to deadlines}
-    \label{tab:critical_task}
+    \midrule
+    1.4   & Pentesting Methodology and Validation           & 8h  & Nov 26, 2025 \\
+    1.10  & Milestone: Preliminary Project                  & 40h & Jan 16, 2026 \\
+    2.1   & Lab 1 Research                                  & 14h & Jan 26, 2026 \\
+    2.2   & Lab 2 Research                                  & 14h & Jan 31, 2026 \\
+    2.3   & Lab 3 Research                                  & 14h & Feb 7, 2026  \\
+    2.6   & Pre-validation with Pilot Users                 & 20h & Feb 23, 2026 \\
+    2.6.1 & Pre-validation Revision                         & 6h  & Mar 1, 2026  \\
+    3.1   & Lab 4 Research                                  & 16h & Mar 23, 2026 \\
+    3.4   & Penetration Testing Phase 1                     & 30h & Apr 16, 2026 \\
+    3.5   & Penetration Testing Phase 2                     & 25h & Apr 30, 2026 \\
+    3.9   & Bachelor's thesis Report Writing I              & 15h & May 1, 2026  \\
+    3.10  & Bachelor's thesis Report Writing II             & 40h & May 20, 2026 \\
+    3.11  & Bachelor's thesis Report Writing III            & 35h & May 25, 2026 \\
+    \midrule
+    \multicolumn{2}{l}{\textbf{TOTAL CRITICAL PATH}}        & \textbf{277h} & \\
+    \bottomrule
+  \end{tabularx}
+  \caption[Critical path tasks]{Critical path tasks requiring strict adherence to deadlines}
+  \label{tab:critical_task}
 \end{table}
+
 
 Any delay in these tasks will cascade to subsequent activities and potentially jeopardize milestone delivery dates.
  Special monitoring and contingency planning are allocated to these tasks.
@@ -455,23 +458,26 @@ Risk assessment requires evaluating both likelihood (probability) and impact (co
 \textbf{Risk Assessment Matrix}:
 
 \begin{table}[H]
-    \centering
-    \small
-    \begin{tabularx}{\textwidth}{|X|X|X|X|X|}
-    \hline
+  \centering
+  \footnotesize
+  \setlength{\tabcolsep}{3pt}
+  \renewcommand{\arraystretch}{1.1}
+  \begin{tabularx}{\textwidth}{XcccX}
+    \toprule
     \textbf{Risk Scenario} & \textbf{Probability} & \textbf{Impact} & \textbf{Risk Level} & \textbf{Primary Asset} \\
-    \hline
-    EVE-NG Performance Issues & Medium & High & HIGH & Infrastructure, Labs \\
-    VM Image Incompatibility & Medium & Medium & MEDIUM & Development, Labs \\
-    Knowledge Gaps in Advanced Networking & Medium & Medium & MEDIUM & Development, Timeline \\
-    Hardware Degradation/Disk Failure & Low & High & MEDIUM & Infrastructure \\
-    Data Loss (insufficient backup) & Low & High & MEDIUM & Documentation \\
-    Configuration Documentation Gaps & Medium & Medium & MEDIUM & Operations \\
-    \hline
-    \end{tabularx}
-    \caption{Risk assessment matrix with probability and impact evaluation (NIST SP 800-30)}
-    \label{tab:risk_matrix}
+    \midrule
+    EVE-NG Performance Issues                & Medium & High   & HIGH   & Infrastructure, Labs       \\
+    VM Image Incompatibility                 & Medium & Medium & MEDIUM & Development, Labs          \\
+    Knowledge Gaps in Advanced Networking    & Medium & Medium & MEDIUM & Development, Timeline      \\
+    Hardware Degradation / Disk Failure      & Low    & High   & MEDIUM & Infrastructure             \\
+    Data Loss (insufficient backup)          & Low    & High   & MEDIUM & Documentation              \\
+    Configuration Documentation Gaps         & Medium & Medium & MEDIUM & Operations                 \\
+    \bottomrule
+  \end{tabularx}
+  \caption[Risk assessment matrix]{Risk assessment matrix with probability and impact evaluation (NIST SP 800-30)}
+  \label{tab:risk_matrix}
 \end{table}
+
 
 \subsubsection{Phase 4: Risk Evaluation and Prioritization}
 
@@ -592,22 +598,25 @@ The project presents \textbf{excellent economic feasibility} for the following r
 \section{Cost Comparison with Alternatives}
 
 \begin{table}[H]
-    \centering
-    \small
-    \begin{tabularx}{\textwidth}{|l|X|r|}
-    \hline
+  \centering
+  \small
+  \setlength{\tabcolsep}{4pt}
+  \renewcommand{\arraystretch}{1.1}
+  \begin{tabularx}{\textwidth}{lXr}
+    \toprule
     \textbf{Alternative} & \textbf{Description} & \textbf{Annual Cost} \\
-    \hline
-    This Project & Custom EVE-NG labs with automation, tailored to curriculum & 0 \euro/year* \\
-    HackTheBox Academy\cite{hackthebox} & Commercial platform with pre-built labs and guided exercises & 1,200 \euro/year \\
-    TryHackMe Education\cite{tryhackme} & Gamified learning platform with structured learning paths & 800 \euro/year \\
-    Cybrary for Teams & Video-based training with labs and certification prep & 1,500 \euro/year \\
-    Custom Enterprise Labs & Outsourced lab development by specialized company & 8,000-15,000 \euro \\
-    \hline
-    \end{tabularx}
-    \caption{Cost comparison with commercial alternatives (*excludes initial development)}
-    \label{tab:cost_comparison}
+    \midrule
+    This Project          & Custom EVE-NG labs with automation, tailored to curriculum         & 0 \euro/year*         \\
+    HackTheBox Academy    & Commercial platform with pre-built labs and guided exercises       & 1,200 \euro/year      \\
+    TryHackMe Education   & Gamified learning platform with structured learning paths         & 800 \euro/year        \\
+    Cybrary for Teams     & Video-based training with labs and certification prep             & 1,500 \euro/year      \\
+    Custom Enterprise Labs& Outsourced lab development by specialized company                 & 8,000--15,000 \euro   \\
+    \bottomrule
+  \end{tabularx}
+  \caption[Cost comparison]{Cost comparison with commercial alternatives (*excludes initial development)}
+  \label{tab:cost_comparison}
 \end{table}
+
 
 While commercial platforms offer convenience, they lack customization to specific curriculum needs, do not integrate with institutional learning management systems, and incur recurring annual costs. This project provides a tailored, cost-effective, and sustainable solution.
 
@@ -648,22 +657,25 @@ The environmental impact of this project is primarily related to energy consumpt
 \section{Comparison with Traditional Alternatives}
 
 \begin{table}[H]
-    \centering
-    \small
-    \begin{tabularx}{\textwidth}{|l|X|r|r|}
-    \hline
+  \centering
+  \small
+  \setlength{\tabcolsep}{4pt}
+  \renewcommand{\arraystretch}{1.1}
+  \begin{tabularx}{\textwidth}{lXrr}
+    \toprule
     \textbf{Scenario} & \textbf{Description} & \textbf{Annual CO\textsubscript{2}} & \textbf{With Solar*} \\
-    \hline
-    This Project & Virtualized labs on shared HomeLab infrastructure & 20.7 kg & 14.1 kg \\
-    This Project (Dev) & Development phase with solar offset (6.6 MWh/year avg) & 47.15 kg & 31.95 kg \\
-    Individual VMs & Each student runs labs on personal computer (30 × 200W × 12h) & 180 kg & -- \\
-    Cloud-Based Labs & AWS/Azure hosted environments (datacenter PUE 1.5) & 95 kg & -- \\
-    Physical Network Lab & Dedicated hardware devices (switches, routers, servers) & 450 kg & -- \\
-    \hline
-    \end{tabularx}
-    \caption{CO\textsuperscript{2} emissions comparison across laboratory approaches (*Solar offset based on 5kWp installation producing 6.6 MWh/year)}
-    \label{tab:co2_comparison}
+    \midrule
+    This Project         & Virtualized labs on shared HomeLab infrastructure                   & 20.7 kg & 14.1 kg \\
+    This Project (Dev)   & Development phase with solar offset (6.6 MWh/year avg)              & 47.15 kg & 31.95 kg \\
+    Individual VMs       & Each student runs labs on personal computer (30 × 200W × 12h)       & 180 kg & -- \\
+    Cloud-Based Labs     & AWS/Azure hosted environments (datacenter PUE 1.5)                  & 95 kg  & -- \\
+    Physical Network Lab & Dedicated hardware devices (switches, routers, servers)             & 450 kg & -- \\
+    \bottomrule
+  \end{tabularx}
+  \caption[CO\textsuperscript{2} comparison]{CO\textsuperscript{2} emissions comparison across laboratory approaches (*Solar offset based on 5kWp installation producing 6.6 MWh/year)}
+  \label{tab:co2_comparison}
 \end{table}
+
 
 \section{Sustainability Measures}
 

@@ -3,7 +3,7 @@
 
 \chapter{Object of the Project}
 
-\section{Problem Statement and Educational Gap}
+%\section{Problem Statement and Educational Gap}
 
 Cybersecurity education faces a critical challenge: the disconnect between 
 theoretical knowledge of IT systems and practical understanding of how 
@@ -34,6 +34,37 @@ course currently lacks a structured, reusable, and automatable lab environment t
           locally maintained)
 \end{itemize}
 
+\section{The Pedagogical Disconnect}
+
+Ethical hacking, or pentesting, has become a critical skill in today's cybersecurity 
+landscape. With the increasing reliance on virtualized environments, there is a growing 
+need for practical training platforms that simulate real-world scenarios. However, current 
+educational approaches present a significant challenge: while platforms such as HackTheBox\cite{hackthebox} 
+and TryHackMe\cite{tryhackme} have become increasingly popular for cybersecurity training, they often focus 
+on isolated challenges and gamified scenarios that may not directly reflect the practical 
+application of computer science fundamentals taught in a degree program.
+
+This educational disconnect manifests in several ways:
+
+\begin{enumerate}
+
+\item \textbf{Theory-to-Practice Gap:} Students learn databases, networks, and operating 
+systems in isolation. They rarely experience how misconfigurations in these foundational 
+systems translate to security vulnerabilities exploitable in real-world attacks.
+
+\item \textbf{Tool-Centric Rather Than Methodology-Centric Learning:} Commercial platforms 
+teach tool usage (``how to use Nmap'') rather than systematic penetration testing methodologies 
+(``how to conduct reconnaissance'').
+
+\item \textbf{Fragmented Learning Paths:} No comprehensive platform integrates multiple 
+pentesting domains (reconnaissance --> web vulnerabilities --> network analysis --> privilege 
+escalation) while maintaining alignment with specific degree curricula.
+
+\item \textbf{Institutional Dependencies:} External platforms introduce vendor lock-in, 
+limit customization, and reduce institutional control over assessment and content evolution.
+
+\end{enumerate}
+\begin{comment}
 \section{Project Description and Scope}
 
 This Final Degree Project develops a comprehensive, reusable teaching package 
@@ -77,108 +108,12 @@ Each lab includes:
           and skill acquisition
 \end{itemize}
 
-\section{Scope Boundaries}
-
-\textbf{Included in this bachelor's thesis:}
-
-\begin{itemize}
-    \item Design and implementation of 4 pentesting labs in EVE-NG
-    \item Integration of real vulnerabilities and techniques aligned with 
-          OWASP Top 10 and CIS Critical Controls\cite{cis_controls}
-    \item Automation scripts for deployment, validation, and lab reset
-    \item Complete technical documentation for instructors and future maintainers
-    \item Student guides and learning objectives for each lab
-    \item Assessment rubrics for evaluating student lab completion
-\end{itemize}
-
-\textbf{Explicitly NOT included (out of scope):}
-
-\begin{itemize}
-    \item Integration with third-party Learning Management Systems (LMS) or Moodle
-    \item Development of proprietary lab management software or web interfaces
-    \item Creation of automated grading systems beyond basic script validation
-    \item Commercial licensing or distribution models
-    \item Formal pedagogical evaluation studies 
-          (e.g., pre/post learning assessments)
-    \item Creation of labs beyond the four specified domains
-\end{itemize}
 
 \section{Why EVE-NG? Selection Rationale}
 
 The selection of EVE-NG as the platform is justified through comparative 
 analysis of alternatives and specific alignment with project requirements.
-
-\section{Comparative Analysis}
-
-\begin{enumerate}
-    \item \textbf{HackTheBox}: 
-    \begin{itemize}
-        \item Strengths: Large collection of pre-built challenges, strong community
-        \item Limitations: Pre-built scenarios; limited network topology customization; 
-                external platform dependency; content aligned to commercial 
-                pentesting certifications, not specific degree curricula
-        \item Verdict: Unsuitable for curriculum-aligned, institution-controlled labs
-    \end{itemize}
-    
-    \item \textbf{TryHackMe}: 
-    \begin{itemize}
-        \item Strengths: Gamified learning paths, beginner-friendly
-        \item Limitations: Content managed externally; platform-dependent; 
-                free tier is limited; scenarios often oversimplified for 
-                professional preparation
-        \item Verdict: Useful for introduction but insufficient for degree-level 
-                practical integration
-    \end{itemize}
-    
-    \item \textbf{SEED Labs}: 
-    \begin{itemize}
-        \item Strengths: Comprehensive, research-backed cybersecurity exercises; 
-                Docker-based portability
-        \item Limitations: Fixed scenarios; limited virtualization topology control; 
-                minimal automation for lab reset
-        \item Verdict: Good for specific security concepts but less suitable for 
-                integrated network pentesting scenarios
-    \end{itemize}
-    
-    \item \textbf{EVE-NG}: 
-    \begin{itemize}
-        \item Strengths: Full network topology customization; open-source; 
-                locally deployable; supports multiple virtualized OS; 
-                excellent automation capabilities; vendor-independent
-        \item Limitations: Steeper learning curve; requires institutional IT infrastructure
-        \item Verdict: Optimal for institution-controlled, curriculum-aligned, 
-                reusable labs
-    \end{itemize}
-\end{enumerate}
-
-\section{Key Advantages of EVE-NG}
-
-\begin{enumerate}
-    \item \textbf{Institutional Independence}: Open-source platform ensures 
-          no vendor lock-in, long-term sustainability, and 
-          institution-controlled customization
-    
-    \item \textbf{Customization and Control}: Full topology design allows labs 
-          to reflect real infrastructure complexity (routing misconfigurations, 
-          network segmentation failures, hybrid cloud scenarios)
-    
-    \item \textbf{Automation and Reproducibility}: Lab deployment, reset, and 
-          validation can be fully automated, enabling consistent student 
-          experiences and reducing instructor overhead
-    
-    \item \textbf{Curriculum Integration}: Labs can embed specific technologies 
-          taught in parallel courses (OSPF routing, SQL databases, Active 
-          Directory authentication), creating the nexus where theoretical 
-          knowledge meets security contexts
-    
-    \item \textbf{Cost-Effectiveness}: Zero licensing costs; compatible with 
-          open-source tools (Kali Linux, Metasploit Framework, Nmap); 
-          appropriate for educational institutions with limited budgets
-    
-    \item \textbf{Scalability}: Lab files are portable and exportable, enabling 
-          future deployment across multiple course sections, institutions, 
-          or as a resource for the broader educational community
-\end{enumerate}
+\end{comment}
 
 \section{Alignment with Computer Engineering Degree}
 
@@ -345,7 +280,7 @@ Success will be measured by:
     \item Transferability: Labs can be adapted to other courses or distributed 
           to other institutions with minimal modifications
 \end{itemize}
-
+\begin{comment}
 \subsection{Conclusion}
 
 This Final Degree Project addresses a concrete educational need by creating a 
@@ -354,3 +289,4 @@ theoretical coursework with professional-grade cybersecurity experience. By
 leveraging EVE-NG's flexibility and open-source nature, the project delivers a 
 sustainable, scalable solution aligned with both the degree curriculum and 
 professional industry standards.
+\end{comment}

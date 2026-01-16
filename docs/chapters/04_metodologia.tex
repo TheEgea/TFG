@@ -5,7 +5,7 @@
 
 \chapter{Methodology}
 
-\section{Introduction}
+%\section{Introduction}
 
 This chapter outlines the comprehensive methodology employed in this bachelor's thesis project, encompassing research strategy, development approach, validation methods, and project lifecycle management. The project integrates principles from software engineering, cybersecurity pedagogy, and empirical research to ensure systematic development and validation of the EVE-NG-based teaching package.
 
@@ -374,6 +374,80 @@ The project adopts an iterative, agile-inspired approach with clear phases and m
 
 \end{itemize}
 
+
+\section{Comparative Analysis}
+
+\begin{enumerate}
+    \item \textbf{HackTheBox}: 
+    \begin{itemize}
+        \item Strengths: Large collection of pre-built challenges, strong community
+        \item Limitations: Pre-built scenarios; limited network topology customization; 
+                external platform dependency; content aligned to commercial 
+                pentesting certifications, not specific degree curricula
+        \item Verdict: Unsuitable for curriculum-aligned, institution-controlled labs
+    \end{itemize}
+    
+    \item \textbf{TryHackMe}: 
+    \begin{itemize}
+        \item Strengths: Gamified learning paths, beginner-friendly
+        \item Limitations: Content managed externally; platform-dependent; 
+                free tier is limited; scenarios often oversimplified for 
+                professional preparation
+        \item Verdict: Useful for introduction but insufficient for degree-level 
+                practical integration
+    \end{itemize}
+    
+    \item \textbf{SEED Labs}: 
+    \begin{itemize}
+        \item Strengths: Comprehensive, research-backed cybersecurity exercises; 
+                Docker-based portability
+        \item Limitations: Fixed scenarios; limited virtualization topology control; 
+                minimal automation for lab reset
+        \item Verdict: Good for specific security concepts but less suitable for 
+                integrated network pentesting scenarios
+    \end{itemize}
+    
+    \item \textbf{EVE-NG}: 
+    \begin{itemize}
+        \item Strengths: Full network topology customization; open-source; 
+                locally deployable; supports multiple virtualized OS; 
+                excellent automation capabilities; vendor-independent
+        \item Limitations: Steeper learning curve; requires institutional IT infrastructure
+        \item Verdict: Optimal for institution-controlled, curriculum-aligned, 
+                reusable labs
+    \end{itemize}
+\end{enumerate}
+
+\section{Key Advantages of EVE-NG}
+
+\begin{enumerate}
+    \item \textbf{Institutional Independence}: Open-source platform ensures 
+          no vendor lock-in, long-term sustainability, and 
+          institution-controlled customization
+    
+    \item \textbf{Customization and Control}: Full topology design allows labs 
+          to reflect real infrastructure complexity (routing misconfigurations, 
+          network segmentation failures, hybrid cloud scenarios)
+    
+    \item \textbf{Automation and Reproducibility}: Lab deployment, reset, and 
+          validation can be fully automated, enabling consistent student 
+          experiences and reducing instructor overhead
+    
+    \item \textbf{Curriculum Integration}: Labs can embed specific technologies 
+          taught in parallel courses (OSPF routing, SQL databases, Active 
+          Directory authentication), creating the nexus where theoretical 
+          knowledge meets security contexts
+    
+    \item \textbf{Cost-Effectiveness}: Zero licensing costs; compatible with 
+          open-source tools (Kali Linux, Metasploit Framework, Nmap); 
+          appropriate for educational institutions with limited budgets
+    
+    \item \textbf{Scalability}: Lab files are portable and exportable, enabling 
+          future deployment across multiple course sections, institutions, 
+          or as a resource for the broader educational community
+\end{enumerate}
+
+
 \section{Validation and Success Criteria}
 
 Success measurement is based on the KPIs defined in Chapter 3 (Objectives and Scope), organized into three categories:
@@ -441,8 +515,11 @@ Institutional adoption barriers & Change management plan and training support & 
 \hline
 \end{tabularx}
 \caption{Key project risks and mitigation strategies}
+\label{tab:risk_management}
 \end{table}
 
+\begin{comment}
 \section{Conclusion}
 
 This comprehensive methodology ensures that the bachelor's thesis project is executed systematically, with clear phases, measurable deliverables, and validation checkpoints. The combination of iterative development, user-centered design, and rigorous quality assurance will result in a robust, effective, and sustainable educational tool for cybersecurity training.
+\end{comment}
