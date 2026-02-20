@@ -52,6 +52,10 @@ config/secrets/
 .vscode/
 .idea/
 *.sublime-*
+venv/
+.venv/
+.env/
+.env
 
 # Archivos del sistema
 .DS_Store
