@@ -36,7 +36,7 @@ dist/
 output/
 
 # Archivos sensibles
-.env
+/.env
 credentials.txt
 passwords.txt
 config/secrets/
@@ -81,3 +81,4 @@ compilacion/
 
 docs/avantprojecte/build/
 !docs/avantprojecte/build/*.pdf
+.env
