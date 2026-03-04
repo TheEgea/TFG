@@ -1,0 +1,11 @@
+siguiendo la recomendacion de la documentacion de eve-ng (EVE-CE-BOOK-6.3-2024.pdf) todo y aun poderse montar en virtualbox o en proxmox(SO que tiene mi homeserver) no tiene soporte oficial por lo que se debe de usar vmware o similares (resaltados en el libro).
+Para anexos explicar montaje previo aunque no necesario del todo de como desactivar hyper-v y tal para que vmware funcione a tope.
+
+En el host Windows 11 se ha verificado que no hay hipervisor activo mediante
+systeminfo | find "Hipervisor", requisito previo para el uso de VMware Workstation con nested virtualization, según el EVE‑NG Community Cookbook.
+
+(luego en anexos se explciara mejor)
+
+Paso 0: Descargarse vmware (https://www.vmware.com/products/desktop-hypervisor/workstation-and-fusion)
+
+
