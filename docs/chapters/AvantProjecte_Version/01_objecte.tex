@@ -1,0 +1,292 @@
+% Document: TFG Avantprojecte - Object of the Project
+% Idioma: Inglés
+
+\chapter{Object of the Project}
+
+%\section{Problem Statement and Educational Gap}
+
+Cybersecurity education faces a critical challenge: the disconnect between 
+theoretical knowledge of IT systems and practical understanding of how 
+security failures manifest in integrated environments. While students in 
+the Computer Engineering degree program learn fundamental concepts---databases, 
+network protocols, operating system internals, and software architecture---they 
+rarely experience how misconfigurations and design flaws in these domains 
+directly translate to security vulnerabilities.
+
+Current training approaches amplify this gap. Commercial platforms such as 
+HackTheBox and TryHackMe focus on isolated challenge-based scenarios that 
+abstract away system complexity. Professional pentesting certifications 
+(e.g., CEH, OSCP\cite{ceh_framework, oscp_exam}) expect hands-on experience in realistic environments, yet 
+many academic programs struggle to provide such environments due to cost, 
+complexity, or vendor lock-in.
+
+Within the TecnoCampus Bachelor's Degree in Computer Engineering 
+(Management and Information Systems track), the ``Introduction to Cybersecurity'' 
+course currently lacks a structured, reusable, and automatable lab environment that:
+
+\begin{itemize}
+    \item Aligns pentesting scenarios with specific degree learning outcomes
+    \item Enables students to recognize vulnerabilities within integrated systems 
+          (not isolated exploits)
+    \item Provides reproducible environments for consistent assessment
+    \item Reduces instructor workload through automation and documentation
+    \item Remains cost-effective and institution-independent (open-source, 
+          locally maintained)
+\end{itemize}
+
+\section{The Pedagogical Disconnect}
+
+Ethical hacking, or pentesting, has become a critical skill in today's cybersecurity 
+landscape. With the increasing reliance on virtualized environments, there is a growing 
+need for practical training platforms that simulate real-world scenarios. However, current 
+educational approaches present a significant challenge: while platforms such as HackTheBox\cite{hackthebox} 
+and TryHackMe\cite{tryhackme} have become increasingly popular for cybersecurity training, they often focus 
+on isolated challenges and gamified scenarios that may not directly reflect the practical 
+application of computer science fundamentals taught in a degree program.
+
+This educational disconnect manifests in several ways:
+
+\begin{enumerate}
+
+\item \textbf{Theory-to-Practice Gap:} Students learn databases, networks, and operating 
+systems in isolation. They rarely experience how misconfigurations in these foundational 
+systems translate to security vulnerabilities exploitable in real-world attacks.
+
+\item \textbf{Tool-Centric Rather Than Methodology-Centric Learning:} Commercial platforms 
+teach tool usage (``how to use Nmap'') rather than systematic penetration testing methodologies 
+(``how to conduct reconnaissance'').
+
+\item \textbf{Fragmented Learning Paths:} No comprehensive platform integrates multiple 
+pentesting domains (reconnaissance --> web vulnerabilities --> network analysis --> privilege 
+escalation) while maintaining alignment with specific degree curricula.
+
+\item \textbf{Institutional Dependencies:} External platforms introduce vendor lock-in, 
+limit customization, and reduce institutional control over assessment and content evolution.
+
+\end{enumerate}
+\begin{comment}
+\section{Project Description and Scope}
+
+This Final Degree Project develops a comprehensive, reusable teaching package 
+of cybersecurity practical laboratories using EVE-NG (Emulated Virtual 
+Environment - Next Generation) that directly addresses the identified gaps. 
+The package is designed for the ``Introduction to Cybersecurity'' course 
+within the Computer Engineering degree program.
+
+\section{Deliverables}
+
+The project consists of creating four structured virtualized labs covering 
+primary pentesting domains:
+
+\begin{enumerate}
+    \item \textbf{Reconnaissance and Enumeration}: Network scanning, service 
+          identification, and information gathering using industry-standard 
+          tools (Nmap)
+    
+    \item \textbf{Web Application Vulnerabilities}: Practical exploitation 
+          of OWASP Top 10\cite{owasp2021} categories within controlled, intentionally 
+          vulnerable web applications
+    
+    \item \textbf{Network Traffic Analysis and Cryptography}: Packet capture 
+          analysis using Wireshark, protocol dissection, and 
+          encryption/decryption scenarios
+    
+    \item \textbf{Privilege Escalation}: Techniques for escalating privileges 
+          on Unix/Linux and Windows systems, reflecting real-world 
+          post-exploitation scenarios
+\end{enumerate}
+
+Each lab includes:
+
+\begin{itemize}
+    \item Complete network topologies with preconfigured virtual machines
+    \item Automated deployment and reset scripts for efficient lab lifecycle management
+    \item Technical documentation detailing network design, vulnerability 
+          implementation, and remediation
+    \item Student learning guides with structured objectives and self-assessment rubrics
+    \item Assessment materials for instructors to evaluate lab completion 
+          and skill acquisition
+\end{itemize}
+
+
+\section{Why EVE-NG? Selection Rationale}
+
+The selection of EVE-NG as the platform is justified through comparative 
+analysis of alternatives and specific alignment with project requirements.
+\end{comment}
+
+\section{Alignment with Computer Engineering Degree}
+
+This project creates an explicit connection between four core competencies 
+taught throughout the degree program and their direct application to cybersecurity:
+
+\begin{enumerate}
+    \item \textbf{Programming and Software Development}: Labs demonstrate how 
+          insecure coding practices (SQL injection, buffer overflows, improper 
+          input validation) lead to exploitable vulnerabilities. Students 
+          recognize that defensive programming is not an afterthought but a 
+          core software engineering practice.
+    
+    \item \textbf{Software Engineering}: Network topologies and application 
+          architectures in labs embody both secure and insecure design patterns. 
+          Students analyze architectural decisions (monolithic vs. microservices, 
+          authentication mechanisms, data separation) and observe their security 
+          implications.
+    
+    \item \textbf{Systems and Information Engineering}: Labs integrate multiple 
+          systems (databases, web servers, network services, operating systems) 
+          in realistic configurations, reflecting how SI engineers must consider 
+          threat landscapes when designing enterprise solutions.
+    
+    \item \textbf{Computer Architecture and Networks}: Privilege escalation labs 
+          explore OS-level vulnerabilities, memory management flaws, and network 
+          protocol weaknesses that emerge from architectural design decisions 
+          taught in prerequisite courses.
+\end{enumerate}
+
+By demonstrating how theoretical knowledge directly maps to security vulnerabilities, 
+this project transforms abstract concepts into concrete, experiential learning outcomes.
+
+
+\subsection{Pedagogical Importance}
+
+\begin{itemize}
+    \item \textbf{Theory-to-Practice Bridge}: Pentesting labs create the missing 
+          link between theoretical coursework and professional-grade practical 
+          experience
+    
+    \item \textbf{Active Learning}: Hands-on vulnerability discovery and 
+          exploitation is more engaging and memorable than passive lectures 
+          or textbook study
+    
+    \item \textbf{Professional Preparation}: Students gain experience with 
+          industry-standard tools (Kali Linux, Metasploit, Wireshark) and 
+          methodologies (OWASP, CIS Controls), directly preparing them for 
+          professional roles
+    
+    \item \textbf{Assessment and Competency Verification}: Structured labs 
+          with clear objectives and rubrics enable objective assessment of 
+          student competency in cybersecurity fundamentals
+\end{itemize}
+
+\subsection{Institutional Importance}
+
+\begin{itemize}
+    \item \textbf{Course Enhancement}: The ``Introduction to Cybersecurity'' 
+          course gains a modern, practical component that improves student 
+          satisfaction and learning outcomes
+    
+    \item \textbf{Reduced Instructor Burden}: Automation scripts and comprehensive 
+          documentation minimize preparation time, enabling instructors to focus 
+          on learning support rather than lab administration
+    
+    \item \textbf{Reproducibility}: Consistent lab environments ensure fair 
+          assessment across multiple course sections and cohorts
+    
+    \item \textbf{Scalability and Sustainability}: The reusable package can serve 
+          multiple offerings of the course and potentially be adapted for related 
+          courses in the degree program or distributed to other institutions
+\end{itemize}
+
+\subsection{Professional Context}
+
+The cybersecurity industry demands professionals who understand both attack and 
+defense across integrated systems. Practitioners must:
+
+\begin{itemize}
+    \item Recognize vulnerabilities within complex, heterogeneous environments 
+          (not isolated systems)
+    \item Apply defensive practices informed by knowledge of real attack methodologies
+    \item Operate with professional ethics and legal compliance 
+          (ethical hacking mindset)
+    \item Use industry-standard tools and frameworks (OWASP, CIS, NIST)
+\end{itemize}
+
+This project prepares students to meet these professional expectations by 
+providing realistic, integrated training environments.
+
+\subsection{Technical and Technological Foundation}
+
+\subsubsection{EVE-NG Platform}
+
+EVE-NG provides the technical foundation for complex network topology simulation. 
+Its capabilities include:
+
+\begin{itemize}
+    \item Support for multiple virtualization hypervisors (KVM, Docker, VMware)
+    \item Native compatibility with Cisco IOS, Linux, Windows, and other 
+          operating systems
+    \item Advanced topology design tools enabling real-world network scenarios
+    \item Scalability to support multi-lab environments for cohort-based learning
+\end{itemize}
+
+\subsubsection{Tooling Ecosystem}
+
+Labs leverage industry-standard tools that students will encounter in professional roles:
+
+\begin{itemize}
+    \item \textbf{Kali Linux}: Primary offensive security platform with integrated 
+          pentesting tools
+    \item \textbf{Metasploit Framework}: Exploitation framework for demonstrating 
+          real vulnerabilities
+    \item \textbf{Nmap}: Network scanning and service enumeration
+    \item \textbf{Wireshark}: Network protocol analysis and packet capture
+    \item \textbf{OWASP ZAP}: Web application security scanner and proxy
+    \item \textbf{Burp Suite Community}: Web application penetration testing
+\end{itemize}
+
+These tools are either free/open-source or have robust free tiers, ensuring 
+long-term cost-effectiveness and institutional independence.
+
+\subsection{Expected Outcomes and Success Criteria}
+
+Upon completion, this bachelor's thesis will deliver:
+
+\begin{enumerate}
+    \item \textbf{Four fully functional EVE-NG lab topologies} (.unl files) that 
+          can be immediately deployed in the ``Introduction to Cybersecurity'' course
+    
+    \item \textbf{8-12 customized virtual machine images} with preconfigured 
+          vulnerabilities, security tools, and network services
+    
+    \item \textbf{Automated deployment and validation scripts} that enable 
+          one-command lab initialization and reset
+    
+    \item \textbf{Technical documentation} (50-100 pages) detailing network 
+          architecture, vulnerability implementation, remediation strategies, 
+          and maintenance procedures for future instructors
+    
+    \item \textbf{Student learning guides} for each lab with clear objectives, 
+          step-by-step procedures, and self-assessment rubrics
+    
+    \item \textbf{Instructor assessment materials} including grading rubrics, 
+          expected outcomes, and troubleshooting guides
+    
+    \item \textbf{A reproducible, reusable teaching package} that can serve 
+          multiple course offerings, be adapted for related courses, and 
+          potentially be shared with the broader educational community
+\end{enumerate}
+
+Success will be measured by:
+
+\begin{itemize}
+    \item Functionality: All labs deploy without errors and exhibit intended vulnerabilities
+    \item Documentation completeness: Sufficient detail for instructors to maintain 
+          and update labs independently
+    \item Student usability: Learning guides are clear enough for autonomous lab 
+          completion with minimal instructor intervention
+    \item Institutional sustainability: The package can be maintained and updated 
+          by TecnoCampus staff without external dependencies
+    \item Transferability: Labs can be adapted to other courses or distributed 
+          to other institutions with minimal modifications
+\end{itemize}
+\begin{comment}
+\subsection{Conclusion}
+
+This Final Degree Project addresses a concrete educational need by creating a 
+modern, practical, institution-independent teaching resource that bridges 
+theoretical coursework with professional-grade cybersecurity experience. By 
+leveraging EVE-NG's flexibility and open-source nature, the project delivers a 
+sustainable, scalable solution aligned with both the degree curriculum and 
+professional industry standards.
+\end{comment}
