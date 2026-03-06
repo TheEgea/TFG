@@ -1,5 +1,5 @@
 site_name: Ethical Pentesting with EVE-NG
-site_description: Bachelor's Thesis - Virtual labs for cybersecurity training  
+site_description: Bachelor's Thesis - Virtual labs for cybersecurity training
 site_author: Eloi Egea Rada
 site_url: https://TheEgea.github.io/TFG
 repo_url: https://github.com/TheEgea/TFG
@@ -31,7 +31,7 @@ nav:
     - 06_Conclusion: chapters/06_Conclusion.md
     - 07_Future_Work: chapters/07_Future_Work.md
     - 08_Development: chapters/08_Development.md
-  - EVE-NG Labs:
+  - 🧪 EVE-NG Labs:
     - Reconnaissance: labs/recon.md
     - Web Vulns: labs/web-vulns.md
     - Priv Esc: labs/priv-esc.md
