@@ -1,0 +1,54 @@
+site_name: Ethical Pentesting with EVE-NG
+site_description: Bachelor's Thesis - Virtual labs for cybersecurity training  
+site_author: Eloi Egea Rada
+site_url: https://TheEgea.github.io/TFG
+repo_url: https://github.com/TheEgea/TFG
+edit_uri: edit/main/docs/web/docs/
+
+theme:
+  name: material
+  language: en
+  palette:
+    primary: indigo
+    accent: blue
+  features:
+    - content.code.copy
+    - content.code.annotate
+    - content.tabs
+    - navigation.sections
+    - navigation.indexes
+    - search.suggest
+    - search.highlight
+
+nav:
+  - Home: index.md
+  - Thesis Chapters:
+    - 01_Introduction: chapters/01_Introduction.md
+    - 02_Background: chapters/02_Background.md
+    - 03_Design: chapters/03_Design.md
+    - 04_Implementation: chapters/04_Implementation.md
+    - 05_Evaluation: chapters/05_Evaluation.md
+    - 06_Conclusion: chapters/06_Conclusion.md
+    - 07_Future_Work: chapters/07_Future_Work.md
+    - 08_Development: chapters/08_Development.md
+  - EVE-NG Labs:
+    - Reconnaissance: labs/recon.md
+    - Web Vulns: labs/web-vulns.md
+    - Priv Esc: labs/priv-esc.md
+    - Crypto: labs/crypto.md
+
+plugins:
+  - search
+
+markdown_extensions:
+  - pymdownx.highlight
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
