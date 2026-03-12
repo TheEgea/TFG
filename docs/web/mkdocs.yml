@@ -9,9 +9,21 @@ theme:
   name: material
   language: en
   palette:
-    primary: indigo
-    accent: blue
+    - scheme: default
+      primary: red
+      accent: red
+      toggle: 
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - scheme: slate
+      primary: red
+      accent: red
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
   features:
+    - navigation.instant
+    - navigation.top
     - content.code.copy
     - content.code.annotate
     - content.tabs
@@ -22,25 +34,22 @@ theme:
 
 nav:
   - Home: index.md
-  - Thesis Chapters:
-    - 01_Introduction: chapters/01_Introduction.md
-    - 02_Background: chapters/02_Background.md
-    - 03_Design: chapters/03_Design.md
-    - 04_Implementation: chapters/04_Implementation.md
-    - 05_Evaluation: chapters/05_Evaluation.md
-    - 06_Conclusion: chapters/06_Conclusion.md
-    - 07_Future_Work: chapters/07_Future_Work.md
-    - 08_Development: chapters/08_Development.md
-  - 🧪 EVE-NG Labs:
-    - Reconnaissance: labs/recon.md
-    - Web Vulns: labs/web-vulns.md
-    - Priv Esc: labs/priv-esc.md
-    - Crypto: labs/crypto.md
+  - Thesis Documentation:
+      - Memory: assets/Temp.md
+      - Feasibility Study: assets/official_Documents/feasibility.md
+#  - EVE-NG Labs:
+#      - Reconnaissance: labs/recon.md
+#      - Web Vulns: labs/web-vulns.md
+#      - Priv Esc: labs/priv-esc.md
+#      - Crypto: labs/crypto.md
 
 plugins:
   - search
 
 markdown_extensions:
+  - abbr
+  - attr_list
+  - pymdownx.snippets
   - pymdownx.highlight
   - pymdownx.superfences
   - pymdownx.tabbed:

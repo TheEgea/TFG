@@ -4,27 +4,36 @@
 <!-- This is the documentation file for a Computer Science degree program in Management and Information Systems.
     Located at: /home/overleaf/TFG/TFG/docs/web/docs/index.md
     Degree: Bachelor's Degree in Computer Science for Management and Information Systems -->
-*Bachelor's Degree in Computer Science for Management and Information Systems*
+*[Degree in Computer Engineering for Management and Information Systems](https://www.tecnocampus.cat/en/grau/grau-en-enginyeria-informatica-de-gestio-i-sistemes-dinformacio)*
 
 [![GitHub Repo](https://img.shields.io/github/stars/TheEgea/TFG?style=social)](https://github.com/TheEgea/TFG)
 
-## Project Overview
+## Project Overview { .pb-0 }
 
-Design and implementation of a virtual lab for network security training using **EVE-NG**, covering reconnaissance, web vulnerabilities, privilege escalation, and cryptography labs aligned with *Introduction to Cybersecurity* course.
+> **Design and implementation of a virtual labs for cybersecurity training using EVE-NG** covering reconnaissance, web vulnerabilities, privilege escalation, and cryptography labs aligned with *[Introduction to Cybersecurity](https://www.tecnocampus.cat/en/node/18838)* course.
 
 ## Key Components
 
-- **EVE-NG**: Network emulation platform
-- **Parrot Linux**: Penetration testing distribution  
-- **DVWA/Metasploitable**: Vulnerable targets
-- **Automation**: Python/Bash deployment scripts
-- **Integration**: Existing Tecnocampus VM infrastructure
+| Component | Description | Technologies |
+|-----------|-------------|-------------|
+| **EVE-NG** | Network emulation platform | Community Edition |
+| **Attack Platform** | Penetration testing distro | Parrot Security OS |
+| **Vulnerable Targets** | Training environments | DVWA, Metasploitable 2/3 |
+| **Automation** | Deployment scripts | Python/Bash |
+| **Integration** | Campus VM infrastructure | Tecnocampus Proxmox |
 
 ## Quick Start
 
-```bash
+`bash
 # Clone repo
 git clone https://github.com/TheEgea/TFG.git
 cd TFG
+`
+
+Once cloned the repository you can chose between build the disk that i will provide or build it step by step.
+Also you can follow the *[official documentation](https://www.eve-ng.net/index.php/documentation/professional-cookbook/)*
+
+> ## *[Using template for proxmos](guides/proxmox_template.md)* 
 
 
+> ## *[Install ISO's in proxmox]()*
