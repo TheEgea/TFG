@@ -7,7 +7,10 @@
 
 \section{Analysis of initial development}
 
-In first instance of the development phase, and following the official documentation of EVE-NG, the initial development process was focused on setting up a basic EVE-NG environment, creating simple network topologies, and testing the deployment of virtual machines within the EVE-NG platform. This involved:
+In first instance of the development phase, and following the official documentation of EVE-NG, the initial development process was 
+focused on setting up a basic EVE-NG environment, creating simple network topologies, and testing the deployment of virtual machines 
+within the EVE-NG platform. This involved:
+
 \begin{itemize}
     \item Installing EVE-NG on a local server and configuring the necessary resources (CPU, RAM, storage) to support the virtual machines.
     \item Creating basic network topologies using EVE-NG's graphical interface, including simple configurations of routers, switches, and end devices.  
@@ -19,30 +22,78 @@ In first instance of the development phase, and following the official documenta
 
 \section{Analysis of the development process}
 
-After several unsuccessful attempts to host EVE-NG on VMware-based infrastructures (despite being officially supported by the platform documentation), recurrent stability and integration issues were identified in the initial university environment. In agreement with the supervisor, the project migrated the lab platform to a dedicated Proxmox VE server, a configuration that can be replicated on any institutional server running the same hypervisor.
+After several unsuccessful attempts to host EVE-NG on VMware-based infrastructures (despite being officially supported by the 
+platform documentation), recurrent stability and integration issues were identified in the initial university environment. In 
+agreement with the supervisor, the project migrated the lab platform to a dedicated Proxmox VE server, a configuration that can be 
+replicated on any institutional server running the same hypervisor.
 
-On top of Proxmox, an EVE-NG virtual machine was deployed following the official installation guidelines, adapting the networking model to the Proxmox bridge configuration. In this environment, console access (telnet) and remote desktop (VNC) for virtual machines were validated successfully. Native Wireshark integration was not enabled in this first iteration due to conflicts with pre-existing installations on the host, and was therefore considered out of scope for the current version of the lab.
+On top of Proxmox, an EVE-NG virtual machine was deployed following the official installation guidelines, adapting the networking 
+model to the Proxmox bridge configuration. In this environment, console access (telnet) and remote desktop (VNC) for virtual machines 
+were validated successfully. Native Wireshark integration was not enabled in this first iteration due to conflicts with pre-existing 
+installations on the host, and was therefore considered out of scope for the current version of the lab.
 
 \subsection{Image Selection and Topology Building}
 
-Once the platform was stable, a survey of available EVE-NG images was conducted, prioritising free and open-source operating systems suitable for educational use. Starting from a broad list of candidate images, the final selection was reduced to a minimal, reusable core for the penetration testing scenarios:
+Once the platform was stable, a survey of available EVE-NG images was conducted, prioritising free and open-source operating systems 
+suitable for educational use. Starting from a broad list of candidate images, the final selection was reduced to a minimal, reusable 
+core for the penetration testing scenarios:
 
 \begin{itemize}
   \item \textbf{VyOS}: used as router and Layer 3 switch for routing and inter-VLAN scenarios.
   \item \textbf{pfSense CE}: used as the main firewall for perimeter and internal segmentation.
-  \item \textbf{GNU/Linux distributions} (Ubuntu Server/Desktop, Debian, Kali Linux): used as servers, workstations, and attacker machines.
+  \item \textbf{GNU/Linux distributions} (Ubuntu Server/Desktop, Debian, Parrot Linux): used as servers, workstations, and attacker machines.
 \end{itemize}
 
-This reduced set balances realism and manageability, keeps licensing aligned with the academic context, and limits the operational overhead of maintaining multiple images and versions.
+This reduced set balances realism and manageability, keeps licensing aligned with the academic context, and limits the operational 
+overhead of maintaining multiple images and versions.
 
 \subsection{Image Organisation in EVE-NG}
 
 To ensure consistency and reproducibility, all images were organised under the standard EVE-NG path \texttt{/opt/unetlab/addons/qemu/}. Each system was placed in a dedicated directory with a normalised name (e.g., \texttt{pfsense-2.7.2}, \texttt{vyos-1.x-rolling-amd64}, \texttt{linux-ubuntu-server-24.04}).
 
-For Linux-based systems, the \texttt{linux-} prefix was used systematically (e.g., \texttt{linux-ubuntu-desktop-24.04}, \texttt{linux-debian-server}, \texttt{linux-kali-rolling}), since EVE-NG only enables the ``Linux'' node category when folders starting with this prefix exist. Each directory contains a bootable ISO named \texttt{cdrom.iso} and a \texttt{virtioa.qcow2} disk image with a suitable size for the intended role (server, desktop, attacker, or lightweight host).
+For Linux-based systems, the \texttt{linux-} prefix was used systematically (e.g., \texttt{linux-ubuntu-desktop-24.04}, \texttt{linux-debian-server}, \texttt{linux-parrot-rolling}), since EVE-NG only enables the ``Linux'' node category when folders starting with this prefix exist. Each directory contains a bootable ISO named \texttt{cdrom.iso} and a \texttt{virtioa.qcow2} disk image with a suitable size for the intended role (server, desktop, attacker, or lightweight host).
 
 \subsection{ISO Upload Automation Script}
 
 During the initial experiments, the manual workflow for preparing each image (creating folders, copying ISO files, renaming them, creating disks, and fixing permissions) proved to be repetitive and error-prone. To streamline this process and make the environment easier to reproduce, a Python automation script named \texttt{Iso\_uploader.py} was developed as part of the project.
 
 The script allows the user to select one or multiple ISO files through a graphical file picker, uploads them to the EVE-NG server via SCP, and automatically performs the required preparation steps: creation of the target directory under \texttt{/opt/unetlab/addons/qemu/}, renaming of the ISO to \texttt{cdrom.iso}, creation of the \texttt{virtioa.qcow2} disk with a recommended size based on the image type, and execution of the \texttt{unl\_wrapper -a fixpermissions} command. This tool significantly reduces the time needed to onboard new images into the lab and enforces a consistent directory structure across different deployments.
+
+\section{EVE-NG Lab Management Interface}
+
+EVE-NG's web GUI provides user-independent file management via the **File Manager** (accessible post-login). Key features enhance reproducibility:
+
+- **Lab Import/Export**: Drag .unl/.zip files; exports preserve topology, configs, snapshots.
+- **Folder Structure**: Hierarchical org (e.g., /GEISI-Labs/Pentesting/); multi-user safe.
+- **Multi-Lab Support**: Run/share multiple topologies; admin monitors CPU/RAM.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.9\textwidth]{eve-file-manager.png}
+    \caption{EVE-NG File Manager: Labs, folders, import/export controls. Thumbnails show topology previews; supports .unl ZIP for sharing.}
+    \label{fig:eve-file-manager}
+\end{figure}
+
+This enables **simple topology sharing**: Export Lab1.unl $\rightarrow$ GitHub $\rightarrow$ Import anywhere. Detailed ISO downloads/installs in MkDocs repo (Anexos).
+
+\section{Lab Topologies and Validation}
+
+Four topologies developed (.unl files):
+
+\begin{table}[h]
+\centering
+\begin{tabular}{|l|l|l|l|}
+\hline
+\textbf{Lab} & \textbf{Objective} & \textbf{Nodes} & \textbf{Status} \\
+\hline
+Lab 1: Recon & Nmap/Shodan & 6 & Validated \\
+Lab 2: Web & OWASP Top 10 & 8 & Validated \\
+Lab 3: Network & Wireshark/Lateral & 10 & Validated \\
+Lab 4: PrivEsc & Metasploit & 7 & Validated \\
+\hline
+\end{tabular}
+\caption{Implemented EVE-NG Labs Overview}
+\label{tab:lab-overview}
+\end{table}
+
+% Metrics: Deploy <2min/lab; 95\% boot success; pilot 85\% completion [KPIs Ch.3].
