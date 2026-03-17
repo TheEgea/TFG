@@ -31,12 +31,16 @@ theme:
     - navigation.indexes
     - search.suggest
     - search.highlight
-
 nav:
   - Home: index.md
   - Thesis Documentation:
       - Memory: assets/Temp.md
       - Feasibility Study: assets/official_Documents/feasibility.md
+  - Basic Configuration:
+      - Router: assets/init_configs/Router.md
+      #- Switch: assets/init_configs/Switch.md
+      #- Firewall: assets/init_configs/Firewall.md
+
 #  - EVE-NG Labs:
 #      - Reconnaissance: labs/recon.md
 #      - Web Vulns: labs/web-vulns.md

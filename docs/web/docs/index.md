@@ -24,16 +24,16 @@
 
 ## Quick Start
 
-`bash
+```bash
+
 # Clone repo
 git clone https://github.com/TheEgea/TFG.git
 cd TFG
-`
-
-Once cloned the repository you can chose between build the disk that i will provide or build it step by step.
-Also you can follow the *[official documentation](https://www.eve-ng.net/index.php/documentation/professional-cookbook/)*
-
-> ## *[Using template for proxmos](guides/proxmox_template.md)* 
+```
 
 
-> ## *[Install ISO's in proxmox]()*
+## Instalation Methods
+
+> - *[Official documentation](https://www.eve-ng.net/index.php/documentation/professional-cookbook/)*
+
+> - *[Install ISO's in proxmox](guides/eve_ng_install_proxmox.md)*
