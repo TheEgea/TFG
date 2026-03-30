@@ -64,6 +64,15 @@ EVE-NG runs on a Ubuntu Server VM modifyed, that means no special Proxmox integr
 
     ![Network](../assets/screenshots/VM_Creation/Network.png)
 
+    !!! warning "Network Isolation"
+
+        This VM behaves like any other machine on your network. Using `vmbr0` in bridge mode exposes it directly to your LAN, which may interfere with your local network or internet access.
+
+        **Recommended approach:** create a second bridge interface (`vmbr1`) in Proxmox with **NAT** mode, and use that interface in your EVE-NG topologies when internet access is needed. This keeps lab traffic isolated from your LAN while still allowing outbound connectivity.
+
+        - `vmbr0` (bridge) → management access to EVE-NG from your host.
+        - `vmbr1` (NAT) → internet-facing interface to use inside lab topologies.
+
 9. Finish and start VM.
 
     ![Confirmation](../assets/screenshots/VM_Creation/Confirm.png)

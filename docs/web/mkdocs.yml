@@ -12,7 +12,7 @@ theme:
     - scheme: default
       primary: red
       accent: red
-      toggle: 
+      toggle:
         icon: material/brightness-7
         name: Switch to dark mode
     - scheme: slate
@@ -31,17 +31,23 @@ theme:
     - navigation.indexes
     - search.suggest
     - search.highlight
+
 nav:
   - Home: index.md
   - Thesis Documentation:
       - Memory: assets/Temp.md
       - Feasibility Study: assets/official_Documents/feasibility.md
   - Basic Configuration:
-      - Router: assets/init_configs/Router.md
-      #- Switch: assets/init_configs/Switch.md
-      #- Firewall: assets/init_configs/Firewall.md
-
-#  - EVE-NG Labs:
+      - Router (VyOS): assets/init_configs/Router.md
+      - Firewall (pfSense): assets/init_configs/Firewall.md
+  - EVE-NG Labs:
+      - LAB1 – Network Setup:
+          - Overview: labs/lab1/index.md
+          - Router: labs/lab1/router.md
+          - Server: labs/lab1/server.md
+          - PC1: labs/lab1/pc1.md
+          - Firewall: labs/lab1/firewall.md
+#  - Pentest Labs:
 #      - Reconnaissance: labs/recon.md
 #      - Web Vulns: labs/web-vulns.md
 #      - Priv Esc: labs/priv-esc.md
