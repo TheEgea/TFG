@@ -2,6 +2,7 @@ services:
   - type: web
     name: tfg-chatbot
     runtime: python
+    pythonVersion: "3.11.0"
     buildCommand: pip install -r src/chatbot/backend/requirements.txt
     startCommand: uvicorn src.chatbot.backend.main:app --host 0.0.0.0 --port $PORT
     envVars:

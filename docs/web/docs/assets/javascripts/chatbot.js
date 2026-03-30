@@ -3,7 +3,7 @@
  * Update BACKEND_URL after deploying the backend to Render.
  */
 
-const BACKEND_URL = "https://tfg-chatbot.onrender.com"; // <-- change after deploy
+const BACKEND_URL = "https://tfg-sra5.onrender.com";
 
 // ---------------------------------------------------------------------------
 // DOM creation

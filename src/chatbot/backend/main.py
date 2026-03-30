@@ -8,6 +8,7 @@ import os
 import re
 from contextlib import asynccontextmanager
 from pathlib import Path
+from typing import Optional
 
 from dotenv import load_dotenv
 from fastapi import FastAPI, HTTPException
@@ -31,7 +32,7 @@ REPO_ROOT = Path(__file__).resolve().parent.parent.parent.parent
 groq_client = Groq(api_key=GROQ_API_KEY)
 
 # Global BM25 index and chunk store
-_bm25: BM25Okapi | None = None
+_bm25: Optional[BM25Okapi] = None
 _chunks: list[dict] = []
 
 
