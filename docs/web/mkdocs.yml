@@ -53,6 +53,12 @@ nav:
 #      - Priv Esc: labs/priv-esc.md
 #      - Crypto: labs/crypto.md
 
+extra_javascript:
+  - assets/javascripts/chatbot.js
+
+extra_css:
+  - assets/stylesheets/chatbot.css
+
 plugins:
   - search
 
