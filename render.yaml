@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: tfg-chatbot
+    runtime: python
+    buildCommand: pip install -r src/chatbot/backend/requirements.txt
+    startCommand: uvicorn src.chatbot.backend.main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: GROQ_API_KEY
+        sync: false           # set manually in Render dashboard (never commit the key)
+      - key: GROQ_MODEL
+        value: llama-3.1-8b-instant
+      - key: DOCS_PATH
+        value: docs/web/docs
