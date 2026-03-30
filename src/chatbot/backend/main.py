@@ -8,7 +8,7 @@ import os
 import re
 from contextlib import asynccontextmanager
 from pathlib import Path
-from typing import Optional
+from typing import Dict, List, Optional
 
 from dotenv import load_dotenv
 from fastapi import FastAPI, HTTPException
@@ -29,11 +29,20 @@ DOCS_PATH = os.getenv("DOCS_PATH", "docs/web/docs")
 # main.py lives in src/chatbot/backend/ → repo root is 3 levels up
 REPO_ROOT = Path(__file__).resolve().parent.parent.parent.parent
 
-groq_client = Groq(api_key=GROQ_API_KEY)
+# Lazy init — avoids crash on startup if GROQ_API_KEY is not yet set
+_groq_client: Optional[Groq] = None
+
+def get_groq_client() -> Groq:
+    global _groq_client
+    if _groq_client is None:
+        if not GROQ_API_KEY:
+            raise HTTPException(status_code=503, detail="GROQ_API_KEY not configured")
+        _groq_client = Groq(api_key=GROQ_API_KEY)
+    return _groq_client
 
 # Global BM25 index and chunk store
 _bm25: Optional[BM25Okapi] = None
-_chunks: list[dict] = []
+_chunks: List[Dict] = []
 
 
 # ---------------------------------------------------------------------------
@@ -77,7 +86,7 @@ def _chunk_markdown(content: str, source: str, max_size: int = 900) -> list[dict
 
         # Section too long → split by paragraphs
         paragraphs = section.split("\n\n")
-        current: list[str] = []
+        current: List[str] = []
         current_len = 0
 
         for para in paragraphs:
@@ -196,8 +205,8 @@ def chat(req: ChatRequest):
     context = "\n\n---\n\n".join(c["text"] for c in top_chunks)
 
     # Deduplicated sources
-    seen: set[str] = set()
-    sources: list[Source] = []
+    seen = set()
+    sources: List[Source] = []
     for c in top_chunks:
         if c["source"] not in seen:
             seen.add(c["source"])
@@ -213,7 +222,7 @@ def chat(req: ChatRequest):
 
     user_prompt = f"Documentation context:\n{context}\n\nQuestion: {req.question}"
 
-    response = groq_client.chat.completions.create(
+    response = get_groq_client().chat.completions.create(
         model=GROQ_MODEL,
         messages=[
             {"role": "system", "content": system_prompt},
