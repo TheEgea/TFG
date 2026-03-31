@@ -198,7 +198,7 @@ def chat(req: ChatRequest):
 
     if not top_chunks:
         return ChatResponse(
-            answer="No encontré información relevante en la documentación para esta pregunta.",
+            answer="No relevant information found in the documentation for this question.",
             sources=[],
         )
 
@@ -216,7 +216,7 @@ def chat(req: ChatRequest):
         "You are a helpful documentation assistant for an EVE-NG ethical pentesting lab project (TFG). "
         "Answer questions based ONLY on the provided documentation context. "
         "Be concise and technical. If the context does not contain enough information, say so clearly. "
-        "Answer in the same language the user uses (Spanish or English). "
+        "Always answer in English. "
         "When referencing commands or config, quote them exactly from the context."
     )
 

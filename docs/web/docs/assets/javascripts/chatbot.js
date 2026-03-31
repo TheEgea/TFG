@@ -55,7 +55,7 @@ function initWidget() {
 
   // Show welcome message
   addBotMessage(
-    "Hola! Soy el asistente del TFG. Puedo responder preguntas sobre la documentación de los labs. ¿En qué te ayudo?"
+    "Hi! I'm the Lab Assistant. I can answer questions about the EVE-NG lab documentation. How can I help you?"
   );
 }
 
@@ -168,7 +168,7 @@ async function sendMessage() {
   } catch {
     removeLoadingIndicator();
     addBotMessage(
-      "No pude conectar con el backend. Si acaba de iniciarse puede tardar ~30 segundos (Render free tier). Inténtalo de nuevo."
+      "Could not connect to the backend. If it just started it may take ~30 seconds (Render free tier). Please try again."
     );
   } finally {
     setInputDisabled(false);
