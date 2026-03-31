@@ -1,6 +1,5 @@
-fastapi==0.115.0
-uvicorn==0.32.0
-rank-bm25==0.2.2
-groq==0.13.0
-python-dotenv==1.0.1
-pydantic==2.10.0
+fastapi
+uvicorn
+rank-bm25
+groq
+python-dotenv
