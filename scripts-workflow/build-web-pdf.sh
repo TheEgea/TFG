@@ -123,6 +123,7 @@ pandoc "$TMP_COMBINED" \
     --variable title="Ethical Pentesting with EVE-NG" \
     --variable subtitle="Bachelor's Thesis Technical Annex" \
     --variable author="Eloi Egea Rada" \
+    --variable imgdir="$REPO_ROOT/docs/images" \
     --toc \
     --toc-depth=3 \
     --highlight-style=tango \
