@@ -38,6 +38,7 @@ nav:
       - Memory: assets/Temp.md
       - Feasibility Study: assets/official_Documents/feasibility.md
   - Basic Configuration:
+      - Selected ISOs: assets/init_configs/selected-isos/index.md
       - Router (VyOS): assets/init_configs/Router.md
       - Firewall (pfSense): assets/init_configs/Firewall.md
   - EVE-NG Labs:

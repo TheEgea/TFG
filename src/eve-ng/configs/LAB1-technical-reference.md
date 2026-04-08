@@ -404,11 +404,25 @@ Verify: `resolvectl status` or `cat /etc/resolv.conf` → nameserver 192.168.0.2
 **EVE-NG node:** 4 | VNC port: 32772
 **User:** skynet / Sk1n3t
 
-**Status:** partially configured
+**Status:** fully configured
 - Static IP `192.168.10.50/24` configured
-- openssh-server **not yet installed** (pending for future lab phase)
+- openssh-server installed and enabled
+- DNS: 8.8.8.8 via NetworkManager
+- Flag: `/home/skynet/flag.txt`
 
 ---
+
+---
+
+## Flags
+
+| # | Location | Path | Flag |
+|---|----------|------|------|
+| 1 | Server (pebcak) | `/home/blackmesa/flag.txt` | `FLAG{p3bc4k_s3rv3r_0wn3d}` |
+| 2 | pfSense | `/root/flag.txt` | `FLAG{d3f4ult_cr3ds_k1ll_s3cur1ty}` |
+| 3 | PC1 | `/home/skynet/flag.txt` | `FLAG{sk1n3t_b3c4m3_s3nt13nt}` |
+
+Each flag file contains credentials leading to the next hop (breadcrumb chain).
 
 ## Credentials reference
 
@@ -494,4 +508,4 @@ ssh -p 22 blackmesa@192.168.0.29                  # SSH via NAT (password: !Bl4k
 | 4 | pfSense `blockpriv` must be **disabled** | Attacker (private IP) blocked on WAN | Already disabled in current config |
 | 5 | Bridge IPs on EVE-NG host lost on reboot | No SSH access to Server/VyOS from host | Handled by udev rule `99-lab1-bridges.rules` |
 | 6 | pfSense snapshot UUID changes if lab deleted | `qemu-img snapshot -a` fails | Find new disk path with `ls /opt/unetlab/tmp/0/*/6/` |
-| 7 | PC1 SSH not installed | Step 7+ not accessible from Server | Pending: `apt install openssh-server` via VNC |
+| 7 | PC1 DNS not pre-configured | `apt install` fails after fresh boot | Run: `nmcli con mod "<conn>" ipv4.dns "8.8.8.8" ipv4.ignore-auto-dns yes && nmcli con up "<conn>"` |

@@ -1,0 +1,10 @@
+connection.id:                          Wired connection 1
+ipv4.method:                            manual
+ipv4.dns:                               8.8.8.8
+ipv4.dns-search:                        --
+ipv4.dns-options:                       --
+ipv4.dns-priority:                      0
+ipv4.addresses:                         192.168.10.50/24
+ipv4.gateway:                           192.168.10.5
+ipv4.ignore-auto-routes:                no
+ipv4.ignore-auto-dns:                   yes

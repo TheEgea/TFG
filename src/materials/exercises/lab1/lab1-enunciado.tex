@@ -39,7 +39,7 @@
 
 \pagestyle{fancy}
 \fancyhf{}
-\fancyhead[L]{\small\textit{Lab 1 — Reconnaissance \& Enumeration}}
+\fancyhead[L]{\small\textit{Lab 1 -- Reconnaissance \& Enumeration}}
 \fancyhead[R]{\small\textit{Introduction to Cybersecurity}}
 \fancyfoot[C]{\small\thepage}
 \renewcommand{\headrulewidth}{0.4pt}
@@ -52,14 +52,14 @@
 
 \begin{document}
 
-% ── Cover ────────────────────────────────────────────────────────────────────
+% ---- Cover ------------------------------------------------------------------
 \begin{titlepage}
 \centering
 
 \includegraphics[width=0.6\linewidth]{../../../../docs/images/logo-tecnocampus.png}
 
 \vspace{1.5cm}
-{\small Bachelor in Computer Engineering — Management and Information Systems}
+{\small Bachelor in Computer Engineering -- Management and Information Systems}
 
 \vspace{0.5cm}
 {\small Introduction to Cybersecurity}
@@ -74,19 +74,20 @@
 \vspace{4cm}
 
 \begin{tabular}{ll}
-\textbf{Course}   & Introduction to Cybersecurity \\
-\textbf{Lab}      & 1 of 4 \\
-\textbf{Topic}    & Reconnaissance \& Enumeration \\
-\textbf{Duration} & 90--120 minutes \\
+\textbf{Course}     & Introduction to Cybersecurity \\
+\textbf{Lab}        & 1 of 4 \\
+\textbf{Topic}      & Reconnaissance \& Enumeration \\
+\textbf{Duration}   & 90--120 minutes \\
 \textbf{Difficulty} & Beginner \\
+\textbf{Flags}      & 3 \\
 \end{tabular}
 
 \vfill
-{\small TecnoCampus · GEISI · 2025--2026}
+{\small TecnoCampus \textperiodcentered{} GEISI \textperiodcentered{} 2025--2026}
 
 \end{titlepage}
 
-% ── Learning Objectives ──────────────────────────────────────────────────────
+% ---- Learning Objectives ----------------------------------------------------
 \section{Learning Objectives}
 
 After completing this lab you will be able to:
@@ -95,46 +96,46 @@ After completing this lab you will be able to:
   \item Perform basic active reconnaissance on a target host using standard tools
   \item Identify exposed services and gather information from HTTP responses
   \item Use discovered credentials to obtain shell access via SSH
-  \item Navigate a multi-hop network environment (firewall, router, target server)
+  \item Navigate a multi-hop network environment (firewall, router, server, workstation)
   \item Document findings in a structured penetration testing report
 \end{itemize}
 
-% ── Scenario ─────────────────────────────────────────────────────────────────
+% ---- Scenario ---------------------------------------------------------------
 \section{Scenario}
 
 You are a junior penetration tester hired to assess the perimeter of
-\textbf{PEBCAK Corp} — a fictional company whose name stands for
+\textbf{PEBCAK Corp} -- a fictional company whose name stands for
 \textit{Problem Exists Between Chair And Keyboard}.
 
 Your point of entry is the \textbf{Attacker} node in the lab environment.
 The target company exposes a public hostname: \texttt{lab1}.
-Your goal is to enumerate the target, find exposed information, and gain
-access to the internal server.
+Your goal is to enumerate the target, find exposed information, and pivot
+as deep as possible into the internal network.
 
 \begin{mdframed}[backgroundcolor=labgray, linecolor=labred, linewidth=1pt]
 \textbf{Rules of engagement}
 \begin{itemize}[leftmargin=1.5em, topsep=2pt]
   \item Only attack nodes within the lab environment
   \item Do not modify pfSense firewall configuration
-  \item Document every step — commands run, output received, decisions made
+  \item Document every step -- commands run, output received, decisions made
   \item If the lab breaks, notify your instructor (do not attempt to fix infrastructure)
 \end{itemize}
 \end{mdframed}
 
-% ── Topology ─────────────────────────────────────────────────────────────────
+% ---- Topology ---------------------------------------------------------------
 \section{Network Topology}
 
 \begin{verbatim}
-  [ Attacker – Parrot OS ]
+  [ Attacker - Parrot OS ]
           |
-  [ Firewall – pfSense ]   <-- entry point: lab1
+  [ Firewall - pfSense ]   <-- entry point: lab1
           |
-  [ Router – VyOS ]
+  [ Router - VyOS ]
           |
     ------+------
     |           |
 [ Server ]   [ PC1 ]
- (target)
+ (target)   (target)
 \end{verbatim}
 
 \begin{table}[H]
@@ -143,11 +144,11 @@ access to the internal server.
 \toprule
 \textbf{Node} & \textbf{Role} & \textbf{Access} \\
 \midrule
-Attacker & Your machine (Parrot OS) & VNC console \\
-Firewall & Perimeter firewall (pfSense) & \textit{infrastructure — do not modify} \\
-Router   & Internal router (VyOS) & \textit{infrastructure — do not modify} \\
-Server   & Target web + SSH server & Via exploitation \\
-PC1      & Internal workstation & Discovered during lab \\
+Attacker & Your machine (Parrot OS)       & VNC console \\
+Firewall & Perimeter firewall (pfSense)   & Via exploitation \\
+Router   & Internal router (VyOS)         & \textit{infrastructure -- do not modify} \\
+Server   & Target web + SSH server        & Via exploitation \\
+PC1      & Internal workstation           & Via exploitation \\
 \bottomrule
 \end{tabularx}
 \caption{Lab nodes overview}
@@ -157,12 +158,12 @@ PC1      & Internal workstation & Discovered during lab \\
 public IP. All inbound traffic goes through the firewall before reaching
 internal nodes.
 
-% ── Tasks ────────────────────────────────────────────────────────────────────
+% ---- Tasks ------------------------------------------------------------------
 \section{Tasks}
 
 Complete the following tasks in order. Document each step.
 
-\subsection{Task 1 — Web Reconnaissance}
+\subsection{Task 1 -- Web Reconnaissance}
 
 \begin{enumerate}[leftmargin=2em]
   \item Open a browser on the Attacker node and navigate to \texttt{http://lab1}
@@ -173,7 +174,7 @@ Complete the following tasks in order. Document each step.
 
 \textit{Deliverable: What hint did you find in the page source?}
 
-\subsection{Task 2 — Service Discovery}
+\subsection{Task 2 -- Service Discovery}
 
 \begin{enumerate}[leftmargin=2em]
   \item Using the hint from Task 1, find an additional resource on the web server
@@ -183,27 +184,36 @@ Complete the following tasks in order. Document each step.
 
 \textit{Deliverable: Service type, host, username.}
 
-\subsection{Task 3 — Initial Access}
+\subsection{Task 3 -- Initial Access (Flag 1)}
 
 \begin{enumerate}[leftmargin=2em]
   \item Use the discovered credentials to connect to the target service
   \item Confirm you have a shell on the target server
-  \item List the contents of the home directory
+  \item List the contents of the home directory and read the flag file
 \end{enumerate}
 
-\textit{Deliverable: What file did you find? Paste its contents.}
+\textit{Deliverable: Contents of the flag file. Read it carefully -- it contains more than just the flag.}
 
-\subsection{Task 4 — Lateral Discovery}
+\subsection{Task 4 -- Pivot to Firewall (Flag 2)}
 
 \begin{enumerate}[leftmargin=2em]
-  \item Read the contents of the file found in Task 3 carefully
-  \item Identify any additional credentials or network hosts mentioned
-  \item Attempt to connect to any internal hosts referenced
+  \item Using information found in Task 3, connect to the internal firewall
+  \item Read the flag file in the administrator's home directory
 \end{enumerate}
 
-\textit{Deliverable: What internal host did you reach? What service did it run?}
+\textit{Deliverable: Flag string. What security mistake made this possible?}
 
-% ── Deliverables ─────────────────────────────────────────────────────────────
+\subsection{Task 5 -- Reach the Workstation (Flag 3)}
+
+\begin{enumerate}[leftmargin=2em]
+  \item The firewall flag reveals a further internal host
+  \item From the server, connect to the internal workstation
+  \item Read the flag in the user's home directory
+\end{enumerate}
+
+\textit{Deliverable: Flag string. How many hops from the Attacker to the workstation?}
+
+% ---- Deliverables -----------------------------------------------------------
 \section{Deliverables}
 
 Submit a brief report (1--2 pages) covering:
@@ -211,11 +221,11 @@ Submit a brief report (1--2 pages) covering:
 \begin{itemize}[leftmargin=1.5em]
   \item \textbf{Reconnaissance summary:} what did you find and how
   \item \textbf{Access path:} step-by-step from Attacker to each target
-  \item \textbf{Flags captured:} paste the exact flag string(s) found
-  \item \textbf{Reflection:} one thing you would do differently or improve as the sysadmin
+  \item \textbf{All 3 flags captured:} paste the exact flag strings
+  \item \textbf{Reflection:} one thing you would fix as the sysadmin to stop this attack
 \end{itemize}
 
-% ── Hints ────────────────────────────────────────────────────────────────────
+% ---- Hints ------------------------------------------------------------------
 \section{Hints}
 
 \begin{mdframed}[backgroundcolor=labgray, linecolor=labred, linewidth=0.5pt]
@@ -226,11 +236,12 @@ Submit a brief report (1--2 pages) covering:
   \item \texttt{curl} and your browser both let you read page source. Comments in HTML are
         written between \texttt{<!--} and \texttt{-->}.
   \item Once you have SSH credentials, the command is: \texttt{ssh user@hostname}
-  \item From a server inside a network, you can often reach other internal hosts directly.
+  \item Read the flag file \textit{completely} -- it often contains more than the flag itself.
+  \item From a server inside a network, you can reach other internal hosts with \texttt{ssh user@ip}.
 \end{enumerate}
 \end{mdframed}
 
-% ── Tools reference ──────────────────────────────────────────────────────────
+% ---- Tools reference --------------------------------------------------------
 \section{Tools Reference}
 
 The following tools are available on the Attacker node:
@@ -241,10 +252,10 @@ The following tools are available on the Attacker node:
 \toprule
 \textbf{Tool} & \textbf{Use} \\
 \midrule
-\texttt{firefox} & Web browser for manual reconnaissance \\
-\texttt{curl} & Command-line HTTP client \\
-\texttt{ssh} & Secure Shell client \\
-\texttt{nmap} & Network scanner (for further exploration) \\
+\texttt{firefox}        & Web browser for manual reconnaissance \\
+\texttt{curl}           & Command-line HTTP client \\
+\texttt{ssh}            & Secure Shell client \\
+\texttt{nmap}           & Network scanner (for further exploration) \\
 \texttt{dig / nslookup} & DNS query tools \\
 \bottomrule
 \end{tabularx}
