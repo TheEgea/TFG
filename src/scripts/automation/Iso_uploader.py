@@ -1,5 +1,70 @@
 """
 EVE-NG QEMU Image Automation Script
+=====================================
+Author : Eloi Egea Rada
+Version: 1.0
+
+WHAT IT DOES
+------------
+Automates the full workflow to add a new ISO image to EVE-NG:
+  1. Opens a GUI file picker (tkinter) — select one or more .iso files
+  2. Uploads each ISO to the EVE-NG host via SCP (into /tmp/)
+  3. Creates the directory structure under /opt/unetlab/addons/qemu/<name>/
+  4. Renames the ISO to cdrom.iso (EVE-NG standard)
+  5. Creates a virtioa.qcow2 disk image (size auto-suggested by OS type)
+  6. Runs unl_wrapper -a fixpermissions
+
+REQUIREMENTS
+------------
+Python 3.8+ with the following packages:
+  pip install python-dotenv paramiko
+
+tkinter is part of the Python standard library but may require a system package:
+  Ubuntu/Debian : sudo apt install python3-tk
+  macOS         : included with python.org installer
+  Windows       : included with standard Python installer
+
+SETUP
+-----
+1. Create a virtual environment (recommended):
+     python3 -m venv .venv
+     source .venv/bin/activate        # Linux/macOS
+     .venv\Scripts\activate           # Windows
+
+2. Install dependencies:
+     pip install python-dotenv paramiko
+
+3. Create a .env file in the same directory as this script
+   (copy from .env.example and fill in your values):
+     cp .env.example .env
+
+   Required variables:
+     EVENG_HOST      = 192.168.0.133       # EVE-NG host IP
+     EVENG_USER      = root                # SSH user
+     EVENG_PASSWORD  = eve                 # SSH password (used by paramiko)
+     EVENG_SSH_PORT  = 22                  # SSH port (default: 22)
+
+   Note: SCP upload (step 2) uses the system ssh/scp binary and relies on
+   your SSH key or agent. If your key is configured in ~/.ssh/config for
+   the EVE-NG host, no extra setup is needed. Otherwise, ensure key-based
+   auth or sshpass is available.
+
+RUN
+---
+  python Iso_uploader.py
+
+  A file picker dialog will open. Select one or more .iso files.
+  For each file, the script will prompt for disk size (press Enter for default).
+
+DISK SIZE DEFAULTS (can be overridden at runtime)
+--------------------------------------------------
+  vyos, pfsense     → 8 GB
+  ubuntu, rhel      → 15-20 GB
+  kali              → 25 GB
+  desktop/mint      → 25 GB
+  tinycore, slax    → 2-4 GB
+  other             → 10 GB (fallback)
+"""
 Author: Eloi Egea (with Perplexity AI enhancements)
 TFG: Pentesting Environments in Virtualized Infrastructure
 Version: 1.0 - Production Ready

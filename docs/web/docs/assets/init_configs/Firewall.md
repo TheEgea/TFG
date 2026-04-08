@@ -161,4 +161,4 @@ df -h
 - pfSense console is **VNC only** in EVE-NG (no serial/telnet access from host).
 - SSH and web GUI are **disabled on WAN** by default — always connect via LAN.
 - The tap interface connecting pfSense WAN to the `pnet` bridge may need to be
-  re-added manually after each EVE-NG host reboot (see [LAB1 Firewall](../labs/lab1/firewall.md)).
+  re-added manually after each EVE-NG host reboot (see [LAB1 Firewall](../../labs/lab1/firewall.md)).

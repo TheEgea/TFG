@@ -3,204 +3,248 @@
 % © 2025, Eloi Egea Rada
 % This work is licensed under a Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License (CC BY-NC-SA 4.0).
 
-
-\newglossaryentry{api_rest}{
-name={API REST},
-description={Application Programming Interface grounded in the \textit{Representational State Transfer} (REST) paradigm, leveraging the HTTP protocol to facilitate inter-system communication and enabling scalable, efficient execution of resource operations—querying, creation, modification, and deletion}
-}
+% ============================================================
+% CORE PENTESTING CONCEPTS
+% ============================================================
 
 \newglossaryentry{pentesting}{
 name={Pentesting},
 description={Penetration testing; an authorised, controlled simulation of cyberattacks designed to identify security vulnerabilities across systems, networks, and applications. Fundamental component of this thesis}
 }
 
-
 \newglossaryentry{ethical_hacking}{
 name={Ethical Hacking},
 description={The authorised and legal practice of proactively exploiting security vulnerabilities with explicit permission, conducted within a framework of ethical and legal responsibility. Conceptual foundation of this educational endeavour}
 }
-
 
 \newglossaryentry{vulnerability}{
 name={Vulnerability},
 description={A flaw or weakness inherent in a system, application, or infrastructure that can be exploited by an attacker to gain unauthorised access, inflict damage, or compromise data integrity and confidentiality}
 }
 
-
 \newglossaryentry{exploit}{
 name={Exploit},
 description={A piece of code, technique, or procedure that strategically targets a specific vulnerability to achieve unauthorised access or execute arbitrary code on a target system}
 }
-
 
 \newglossaryentry{payload}{
 name={Payload},
 description={The component or data transmitted as part of an attack vector, encapsulating the malicious code or instructions the attacker intends to execute within the compromised system}
 }
 
+\newglossaryentry{vulnerability_assessment}{
+name={Vulnerability Assessment},
+description={A systematic process of identifying, quantifying, and prioritising security vulnerabilities across systems, networks, and applications. Typically precedes comprehensive penetration testing engagements}
+}
 
+\newglossaryentry{cvss}{
+name={CVSS (Common Vulnerability Scoring System)},
+description={A standardised framework for quantifying vulnerability severity through a numerical score---ranging from 0 to 10---that reflects exploitability and potential impact on affected systems}
+}
+
+% ============================================================
+% RECONNAISSANCE AND ENUMERATION
+% ============================================================
 
 \newglossaryentry{reconnaissance}{
 name={Reconnaissance},
-description={The initial phase of a penetration test during which the attacker gathers intelligence about the target—encompassing systems, users, networks, and services—typically through passive techniques without direct system access. Lab 1 of this thesis}
+description={The initial phase of a penetration test during which the attacker gathers intelligence about the target---encompassing systems, users, networks, and services---typically through passive techniques without direct system access. Primary focus of Lab~1 of this thesis}
 }
-
-
-\newglossaryentry{network_scanning}{
-name={Network Scanning},
-description={The process of discovering active hosts, open ports, and running services across a network using specialised tools such as Nmap. The foundational phase of offensive reconnaissance}
-}
-
 
 \newglossaryentry{enumeration}{
 name={Enumeration},
-description={A methodical process of systematically identifying and documenting network resources, active services, user accounts, and group memberships—typically following network scanning. Essential for pinpointing viable attack targets}
+description={A methodical process of systematically identifying and documenting network resources, active services, user accounts, and group memberships---typically following network scanning. Essential for pinpointing viable attack targets}
 }
 
-
-\newglossaryentry{owasp}{
-name={OWASP},
-description={\textit{Open Web Application Security Project}; an international community dedicated to advancing web application security. Publishes the industry-standard Top 10 catalogue of critical vulnerabilities and comprehensive testing methodologies}
+\newglossaryentry{network_scanning}{
+name={Network Scanning},
+description={The process of discovering active hosts, open ports, and running services across a network using specialised tools such as Nmap. The foundational step of offensive reconnaissance}
 }
 
-
-\newglossaryentry{sql_injection}{
-name={SQL Injection},
-description={A critical vulnerability that permits an attacker to insert malicious SQL code into database queries, enabling unauthorised data access, modification, or deletion. Primary focus of Lab 2}
+\newglossaryentry{ctf}{
+name={CTF (Capture The Flag)},
+description={A cybersecurity competition format in which participants solve challenges to find hidden strings (flags) that prove successful exploitation. The lab progression model used throughout this thesis is based on a linear CTF chain}
 }
 
-
-\newglossaryentry{cross_site_scripting}{
-name={Cross-Site Scripting (XSS)},
-description={A vulnerability enabling the injection of malicious JavaScript code into web pages accessed by other users, thereby compromising session tokens and exfiltrating sensitive personal data}
-}
-
-\newglossaryentry{wireshark}{
-name={Wireshark},
-description={An open-source network protocol analyser that captures and examines network traffic in real-time, essential for dissecting communications and uncovering security vulnerabilities. Primary tool for Lab 3}
-}
-
-
-\newglossaryentry{packet_capture}{
-name={Packet Capture},
-description={The process of intercepting and archiving data packets traversing a network, enabling the analysis of protocols, unencrypted communications, and suspicious data flows}
-}
-
+% ============================================================
+% NETWORK CONCEPTS
+% ============================================================
 
 \newglossaryentry{network_topology}{
 name={Network Topology},
-description={The physical and logical arrangement of network components—including computers, servers, networking devices, and interconnections. Critical for designing realistic laboratory environments}
+description={The physical and logical arrangement of network components---including computers, servers, networking devices, and interconnections. Critical for designing realistic laboratory environments}
 }
 
-
-
-\newglossaryentry{privilege_escalation}{
-name={Privilege Escalation},
-description={A technique enabling a user with limited permissions to obtain elevated privileges—such as administrator or root access—thereby executing previously restricted operations. Central focus of Lab 4}
+\newglossaryentry{dns}{
+name={DNS (Domain Name System)},
+description={The hierarchical distributed naming system that resolves human-readable hostnames to IP addresses. Used in Lab~1 as the entry point for reconnaissance: the custom hostname \texttt{lab1} is resolved via the pfSense Unbound DNS resolver}
 }
 
-
-\newglossaryentry{root_access}{
-name={Root Access},
-description={Maximum-level access on Unix/Linux systems, equivalent to administrator privileges on Windows. A typical objective in attack chains and the culmination of exploitation phases}
+\newglossaryentry{nat}{
+name={NAT (Network Address Translation)},
+description={A technique in which a router or firewall modifies the source or destination IP addresses of packets in transit, enabling multiple hosts on a private network to share a single public address and allowing controlled exposure of internal services}
 }
-
-
-\newglossaryentry{local_privilege_escalation}{
-name={Local Privilege Escalation},
-description={A privilege escalation technique executed locally on an already-compromised machine, exploiting vulnerabilities in the operating system kernel or misconfigured permissions}
-}
-
-
-
-\newglossaryentry{eve_ng}{
-name={EVE-NG},
-description={\textit{Emulated Virtual Environment - Next Generation}; a sophisticated simulation platform enabling the construction of intricate network topologies with diverse networking devices for educational and security testing purposes. Foundational platform for this thesis}
-}
-
-
-\newglossaryentry{kali}{
-name={Kali Linux},
-description={A purpose-built Linux distribution tailored for penetration testing and security auditing, encompassing hundreds of specialised tools for dictionary attacks, packet sniffing, vulnerability scanning, and related cybersecurity utilities. Primary operating system for attacker nodes in labs}
-}
-
-
-\newglossaryentry{virtual_machine}{
-name={Virtual Machine},
-description={A software-based emulation of a complete computer system executing within a physical host, enabling the concurrent execution of multiple operating systems and facilitating the creation of isolated, reproducible laboratory environments}
-}
-
 
 \newglossaryentry{dmz}{
 name={DMZ (Demilitarized Zone)},
 description={A neutral security segment segregating an organisation's internal network from the public Internet, hosting externally-accessible services whilst protecting critical internal resources from direct exposure}
 }
 
-
-
-
-\newglossaryentry{metasploit}{
-name={Metasploit Framework},
-description={An open-source framework facilitating the development, customisation, and execution of exploits against target systems. The industry standard for professional penetration testing engagements}
+\newglossaryentry{ssh}{
+name={SSH (Secure Shell)},
+description={A cryptographic network protocol providing secure command-line access, file transfer, and tunnelling over an unsecured network. Used in Lab~1 as the final step of the student workflow to access the target server and retrieve the flag}
 }
 
+% ============================================================
+% WEB APPLICATION SECURITY
+% ============================================================
 
-\newglossaryentry{nmap}{
-name={Nmap},
-description={An open-source network scanning utility that discovers active hosts, enumerates open ports, identifies running services, and fingerprints operating systems. Indispensable during reconnaissance phases}
+\newglossaryentry{owasp}{
+name={OWASP},
+description={\textit{Open Web Application Security Project}; an international non-profit community dedicated to advancing web application security. Publishes the industry-standard Top~10 catalogue of critical vulnerabilities and comprehensive testing methodologies}
 }
 
-
-\newglossaryentry{burp_suite}{
-name={Burp Suite},
-description={An integrated web application security testing platform enabling the interception, modification, and analysis of HTTP/HTTPS traffic. Community edition included in standard Kali Linux distributions}
+\newglossaryentry{sql_injection}{
+name={SQL Injection},
+description={A critical vulnerability that permits an attacker to insert malicious SQL code into database queries, enabling unauthorised data access, modification, or deletion. Primary focus of Lab~2}
 }
 
-
-\newglossaryentry{owasp_zap}{
-name={OWASP ZAP},
-description={An open-source utility designed for identifying vulnerabilities in web applications, offering both automated scanning capabilities and interactive testing workflows. A freely-available alternative to commercial solutions}
+\newglossaryentry{cross_site_scripting}{
+name={Cross-Site Scripting (XSS)},
+description={A vulnerability enabling the injection of malicious client-side scripts into web pages viewed by other users, thereby compromising session tokens or exfiltrating sensitive data}
 }
 
+% ============================================================
+% PRIVILEGE ESCALATION
+% ============================================================
 
-\newglossaryentry{cvss}{
-name={CVSS (Common Vulnerability Scoring System)},
-description={A standardised framework for quantifying vulnerability severity through a numerical score—ranging from 0 to 10—that reflects exploitability and potential impact on affected systems}
+\newglossaryentry{privilege_escalation}{
+name={Privilege Escalation},
+description={A technique enabling a user with limited permissions to obtain elevated privileges---such as administrator or root access---thereby executing previously restricted operations. Central focus of Lab~4}
 }
 
-
-\newglossaryentry{vulnerability_assessment}{
-name={Vulnerability Assessment},
-description={A systematic process of identifying, quantifying, and prioritising security vulnerabilities across systems, networks, and applications. Typically precedes comprehensive penetration testing engagements}
+\newglossaryentry{local_privilege_escalation}{
+name={Local Privilege Escalation},
+description={A privilege escalation technique executed locally on an already-compromised machine, exploiting vulnerabilities in the operating system kernel or misconfigured service permissions}
 }
 
-
-\newglossaryentry{cis_controls}{
-name={CIS Critical Controls},
-description={An authoritative, consensus-based framework of 18 prioritised security controls representing best practices for defending against the most prevalent and effective attack vectors}
+\newglossaryentry{root_access}{
+name={Root Access},
+description={Maximum-level administrative access on Unix/Linux systems, equivalent to Administrator privileges on Windows. A typical objective in attack chains and the culmination of exploitation phases}
 }
 
+% ============================================================
+% PLATFORMS AND INFRASTRUCTURE
+% ============================================================
 
-\newglossaryentry{nist_framework}{
-name={NIST Cybersecurity Framework},
-description={A standards-based framework from the National Institute of Standards and Technology for managing and mitigating cybersecurity risk, organised into five functional domains: Identify, Protect, Detect, Respond, and Recover}
+\newglossaryentry{eve_ng}{
+name={EVE-NG},
+description={\textit{Emulated Virtual Environment --- Next Generation}; a network emulation platform enabling the construction of complex multi-node topologies with diverse virtual machines and networking devices. Foundational platform of this thesis}
 }
 
-
-
-\newglossaryentry{tfg}{
-name={TFG (Bachelor's Thesis)},
-description={A mandatory capstone project in university degree programmes, synthesising and demonstrating the comprehensive knowledge and competencies acquired throughout the academic programme}
+\newglossaryentry{proxmox}{
+name={Proxmox VE},
+description={An open-source server virtualisation platform based on Debian Linux, supporting both KVM virtual machines and LXC containers. Used in this project as the hypervisor hosting the EVE-NG virtual machine}
 }
 
+\newglossaryentry{virtual_machine}{
+name={Virtual Machine},
+description={A software-based emulation of a complete computer system running within a physical host, enabling the concurrent execution of multiple operating systems and the creation of isolated, reproducible laboratory environments}
+}
 
 \newglossaryentry{homelab}{
 name={HomeLab},
-description={A personal laboratory environment combining hardware and software infrastructure for educational purposes, experimentation, and professional development. Serves as the foundational infrastructure for this thesis}
+description={A personal infrastructure environment combining server hardware and virtualisation software for educational purposes, experimentation, and professional development. Serves as the physical foundation for this thesis}
 }
-
 
 \newglossaryentry{lab_topology}{
 name={Lab Topology},
-description={The architectural arrangement of virtual machines, network segments, and services within an educational laboratory environment, designed to faithfully simulate realistic penetration testing scenarios}
+description={The architectural arrangement of virtual machines, network segments, and services within an educational laboratory environment, designed to simulate realistic penetration testing scenarios}
+}
+
+% ============================================================
+% OPERATING SYSTEMS AND TOOLS USED IN THE LABS
+% ============================================================
+
+\newglossaryentry{parrot_os}{
+name={Parrot OS},
+description={A Debian-based Linux distribution oriented towards security testing, privacy, and development. Used as the operating system of the attacker node in the lab environment of this thesis}
+}
+
+\newglossaryentry{kali}{
+name={Kali Linux},
+description={A Debian-based Linux distribution tailored for penetration testing and security auditing, providing hundreds of pre-installed tools for scanning, exploitation, and analysis. Widely used in industry and referenced in certification curricula such as OSCP}
+}
+
+\newglossaryentry{pfsense}{
+name={pfSense},
+description={An open-source firewall and router platform based on FreeBSD, distributed by Netgate. Used in this project as the perimeter firewall, providing NAT, port forwarding, and DNS resolution for the lab environment}
+}
+
+\newglossaryentry{vyos}{
+name={VyOS},
+description={An open-source network operating system based on Debian, providing routing, firewalling, and VPN functionality. Used in this project as the internal Layer~3 router connecting the lab network segments}
+}
+
+\newglossaryentry{nginx}{
+name={nginx},
+description={A high-performance open-source web server and reverse proxy. Used in Lab~1 as the HTTP server on the target node, serving the PEBCAK Corp portal}
+}
+
+\newglossaryentry{nmap}{
+name={Nmap},
+description={An open-source network scanning tool that discovers active hosts, enumerates open ports, identifies running services, and fingerprints operating systems. Essential during the reconnaissance phase}
+}
+
+\newglossaryentry{metasploit}{
+name={Metasploit Framework},
+description={An open-source exploitation framework facilitating the development, customisation, and execution of exploits against target systems. Industry standard for professional penetration testing engagements}
+}
+
+\newglossaryentry{wireshark}{
+name={Wireshark},
+description={An open-source network protocol analyser that captures and examines network traffic in real time. Primary tool for traffic analysis exercises in Lab~3}
+}
+
+\newglossaryentry{burp_suite}{
+name={Burp Suite},
+description={An integrated web application security testing platform enabling the interception, modification, and analysis of HTTP/HTTPS traffic. Used for web vulnerability exercises in Lab~2}
+}
+
+\newglossaryentry{owasp_zap}{
+name={OWASP ZAP},
+description={An open-source web application scanner offering both automated scanning and interactive testing workflows. A freely available alternative to commercial web security tools}
+}
+
+% ============================================================
+% FRAMEWORKS AND STANDARDS
+% ============================================================
+
+\newglossaryentry{cis_controls}{
+name={CIS Critical Controls},
+description={A consensus-based set of 18 prioritised security controls from the Center for Internet Security, representing best practices for defending against the most prevalent attack vectors}
+}
+
+\newglossaryentry{nist_framework}{
+name={NIST Cybersecurity Framework},
+description={A standards-based framework from the National Institute of Standards and Technology for managing cybersecurity risk, organised into five functional domains: Identify, Protect, Detect, Respond, and Recover}
+}
+
+% ============================================================
+% MISCELLANEOUS
+% ============================================================
+
+\newglossaryentry{api_rest}{
+name={API REST},
+description={Application Programming Interface following the \textit{Representational State Transfer} (REST) architectural style, using HTTP to enable communication between systems and supporting standard resource operations}
+}
+
+\newglossaryentry{packet_capture}{
+name={Packet Capture},
+description={The process of intercepting and recording data packets traversing a network, enabling the analysis of protocols, unencrypted communications, and anomalous traffic patterns}
+}
+
+\newglossaryentry{tfg}{
+name={TFG (Bachelor's Thesis)},
+description={A mandatory capstone project in Spanish university degree programmes, demonstrating the comprehensive knowledge and competencies acquired throughout the academic programme}
 }

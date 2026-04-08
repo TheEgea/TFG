@@ -7,7 +7,7 @@
 
 %\section{Introduction}
 
-This chapter specifies the complete requirements for the EVE-NG-based cybersecurity teaching package, encompassing functional requirements (RF) that define what the system must do, technological requirements (TR) that specify the technical environment, and non-functional requirements (NFR) that address quality attributes and compliance standards.
+This chapter specifies the complete requirements for the EVE-NG-based~\cite{eve_ng} cybersecurity teaching package, encompassing functional requirements (RF) that define what the system must do, technological requirements (TR) that specify the technical environment, and non-functional requirements (NFR) that address quality attributes and compliance standards.
 
 \section{Functional Requirements}
 
@@ -65,7 +65,7 @@ Functional requirements define the core capabilities and behaviors expected from
 
 \subsection{RF2: Implement Vulnerabilities and Attack Scenarios}
 
-\textbf{Description}: Implement realistic vulnerabilities and attack scenarios aligned with industry frameworks (PTES, OWASP, NIST, CEH).
+\textbf{Description}: Implement realistic vulnerabilities and attack scenarios aligned with industry frameworks (PTES\cite{ptes}, OWASP\cite{owasp_testing_guide}, NIST\cite{nist_framework}, CEH\cite{ceh_framework}).
 
 \textbf{Detailed Requirements}:
 
@@ -74,7 +74,7 @@ Functional requirements define the core capabilities and behaviors expected from
 \item \textbf{RF2.1}: Lab 1 - Reconnaissance (PTES Phase 1)
 \begin{itemize}
 \item Passive reconnaissance tools (Shodan, DNS enumeration)
-\item Active scanning tools (Nmap, banner grabbing)
+\item Active scanning tools (Nmap\cite{nmap}, banner grabbing)
 \item Service discovery scenarios
 \item Information gathering reporting
 \end{itemize}
@@ -96,7 +96,7 @@ Functional requirements define the core capabilities and behaviors expected from
 \item Network segmentation analysis
 \item Lateral movement techniques
 \item Man-in-the-Middle (MITM) attack scenarios
-\item Network traffic analysis with Wireshark
+\item Network traffic analysis with Wireshark\cite{wireshark}
 \item IDS/IPS evasion scenarios
 \item VPN and encryption bypass (where applicable)
 \end{itemize}
@@ -130,7 +130,7 @@ Functional requirements define the core capabilities and behaviors expected from
 
 \subsection{RF3: Create Structured Assessment Materials}
 
-\textbf{Description}: Develop comprehensive assessment rubrics, learning objectives, and evaluation materials aligned with GEISI curriculum.
+\textbf{Description}: Develop comprehensive assessment rubrics, learning objectives, and evaluation materials aligned with GEISI curriculum~\cite{geisi_curriculum}.
 
 \textbf{Detailed Requirements}:
 
@@ -226,8 +226,8 @@ Technological requirements specify the infrastructure, tools, and platforms requ
 
 \item \textbf{TR2.1}: Attacking Platform
 \begin{itemize}
-\item Primary: Kali Linux 2024.x
-\item Alternative: Parrot Security OS
+\item Primary: Kali Linux 2024.x~\cite{kali_linux}
+\item Alternative: Parrot Security OS~\cite{parrot_os}
 \item Installation method: EVE-NG pre-built image or custom import
 \item Tools package: Full toolkit including reconnaissance, scanning, and exploitation
 \end{itemize}
@@ -236,9 +236,9 @@ Technological requirements specify the infrastructure, tools, and platforms requ
 \begin{itemize}
 \item \textbf{Reconnaissance}: Nmap, Shodan CLI, Amass, Sublist3r
 \item \textbf{Scanning}: Nessus (optional), OpenVAS, Nikto
-\item \textbf{Exploitation}: Metasploit Framework 6.x, ExploitDB, Searchsploit
-\item \textbf{Web Testing}: Burp Suite Community/Professional, OWASP ZAP
-\item \textbf{Network Analysis}: Wireshark, tcpdump, mitmproxy
+\item \textbf{Exploitation}: Metasploit Framework 6.x~\cite{metasploit}, ExploitDB, Searchsploit
+\item \textbf{Web Testing}: Burp Suite Community/Professional~\cite{burp_suite}, OWASP ZAP~\cite{owasp_zap}
+\item \textbf{Network Analysis}: Wireshark\cite{wireshark}, tcpdump, mitmproxy
 \item \textbf{Post-Exploitation}: Mimikatz, Rubeus, BloodHound
 \item \textbf{Programming}: Python 3.10+, Bash scripting
 \end{itemize}
@@ -326,28 +326,28 @@ Non-functional requirements specify quality attributes and operational character
 
 \begin{itemize}
 
-\item \textbf{NFR2.1}: NIST Cybersecurity Framework Alignment
+\item \textbf{NFR2.1}: NIST Cybersecurity Framework Alignment~\cite{nist_framework}
 \begin{itemize}
 \item Core Functions: Identify, Protect, Detect, Respond, Recover
 \item Implementation mapped to lab exercises
 \item Assessment procedures aligned with NIST guidelines
 \end{itemize}
 
-\item \textbf{NFR2.2}: CIS Critical Controls Coverage
+\item \textbf{NFR2.2}: CIS Critical Controls Coverage~\cite{cis_controls}
 \begin{itemize}
 \item Controls 1-18 incorporated where pedagogically appropriate
 \item Assessment rubrics aligned with CIS benchmarks
 \item Remediation procedures follow CIS recommendations
 \end{itemize}
 
-\item \textbf{NFR2.3}: OWASP Standards Integration
+\item \textbf{NFR2.3}: OWASP Standards Integration~\cite{owasp2021,owasp_testing_guide}
 \begin{itemize}
 \item OWASP Top 10 vulnerabilities fully covered
 \item OWASP Testing Guide methodology integrated
 \item OWASP Development Practices reflected in lab design
 \end{itemize}
 
-\item \textbf{NFR2.4}: Penetration Testing Standards
+\item \textbf{NFR2.4}: Penetration Testing Standards~\cite{ptes,ceh_framework}
 \begin{itemize}
 \item PTES (Penetration Testing Execution Standard) phases mapped to labs
 \item CEH (Certified Ethical Hacker) curriculum alignment

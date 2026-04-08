@@ -7,7 +7,7 @@
 
 %\section{Introduction}
 
-This chapter outlines the comprehensive methodology employed in this bachelor's thesis project, encompassing research strategy, development approach, validation methods, and project lifecycle management. The project integrates principles from software engineering, cybersecurity pedagogy, and empirical research to ensure systematic development and validation of the EVE-NG-based teaching package.
+This chapter outlines the comprehensive methodology employed in this bachelor's thesis project, encompassing research strategy, development approach, validation methods, and project lifecycle management. The project integrates principles from software engineering, cybersecurity pedagogy, and empirical research to ensure systematic development and validation of the EVE-NG\cite{eve_ng}-based teaching package.
 
 \section{Research and Development Phases}
 
@@ -19,9 +19,9 @@ The project is structured in four distinct phases, each with specific deliverabl
 
 \textbf{Activities}:
 \begin{itemize}
-\item HomeLab infrastructure initialization (Proxmox, networking, storage)
-\item Development environment setup (VSCode, LaTeX, Git)
-\item Security tools installation (Kali Linux, Metasploit, Burp Suite)
+\item HomeLab infrastructure initialization (Proxmox\cite{proxmox}, networking, storage)
+\item Development environment setup (VSCode\cite{vscode}, LaTeX\cite{latex_project}, Git)
+\item Security tools installation (Kali Linux\cite{kali_linux}, Metasploit\cite{metasploit}, Burp Suite\cite{burp_suite})
 \item Technical documentation and baseline establishment
 \end{itemize}
 
@@ -60,7 +60,7 @@ The project is structured in four distinct phases, each with specific deliverabl
 \item \textbf{Functional and Non-Functional Requirements} (10h)
 \begin{itemize}
 \item RF1: Design and implement 4 EVE-NG topologies (.unl files)
-\item RF2: Implement vulnerabilities per PTES, OWASP, NIST, and CEH standards
+\item RF2: Implement vulnerabilities per PTES\cite{ptes}, OWASP\cite{owasp_testing_guide}, NIST\cite{nist_framework}, and CEH\cite{ceh_framework} standards
 \item RF3: Create structured assessment materials and rubrics
 \item NFR1: Performance optimization for deployment and execution
 \item NFR2: Compliance with international security frameworks
@@ -130,7 +130,7 @@ The project is structured in four distinct phases, each with specific deliverabl
 \item \textbf{Lab 1: Reconnaissance Development} (14h research + 20h dev)
 \begin{itemize}
 \item Scenario: Intelligence gathering phase using PTES framework
-\item Tools: Nmap, Shodan, Passive reconnaissance techniques
+\item Tools: Nmap\cite{nmap}, Shodan, Passive reconnaissance techniques
 \item Topology: Multi-tier network with passive monitoring capabilities
 \item Validation: Successful execution of reconnaissance workflow
 \end{itemize}
@@ -146,7 +146,7 @@ The project is structured in four distinct phases, each with specific deliverabl
 \item \textbf{Lab 3: Network Analysis Development} (14h research + 25h dev)
 \begin{itemize}
 \item Scenario: Network segmentation and lateral movement (NIST standards)
-\item Tools: Wireshark, tcpdump, network enumeration tools
+\item Tools: Wireshark\cite{wireshark}, tcpdump, network enumeration tools
 \item Topology: Multi-VLAN network with security monitoring
 \item Validation: Successful network traversal and analysis
 \end{itemize}
@@ -269,19 +269,19 @@ The research methodology employs multiple information gathering techniques:
 
 \item \textbf{Industry Standards and Frameworks}
 \begin{itemize}
-\item PTES (Penetration Testing Execution Standard)
-\item OWASP (Open Web Application Security Project) documentation
-\item NIST (National Institute of Standards and Technology) frameworks
-\item CIS Controls and benchmarks
-\item EC-Council CEH curriculum
+\item PTES (Penetration Testing Execution Standard) \cite{ptes}
+\item OWASP (Open Web Application Security Project) documentation \cite{owasp_testing_guide}
+\item NIST (National Institute of Standards and Technology) frameworks \cite{nist_framework,nist_sp800115}
+\item CIS Controls and benchmarks \cite{cis_controls}
+\item EC-Council CEH curriculum \cite{ceh_framework}
 \end{itemize}
 
 \item \textbf{Platform and Tool Documentation}
 \begin{itemize}
-\item Official EVE-NG documentation and community resources
-\item Kali Linux penetration testing guide
-\item Metasploit Framework documentation
-\item OWASP ZAP and Burp Suite user guides
+\item Official EVE-NG documentation and community resources \cite{eve_ng_docs}
+\item Kali Linux penetration testing guide \cite{kali_linux}
+\item Metasploit Framework documentation \cite{metasploit}
+\item OWASP ZAP and Burp Suite user guides \cite{owasp_zap,burp_suite}
 \end{itemize}
 
 \item \textbf{Comparative Analysis}

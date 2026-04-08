@@ -1,0 +1,200 @@
+% ============================================================
+% Lab 1: Reconnaissance and Web Enumeration
+% ============================================================
+
+\section{Lab 1: Reconnaissance and Web Enumeration}
+
+\subsection{Overview and Learning Objectives}
+
+The first laboratory focuses on the initial phases of a penetration test: passive and
+active reconnaissance, service enumeration, and web content discovery. Rather than
+presenting vulnerabilities in isolation, the lab situates them within a realistic
+multi-layer network architecture that the student must first understand before being
+able to progress.
+
+The intended learning outcomes are:
+
+\begin{itemize}
+    \item Perform DNS-based hostname resolution and understand how name services
+          relate to firewall and routing configuration.
+    \item Identify services exposed through a perimeter firewall using port scanning
+          and HTTP enumeration techniques.
+    \item Discover sensitive web content through source code analysis and directory
+          enumeration.
+    \item Establish an authenticated SSH session using credentials obtained through
+          reconnaissance, and locate flag artefacts on the target system.
+\end{itemize}
+
+The lab is designed to be completed sequentially: each step reveals the information
+needed for the next, reinforcing the idea that reconnaissance is a structured,
+iterative process rather than a single action.
+
+
+\subsection{Network Topology}
+
+The topology consists of five nodes interconnected across three network segments,
+as illustrated in Figure~\ref{fig:lab1-topology}.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.9\textwidth]{lab1-topology.png}
+    \caption{Lab 1 network topology: attacker node, perimeter firewall,
+             internal router, target server and workstation.}
+    \label{fig:lab1-topology}
+\end{figure}
+
+The \textbf{Attacker} node (Parrot OS~\cite{parrot_os}) is connected to the simulated external
+network, which mirrors a standard institutional LAN. From this position, the attacker
+has no direct visibility of the internal segments and must work through the firewall.
+
+The \textbf{pfSense}~\cite{pfsense} firewall connects the external segment to an internal transit
+link. It handles perimeter NAT, DNS resolution for the \texttt{lab1} hostname, and
+port forwarding rules that expose specific services on the target server to the
+outside.
+
+The \textbf{VyOS}~\cite{vyos} router sits behind pfSense and performs Layer~3 routing between
+two internal segments: a servers network and a users network. This separation reflects
+a realistic campus or enterprise design where different host categories are isolated
+at the network layer.
+
+The \textbf{Server} node (Ubuntu Server 24.04~\cite{ubuntu}, hostname \texttt{pebcak}) runs an
+nginx~\cite{nginx} web server and is the primary target of the lab. The \textbf{PC1} node
+(Ubuntu Desktop 24.04) represents an internal workstation and is reserved for
+future lab extensions.
+
+
+\subsection{Infrastructure Design Decisions}
+
+Several design decisions were made to balance realism, educational value, and
+maintainability.
+
+\subsubsection{Layered Network Architecture}
+
+A flat network with a single target machine would be simpler to configure, but would
+fail to represent the kind of environment a student is likely to encounter in a
+real engagement. The three-segment design --- external, transit, and internal ---
+forces the student to reason about routing and NAT before attempting any exploitation,
+which aligns with the reconnaissance-first philosophy of the lab.
+
+\subsubsection{DNS-Based Access}
+
+The target is intentionally not accessible by raw IP address in the lab instructions.
+Instead, the pfSense DNS Resolver~\cite{pfsense} is configured to resolve a custom hostname
+(\texttt{lab1}) to the firewall's WAN address. This introduces students to the
+role of DNS in reconnaissance and reflects real-world scenarios where targets are
+identified by name rather than by address.
+
+\subsubsection{CTF-Style Progression}
+
+The lab uses a Capture The Flag (CTF) model with a linear chain of discoveries.
+Each finding unlocks the next step, which mirrors the iterative nature of real
+penetration tests while providing clear checkpoints for assessment. The chain is
+described in detail in Section~\ref{subsec:lab1-workflow}.
+
+
+\subsection{Target Configuration --- PEBCAK Corp}
+
+The target server hosts a fictional company portal under the name \textit{PEBCAK
+Corp} (an acronym for \textit{Problem Exists Between Chair And Keyboard}, a common
+expression in IT support). The theme is intentionally self-referential: a company
+whose name implies human error is itself misconfigured.
+
+The web application consists of two pages served by nginx:
+
+\begin{itemize}
+    \item \textbf{Index page} (\texttt{/}): A corporate landing page with minimal
+          content. An HTML comment embedded in the source code provides a subtle
+          hint directing the student towards further enumeration.
+    \item \textbf{Internal page} (\texttt{/pebcak.html}): A page styled as an
+          internal maintenance document, exposing SSH credentials for the server.
+          It is not linked from the index and must be discovered independently.
+\end{itemize}
+
+Once SSH access to the server is established, a plain-text flag file is present in
+the user's home directory. The file also contains credentials for the internal
+firewall management interface, providing a pivot point for students who wish to
+explore beyond the primary objective.
+
+
+\subsection{Student Workflow}
+\label{subsec:lab1-workflow}
+
+The intended progression through the lab is as follows:
+
+\begin{enumerate}
+    \item \textbf{DNS resolution.} The student resolves the \texttt{lab1} hostname
+          using the lab's DNS server, confirming network reachability and identifying
+          the entry point.
+    \item \textbf{Service enumeration.} A port scan reveals HTTP (port~80) and SSH
+          (port~22) open on the target address, both forwarded by the pfSense
+          firewall to the internal server.
+    \item \textbf{Web content discovery.} Browsing to \texttt{http://lab1} presents
+          the PEBCAK Corp index page. Inspecting the HTML source reveals a comment
+          hinting at a hidden path.
+    \item \textbf{Credential retrieval.} Navigating to the hidden page exposes SSH
+          credentials for the target server.
+    \item \textbf{SSH access and flag capture.} The student connects via SSH using
+          the discovered credentials and locates the flag file in the home directory.
+\end{enumerate}
+
+
+\subsection{Persistent Environment Configuration}
+
+The following mechanisms were implemented to ensure that all Lab~1 node
+configurations survive a restart of the lab or the EVE-NG host:
+
+\begin{itemize}
+    \item \textbf{Server network configuration:} Managed via \texttt{systemd-networkd}
+          with a static unit file, ensuring the server's IP address and default
+          gateway are restored automatically on boot.
+    \item \textbf{Bridge interface addresses:} The EVE-NG host requires IP addresses
+          on its internal bridge interfaces to route management traffic to the lab
+          nodes. These are applied at boot using a \texttt{udev} rule that triggers
+          on interface creation.
+    \item \textbf{Attacker DNS configuration:} The attacker node's DNS resolver is
+          set to the pfSense WAN address via NetworkManager, with DHCP-provided DNS
+          overridden. This setting is stored in the NetworkManager connection profile
+          and persists across reboots.
+    \item \textbf{pfSense DNS Resolver:} Custom Unbound~\cite{unbound_dns} options are stored in the
+          pfSense configuration file (\texttt{config.xml}) and applied at startup
+          by the pfSense boot sequence.
+\end{itemize}
+
+
+\subsection{Problems Encountered and Solutions}
+
+\subsubsection{VNC Keyboard Input on QEMU Nodes}
+
+Early attempts to automate node configuration through VNC used the \texttt{vncdo}
+command-line utility. While screenshot capture worked correctly, key event injection
+consistently caused the connection to drop on QEMU-based nodes. Investigation
+revealed that pfSense's QEMU VNC implementation closes the session after receiving
+certain KeyEvent messages sent by \texttt{vncdo}.
+
+The solution was to implement VNC input directly over a raw TCP socket using the
+RFB protocol. Key events are constructed manually as binary structs and sent without
+relying on any third-party VNC client library. This approach proved stable across
+all QEMU nodes in the lab.
+
+\subsubsection{pfSense DNS Resolver WAN Interface}
+
+Configuring pfSense's Unbound DNS Resolver to respond to queries arriving on the
+WAN interface required two separate changes: adding a listen directive for the WAN
+address and adding a corresponding access control entry permitting queries from the
+external subnet. The pfSense configuration system stores these options as a
+Base64-encoded string inside \texttt{config.xml}. Providing the options as plain
+text caused them to be decoded as binary garbage when the configuration was applied,
+resulting in a silently broken Unbound configuration. Once the encoding requirement
+was identified, the options were stored correctly and the resolver responded as
+expected.
+
+\subsubsection{Unbound Startup Configuration Path}
+
+After restarting the Unbound service using the standard FreeBSD service command, the
+process started with the default configuration file rather than the one generated by
+pfSense. This caused the DNS resolver to listen only on the loopback interface,
+ignoring the custom options. The root cause was that the FreeBSD service script
+references \texttt{/usr/local/etc/unbound/unbound.conf} by default, while pfSense
+generates its runtime configuration at \texttt{/var/unbound/unbound.conf}. The
+correct approach is to trigger a restart through pfSense's own PHP service management
+functions, which regenerate the configuration file before starting the process.

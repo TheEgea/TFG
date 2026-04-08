@@ -1,0 +1,254 @@
+\documentclass[a4paper, 12pt]{article}
+
+\usepackage{fontspec}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage[english]{babel}
+\usepackage{geometry}
+\usepackage{setspace}
+\usepackage{titlesec}
+\usepackage{hyperref}
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{xcolor}
+\usepackage{mdframed}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+
+\geometry{top=2.5cm, bottom=2.5cm, left=3cm, right=2.5cm}
+
+\setmainfont{OpenDyslexic}[
+    Path = /usr/share/fonts/opentype/opendyslexic/,
+    Extension = .otf,
+    UprightFont = *-Regular,
+    BoldFont = *-Bold,
+    ItalicFont = *-Italic,
+    BoldItalicFont = *-BoldItalic
+]
+\setmonofont{OpenDyslexicMono}[
+    Path = /usr/share/fonts/opentype/opendyslexic/,
+    Extension = .otf,
+    UprightFont = *-Regular
+]
+
+\definecolor{labred}{RGB}{180,30,30}
+\definecolor{labgray}{RGB}{245,245,245}
+
+\hypersetup{colorlinks=true, linkcolor=black, urlcolor=labred}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\textit{Lab 1 — Reconnaissance \& Enumeration}}
+\fancyhead[R]{\small\textit{Introduction to Cybersecurity}}
+\fancyfoot[C]{\small\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt}
+
+\titleformat{\section}{\large\bfseries\color{labred}}{}{0em}{}[\titlerule]
+\titleformat{\subsection}{\normalsize\bfseries}{}{0em}{}
+
+\begin{document}
+
+% ── Cover ────────────────────────────────────────────────────────────────────
+\begin{titlepage}
+\centering
+
+\includegraphics[width=0.6\linewidth]{../../../../docs/images/logo-tecnocampus.png}
+
+\vspace{1.5cm}
+{\small Bachelor in Computer Engineering — Management and Information Systems}
+
+\vspace{0.5cm}
+{\small Introduction to Cybersecurity}
+
+\vspace{3cm}
+{\LARGE\bfseries Lab 1}\\[0.4cm]
+{\Large\bfseries Reconnaissance \& Enumeration}
+
+\vspace{1cm}
+{\large\color{labred} Student Assignment}
+
+\vspace{4cm}
+
+\begin{tabular}{ll}
+\textbf{Course}   & Introduction to Cybersecurity \\
+\textbf{Lab}      & 1 of 4 \\
+\textbf{Topic}    & Reconnaissance \& Enumeration \\
+\textbf{Duration} & 90--120 minutes \\
+\textbf{Difficulty} & Beginner \\
+\end{tabular}
+
+\vfill
+{\small TecnoCampus · GEISI · 2025--2026}
+
+\end{titlepage}
+
+% ── Learning Objectives ──────────────────────────────────────────────────────
+\section{Learning Objectives}
+
+After completing this lab you will be able to:
+
+\begin{itemize}[leftmargin=1.5em]
+  \item Perform basic active reconnaissance on a target host using standard tools
+  \item Identify exposed services and gather information from HTTP responses
+  \item Use discovered credentials to obtain shell access via SSH
+  \item Navigate a multi-hop network environment (firewall, router, target server)
+  \item Document findings in a structured penetration testing report
+\end{itemize}
+
+% ── Scenario ─────────────────────────────────────────────────────────────────
+\section{Scenario}
+
+You are a junior penetration tester hired to assess the perimeter of
+\textbf{PEBCAK Corp} — a fictional company whose name stands for
+\textit{Problem Exists Between Chair And Keyboard}.
+
+Your point of entry is the \textbf{Attacker} node in the lab environment.
+The target company exposes a public hostname: \texttt{lab1}.
+Your goal is to enumerate the target, find exposed information, and gain
+access to the internal server.
+
+\begin{mdframed}[backgroundcolor=labgray, linecolor=labred, linewidth=1pt]
+\textbf{Rules of engagement}
+\begin{itemize}[leftmargin=1.5em, topsep=2pt]
+  \item Only attack nodes within the lab environment
+  \item Do not modify pfSense firewall configuration
+  \item Document every step — commands run, output received, decisions made
+  \item If the lab breaks, notify your instructor (do not attempt to fix infrastructure)
+\end{itemize}
+\end{mdframed}
+
+% ── Topology ─────────────────────────────────────────────────────────────────
+\section{Network Topology}
+
+\begin{verbatim}
+  [ Attacker – Parrot OS ]
+          |
+  [ Firewall – pfSense ]   <-- entry point: lab1
+          |
+  [ Router – VyOS ]
+          |
+    ------+------
+    |           |
+[ Server ]   [ PC1 ]
+ (target)
+\end{verbatim}
+
+\begin{table}[H]
+\centering
+\begin{tabularx}{0.85\textwidth}{lXl}
+\toprule
+\textbf{Node} & \textbf{Role} & \textbf{Access} \\
+\midrule
+Attacker & Your machine (Parrot OS) & VNC console \\
+Firewall & Perimeter firewall (pfSense) & \textit{infrastructure — do not modify} \\
+Router   & Internal router (VyOS) & \textit{infrastructure — do not modify} \\
+Server   & Target web + SSH server & Via exploitation \\
+PC1      & Internal workstation & Discovered during lab \\
+\bottomrule
+\end{tabularx}
+\caption{Lab nodes overview}
+\end{table}
+
+\textbf{Entry point:} The hostname \texttt{lab1} resolves to the firewall's
+public IP. All inbound traffic goes through the firewall before reaching
+internal nodes.
+
+% ── Tasks ────────────────────────────────────────────────────────────────────
+\section{Tasks}
+
+Complete the following tasks in order. Document each step.
+
+\subsection{Task 1 — Web Reconnaissance}
+
+\begin{enumerate}[leftmargin=2em]
+  \item Open a browser on the Attacker node and navigate to \texttt{http://lab1}
+  \item Identify the company name displayed on the page
+  \item View the page source (\texttt{Ctrl+U} or \texttt{curl -s http://lab1})
+  \item Look for any hidden information or comments in the HTML
+\end{enumerate}
+
+\textit{Deliverable: What hint did you find in the page source?}
+
+\subsection{Task 2 — Service Discovery}
+
+\begin{enumerate}[leftmargin=2em]
+  \item Using the hint from Task 1, find an additional resource on the web server
+  \item What credentials are exposed at that resource?
+  \item What service do the credentials grant access to?
+\end{enumerate}
+
+\textit{Deliverable: Service type, host, username.}
+
+\subsection{Task 3 — Initial Access}
+
+\begin{enumerate}[leftmargin=2em]
+  \item Use the discovered credentials to connect to the target service
+  \item Confirm you have a shell on the target server
+  \item List the contents of the home directory
+\end{enumerate}
+
+\textit{Deliverable: What file did you find? Paste its contents.}
+
+\subsection{Task 4 — Lateral Discovery}
+
+\begin{enumerate}[leftmargin=2em]
+  \item Read the contents of the file found in Task 3 carefully
+  \item Identify any additional credentials or network hosts mentioned
+  \item Attempt to connect to any internal hosts referenced
+\end{enumerate}
+
+\textit{Deliverable: What internal host did you reach? What service did it run?}
+
+% ── Deliverables ─────────────────────────────────────────────────────────────
+\section{Deliverables}
+
+Submit a brief report (1--2 pages) covering:
+
+\begin{itemize}[leftmargin=1.5em]
+  \item \textbf{Reconnaissance summary:} what did you find and how
+  \item \textbf{Access path:} step-by-step from Attacker to each target
+  \item \textbf{Flags captured:} paste the exact flag string(s) found
+  \item \textbf{Reflection:} one thing you would do differently or improve as the sysadmin
+\end{itemize}
+
+% ── Hints ────────────────────────────────────────────────────────────────────
+\section{Hints}
+
+\begin{mdframed}[backgroundcolor=labgray, linecolor=labred, linewidth=0.5pt]
+\textbf{Stuck?} Hints are ordered by how much they reveal. Try each before moving to the next.
+
+\begin{enumerate}[leftmargin=2em, topsep=4pt]
+  \item Web servers often have more than one page. Think about what the company name suggests.
+  \item \texttt{curl} and your browser both let you read page source. Comments in HTML are
+        written between \texttt{<!--} and \texttt{-->}.
+  \item Once you have SSH credentials, the command is: \texttt{ssh user@hostname}
+  \item From a server inside a network, you can often reach other internal hosts directly.
+\end{enumerate}
+\end{mdframed}
+
+% ── Tools reference ──────────────────────────────────────────────────────────
+\section{Tools Reference}
+
+The following tools are available on the Attacker node:
+
+\begin{table}[H]
+\centering
+\begin{tabularx}{0.9\textwidth}{lX}
+\toprule
+\textbf{Tool} & \textbf{Use} \\
+\midrule
+\texttt{firefox} & Web browser for manual reconnaissance \\
+\texttt{curl} & Command-line HTTP client \\
+\texttt{ssh} & Secure Shell client \\
+\texttt{nmap} & Network scanner (for further exploration) \\
+\texttt{dig / nslookup} & DNS query tools \\
+\bottomrule
+\end{tabularx}
+\caption{Available tools on Attacker node}
+\end{table}
+
+\end{document}

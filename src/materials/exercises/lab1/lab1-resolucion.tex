@@ -1,0 +1,282 @@
+\documentclass[a4paper, 12pt]{article}
+
+\usepackage{fontspec}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage[english]{babel}
+\usepackage{geometry}
+\usepackage{setspace}
+\usepackage{titlesec}
+\usepackage{hyperref}
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{xcolor}
+\usepackage{mdframed}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{listings}
+
+\geometry{top=2.5cm, bottom=2.5cm, left=3cm, right=2.5cm}
+
+\setmainfont{OpenDyslexic}[
+    Path = /usr/share/fonts/opentype/opendyslexic/,
+    Extension = .otf,
+    UprightFont = *-Regular,
+    BoldFont = *-Bold,
+    ItalicFont = *-Italic,
+    BoldItalicFont = *-BoldItalic
+]
+\setmonofont{OpenDyslexicMono}[
+    Path = /usr/share/fonts/opentype/opendyslexic/,
+    Extension = .otf,
+    UprightFont = *-Regular
+]
+
+\definecolor{labred}{RGB}{180,30,30}
+\definecolor{labgray}{RGB}{245,245,245}
+\definecolor{termbg}{RGB}{30,30,30}
+\definecolor{termfg}{RGB}{220,220,220}
+\definecolor{flagcolor}{RGB}{0,120,0}
+
+\hypersetup{colorlinks=true, linkcolor=black, urlcolor=labred}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\textit{Lab 1 — Solution Guide}}
+\fancyhead[R]{\small\textit{\color{labred}INSTRUCTOR ONLY}}
+\fancyfoot[C]{\small\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt}
+
+\titleformat{\section}{\large\bfseries\color{labred}}{}{0em}{}[\titlerule]
+\titleformat{\subsection}{\normalsize\bfseries}{}{0em}{}
+
+\lstset{
+  basicstyle=\small\ttfamily\color{termfg},
+  backgroundcolor=\color{termbg},
+  frame=single,
+  framesep=4pt,
+  rulecolor=\color{termbg},
+  breaklines=true,
+  breakatwhitespace=false,
+  keepspaces=true,
+  columns=fullflexible,
+}
+
+\newcommand{\flag}[1]{%
+  \begin{mdframed}[backgroundcolor=flagcolor!10, linecolor=flagcolor, linewidth=1.5pt]
+  \textbf{\color{flagcolor}FLAG CAPTURED:} \texttt{#1}
+  \end{mdframed}
+}
+
+\begin{document}
+
+% ── Cover ────────────────────────────────────────────────────────────────────
+\begin{titlepage}
+\centering
+
+\includegraphics[width=0.6\linewidth]{../../../../docs/images/logo-tecnocampus.png}
+
+\vspace{1.5cm}
+{\small Bachelor in Computer Engineering — Management and Information Systems}
+
+\vspace{0.5cm}
+{\small Introduction to Cybersecurity}
+
+\vspace{3cm}
+{\LARGE\bfseries Lab 1}\\[0.4cm]
+{\Large\bfseries Reconnaissance \& Enumeration}
+
+\vspace{1cm}
+{\large\color{labred}\bfseries Solution Guide — Instructor Only}
+
+\vspace{3cm}
+
+\begin{mdframed}[backgroundcolor=labred!10, linecolor=labred, linewidth=1.5pt]
+\centering
+\textbf{Do not distribute to students.}\\
+This document contains the complete solution including flags and credentials.
+\end{mdframed}
+
+\vspace{1.5cm}
+
+\begin{tabular}{ll}
+\textbf{Course}   & Introduction to Cybersecurity \\
+\textbf{Lab}      & 1 of 4 \\
+\textbf{Topic}    & Reconnaissance \& Enumeration \\
+\textbf{Flag}     & \texttt{FLAG\{p3bc4k\_s3rv3r\_0wn3d\}} \\
+\end{tabular}
+
+\vfill
+{\small TecnoCampus · GEISI · 2025--2026}
+
+\end{titlepage}
+
+% ── Topology reminder ────────────────────────────────────────────────────────
+\section{Topology Reference}
+
+\begin{table}[H]
+\centering
+\begin{tabularx}{\textwidth}{llll}
+\toprule
+\textbf{Node} & \textbf{Hostname} & \textbf{Internal IP} & \textbf{OS} \\
+\midrule
+Attacker & --- & 192.168.0.x (DHCP) & Parrot OS \\
+Firewall & lab1 & 192.168.0.29 (WAN) & pfSense CE 2.7.2 \\
+Router   & --- & 172.16.0.2 / 192.168.20.1 & VyOS \\
+Server   & pebcak & 192.168.20.50 & Ubuntu Server 24.04 \\
+PC1      & --- & 192.168.10.50 & Ubuntu Desktop 24.04 \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+Traffic flow: \texttt{Attacker -> pfSense WAN (NAT) -> VyOS -> Server}
+
+% ── Step 1 ───────────────────────────────────────────────────────────────────
+\section{Step 1 — Landing Page \& Source Inspection}
+
+Open Firefox on the Attacker and navigate to \texttt{http://lab1}.
+
+\begin{lstlisting}
+$ curl -s http://lab1
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"><title>PEBCAK Corp</title></head>
+<body>
+  <h1>PEBCAK CORP</h1>
+  <p class="subtitle">Problem Exists Between Chair And Keyboard</p>
+  <!-- sometimes simplify and search -->
+</body>
+</html>
+\end{lstlisting}
+
+\textbf{Finding:} HTML comment \texttt{<!-- sometimes simplify and search -->}
+
+\textbf{Interpretation:} "simplify and search" suggests looking for a shorter or
+simpler path. The company name is PEBCAK — try \texttt{/pebcak} or \texttt{/pebcak.html}.
+
+% ── Step 2 ───────────────────────────────────────────────────────────────────
+\section{Step 2 — Hidden Page Discovery}
+
+\begin{lstlisting}
+$ curl -s http://lab1/pebcak.html
+<!DOCTYPE html>
+<html><head><title>PEBCAK Corp — Internal</title></head>
+<body>
+  <h2>Maintenance Access</h2>
+  <table>
+    <tr><td>Protocol</td><td>SSH</td></tr>
+    <tr><td>Host</td><td>lab1</td></tr>
+    <tr><td>User</td><td>blackmesa</td></tr>
+    <tr><td>Password</td><td>!Bl4kM3s$</td></tr>
+  </table>
+</body>
+</html>
+\end{lstlisting}
+
+\textbf{Finding:} SSH credentials exposed on an unauthenticated internal page.
+
+\begin{table}[H]
+\centering
+\begin{tabular}{ll}
+\toprule
+\textbf{Field} & \textbf{Value} \\
+\midrule
+Protocol & SSH \\
+Host     & lab1 \\
+User     & blackmesa \\
+Password & !Bl4kM3s\$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+% ── Step 3 ───────────────────────────────────────────────────────────────────
+\section{Step 3 — SSH Initial Access}
+
+\begin{lstlisting}
+$ ssh blackmesa@lab1
+blackmesa@lab1's password: !Bl4kM3s$
+
+blackmesa@pebcak:~$ id
+uid=1001(blackmesa) groups=1001(blackmesa),27(sudo)
+
+blackmesa@pebcak:~$ ls ~
+flag.txt
+
+blackmesa@pebcak:~$ cat ~/flag.txt
+FLAG{p3bc4k_s3rv3r_0wn3d}
+
+-- PEBCAK Corp Internal Credentials --
+Firewall management access:
+  Host     : 172.16.0.1
+  Protocol : SSH / Web UI
+  User     : admin
+  Password : pfsense
+\end{lstlisting}
+
+\flag{FLAG\{p3bc4k\_s3rv3r\_0wn3d\}}
+
+\textbf{Note for grading:} The student lands on the \texttt{pebcak} server
+(Ubuntu, IP 192.168.20.50) via pfSense NAT on TCP port 22. The flag file
+also reveals the internal firewall credentials — this is intentional and
+leads to Step 4.
+
+% ── Step 4 ───────────────────────────────────────────────────────────────────
+\section{Step 4 — Lateral Movement to Firewall}
+
+From the Server, the student uses the credentials found in \texttt{flag.txt}
+to access the firewall's management interface directly on the internal LAN:
+
+\begin{lstlisting}
+blackmesa@pebcak:~$ ssh admin@172.16.0.1
+admin@172.16.0.1's password: pfsense
+
+[2.7.2-RELEASE][admin@pfSense.localdomain]/root:
+\end{lstlisting}
+
+\textbf{Finding:} pfSense shell access from the compromised server.
+
+The route exists because the VyOS router forwards traffic between the
+Servers LAN (192.168.20.0/24) and the pfSense LAN interface (172.16.0.1/30).
+
+% ── Grading guide ────────────────────────────────────────────────────────────
+\section{Grading Guide}
+
+\begin{table}[H]
+\centering
+\begin{tabularx}{\textwidth}{Xlc}
+\toprule
+\textbf{Criterion} & \textbf{Evidence expected} & \textbf{Points} \\
+\midrule
+Found HTML comment & Screenshot or copy of page source & 20 \\
+Discovered \texttt{/pebcak.html} & URL + screenshot or curl output & 20 \\
+SSH access to Server & Terminal screenshot showing \texttt{pebcak} prompt & 20 \\
+Flag captured & Exact string \texttt{FLAG\{p3bc4k\_s3rv3r\_0wn3d\}} & 20 \\
+Reached internal firewall & pfSense prompt screenshot (bonus) & 10 \\
+Report quality & Clear, structured, commands documented & 10 \\
+\midrule
+\textbf{Total} & & \textbf{100} \\
+\bottomrule
+\end{tabularx}
+\caption{Grading rubric for Lab 1}
+\end{table}
+
+% ── Common mistakes ──────────────────────────────────────────────────────────
+\section{Common Student Mistakes}
+
+\begin{itemize}[leftmargin=1.5em]
+  \item \textbf{Using IP instead of hostname:} \texttt{ssh blackmesa@192.168.0.29}
+        works but students should understand the DNS resolution chain.
+  \item \textbf{Wrong password quoting:} The \texttt{!} in \texttt{!Bl4kM3s\$}
+        is special in bash. It works fine when typed interactively; issues only
+        arise when scripting.
+  \item \textbf{Modifying pfSense:} Some students attempt to explore the pfSense
+        web UI. Remind them the scope is the Server, not the infrastructure.
+  \item \textbf{Not reading flag.txt fully:} The second half of the file
+        (pfSense credentials) is needed for Step 4. Many students stop at the flag.
+\end{itemize}
+
+\end{document}
