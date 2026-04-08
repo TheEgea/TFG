@@ -62,6 +62,14 @@ extra_css:
 
 plugins:
   - search
+  - with-pdf:
+      author: Eloi Egea Rada
+      copyright: CC BY-NC-SA 4.0 — TecnoCampus 2025-2026
+      cover: true
+      cover_title: Ethical Pentesting with EVE-NG
+      cover_subtitle: Bachelor's Thesis Technical Annex
+      output_path: ../pdf/lab-documentation.pdf
+
 
 markdown_extensions:
   - abbr
