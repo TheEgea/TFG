@@ -1,113 +1,52 @@
 :root {
     --md-primary-fg-color: #DC2626;
-    --md-primary-fg-color--light: #b94141; 
-  --md-primary-fg-color--dark: #7c0f0f;  
+    --md-primary-fg-color--light: #b94141;
+    --md-primary-fg-color--dark: #7c0f0f;
 }
 
-@media (prefers-color-scheme: dark){
+@media (prefers-color-scheme: dark) {
     :root {
         --md-primary-fg-color: #000000;
-        --md-primary-fg-color--light: #ffffff; 
-        --md-primary-fg-color--dark: #7c0f0f;  
+        --md-primary-fg-color--light: #ffffff;
+        --md-primary-fg-color--dark: #7c0f0f;
     }
 }
 
-body{
+body {
     --md-footer-bg-color: #1F2937;
 }
-/* ── PDF / Print styles ──────────────────────────────────────────────────── */
+
+/* ── PDF font + color overrides (WeasyPrint) ─────────────────────────────── */
 @font-face {
     font-family: 'OpenDyslexic';
-    src: url('/usr/share/fonts/opentype/opendyslexic/OpenDyslexic-Regular.otf');
+    src: url('file:///usr/share/fonts/opentype/opendyslexic/OpenDyslexic-Regular.otf');
     font-weight: normal;
 }
 @font-face {
     font-family: 'OpenDyslexic';
-    src: url('/usr/share/fonts/opentype/opendyslexic/OpenDyslexic-Bold.otf');
+    src: url('file:///usr/share/fonts/opentype/opendyslexic/OpenDyslexic-Bold.otf');
     font-weight: bold;
 }
 @font-face {
     font-family: 'OpenDyslexicMono';
-    src: url('/usr/share/fonts/opentype/opendyslexic/OpenDyslexicMono-Regular.otf');
+    src: url('file:///usr/share/fonts/opentype/opendyslexic/OpenDyslexicMono-Regular.otf');
 }
 
 @media print {
-    body, .md-content {
-        font-family: 'OpenDyslexic', sans-serif !important;
-        font-size: 11pt;
-        color: #1a1a1a;
-        line-height: 1.6;
-    }
+    * { font-family: 'OpenDyslexic', sans-serif !important; }
 
-    h1, h2, h3, h4 {
-        font-family: 'OpenDyslexic', sans-serif !important;
-        color: #B41E1E;
-        page-break-after: avoid;
-    }
-
-    h1 {
-        font-size: 18pt;
-        border-bottom: 1.5pt solid #B41E1E;
-        padding-bottom: 4pt;
-        margin-top: 24pt;
-    }
-
-    h2 {
-        font-size: 14pt;
-        margin-top: 18pt;
-    }
-
-    h3 {
-        font-size: 12pt;
-        margin-top: 12pt;
-    }
-
-    pre, code {
+    pre, code, kbd, samp {
         font-family: 'OpenDyslexicMono', monospace !important;
         font-size: 9pt;
-        background: #1e1e1e;
-        color: #dcdcdc;
-        padding: 8pt;
-        border-radius: 3pt;
-        page-break-inside: avoid;
     }
 
-    table {
-        font-size: 10pt;
-        border-collapse: collapse;
-        width: 100%;
-        page-break-inside: avoid;
-        margin: 12pt 0;
+    h1, h2, h3, h4, h5, h6 {
+        color: #B41E1E !important;
     }
 
-    th {
-        background: #B41E1E;
-        color: white;
-        padding: 5pt 8pt;
-        text-align: left;
-    }
+    h1 { border-bottom: 1.5pt solid #B41E1E; padding-bottom: 4pt; }
 
-    td {
-        padding: 4pt 8pt;
-        border-bottom: 0.5pt solid #ddd;
-    }
+    a { color: #B41E1E !important; }
 
-    tr:nth-child(even) td {
-        background: #f9f9f9;
-    }
-
-    .admonition {
-        border-left: 3pt solid #B41E1E;
-        padding: 8pt 12pt;
-        margin: 12pt 0;
-        background: #fdf5f5;
-        page-break-inside: avoid;
-    }
-
-    a { color: #B41E1E; text-decoration: none; }
-
-    .md-sidebar, .md-header, .md-footer,
-    .md-tabs, nav, .headerlink { display: none !important; }
-
-    .md-content { margin: 0 !important; max-width: 100% !important; }
+    th { background-color: #B41E1E !important; color: white !important; }
 }

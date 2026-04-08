@@ -1,0 +1,203 @@
+% Pandoc LaTeX template – TecnoCampus / TFG Annexes
+% Style matches memory-main.tex (OpenDyslexic, #B41E1E headings, same margins)
+\documentclass[a4paper, oneside, 11pt]{report}
+
+% ── Typography ────────────────────────────────────────────────────────────────
+\usepackage{fontspec}
+\usepackage[english]{babel}
+\usepackage{csquotes}
+
+\setmainfont{OpenDyslexic}[
+    Path = /usr/share/fonts/opentype/opendyslexic/,
+    Extension = .otf,
+    UprightFont = *-Regular,
+    BoldFont = *-Bold,
+    ItalicFont = *-Italic,
+    BoldItalicFont = *-BoldItalic
+]
+\setsansfont{OpenDyslexicAlta}[
+    Path = /usr/share/fonts/opentype/opendyslexic/,
+    Extension = .otf,
+    UprightFont = *-Regular,
+    BoldFont = *-Bold
+]
+\setmonofont{OpenDyslexicMono}[
+    Path = /usr/share/fonts/opentype/opendyslexic/,
+    Extension = .otf,
+    UprightFont = *-Regular
+]
+
+% ── Layout ────────────────────────────────────────────────────────────────────
+\usepackage{geometry}
+\geometry{top=3cm, bottom=2.54cm, left=3cm, right=2.54cm}
+
+\usepackage{setspace}
+\onehalfspacing
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{8pt}
+
+% ── Colors ────────────────────────────────────────────────────────────────────
+\usepackage[table]{xcolor}
+\definecolor{tfgred}{HTML}{B41E1E}
+\definecolor{codebg}{HTML}{1E1E1E}
+\definecolor{codefg}{HTML}{DCDCDC}
+\definecolor{admonbg}{HTML}{FDF5F5}
+\definecolor{admonborder}{HTML}{B41E1E}
+\definecolor{warningbg}{HTML}{FFFBF0}
+\definecolor{warningborder}{HTML}{CC7700}
+\definecolor{notebg}{HTML}{F0F8FF}
+\definecolor{noteborder}{HTML}{2255AA}
+\definecolor{dangerbg}{HTML}{FFF5F5}
+\definecolor{dangerborder}{HTML}{CC0000}
+\definecolor{tipbg}{HTML}{F0FFF0}
+\definecolor{tipborder}{HTML}{228822}
+
+% ── Headers / Footers ─────────────────────────────────────────────────────────
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\textit{$title$}}
+\fancyhead[R]{\small\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+\setlength{\headheight}{14.5pt}
+
+% ── Headings ──────────────────────────────────────────────────────────────────
+\usepackage{titlesec}
+\titleformat{\chapter}[block]
+    {\normalfont\fontsize{18pt}{22pt}\bfseries\color{tfgred}}
+    {\thechapter}{1em}{}[\vspace{2pt}{\color{tfgred}\titlerule[1.5pt]}]
+\titlespacing*{\chapter}{0pt}{0pt}{18pt}
+
+\titleformat{\section}[block]
+    {\normalfont\fontsize{14pt}{18pt}\bfseries\color{tfgred}}
+    {\thesection}{1em}{}
+\titlespacing*{\section}{0pt}{14pt}{6pt}
+
+\titleformat{\subsection}[block]
+    {\normalfont\fontsize{12pt}{16pt}\bfseries\color{tfgred}}
+    {\thesubsection}{1em}{}
+\titlespacing*{\subsection}{0pt}{10pt}{4pt}
+
+\titleformat{\subsubsection}[block]
+    {\normalfont\normalsize\bfseries}
+    {\thesubsubsection}{1em}{}
+
+% ── Tables ────────────────────────────────────────────────────────────────────
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{etoolbox}
+\usepackage{calc}
+% \real{n} expands to the number n, used by Pandoc table column specs
+\providecommand{\real}[1]{#1}
+% Fix longtable spacing
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+
+% ── Code blocks ───────────────────────────────────────────────────────────────
+\usepackage{fancyvrb}
+\usepackage{framed}
+
+% Pandoc uses \passthrough for inline code
+\newcommand{\passthrough}[1]{\texttt{#1}}
+
+% Pandoc Shaded/Highlighting
+$if(highlighting-macros)$
+$highlighting-macros$
+$endif$
+
+% ── Admonitions (from Lua filter) ─────────────────────────────────────────────
+\usepackage{mdframed}
+
+\newenvironment{admonitionbox}[3]{%
+  % #1 = border color, #2 = bg color, #3 = label text
+  \begin{mdframed}[
+    linecolor=#1,
+    backgroundcolor=#2,
+    linewidth=3pt,
+    topline=false,
+    rightline=false,
+    bottomline=false,
+    innerleftmargin=10pt,
+    innerrightmargin=8pt,
+    innertopmargin=6pt,
+    innerbottommargin=6pt,
+    skipabove=8pt,
+    skipbelow=8pt
+  ]
+  \textbf{\color{#1}#3}\par\smallskip
+}{%
+  \end{mdframed}
+}
+
+\newenvironment{admnote}[1]{\begin{admonitionbox}{noteborder}{notebg}{Note: #1}}{\end{admonitionbox}}
+\newenvironment{adminfo}[1]{\begin{admonitionbox}{noteborder}{notebg}{Info: #1}}{\end{admonitionbox}}
+\newenvironment{admwarning}[1]{\begin{admonitionbox}{warningborder}{warningbg}{Warning: #1}}{\end{admonitionbox}}
+\newenvironment{admdanger}[1]{\begin{admonitionbox}{dangerborder}{dangerbg}{Danger: #1}}{\end{admonitionbox}}
+\newenvironment{admtip}[1]{\begin{admonitionbox}{tipborder}{tipbg}{Tip: #1}}{\end{admonitionbox}}
+\newenvironment{admsuccess}[1]{\begin{admonitionbox}{tipborder}{tipbg}{Success: #1}}{\end{admonitionbox}}
+\newenvironment{admexample}[1]{\begin{admonitionbox}{noteborder}{notebg}{Example: #1}}{\end{admonitionbox}}
+\newenvironment{admabstract}[1]{\begin{admonitionbox}{noteborder}{notebg}{Abstract: #1}}{\end{admonitionbox}}
+\newenvironment{admquestion}[1]{\begin{admonitionbox}{noteborder}{notebg}{Question: #1}}{\end{admonitionbox}}
+\newenvironment{admfailure}[1]{\begin{admonitionbox}{dangerborder}{dangerbg}{Failure: #1}}{\end{admonitionbox}}
+\newenvironment{admbug}[1]{\begin{admonitionbox}{dangerborder}{dangerbg}{Bug: #1}}{\end{admonitionbox}}
+
+% ── Links ─────────────────────────────────────────────────────────────────────
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=tfgred,
+    urlcolor=tfgred,
+    citecolor=tfgred,
+    pdftitle={$title$},
+    pdfauthor={$author$}
+}
+
+% ── Graphics ──────────────────────────────────────────────────────────────────
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\makeatother
+\setkeys{Gin}{width=\maxwidth,keepaspectratio}
+
+% ── Misc ──────────────────────────────────────────────────────────────────────
+\usepackage{microtype}
+\usepackage{enumitem}
+\setlist{itemsep=2pt, topsep=4pt}
+
+% ── Pandoc internal macros ────────────────────────────────────────────────────
+\providecommand{\tightlist}{\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+
+% ─────────────────────────────────────────────────────────────────────────────
+\begin{document}
+
+% ── Cover page ────────────────────────────────────────────────────────────────
+\begin{titlepage}
+\centering
+\vspace*{3cm}
+{\fontsize{11pt}{14pt}\selectfont Bachelor in Computer Engineering --- GEISI\par}
+{\fontsize{10pt}{13pt}\selectfont Introduction to Cybersecurity \textperiodcentered{} TecnoCampus 2025--2026\par}
+\vspace{3cm}
+{\fontsize{22pt}{26pt}\bfseries\color{tfgred} $title$\par}
+\vspace{0.5cm}
+{\fontsize{13pt}{16pt}\color{tfgred} $subtitle$\par}
+\vspace{1.5cm}
+{\color{tfgred}\rule{0.5\textwidth}{1.5pt}\par}
+\vspace{1.5cm}
+{\fontsize{11pt}{14pt}\selectfont
+  \textbf{Author:} $author$\par\vspace{4pt}
+  \textbf{Supervisor:} Pere Vidiella i Catalan\par\vspace{4pt}
+  \textbf{License:} CC BY-NC-SA 4.0
+\par}
+\vfill
+{\small\color{gray} https://theegea.github.io/TFG}
+\end{titlepage}
+
+% ── Table of contents ─────────────────────────────────────────────────────────
+\tableofcontents
+\newpage
+
+% ── Body ──────────────────────────────────────────────────────────────────────
+$body$
+
+\end{document}
