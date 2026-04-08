@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+  @font-face {
+    font-family: 'OpenDyslexic';
+    src: url('/usr/share/fonts/opentype/opendyslexic/OpenDyslexic-Regular.otf');
+  }
+  @font-face {
+    font-family: 'OpenDyslexic';
+    src: url('/usr/share/fonts/opentype/opendyslexic/OpenDyslexic-Bold.otf');
+    font-weight: bold;
+  }
+  body {
+    font-family: 'OpenDyslexic', sans-serif;
+    margin: 0; padding: 60px 80px;
+    height: calc(100vh - 120px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    background: #ffffff;
+  }
+  .institution { font-size: 12pt; color: #555; margin-bottom: 4px; }
+  .course      { font-size: 11pt; color: #777; margin-bottom: 50px; }
+  .title       { font-size: 24pt; font-weight: bold; color: #1a1a1a; margin-bottom: 10px; }
+  .subtitle    { font-size: 13pt; color: #B41E1E; margin-bottom: 50px; }
+  .rule        { width: 55%; height: 1.5px; background: #B41E1E; margin: 0 auto 36px; }
+  .meta        { font-size: 10pt; color: #555; line-height: 2.2; }
+  .meta strong { color: #1a1a1a; }
+  .footer      { margin-top: 60px; font-size: 9pt; color: #aaa; }
+</style>
+</head>
+<body>
+  <div class="institution">Bachelor in Computer Engineering — GEISI</div>
+  <div class="course">Introduction to Cybersecurity · TecnoCampus 2025–2026</div>
+  <div class="title">{{ cover_title }}</div>
+  <div class="subtitle">{{ cover_subtitle }}</div>
+  <div class="rule"></div>
+  <div class="meta">
+    <strong>Author:</strong> {{ author }}<br>
+    <strong>Supervisor:</strong> Pere Vidiella i Catalan<br>
+    <strong>License:</strong> CC BY-NC-SA 4.0
+  </div>
+  <div class="footer">https://theegea.github.io/TFG</div>
+</body>
+</html>

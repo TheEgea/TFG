@@ -15,3 +15,99 @@
 body{
     --md-footer-bg-color: #1F2937;
 }
+/* ── PDF / Print styles ──────────────────────────────────────────────────── */
+@font-face {
+    font-family: 'OpenDyslexic';
+    src: url('/usr/share/fonts/opentype/opendyslexic/OpenDyslexic-Regular.otf');
+    font-weight: normal;
+}
+@font-face {
+    font-family: 'OpenDyslexic';
+    src: url('/usr/share/fonts/opentype/opendyslexic/OpenDyslexic-Bold.otf');
+    font-weight: bold;
+}
+@font-face {
+    font-family: 'OpenDyslexicMono';
+    src: url('/usr/share/fonts/opentype/opendyslexic/OpenDyslexicMono-Regular.otf');
+}
+
+@media print {
+    body, .md-content {
+        font-family: 'OpenDyslexic', sans-serif !important;
+        font-size: 11pt;
+        color: #1a1a1a;
+        line-height: 1.6;
+    }
+
+    h1, h2, h3, h4 {
+        font-family: 'OpenDyslexic', sans-serif !important;
+        color: #B41E1E;
+        page-break-after: avoid;
+    }
+
+    h1 {
+        font-size: 18pt;
+        border-bottom: 1.5pt solid #B41E1E;
+        padding-bottom: 4pt;
+        margin-top: 24pt;
+    }
+
+    h2 {
+        font-size: 14pt;
+        margin-top: 18pt;
+    }
+
+    h3 {
+        font-size: 12pt;
+        margin-top: 12pt;
+    }
+
+    pre, code {
+        font-family: 'OpenDyslexicMono', monospace !important;
+        font-size: 9pt;
+        background: #1e1e1e;
+        color: #dcdcdc;
+        padding: 8pt;
+        border-radius: 3pt;
+        page-break-inside: avoid;
+    }
+
+    table {
+        font-size: 10pt;
+        border-collapse: collapse;
+        width: 100%;
+        page-break-inside: avoid;
+        margin: 12pt 0;
+    }
+
+    th {
+        background: #B41E1E;
+        color: white;
+        padding: 5pt 8pt;
+        text-align: left;
+    }
+
+    td {
+        padding: 4pt 8pt;
+        border-bottom: 0.5pt solid #ddd;
+    }
+
+    tr:nth-child(even) td {
+        background: #f9f9f9;
+    }
+
+    .admonition {
+        border-left: 3pt solid #B41E1E;
+        padding: 8pt 12pt;
+        margin: 12pt 0;
+        background: #fdf5f5;
+        page-break-inside: avoid;
+    }
+
+    a { color: #B41E1E; text-decoration: none; }
+
+    .md-sidebar, .md-header, .md-footer,
+    .md-tabs, nav, .headerlink { display: none !important; }
+
+    .md-content { margin: 0 !important; max-width: 100% !important; }
+}
