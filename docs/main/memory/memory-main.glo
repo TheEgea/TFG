@@ -1,0 +1,42 @@
+\glossaryentry{Pentesting?\glossentry{pentesting}|setentrycounter[]{page}"\glsnumberformat}{III}
+\glossaryentry{Ethical Hacking?\glossentry{ethical_hacking}|setentrycounter[]{page}"\glsnumberformat}{III}
+\glossaryentry{Vulnerability?\glossentry{vulnerability}|setentrycounter[]{page}"\glsnumberformat}{III}
+\glossaryentry{Exploit?\glossentry{exploit}|setentrycounter[]{page}"\glsnumberformat}{III}
+\glossaryentry{Payload?\glossentry{payload}|setentrycounter[]{page}"\glsnumberformat}{III}
+\glossaryentry{Vulnerability Assessment?\glossentry{vulnerability_assessment}|setentrycounter[]{page}"\glsnumberformat}{III}
+\glossaryentry{CVSS (Common Vulnerability Scoring System)?\glossentry{cvss}|setentrycounter[]{page}"\glsnumberformat}{III}
+\glossaryentry{Reconnaissance?\glossentry{reconnaissance}|setentrycounter[]{page}"\glsnumberformat}{III}
+\glossaryentry{Enumeration?\glossentry{enumeration}|setentrycounter[]{page}"\glsnumberformat}{III}
+\glossaryentry{Network Scanning?\glossentry{network_scanning}|setentrycounter[]{page}"\glsnumberformat}{III}
+\glossaryentry{CTF (Capture The Flag)?\glossentry{ctf}|setentrycounter[]{page}"\glsnumberformat}{III}
+\glossaryentry{Network Topology?\glossentry{network_topology}|setentrycounter[]{page}"\glsnumberformat}{III}
+\glossaryentry{DNS (Domain Name System)?\glossentry{dns}|setentrycounter[]{page}"\glsnumberformat}{III}
+\glossaryentry{NAT (Network Address Translation)?\glossentry{nat}|setentrycounter[]{page}"\glsnumberformat}{III}
+\glossaryentry{DMZ (Demilitarized Zone)?\glossentry{dmz}|setentrycounter[]{page}"\glsnumberformat}{III}
+\glossaryentry{SSH (Secure Shell)?\glossentry{ssh}|setentrycounter[]{page}"\glsnumberformat}{III}
+\glossaryentry{OWASP?\glossentry{owasp}|setentrycounter[]{page}"\glsnumberformat}{III}
+\glossaryentry{SQL Injection?\glossentry{sql_injection}|setentrycounter[]{page}"\glsnumberformat}{III}
+\glossaryentry{Cross-Site Scripting (XSS)?\glossentry{cross_site_scripting}|setentrycounter[]{page}"\glsnumberformat}{III}
+\glossaryentry{Privilege Escalation?\glossentry{privilege_escalation}|setentrycounter[]{page}"\glsnumberformat}{III}
+\glossaryentry{Local Privilege Escalation?\glossentry{local_privilege_escalation}|setentrycounter[]{page}"\glsnumberformat}{III}
+\glossaryentry{Root Access?\glossentry{root_access}|setentrycounter[]{page}"\glsnumberformat}{III}
+\glossaryentry{EVE-NG?\glossentry{eve_ng}|setentrycounter[]{page}"\glsnumberformat}{III}
+\glossaryentry{Proxmox VE?\glossentry{proxmox}|setentrycounter[]{page}"\glsnumberformat}{III}
+\glossaryentry{Virtual Machine?\glossentry{virtual_machine}|setentrycounter[]{page}"\glsnumberformat}{III}
+\glossaryentry{HomeLab?\glossentry{homelab}|setentrycounter[]{page}"\glsnumberformat}{III}
+\glossaryentry{Lab Topology?\glossentry{lab_topology}|setentrycounter[]{page}"\glsnumberformat}{III}
+\glossaryentry{Parrot OS?\glossentry{parrot_os}|setentrycounter[]{page}"\glsnumberformat}{III}
+\glossaryentry{Kali Linux?\glossentry{kali}|setentrycounter[]{page}"\glsnumberformat}{III}
+\glossaryentry{pfSense?\glossentry{pfsense}|setentrycounter[]{page}"\glsnumberformat}{III}
+\glossaryentry{VyOS?\glossentry{vyos}|setentrycounter[]{page}"\glsnumberformat}{III}
+\glossaryentry{nginx?\glossentry{nginx}|setentrycounter[]{page}"\glsnumberformat}{III}
+\glossaryentry{Nmap?\glossentry{nmap}|setentrycounter[]{page}"\glsnumberformat}{III}
+\glossaryentry{Metasploit Framework?\glossentry{metasploit}|setentrycounter[]{page}"\glsnumberformat}{III}
+\glossaryentry{Wireshark?\glossentry{wireshark}|setentrycounter[]{page}"\glsnumberformat}{III}
+\glossaryentry{Burp Suite?\glossentry{burp_suite}|setentrycounter[]{page}"\glsnumberformat}{III}
+\glossaryentry{OWASP ZAP?\glossentry{owasp_zap}|setentrycounter[]{page}"\glsnumberformat}{III}
+\glossaryentry{CIS Critical Controls?\glossentry{cis_controls}|setentrycounter[]{page}"\glsnumberformat}{III}
+\glossaryentry{NIST Cybersecurity Framework?\glossentry{nist_framework}|setentrycounter[]{page}"\glsnumberformat}{III}
+\glossaryentry{API REST?\glossentry{api_rest}|setentrycounter[]{page}"\glsnumberformat}{III}
+\glossaryentry{Packet Capture?\glossentry{packet_capture}|setentrycounter[]{page}"\glsnumberformat}{III}
+\glossaryentry{TFG (Bachelor's Thesis)?\glossentry{tfg}|setentrycounter[]{page}"\glsnumberformat}{III}

@@ -64,7 +64,7 @@ DISK SIZE DEFAULTS (can be overridden at runtime)
   desktop/mint      → 25 GB
   tinycore, slax    → 2-4 GB
   other             → 10 GB (fallback)
-"""
+
 Author: Eloi Egea (with Perplexity AI enhancements)
 TFG: Pentesting Environments in Virtualized Infrastructure
 Version: 1.0 - Production Ready

