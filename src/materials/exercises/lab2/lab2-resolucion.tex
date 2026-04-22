@@ -1,0 +1,67 @@
+\documentclass[a4paper, 12pt]{article}
+
+\usepackage{fontspec}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage[english]{babel}
+\usepackage{geometry}
+\usepackage{setspace}
+\usepackage{titlesec}
+\usepackage{hyperref}
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{xcolor}
+\usepackage{mdframed}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{listings}
+
+\geometry{top=2.5cm, bottom=2.5cm, left=3cm, right=2.5cm}
+
+\setmainfont{OpenDyslexic}[
+    Path = /usr/share/fonts/opentype/opendyslexic/,
+    Extension = .otf,
+    UprightFont = *-Regular,
+    BoldFont = *-Bold,
+    ItalicFont = *-Italic,
+    BoldItalicFont = *-BoldItalic
+]
+\setmonofont{OpenDyslexicMono}[
+    Path = /usr/share/fonts/opentype/opendyslexic/,
+    Extension = .otf,
+    UprightFont = *-Regular
+]
+
+\definecolor{labred}{RGB}{180,30,30}
+\definecolor{labgray}{RGB}{245,245,245}
+\definecolor{termbg}{RGB}{30,30,30}
+\definecolor{termfg}{RGB}{220,220,220}
+\definecolor{flagcolor}{RGB}{0,120,0}
+
+\hypersetup{colorlinks=true, linkcolor=black, urlcolor=labred}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\textit{Lab 2 -- Solution Guide}}
+\fancyhead[R]{\small\textit{\color{labred}INSTRUCTOR ONLY}}
+\fancyfoot[C]{\small\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt}
+
+\titleformat{\section}{\large\bfseries\color{labred}}{}{0em}{}[\titlerule]
+\titleformat{\subsection}{\normalsize\bfseries}{}{0em}{}
+
+\lstset{
+  basicstyle=\small\ttfamily\color{termfg},
+  backgroundcolor=\color{termbg},
+  frame=single,
+  framesep=4pt,
+  rulecolor=\color{termbg},
+  breaklines=true,
+  breakatwhitespace=false,
+  keepspaces=true,
+  columns=fullflexible,
+}

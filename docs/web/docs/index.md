@@ -34,6 +34,6 @@ cd TFG
 
 ## Instalation Methods
 
-> - *[Official documentation](https://www.eve-ng.net/index.php/documentation/professional-cookbook/)*
+> - *[Official documentation](https://www.eve-ng.net/index.php/documentation/community-cookbook/)*
 
 > - *[Install ISO's in proxmox](guides/eve_ng_install_proxmox.md)*

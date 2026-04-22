@@ -1,0 +1,278 @@
+\documentclass[a4paper, 12pt]{article}
+
+\usepackage{fontspec}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage[english]{babel}
+\usepackage{geometry}
+\usepackage{setspace}
+\usepackage{titlesec}
+\usepackage{hyperref}
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{xcolor}
+\usepackage{mdframed}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+
+\geometry{top=2.5cm, bottom=2.5cm, left=3cm, right=2.5cm}
+
+\setmainfont{OpenDyslexic}[
+    Path = /usr/share/fonts/opentype/opendyslexic/,
+    Extension = .otf,
+    UprightFont = *-Regular,
+    BoldFont = *-Bold,
+    ItalicFont = *-Italic,
+    BoldItalicFont = *-BoldItalic
+]
+\setmonofont{OpenDyslexicMono}[
+    Path = /usr/share/fonts/opentype/opendyslexic/,
+    Extension = .otf,
+    UprightFont = *-Regular
+]
+
+\definecolor{labred}{RGB}{180,30,30}
+\definecolor{labgray}{RGB}{245,245,245}
+
+\hypersetup{colorlinks=true, linkcolor=black, urlcolor=labred}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\textit{Lab 2 -- Web Application Vulnerabilities}}
+\fancyhead[R]{\small\textit{Introduction to Cybersecurity}}
+\fancyfoot[C]{\small\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt}
+
+\titleformat{\section}{\large\bfseries\color{labred}}{}{0em}{}[\titlerule]
+\titleformat{\subsection}{\normalsize\bfseries}{}{0em}{}
+
+\begin{document}
+
+% ---- Cover ------------------------------------------------------------------
+\begin{titlepage}
+\centering
+
+\includegraphics[width=0.6\linewidth]{../../../../docs/images/logo-tecnocampus.png}
+
+\vspace{1.5cm}
+{\small Bachelor in Computer Engineering -- Management and Information Systems}
+
+\vspace{0.5cm}
+{\small Introduction to Cybersecurity}
+
+\vspace{3cm}
+{\LARGE\bfseries Lab 2}\\[0.4cm]
+{\Large\bfseries Web Application Vulnerabilities}
+
+\vspace{1cm}
+{\large\color{labred} Student Assignment}
+
+\vspace{4cm}
+\begin{tabular}{ll}
+\textbf{Course}     & Introduction to Cybersecurity \\
+\textbf{Lab}        & 2 of 4 \\
+\textbf{Topic}      & Stored XSS \& Session Hijacking \\
+\textbf{Duration}   & 90--120 minutes \\
+\textbf{Difficulty} & Intermediate \\
+\textbf{Flags}      & 2 \\
+\end{tabular}
+
+\vfill
+{\small TecnoCampus \textperiodcentered{} GEISI \textperiodcentered{} 2025--2026}
+
+\end{titlepage}
+
+% ---- Learning Objectives ----------------------------------------------------
+\section{Learning Objectives}
+
+After completing this lab you will be able to:
+
+\begin{itemize}[leftmargin=1.5em]
+    \item Identify and exploit a \textbf{Stored Cross-Site Scripting (XSS)} vulnerability in a web application
+    \item Understand why cookies without the \texttt{HttpOnly} flag are dangerous
+    \item Exfiltrate a session cookie from an authenticated victim using a malicious payload
+    \item Perform \textbf{session hijacking} by replaying a stolen cookie in a different browser
+    \item Reflect on the mitigation measures that would prevent each step of the attack
+\end{itemize}
+
+% ---- Scenario ---------------------------------------------------------------
+\section{Scenario}
+
+You are a penetration tester assessing \textbf{Synapse Corp} -- a company that runs an
+internal web platform for employee communications. The application includes a public
+comments section that any visitor can read and post to.
+
+During your recon you noticed that no input validation seems to be applied to comments.
+A simulated employee (represented by an automated browser) is known to log in
+periodically and visit the comments page.
+
+Your objectives are:
+
+\begin{enumerate}[leftmargin=2em]
+    \item Confirm the comments section is vulnerable to Stored XSS.
+    \item Use that vulnerability to steal the authenticated employee's session cookie.
+    \item Use the stolen cookie to access the application as that employee without
+          knowing their password.
+\end{enumerate}
+
+\begin{mdframed}[backgroundcolor=labgray, linecolor=labred, linewidth=1pt]
+\textbf{Rules of engagement}
+\begin{itemize}[leftmargin=1.5em, topsep=2pt]
+    \item Only interact with the lab environment (\texttt{192.168.30.10})
+    \item Do not attempt to modify the Docker containers or the server infrastructure
+    \item Document every payload you try, even if it does not work
+    \item If the listener stops receiving requests, re-read the victim's cycle time
+          and try again
+\end{itemize}
+\end{mdframed}
+
+% ---- Topology ---------------------------------------------------------------
+\section{Network Topology}
+
+\begin{verbatim}
+[ Attacker - Parrot OS ]   (10.0.40.5)
+          |
+          | (EVE-NG management network)
+          |
+  [ nginx proxy ]  <-- entry point: http://192.168.30.10
+          |
+  [ flask app ]   (vulnerable Synapse application)
+          |
+  [ victim ]      (Playwright browser -- simulated authenticated user)
+\end{verbatim}
+
+\begin{table}[H]
+\centering
+\begin{tabularx}{0.9\textwidth}{lXl}
+\toprule
+\textbf{Node}   & \textbf{Role}                                    & \textbf{Access} \\
+\midrule
+Attacker        & Your machine (Parrot OS)                         & VNC console \\
+nginx           & Reverse proxy exposing the web app               & \texttt{http://192.168.30.10} \\
+flask           & Vulnerable Python web application (Synapse)      & Via nginx \\
+victim          & Automated Playwright browser (simulated user)    & Internal only \\
+\bottomrule
+\end{tabularx}
+\caption{Lab nodes overview}
+\end{table}
+
+\textbf{Entry point:} The application is reachable at \texttt{http://192.168.30.10}.
+The victim container authenticates as user \texttt{guest} and visits
+\texttt{/comments} every \textasciitilde{}20 seconds.
+
+% ---- Tasks ------------------------------------------------------------------
+\section{Tasks}
+
+Complete the following tasks in order. Document every command, payload, and
+screenshot.
+
+\subsection{Task 1 -- Application Reconnaissance}
+
+\begin{enumerate}[leftmargin=2em]
+    \item Browse to \texttt{http://192.168.30.10} and explore the application.
+    \item Identify the routes that are publicly accessible without authentication.
+    \item Navigate to \texttt{/comments} and read the existing entries.
+    \item Inspect the page source and identify where user input is rendered.
+\end{enumerate}
+
+\textit{Deliverable: Which routes did you find? Is the input reflected raw in the HTML?}
+
+\subsection{Task 2 -- Stored XSS Verification (Flag 1)}
+
+\begin{enumerate}[leftmargin=2em]
+    \item Post a comment containing a classic XSS proof-of-concept payload.
+    \item Log in as \texttt{guest} (credentials on the login page hint) and revisit
+          \texttt{/comments} to trigger execution in a legitimate session.
+    \item Confirm that JavaScript executes in the context of an authenticated user.
+\end{enumerate}
+
+\textit{Deliverable: Screenshot of the XSS executing. Flag 1 appears inside the
+alert box -- read it carefully.}
+
+\subsection{Task 3 -- Cookie Exfiltration}
+
+\begin{enumerate}[leftmargin=2em]
+    \item On your Parrot machine, start an HTTP listener on port \texttt{8000}.
+    \item Craft a payload that sends \texttt{document.cookie} to your listener as a
+          query parameter.
+    \item Post the payload as a comment.
+    \item Wait for the victim container to visit \texttt{/comments} and observe the
+          incoming request on your listener.
+    \item Decode the URL-encoded cookie value from the log line.
+\end{enumerate}
+
+\textit{Deliverable: The full cookie value received on your listener.}
+
+\subsection{Task 4 -- Session Hijacking (Flag 2)}
+
+\begin{enumerate}[leftmargin=2em]
+    \item Open a private/incognito browser window and navigate to
+          \texttt{http://192.168.30.10/login}.
+    \item Without entering any credentials, inject the stolen cookie into the browser.
+    \item Reload the page and verify you are recognised as \texttt{guest}.
+    \item Navigate to a route that requires authentication and capture Flag 2.
+\end{enumerate}
+
+\textit{Deliverable: Flag 2 string. Explain in one sentence why this works.}
+
+% ---- Deliverables -----------------------------------------------------------
+\section{Deliverables}
+
+Submit a report (1--2 pages) covering:
+
+\begin{itemize}[leftmargin=1.5em]
+    \item \textbf{XSS confirmation:} payload used and screenshot of execution
+    \item \textbf{Cookie exfiltration:} listener output with the raw request line
+    \item \textbf{Session hijacking:} how you injected the cookie and the result
+    \item \textbf{Both flags captured:} exact flag strings
+    \item \textbf{Reflection:} at least two specific mitigations that would break
+          this attack chain
+\end{itemize}
+
+% ---- Hints ------------------------------------------------------------------
+\section{Hints}
+
+\begin{mdframed}[backgroundcolor=labgray, linecolor=labred, linewidth=0.5pt]
+\textbf{Stuck?} Hints are ordered by how much they reveal.
+\begin{enumerate}[leftmargin=2em, topsep=4pt]
+    \item The comments section renders input directly in the HTML without escaping.
+          Think about what a browser does when it encounters a \texttt{<script>} tag.
+    \item A minimal XSS payload to confirm execution:
+          \texttt{<script>alert(1)</script>}
+    \item To receive the cookie, you need a server that logs HTTP requests.
+          \texttt{python3 -m http.server 8000} prints every GET request to stdout.
+    \item Your listener IP inside the lab is \texttt{10.0.40.5}.
+          The victim's browser must be able to reach it directly.
+    \item To inject a cookie from the browser console:
+          \texttt{document.cookie = "name=value; path=/";}
+    \item The victim visits \texttt{/comments} roughly every 20 seconds.
+          Be patient -- it may take up to one full cycle after posting the payload.
+\end{enumerate}
+\end{mdframed}
+
+% ---- Tools reference --------------------------------------------------------
+\section{Tools Reference}
+
+The following tools are available on the Attacker node:
+
+\begin{table}[H]
+\centering
+\begin{tabularx}{0.9\textwidth}{lX}
+\toprule
+\textbf{Tool}                   & \textbf{Use} \\
+\midrule
+\texttt{firefox}                & Browser for manual testing and cookie injection \\
+\texttt{curl}                   & Command-line HTTP requests \\
+\texttt{python3 -m http.server} & Minimal HTTP listener to capture exfiltrated data \\
+\texttt{Developer Tools}        & Inspect cookies (Storage/Application tab) and console \\
+\texttt{burpsuite}              & Optional -- intercept and replay HTTP requests \\
+\bottomrule
+\end{tabularx}
+\caption{Available tools on Attacker node}
+\end{table}
+
+\end{document}
