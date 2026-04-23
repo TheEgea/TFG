@@ -5,7 +5,7 @@ on:
     branches:
       - main
     paths:
-      - 'TFG/docs/web/**'
+      - 'docs/web/**'
       - '.github/workflows/deploy-mkdocs.yml'
 
 jobs:
@@ -18,10 +18,13 @@ jobs:
         with:
           python-version: '3.12'
 
-      - name: Install dependencies
-        run: pip install -r TFG/docs/web/requirements.txt
+      - name: Install system dependencies
+        run: sudo apt-get install -y libpango-1.0-0 libpangoft2-1.0-0
+
+      - name: Install Python dependencies
+        run: pip install -r docs/web/requirements.txt
 
       - name: Deploy MkDocs
         run: |
-          cd TFG/docs/web
+          cd docs/web
           mkdocs gh-deploy --force --config-file mkdocs.yml
