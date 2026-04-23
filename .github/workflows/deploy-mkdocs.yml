@@ -1,0 +1,27 @@
+name: Deploy MkDocs to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'TFG/docs/web/**'
+      - '.github/workflows/deploy-mkdocs.yml'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: pip install -r TFG/docs/web/requirements.txt
+
+      - name: Deploy MkDocs
+        run: |
+          cd TFG/docs/web
+          mkdocs gh-deploy --force --config-file mkdocs.yml
