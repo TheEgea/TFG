@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head><title>SYNAPSE Portal</title>
+<style>
+body{font-family:monospace;background:#0a0a0a;color:#00ff41;margin:0}
+nav{background:#111;border-bottom:1px solid #00ff41;padding:12px 24px;display:flex;justify-content:space-between;align-items:center}
+nav a{color:#00ff41;text-decoration:none;margin-left:20px}
+.container{padding:32px}
+h2{letter-spacing:3px;border-bottom:1px solid #333;padding-bottom:10px}
+.report{border:1px solid #222;padding:16px;margin-bottom:12px;background:#111}
+.report h4{color:#00cc33;margin:0 0 8px 0}
+.report p{color:#888;margin:0;font-size:0.85em}
+.badge{font-size:0.7em;padding:2px 8px;border:1px solid #00ff41}
+.badge.admin{border-color:#ff4444;color:#ff4444}
+</style></head>
+<body>
+<nav>
+  <span>SYNAPSE INTELLIGENCE PORTAL</span>
+  <div>
+    <a href="/comments">COMMENTS</a>
+    <a href="/search">SEARCH</a>
+    <span style="color:#666;margin-left:20px">{{ username }} <span class="badge {% if role=='admin' %}admin{% endif %}">{{ role }}</span></span>
+  </div>
+</nav>
+<div class="container">
+  <h2>[ RECENT INCIDENTS ]</h2>
+  {% for r in reports %}
+  <div class="report">
+    <h4>#{{ r.id }} — {{ r.title }}</h4>
+    <p>{{ r.body }}</p>
+    <p style="color:#444;margin-top:8px">{{ r.author }} · {{ r.timestamp }}</p>
+  </div>
+  {% endfor %}
+</div>
+</body></html>

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head><title>SYNAPSE — Search</title>
+<style>
+body{font-family:monospace;background:#0a0a0a;color:#00ff41;margin:0}
+nav{background:#111;border-bottom:1px solid #00ff41;padding:12px 24px;display:flex;justify-content:space-between}
+nav a{color:#00ff41;text-decoration:none;margin-left:20px}
+.container{padding:32px}
+h2{letter-spacing:3px;border-bottom:1px solid #333;padding-bottom:10px}
+input[type=text]{width:400px;padding:8px;background:#111;border:1px solid #00ff41;color:#00ff41;font-family:monospace}
+button{padding:8px 24px;background:#00ff41;color:#000;border:none;cursor:pointer;font-family:monospace;font-weight:bold}
+.result{border:1px solid #222;padding:16px;margin-bottom:12px;background:#111}
+.result h4{color:#00cc33;margin:0 0 8px 0}
+.error{color:#ff4444;background:#1a0000;padding:12px;border:1px solid #ff4444;margin-top:16px;white-space:pre-wrap}
+</style></head>
+<body>
+<nav>
+  <span>SYNAPSE INTELLIGENCE PORTAL</span>
+  <div><a href="/portal">PORTAL</a><a href="/comments">COMMENTS</a></div>
+</nav>
+<div class="container">
+  <h2>[ SEARCH REPORTS ]</h2>
+  <form method="get">
+    <input type="text" name="q" value="{{ q }}" placeholder="Search term...">
+    <button type="submit">SEARCH</button>
+  </form>
+  {% if error %}
+  <div class="error">SQL Error: {{ error }}</div>
+  {% endif %}
+  {% for r in results %}
+  <div class="result">
+    <h4>#{{ r.id }} — {{ r.title }}</h4>
+    <p>{{ r.body }}</p>
+  </div>
+  {% endfor %}
+</div>
+</body></html>

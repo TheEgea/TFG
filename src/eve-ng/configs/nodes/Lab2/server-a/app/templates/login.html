@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head><title>SYNAPSE Intelligence Portal</title>
+<style>
+body{font-family:monospace;background:#0a0a0a;color:#00ff41;display:flex;justify-content:center;align-items:center;height:100vh;margin:0}
+.box{border:1px solid #00ff41;padding:40px;width:320px}
+h2{text-align:center;letter-spacing:4px;margin-bottom:30px}
+input{width:100%;padding:8px;background:#111;border:1px solid #00ff41;color:#00ff41;margin-bottom:16px;box-sizing:border-box;font-family:monospace}
+button{width:100%;padding:10px;background:#00ff41;color:#000;border:none;cursor:pointer;font-family:monospace;font-weight:bold;letter-spacing:2px}
+.error{color:#ff4444;margin-bottom:12px;font-size:0.85em}
+.logo{text-align:center;font-size:0.7em;color:#444;margin-bottom:20px}
+</style></head>
+<body>
+<div class="box">
+  <div class="logo">SYNAPSE CORP — RESTRICTED ACCESS</div>
+  <h2>[ LOGIN ]</h2>
+  {% if error %}<div class="error">{{ error }}</div>{% endif %}
+  <form method="post">
+    <input name="username" placeholder="USERNAME" autocomplete="off">
+    <input name="password" type="password" placeholder="PASSWORD">
+    <button type="submit">ACCESS</button>
+  </form>
+</div>
+</body></html>
