@@ -1,77 +1,94 @@
-# LAB1 – Server Configuration (Ubuntu Server 24.04)
+# LAB1 – Server (PEBCAK Corp)
 
-The Server node acts as the victim web server. It runs Ubuntu Server 24.04 and
-is connected directly to the Router on a dedicated segment.
+The Server node runs Ubuntu 24.04 and hosts the PEBCAK Corp nginx web server — the primary target for Lab1.
 
 ---
 
-## Network parameters
+## Access
+
+```bash
+# From EVE-NG host (bridge vnet0_2 must have IP 192.168.20.x/24):
+sshpass -p '!Bl4kM3s$' ssh blackmesa@192.168.20.x
+
+# Via pfSense NAT (from Parrot / Homelab):
+ssh blackmesa@192.168.0.x   # pfSense DNAT → 192.168.20.x:22
+```
+
+## Network configuration
 
 | Parameter | Value |
 |-----------|-------|
 | Interface | ens3 |
 | IP | 192.168.20.x/24 |
-| Gateway | 192.168.20.x (Router eth7) |
-| DNS | 8.8.8.8 |
+| Gateway | 192.168.20.x (VyOS eth7) |
+| DNS | 8.8.8.8 / 1.1.1.1 |
+| Network manager | systemd-networkd |
 
-## Temporary IP configuration (lost on reboot)
+File: `/etc/systemd/network/10-ens3.network`
 
-```bash
-sudo ip link set ens3 up
-sudo ip addr add 192.168.20.x/24 dev ens3
-sudo ip route add default via 192.168.20.x
+```ini
+[Match]
+Name=ens3
+
+[Network]
+Address=192.168.20.x/24
+Gateway=192.168.20.x
+DNS=8.8.8.8
+DNS=1.1.1.1
 ```
 
-## Persistent IP configuration via Netplan
+## Services
 
-!!! warning "Disable cloud-init network management"
-    Ubuntu Server 24.04 uses cloud-init by default, which may overwrite Netplan on boot.
-    Disable it first:
+| Service | Status | Port |
+|---------|--------|------|
+| nginx | enabled, active | 80 |
+| openssh-server | enabled, active | 22 |
+| systemd-networkd | enabled | — |
 
-    ```bash
-    sudo touch /etc/cloud/cloud-init.disabled
-    ```
+## Web content
 
-Edit `/etc/netplan/50-cloud-init.yaml`:
+### /var/www/html/index.html
 
-```yaml
-network:
-  version: 2
-  ethernets:
-    ens3:
-      dhcp4: no
-      addresses:
-        - 192.168.20.x/24
-      routes:
-        - to: default
-          via: 192.168.20.x
-      nameservers:
-        addresses:
-          - 8.8.8.8
+The main landing page for `http://lab1`. Contains a hidden HTML comment:
+
+```html
+<!-- sometimes simplify and search -->
 ```
 
-Apply:
+This is the clue that leads students to `pebcak.html`.
 
-```bash
-sudo netplan generate && sudo netplan apply
+### /var/www/html/pebcak.html
+
+Hidden page (not linked from index) containing SSH credentials in plain text:
+
+```
+User:     blackmesa
+Password: !Bl4kM3s$
 ```
 
-!!! warning "Always shut down cleanly"
-    Use `sudo shutdown -h now` instead of stopping the node from the EVE-NG GUI directly.
-    A hard stop may not flush disk writes and the IP configuration can be lost on the next boot.
+## Flag
 
-## SSH access
+```
+/home/blackmesa/flag.txt
+→ FLAG{p3bc4k_s3rv3r_0wn3d}
 
-Ubuntu Server 24.04 ships with `openssh-server` enabled by default.
-After setting the IP, you can connect from any host that has L2 reachability to the segment:
-
-```bash
-ssh <user>@192.168.20.x
+-- PEBCAK Corp Internal Credentials --
+Firewall: 172.16.x.x | admin / pfsense
 ```
 
-## Connectivity verification
+## nginx configuration
 
-```bash
-ping 192.168.20.x   # Router eth7 (gateway)
-ping 192.168.10.x   # PC1 (cross-segment via Router)
+File: `/etc/nginx/sites-enabled/default`
+
+```nginx
+server {
+    listen 80 default_server;
+    listen [::]:80 default_server;
+    root /var/www/html;
+    index index.html index.htm;
+    server_name _;
+    location / {
+        try_files $uri $uri/ =404;
+    }
+}
 ```

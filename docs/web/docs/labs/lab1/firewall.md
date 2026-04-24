@@ -1,78 +1,64 @@
-# LAB1 – Firewall Configuration (pfSense CE 2.6)
+# LAB1 – pfSense Firewall
 
-pfSense sits at the perimeter between the simulated internet (WAN) and the internal
-Router segment (LAN). It controls what traffic can enter the lab from outside.
+pfSense sits at the perimeter between the Homelab LAN (WAN) and the internal VyOS router (LAN). It handles NAT port forwarding, DNS resolution for `lab1`, and SSH management access.
 
 ---
 
-## Interface assignment
+## Interfaces
 
 | Interface | Role | IP |
 |-----------|------|----|
 | vtnet0 | LAN | 172.16.x.x/30 |
-| vtnet1 | WAN | 10.x.x.x/24 (or DHCP) |
+| vtnet1 | WAN | 192.168.0.x/24 (static) |
 
-!!! info "Interface order in pfSense"
-    pfSense assigns interfaces in the order QEMU presents them.
-    In EVE-NG, `e0` maps to `vtnet0` (first NIC) and `e1` to `vtnet1` (second NIC).
-    Verify the assignment under **Interfaces → Assignments** after first boot.
-
-## WAN connectivity – EVE-NG pnet bridge
-
-The pfSense WAN port (`vtnet1`) must be a member of the correct EVE-NG `pnet` bridge
-to reach the outside network. Run the following on the EVE-NG host after each lab start:
+## Access
 
 ```bash
-# Enable IP forwarding
-echo 1 > /proc/sys/net/ipv4/ip_forward
+# From EVE-NG host (route 172.16.0.0/30 via 192.168.20.1 must exist):
+sshpass -p 'pfsense' ssh -o PubkeyAuthentication=no \
+  -o PreferredAuthentications=password admin@172.16.x.x
 
-# NAT outbound from WAN segment toward the real network
-iptables -t nat -A POSTROUTING -s 10.x.x.0/24 -o pnet0 -j MASQUERADE
-iptables -A FORWARD -i pnet1 -o pnet0 -j ACCEPT
-iptables -A FORWARD -i pnet0 -o pnet1 -m state --state RELATED,ESTABLISHED -j ACCEPT
-
-# Add pfSense WAN tap interface to the bridge
-brctl addif pnet1 <vunl_interface>
+# Web UI:
+# http://172.16.x.x  (admin / pfsense)
 ```
 
-!!! warning "Interface name may change"
-    The tap interface name (`vunl0_X_Y`) can change between sessions.
-    Always verify it before adding to the bridge:
+!!! warning "BIOS mode"
+    pfSense LAB1 is installed in BIOS mode (SeaBIOS / machine=pc).
+    EVE-NG default launcher works correctly — no custom script needed.
+
+## NAT port forward rules
+
+| Rule | Protocol | WAN port | Target |
+|------|----------|----------|--------|
+| LAB1-HTTP | TCP | 80 | 192.168.20.x:80 |
+| LAB1-HTTPS | TCP | 443 | 192.168.20.x:443 |
+| LAB1-SSH | TCP | 22 | 192.168.20.x:22 |
+
+All three rules forward WAN traffic on pfSense (192.168.0.x) directly to the Server.
+
+## DNS Resolver (Unbound)
+
+Resolves `lab1` → `192.168.0.x` for clients using pfSense as DNS:
+
+```
+local-zone: "lab1." redirect
+local-data: "lab1. A 192.168.0.x"
+```
+
+- Listens on: `0.0.0.0:53` (all interfaces)
+- WAN firewall rule: `pass in quick on vtnet1 proto udp from any to any port 53`
+
+!!! tip "Set Parrot DNS to 192.168.0.x"
     ```bash
-    ip a | grep vunl
+    nmcli con mod "Wired connection 1" ipv4.dns "192.168.0.x" ipv4.ignore-auto-dns yes
+    nmcli con up "Wired connection 1"
     ```
+    After this, `curl http://lab1` resolves to pfSense and NAT forwards to the Server.
 
-## Port forwarding – expose Server on ports 80/443
+## Snapshot
 
-To allow inbound HTTP/HTTPS from the WAN to reach the internal Server:
-
-1. Go to **Firewall → NAT → Port Forward**
-2. Add rule:
-    - Interface: WAN
-    - Protocol: TCP
-    - Destination port: 80 (repeat for 443)
-    - Redirect target IP: 192.168.20.x (Server)
-    - Redirect target port: 80 / 443
-3. Add a static route to reach the Server subnet:
-    - **System → Routing → Static Routes**
-    - Network: 192.168.20.0/24
-    - Gateway: 172.16.x.x (Router eth0)
-
-## Enable SSH management
-
-Go to **System → Advanced → Admin Access** and enable **Secure Shell**.
-This allows connecting to pfSense from the Router (172.16.x.x) for remote management.
-
-## Connectivity verification
-
-From the Router console:
-
-```bash
-ping 172.16.x.x count 3   # pfSense LAN interface
+A named snapshot `lab1-session2` exists on the pfSense disk:
 ```
-
-From the Attacker machine (WAN segment):
-
-```bash
-curl http://192.168.20.x   # should reach the Server if port forward is active
+/opt/unetlab/tmp/0/64c869bb-bdae-4f79-9c38-f126b700b8ca/6/virtioa.qcow2
 ```
+Restore: `qemu-img snapshot -a lab1-session2 <disk>` (with pfSense stopped)

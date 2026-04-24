@@ -1,64 +1,71 @@
-# LAB1 – Network Setup Overview
+# LAB1 – Reconnaissance (PEBCAK Corp)
 
-LAB1 is the base lab environment used throughout this thesis. It defines the network
-segments, routing, and firewall rules that all subsequent pentesting labs build upon.
+LAB1 is the foundational reconnaissance lab. Students discover a hidden web page containing SSH credentials, log into the target server, and retrieve a flag that leads to firewall access.
 
 ---
 
 ## Topology
 
 ```
-Internet / Homelab
+Homelab LAN (192.168.0.0/24)
         |
-   [pfSense]  WAN: 10.x.x.x  |  LAN: 172.16.x.x/30
+[Parrot – Attacker]  192.168.0.x (DHCP, pnet0 cloud)
         |
-   [Router - VyOS]  eth0: 172.16.x.x/30
+[pfSense – Firewall]
+  WAN vtnet1: 192.168.0.x/24  (static)
+  LAN vtnet0: 172.16.x.x/30
         |
-        ├── eth6: 192.168.10.x/24 ──► [PC1 – Ubuntu Desktop]  192.168.10.x/24
+[VyOS – Router]
+  eth0: 172.16.x.x/30    ← uplink to pfSense
+  eth6: 192.168.10.x/24  ← Users LAN
+  eth7: 192.168.20.x/24  ← Servers LAN
         |
-        └── eth7: 192.168.20.x/24 ──► [Server – Ubuntu Server] 192.168.20.x/24
-
-[Attacker – Parrot OS] ── connected directly to WAN segment
+  ┌─────┴─────┐
+[Server]     [PC1]
+192.168.20.x  192.168.10.x
+nginx :80      Ubuntu Desktop
+hostname: pebcak
 ```
 
 ## Node summary
 
-| Node | Role | OS | Console |
-|------|------|----|---------|
-| Router | Core routing + NAT | VyOS (rolling) | Telnet |
-| Server | Victim web server | Ubuntu Server 24.04 | VNC |
-| PC1 | Victim workstation | Ubuntu Desktop 24.04 | VNC |
-| Attacker | Pentesting platform | Parrot Security 6.4 | VNC |
-| Firewall | Perimeter firewall | pfSense CE 2.6 | VNC |
+| Node | OS | IP | Role |
+|------|----|----|------|
+| pfSense | pfSense CE 2.6 | WAN: 192.168.0.x / LAN: 172.16.x.x | Perimeter firewall + DNS + NAT |
+| VyOS | VyOS rolling | 172.16.x.x / 192.168.10.x / 192.168.20.1 | Core router + NAT |
+| Server | Ubuntu Server 24.04 | 192.168.20.x | Target — PEBCAK Corp nginx |
+| PC1 | Ubuntu Desktop 24.04 | 192.168.10.x | Internal user workstation |
+| Parrot | Parrot Security 6.4 | 192.168.0.x (DHCP) | Attacker |
 
 ## Network segments
 
 | Segment | Subnet | Gateway | Purpose |
 |---------|--------|---------|---------|
-| WAN | 172.16.x.x/30 | pfSense | Router ↔ Firewall |
-| Users LAN | 192.168.10.x/24 | 192.168.10.x | PC1 segment |
-| Servers LAN | 192.168.20.x/24 | 192.168.20.x | Server segment |
+| Net-Link | 172.16.0.0/30 | pfSense vtnet0 | pfSense ↔ VyOS |
+| Users LAN | 192.168.10.0/24 | 192.168.10.x | PC1 segment |
+| Servers LAN | 192.168.20.0/24 | 192.168.20.1 | Server segment |
+| Homelab | 192.168.0.0/24 | 192.168.0.1 | WAN / Attacker |
 
-## EVE-NG cabling rules
+## Student workflow
 
-!!! warning "One interface = one bridge"
-    Each router interface must be connected to its own dedicated bridge in EVE-NG.
-    If two interfaces share the same bridge, ARP will resolve to the wrong interface
-    and connectivity will fail even if IPs are correctly configured.
-    Always delete and recreate links if connectivity does not work after configuration.
-
-!!! tip "EVE-NG pnet bridge for WAN access"
-    The pfSense WAN interface uses an EVE-NG `pnet` bridge to reach the outside network.
-    After each lab start, verify the virtual interface is a member of the correct bridge:
-
-    ```bash
-    ip a | grep vunl   # find pfSense WAN tap interface
-    brctl show         # verify bridge membership
-    ```
+```
+1. http://lab1               → PEBCAK Corp portal (Firefox on Parrot)
+2. View page source          → <!-- sometimes simplify and search -->
+3. http://lab1/pebcak.html  → SSH creds: blackmesa / !Bl4kM3s$
+4. ssh blackmesa@lab1       → Server via pfSense DNAT (TCP 22)
+5. cat ~/flag.txt            → FLAG{p3bc4k_s3rv3r_0wn3d} + pfSense creds
+6. ssh admin@172.16.x.x     → pfSense access from Server via VyOS
+```
 
 ## Lab startup checklist
 
 1. Start all nodes from EVE-NG web UI
-2. Verify pfSense WAN tap is bridged to `pnet`
-3. Configure static IPs on Server and PC1 (see their respective pages)
-4. Verify connectivity with ping from the Router (see [Router page](router.md))
+2. Run bridge script on EVE-NG host (lost on reboot):
+   ```bash
+   ip addr add 192.168.20.x/24 dev vnet0_2
+   ip addr add 192.168.10.x/24 dev vnet0_3
+   ip route add 172.16.0.0/30 via 192.168.20.1
+   ```
+   Persistent via: `/etc/udev/rules.d/99-lab1-bridges.rules`
+3. Set DNS on Parrot to `192.168.0.x` (pfSense) so `lab1` resolves
+4. Verify: `curl http://lab1` from Parrot Firefox

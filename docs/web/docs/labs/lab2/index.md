@@ -1,137 +1,80 @@
-# LAB2 – Web Application Vulnerabilities
+# LAB2 – Web Application Vulnerabilities (SYNAPSE Intelligence Portal)
 
-LAB2 introduces client-side web vulnerabilities using a deliberately insecure Flask
-application called **Synapse**. The lab runs entirely in Docker Compose and sits on
-top of the LAB1 network infrastructure.
-
-Students exploit a **Stored XSS** vulnerability to steal the session cookie of a
-simulated authenticated victim, then reuse it to log in without a password — a
-complete **session hijacking** chain.
+LAB2 introduces web application security through a deliberately vulnerable Flask application called **SYNAPSE Intelligence Portal**. Students exploit a chain of vulnerabilities to achieve lateral movement from the web application to an internal SSH server.
 
 ---
 
 ## Topology
 
 ```
-[Attacker – Parrot OS]  10.0.40.5
-          |
-    (EVE-NG management network)
-          |
-      [nginx]  192.168.30.10:80   <- public entry point
-          |
-      [flask]  internal           <- vulnerable Synapse app
-          |
-      [victim] internal           <- Playwright bot (simulated user)
+Homelab LAN (192.168.0.0/24)
+        |
+[pfSense-LAB2]  WAN: 192.168.0.x (DHCP)
+        |
+[VyOS-LAB2]
+  eth0: 172.16.x.x/30   ← uplink to pfSense
+  eth1: 192.168.30.x/24 ← Net-DMZ (servers)
+  eth2: 10.0.40.x/24    ← Net-Attackers (Parrot)
+        |
+  ┌─────┴──────┐
+[Server-A]   [Server-B]       [Parrot]
+192.168.30.x  192.168.30.x  10.0.40.x
+SYNAPSE app    CMDi app       Attacker
+(Docker)       (F4 pending)
 ```
 
-All three services run as Docker Compose containers inside a dedicated VM on the EVE-NG topology.
+## Node summary
 
----
+| Node | IP | Role |
+|------|----|------|
+| VyOS-LAB2 | eth0: 172.16.x.x, eth1: 192.168.30.x, eth2: 10.0.40.x | Router + NAT + DNS |
+| Server-A (SYNAPSE) | 192.168.30.x | Flask + nginx + Playwright victim (Docker Compose) |
+| Server-B | 192.168.30.x | Ubuntu 24.04 — CMDi target (pending) |
+| Parrot-Attacker | 10.0.40.x (static) | Attacker |
+| pfSense-LAB2 | WAN: 192.168.0.x | Perimeter firewall |
 
-## Service summary
+## Vulnerability chain
 
-| Service  | Image                                               | Role                         | Exposed            |
-|----------|-----------------------------------------------------|------------------------------|--------------------|
-| `flask`  | `python:3.11-slim`                                  | Vulnerable Synapse web app   | Internal only      |
-| `nginx`  | `nginx:alpine`                                      | Reverse proxy                | `192.168.30.10:80` |
-| `victim` | `mcr.microsoft.com/playwright/python:v1.58.0-noble` | Simulated authenticated user | Internal only      |
-
----
-
-## Network segments
-
-| Segment           | Subnet                       | Purpose                       |
-|-------------------|------------------------------|-------------------------------|
-| Docker internal   | `172.x.x.x` (Compose bridge) | Inter-container communication |
-| EVE-NG management | `10.0.40.0/24`               | Attacker <-> Docker host VM   |
-| Lab network       | `192.168.30.0/24`            | nginx public IP               |
-
----
-
-## Docker Compose overview
-
-```yaml
-version: '3.8'
-
-services:
-  flask:
-    image: python:3.11-slim
-    working_dir: /app
-    volumes:
-      - ./app:/app
-      - synapse-db:/opt/synapse
-    command: >
-      sh -c "pip install flask==3.0.0 -q &&
-             python init_db.py &&
-             python app.py"
-    restart: unless-stopped
-
-  nginx:
-    image: nginx:alpine
-    ports:
-      - "80:80"
-    volumes:
-      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
-    depends_on:
-      - flask
-    restart: unless-stopped
-
-  victim:
-    image: mcr.microsoft.com/playwright/python:v1.58.0-noble
-    container_name: synapse_victim
-    working_dir: /app
-    volumes:
-      - ./victim:/app
-    command: sh -c "pip install --no-cache-dir playwright==1.58.0 && python victim.py"
-    depends_on:
-      - flask
-    restart: unless-stopped
-
-volumes:
-  synapse-db:
+```
+XSS → Cookie Hijack → Broken Auth → SQLi → SSH Lateral Movement → CMDi → Final Flag
 ```
 
-See each component's dedicated page for full details:
+| Step | Vulnerability | Location |
+|------|--------------|----------|
+| 1 | Stored XSS | `/comments` — Jinja2 `| safe` filter |
+| 2 | Cookie theft | `HttpOnly=False` session cookie |
+| 3 | Broken authentication | Unsigned `ID:ROLE:USERNAME` cookie |
+| 4 | UNION SQL Injection | `/search?q=` — raw string concatenation |
+| 5 | SSH lateral movement | Credentials from `admin_users` table |
+| 6 | Command Injection | Server-B CMDi app (pending F4) |
 
-- [Flask app](flask.md)
-- [nginx proxy](nginx.md)
-- [Victim bot](victim.md)
+## Application credentials
 
----
+| User | Password | Role |
+|------|----------|------|
+| admin | Admin@Synapse2024 | admin |
+| guest | guest123 | guest |
+| monitor | M0nit0r2024 | SSH on Server-B |
 
-## EVE-NG notes
+## Lab startup
 
-!!! warning "Static IP on the Docker host VM"
-    The VM running Docker Compose must have a static IP of `192.168.30.10`
-    reachable from the Attacker node. Verify before starting the lab:
+```bash
+# 1. Run bridge script on EVE-NG host (after reboot):
+bash /usr/local/bin/lab2-bridges-up.sh
 
-    ```bash
-    ip addr show
-    curl http://192.168.30.10
-    ```
+# 2. Start SYNAPSE app on Server-A:
+sshpass -p ubuntu ssh ubuntu@192.168.30.x
+cd /opt/synapse && docker compose up -d
+docker compose ps  # all 3 containers should be Up
 
-!!! tip "Victim cycle time"
-    The `victim` container visits `/comments` approximately every **20 seconds**.
-    After posting an XSS payload, wait at least one full cycle before concluding
-    it failed.
+# 3. Verify from Parrot:
+curl http://192.168.30.x   # → SYNAPSE portal
+```
 
----
+!!! warning "pfSense-LAB2 UEFI boot"
+    pfSense-LAB2 is installed in UEFI mode. EVE-NG's default launcher (SeaBIOS) cannot boot it.
+    Use the custom script: `/usr/local/bin/pfsense-lab2-start.sh`
 
-## Lab startup checklist
-
-1. Start the Docker host VM in EVE-NG
-2. SSH into the VM and bring up the stack:
-   ```bash
-   cd ~/lab2-synapse
-   docker compose up -d
-   docker compose ps
-   ```
-3. Verify reachability from Parrot:
-   ```bash
-   curl http://192.168.30.10
-   ```
-4. Start the HTTP listener on Parrot before posting any payload:
-   ```bash
-   python3 -m http.server 8000
-   ```
-5. Open `http://192.168.30.10` in Firefox on Parrot and begin the exercise
+!!! warning "Bridge IPs lost on reboot"
+    After each EVE-NG host reboot, run: `bash /usr/local/bin/lab2-bridges-up.sh`
+    This restores IPs on vnet0_1, vnet0_2, vnet0_3.

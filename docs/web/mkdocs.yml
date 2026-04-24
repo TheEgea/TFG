@@ -42,14 +42,17 @@ nav:
       - Router (VyOS): assets/init_configs/Router.md
       - Firewall (pfSense): assets/init_configs/Firewall.md
   - EVE-NG Labs:
-      - LAB1 – Network Setup:
+      - LAB1 – Reconnaissance:
           - Overview: labs/lab1/index.md
-          - Router: labs/lab1/router.md
-          - Server: labs/lab1/server.md
+          - Router (VyOS): labs/lab1/router.md
+          - Server (PEBCAK): labs/lab1/server.md
+          - Firewall (pfSense): labs/lab1/firewall.md
           - PC1: labs/lab1/pc1.md
-          - Firewall: labs/lab1/firewall.md
-      - LAB2 – Reconnaissance:
+          - Parrot (Attacker): labs/lab1/parrot.md
+      - LAB2 – Web Vulnerabilities:
           - Overview: labs/lab2/index.md
+          - VyOS Router: labs/lab2/vyos.md
+          - Server-A (SYNAPSE): labs/lab2/server-a.md
           - Flask App: labs/lab2/flask.md
           - Nginx: labs/lab2/nginx.md
           - Victim Bot: labs/lab2/victim.md

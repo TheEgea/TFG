@@ -10,7 +10,7 @@ application using Docker's internal DNS.
 
 | Parameter        | Value                  |
 |------------------|------------------------|
-| Public IP        | `192.168.30.10`        |
+| Public IP        | `192.168.30.x`        |
 | Published port   | `80`                   |
 | Upstream         | `http://flask:5000`    |
 | Config file path | `./nginx/default.conf` |
@@ -41,7 +41,7 @@ configured — intentional for the lab environment.
 From the Attacker (Parrot):
 
 ```bash
-curl -v http://192.168.30.10/login
+curl -v http://192.168.30.x/login
 # Expected: HTTP 200 with Synapse login page HTML
 ```
 
