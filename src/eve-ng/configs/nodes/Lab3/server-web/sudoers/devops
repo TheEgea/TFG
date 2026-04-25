@@ -1,0 +1,3 @@
+# LAB3 intentional misconfiguration -- allows sudo find privilege escalation
+# GTFOBins: sudo find . -exec /bin/bash \; -quit
+devops ALL=(ALL) NOPASSWD: /usr/bin/find

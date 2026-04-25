@@ -1,0 +1,243 @@
+\documentclass[a4paper, 12pt]{article}
+
+\usepackage{fontspec}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage[english]{babel}
+\usepackage{geometry}
+\usepackage{setspace}
+\usepackage{titlesec}
+\usepackage{hyperref}
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{xcolor}
+\usepackage{mdframed}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{listings}
+
+\geometry{top=2.5cm, bottom=2.5cm, left=3cm, right=2.5cm}
+
+\setmainfont{OpenDyslexic}[
+    Path = /usr/share/fonts/opentype/opendyslexic/,
+    Extension = .otf,
+    UprightFont = *-Regular,
+    BoldFont = *-Bold,
+    ItalicFont = *-Italic,
+    BoldItalicFont = *-BoldItalic
+]
+\setmonofont{OpenDyslexicMono}[
+    Path = /usr/share/fonts/opentype/opendyslexic/,
+    Extension = .otf,
+    UprightFont = *-Regular
+]
+
+\definecolor{labblue}{RGB}{25,80,160}
+\definecolor{labgray}{RGB}{245,245,245}
+\definecolor{labred}{RGB}{180,30,30}
+
+\hypersetup{colorlinks=true, linkcolor=black, urlcolor=labblue}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\textit{Lab 3 -- Incident Response \& Log Forensics}}
+\fancyhead[R]{\small\textit{Introduction to Cybersecurity}}
+\fancyfoot[C]{\small\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt}
+
+\titleformat{\section}{\large\bfseries\color{labblue}}{}{0em}{}[\titlerule]
+\titleformat{\subsection}{\normalsize\bfseries}{}{0em}{}
+
+\lstset{
+    basicstyle=\ttfamily\small,
+    backgroundcolor=\color{labgray},
+    frame=single,
+    breaklines=true
+}
+
+\begin{document}
+
+% ---- Cover ------------------------------------------------------------------
+\begin{titlepage}
+\centering
+
+\includegraphics[width=0.6\linewidth]{../../../../docs/images/logo-tecnocampus.png}
+
+\vspace{1.5cm}
+{\small Bachelor in Computer Engineering -- Management and Information Systems}
+
+\vspace{0.5cm}
+{\small Introduction to Cybersecurity}
+
+\vspace{3cm}
+{\LARGE\bfseries Lab 3}\\[0.4cm]
+{\Large\bfseries Incident Response \& Log Forensics}
+
+\vspace{1cm}
+{\large\color{labblue} Student Assignment}
+
+\vspace{4cm}
+\begin{tabular}{ll}
+\textbf{Course}     & Introduction to Cybersecurity \\
+\textbf{Lab}        & 3 of 4 \\
+\textbf{Topic}      & SOC Analysis, Privilege Escalation, Lateral Movement \\
+\textbf{Duration}   & 90--120 minutes \\
+\textbf{Difficulty} & Intermediate \\
+\end{tabular}
+
+\end{titlepage}
+
+% ---- Scenario ---------------------------------------------------------------
+\section{Scenario}
+
+\textbf{HELIX Systems} has suffered a security incident. The security team has detected
+suspicious activity during the early hours of 24 April 2026. You are a SOC analyst
+assigned to investigate the compromise.
+
+Your mission is to connect to each affected server, extract and analyse the logs, and
+reconstruct the full attack chain. Document your findings and identify the attacker's
+techniques.
+
+\begin{mdframed}[backgroundcolor=labgray]
+\textbf{Entry point:} SSH to the lab gateway using the credentials provided by your instructor.
+\begin{lstlisting}
+ssh analyst@<lab-gateway-ip>
+\end{lstlisting}
+Password: \texttt{An@lyst2024}
+\end{mdframed}
+
+% ---- Objectives -------------------------------------------------------------
+\section{Learning Objectives}
+
+\begin{itemize}
+    \item Read and interpret Linux authentication logs (\texttt{/var/log/auth.log})
+    \item Identify credential brute-force attacks from log evidence
+    \item Recognise a \texttt{sudo} privilege escalation via \texttt{find} (GTFOBins)
+    \item Trace lateral movement between internal servers
+    \item Document an incident timeline with supporting evidence
+    \item Identify Indicators of Compromise (IOCs)
+\end{itemize}
+
+% ---- Infrastructure ---------------------------------------------------------
+\section{Lab Infrastructure}
+
+You have access to two servers inside the HELIX Systems network:
+
+\begin{center}
+\begin{tabular}{lll}
+\toprule
+\textbf{Host} & \textbf{IP} & \textbf{Role} \\
+\midrule
+helix-web & (via SSH gateway) & Web server -- initial compromise \\
+helix-db  & 192.168.60.10     & Internal database server \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Both servers have an \texttt{analyst} user account (\texttt{An@lyst2024}) for your investigation.
+
+% ---- Tasks ------------------------------------------------------------------
+\section{Tasks}
+
+\subsection{Task 1 -- Initial Access on helix-web (3 points)}
+
+Connect to \texttt{helix-web} and examine the SSH authentication logs.
+
+\begin{lstlisting}
+grep "Failed password\|Accepted password\|Invalid user" /var/log/auth.log
+\end{lstlisting}
+
+Answer the following:
+\begin{enumerate}[label=\alph*)]
+    \item From which external IP address did the attack originate?
+    \item Which user account was targeted in the brute-force attack?
+    \item At what time did the attacker successfully log in?
+\end{enumerate}
+
+\subsection{Task 2 -- Privilege Escalation (4 points)}
+
+After obtaining initial access, the attacker escalated privileges.
+
+\begin{lstlisting}
+grep "sudo" /var/log/auth.log | grep "COMMAND"
+cat /etc/sudoers.d/devops
+\end{lstlisting}
+
+Answer the following:
+\begin{enumerate}[label=\alph*)]
+    \item What command did the attacker use to escalate privileges?
+    \item What misconfiguration made this possible?
+    \item What is the MITRE ATT\&CK technique ID for this type of escalation?
+    \item How could this misconfiguration have been prevented?
+\end{enumerate}
+
+\subsection{Task 3 -- Persistence \& Post-Exploitation (3 points)}
+
+Examine what the attacker did after gaining root access.
+
+\begin{lstlisting}
+grep "useradd\|usermod\|passwd" /var/log/auth.log
+cat /etc/passwd | grep -v "nologin\|false"
+\end{lstlisting}
+
+Answer the following:
+\begin{enumerate}[label=\alph*)]
+    \item What backdoor did the attacker create?
+    \item What privileges does the backdoor account have?
+\end{enumerate}
+
+\subsection{Task 4 -- Lateral Movement to helix-db (3 points)}
+
+Connect to the database server and look for signs of lateral movement.
+
+\begin{lstlisting}
+ssh analyst@192.168.60.10
+grep "Accepted password" /var/log/auth.log
+\end{lstlisting}
+
+Answer the following:
+\begin{enumerate}[label=\alph*)]
+    \item From which IP address did the attacker connect to \texttt{helix-db}?
+    \item Which user account was used?
+    \item At what time did this connection occur?
+\end{enumerate}
+
+\subsection{Task 5 -- Data Exfiltration Evidence (3 points)}
+
+Examine the HELIX Systems data directory.
+
+\begin{lstlisting}
+ls -la /opt/helix/data/
+cat /opt/helix/data/.exfil_marker
+\end{lstlisting}
+
+Answer the following:
+\begin{enumerate}[label=\alph*)]
+    \item What sensitive data was present in this directory?
+    \item What evidence suggests the data was accessed or exfiltrated?
+\end{enumerate}
+
+\subsection{Task 6 -- Incident Report (4 points)}
+
+Write a brief incident report (200--300 words) containing:
+\begin{itemize}
+    \item Executive summary of the incident
+    \item Full attack timeline with timestamps
+    \item List of Indicators of Compromise (IOCs)
+    \item Recommended remediation steps
+\end{itemize}
+
+% ---- Submission -------------------------------------------------------------
+\section{Submission}
+
+Submit a PDF document containing:
+\begin{enumerate}
+    \item Answers to all tasks with supporting log evidence (screenshots or copy-paste)
+    \item The incident report from Task 6
+\end{enumerate}
+
+\end{document}
