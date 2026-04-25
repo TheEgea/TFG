@@ -1,27 +1,26 @@
-# Parrot-Attacker — Estado LAB2
+# Parrot-Attacker -- LAB2 Status
 
-## Estado actual (2026-04-24)
-- Nodo corriendo (QEMU), boot desde CD (Parrot OS Security 6.4)
-- **Sin IP estática configurada** — F5 pendiente
-- Sin SSH server instalado
-- ARP: sin respuesta en 10.0.40.10 ni 10.0.40.11
+## Current status (2026-04-24)
+- Node running (QEMU), booting from CD (Parrot OS Security 6.4)
+- No static IP configured -- F5 pending
+- No SSH server installed
 
-## Acceso actual
-- VNC: puerto 32769 del host EVE-NG (display :26869)
-- No accesible via SSH desde EVE-NG host
+## Current access
+- VNC: port 32769 on EVE-NG host (display :26869)
+- Not accessible via SSH from EVE-NG host
 
-## Configuración pendiente (F5)
-1. IP estática: 10.0.40.10/24, GW 10.0.40.1 (VyOS eth2)
-2. Instalar openssh-server
-3. Herramientas a verificar: nmap, curl, python3, netcat, hashcat/john
+## Pending configuration (F5)
+1. Static IP: 10.0.40.10/24, GW 10.0.40.1 (VyOS eth2)
+2. Install openssh-server
+3. Tools to verify: nmap, curl, python3, netcat, hashcat/john
 
-## Herramientas usadas en sesiones
-- python3 -m http.server 8000  (listener para XSS cookie exfil)
-- curl (peticiones HTTP al portal SYNAPSE)
-- nc -lvnp 4444  (listener reverse shell)
+## Tools used in sessions
+- python3 -m http.server 8000  (listener for XSS cookie exfil)
+- curl (HTTP requests to SYNAPSE portal)
+- nc -lvnp 4444  (reverse shell listener)
 
-## Notas
-- El nodo arranca desde CD en cada reinicio → configuración no persiste
-- Para persistencia: configurar IP via nmcli/NetworkManager antes de cada sesión
-  o instalar en disco (F5 completo)
-- DHCP server VyOS asigna rango 10.0.40.10-50 — verificar que VyOS DHCP esté activo
+## Notes
+- Node boots from CD on each restart -> configuration does not persist
+- For persistence: configure IP via nmcli/NetworkManager before each session,
+  or install to disk (full F5)
+- VyOS DHCP server assigns range 10.0.40.10-50 -- verify VyOS DHCP is active

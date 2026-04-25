@@ -1,12 +1,13 @@
-# PC1-LAB1 (Ubuntu Desktop) — Configuración
+# PC1-LAB1 (Ubuntu Desktop) -- Configuration
 
-## Acceso
-- VNC: puerto 32772 en EVE-NG host (`localhost:32772`)
-- Usuario: skynet / Sk1n3t (o Sk1n3T)
+## Access
+- VNC: port 32772 on EVE-NG host (localhost:32772)
+- User: skynet / Sk1n3t (or Sk1n3T)
 
-## Red
-- IP: 192.168.10.50/24, GW: 192.168.10.5 (VyOS eth6 — **nota: VyOS eth6 tiene IP .5, no .1**)
-- Configuración: NetworkManager
+## Network
+- IP: 192.168.10.50/24, GW: 192.168.10.5 (VyOS eth6)
+- Note: VyOS eth6 has IP .5, not .1
+- Configuration: NetworkManager
 
 ```bash
 nmcli con mod "Wired connection 1" \
@@ -18,7 +19,7 @@ nmcli con mod "Wired connection 1" \
 nmcli con up "Wired connection 1"
 ```
 
-## Notas
-- SSH no configurado (openssh-server pendiente de instalar)
-- Nodo interno en Users LAN (192.168.10.0/24)
-- Rol secundario en Lab1 — no forma parte del flujo principal del estudiante
+## Notes
+- SSH not configured (openssh-server pending installation)
+- Internal node on Users LAN (192.168.10.0/24)
+- Secondary role in Lab1 -- not part of the main student workflow

@@ -221,98 +221,13 @@
 
 \pagenumbering{arabic}
 
-\begin{comment}
-%\chapter{Introducció i Context}
-\chapter{Introduction and Context}
-
-\section{Personal Background and Motivation}
-
-My interest in cybersecurity emerged from hands-on experimentation during 
-secondary education (ESO). Rather than purely theoretical learning, I discovered 
-practical vulnerabilities in institutional networks through systematic trial-and-error methods:
-
-\begin{itemize}
-
-\item \textbf{Credential Bypass:} Learning Windows 7 authentication mechanisms 
-and their weaknesses led to understanding fundamental principles of access control 
-and privilege boundaries
-
-\item \textbf{Network Access:} Connecting to private networks within the school 
-environment illustrated how network segmentation fails without proper controls
-
-\item \textbf{Device Control:} Discovering the ability to remotely control network 
-devices (access points, routers, digital whiteboards) demonstrated how operational 
-technology lacks robust security hardening
-
-\end{itemize}
-
-While these early experiments were conducted without formal authorization, they illuminated 
-a fundamental insight: \textbf{understanding how systems fail is essential for designing 
-systems that don't}. This practical, curiosity-driven learning proved far more memorable 
-and impactful than textbook-based instruction. The direct observation of security failures 
-in real infrastructure sparked sustained interest in both the technical and pedagogical 
-dimensions of cybersecurity education.
-
-\section{The Pedagogical Disconnect}
-
-Ethical hacking, or pentesting, has become a critical skill in today's cybersecurity 
-landscape. With the increasing reliance on virtualized environments, there is a growing 
-need for practical training platforms that simulate real-world scenarios. However, current 
-educational approaches present a significant challenge: while platforms such as HackTheBox\cite{hackthebox} 
-and TryHackMe\cite{tryhackme} have become increasingly popular for cybersecurity training, they often focus 
-on isolated challenges and gamified scenarios that may not directly reflect the practical 
-application of computer science fundamentals taught in a degree program.
-
-This educational disconnect manifests in several ways:
-
-\begin{enumerate}
-
-\item \textbf{Theory-to-Practice Gap:} Students learn databases, networks, and operating 
-systems in isolation. They rarely experience how misconfigurations in these foundational 
-systems translate to security vulnerabilities exploitable in real-world attacks.
-
-\item \textbf{Tool-Centric Rather Than Methodology-Centric Learning:} Commercial platforms 
-teach tool usage (``how to use Nmap'') rather than systematic penetration testing methodologies 
-(``how to conduct reconnaissance'').
-
-\item \textbf{Fragmented Learning Paths:} No comprehensive platform integrates multiple 
-pentesting domains (reconnaissance --> web vulnerabilities --> network analysis --> privilege 
-escalation) while maintaining alignment with specific degree curricula.
-
-\item \textbf{Institutional Dependencies:} External platforms introduce vendor lock-in, 
-limit customization, and reduce institutional control over assessment and content evolution.
-
-\end{enumerate}
-
-\section{The Role of EVE-NG in Bridging the Gap}
-
-EVE-NG (Emulated Virtual Environment Next Generation) offers a complementary and more 
-customizable approach, providing a robust solution for creating controlled, hands-on learning 
-environments that address these pedagogical gaps.
-
-This project aims to develop a series of practical laboratories using EVE-NG that explicitly 
-bridge the foundational concepts covered throughout the Computer Engineering degree program
----including databases, network protocols, and operating system internals---with real-world 
-security vulnerabilities and pentesting techniques. By demonstrating how these academic 
-concepts can be exploited, students gain a deeper appreciation for defensive security practices 
-and the critical importance of secure system design. This approach transforms abstract knowledge 
-into hands-on experience where students can observe the direct consequences of security 
-misconfigurations and understand why rigorous cybersecurity practices are essential.
-
-Furthermore, by leveraging EVE-NG, this project seeks to fill a gap in comprehensive educational 
-resources that integrate multiple pentesting tools and attack scenarios into a cohesive learning 
-environment aligned with the Computer Engineering curriculum. This reproducible, risk-free, and 
-fully customizable approach provides students with the opportunity to practice ethical hacking 
-in a controlled setting, progressively building upon prior learning while preparing them for 
-the professional responsibility of securing the systems they will design and manage in their careers.
-\end{comment}
 % ============================================================================
-% DEDICATÒRIA
+% DEDICATION
 % ============================================================================
 %\input{../chapters/dedicatoria.tex}
 
 % ============================================================================
-% CAPÍTOL 1: OBJECTE DEL TFG
+% CHAPTER 1: INTRODUCTION
 % ============================================================================
 
 
@@ -320,7 +235,7 @@ the professional responsibility of securing the systems they will design and man
 
 
 % ============================================================================
-% CAPÍTOL 2: ESTAT DE L'ART
+% CHAPTER 2: STATE OF THE ART
 % ============================================================================
 
 
@@ -328,7 +243,7 @@ the professional responsibility of securing the systems they will design and man
 
 
 % ============================================================================
-% CAPÍTOL 3: ESTUDI DE VIABILITAT
+% CHAPTER 3: FEASIBILITY STUDY
 % ============================================================================
 
 
@@ -336,7 +251,7 @@ the professional responsibility of securing the systems they will design and man
 
 
 % ============================================================================
-% CAPÍTOL 4: OBJECTIUS I ABAST
+% CHAPTER 4: OBJECTIVES AND SCOPE
 % ============================================================================
 
 
@@ -344,7 +259,7 @@ the professional responsibility of securing the systems they will design and man
 
 
 % ============================================================================
-% CAPÍTOL 4: METODOLOGIA
+% CHAPTER 5: METHODOLOGY
 % ============================================================================
 
 
@@ -352,7 +267,7 @@ the professional responsibility of securing the systems they will design and man
 
 
 % ============================================================================
-% CAPÍTOL 5: REQUERIMENTS
+% CHAPTER 6: REQUIREMENTS
 % ============================================================================
 
 
@@ -360,184 +275,14 @@ the professional responsibility of securing the systems they will design and man
 
 
 % ============================================================================
-% CAPÍTOL 7: DESENVOLUPAMENT I IMPLEMENTACIÓ
+% CHAPTER 7: DEVELOPMENT AND IMPLEMENTATION
 % ============================================================================
 
 \input{../../chapters/08_development.tex}
 
-\begin{comment}
-\chapter{Development and Implementation}
-
-
-\section{Arquitectura General}
-
-
-\textit{En aquesta secció es descriurà l'arquitectura dels laboratoris, la configuració 
-de les xarxes virtuals, i la implementació de les topologies EVE-NG.}
-
-
-\section{Laboratori 1: Reconeixement i Enumeració}
-
-
-\subsection{Objectius de Laboratori}
-
-
-\begin{itemize}
-    \item Familiarització amb eines de scanning (nmap, Nessus)
-    \item Enumeració de serveis i vulnerabilitats
-    \item Documentació de descobriments
-\end{itemize}
-
-
-\subsection{Topologia de Xarxa}
-
-
-\textit{Diagrama de la xarxa i màquines virtuals que componen aquest laboratori.}
-
-
-\section{Laboratori 2: Vulnerabilitats d'Aplicacions Web}
-
-
-\subsection{OWASP Top 10}
-
-
-\textit{Exploració de les vulnerabilitats més crítiques segons OWASP.}
-
-
-\section{Laboratori 3: Anàlisi de Tràfic i Criptografia}
-
-
-\textit{Anàlisi de comunicacions de xarxa amb Wireshark i tècniques de criptografia.}
-
-
-\section{Laboratori 4: Escalada de Privilegis}
-
-
-\textit{Tècniques d'escalada de privilegis a sistemes Unix i Windows.}
-
 
 % ============================================================================
-% CAPÍTOL 8: RESULTATS I CONCLUSIONS
-% ============================================================================
-
-
-\chapter{Results and Conclusions}
-
-
-\section{Lliurables Entregats}
-
-
-\begin{itemize}
-    \item 4 topologies EVE-NG funcionals (.unl)
-    \item 8-12 imatges de màquines virtuals optimitzades
-    \item Scripts d'automatització per a desplegament
-    \item Documentació tècnica completa per laboratori
-    \item Guies pràctiques per a estudiants
-\end{itemize}
-
-
-\section{Conclusions}
-
-
-El desenvolupament d'aquests laboratoris proporciona una base sòlida per a la formació 
-en pentesting ètic dins del Grau en Enginyeria Informàtica.
-
-
-\section{Recomanacions per a Treballs Futurs}
-
-
-\begin{itemize}
-    \item Integració amb altres plataformes educatives (Moodle)
-    \item Ampliació amb laboratoris d'IoT i xarxes 5G
-    \item Automatització de correccions i qualificacions
-\end{itemize}
-
-
-
-\begin{comment}
-\appendix
-
-
-\chapter{Appendix A: Reproducible LaTeX Build Infrastructure}
-
-
-\section{Configuració de Docker i TeX Live}
-
-
-La memòria del present TFG s'ha desenvolupat usant una infraestructura de build reproducible 
-basada en TeX Live 2023, latexmk i Docker Compose. Aquesta aproximació garanteix que tots 
-els artefactes (PDF, índexs, glosaris) es generin de manera consistent.
-
-
-\subsection{Hores Invertides en Infraestructura}
-
-
-\begin{table}[H]
-    \centering
-    \begin{tabular}{|l|l|r|}
-    \hline
-    \textbf{Tasca} & \textbf{Descripció} & \textbf{Hores} \\
-    \hline
-    TeX Live + Docker & Setup de compilació & 2.5h \\
-    latexmk + .latexmkrc & Build automatitzat & 1.5h \\
-    Estructura modular (chapters/) & Organització de capítols & 3.5h \\
-    Validació i testing & Compilació final & 0.5h \\
-    \hline
-    \textbf{SUBTOTAL} & & \textbf{8.0h} \\
-    \hline
-    \end{tabular}
-\end{table}
-
-
-\chapter{Appendix B: Laboratory Infrastructure (Homelab)}
-
-
-\section{Especificacions del Homelab}
-
-
-\begin{table}[H]
-    \centering
-    \begin{tabular}{|l|l|r|}
-    \hline
-    \textbf{Component} & \textbf{Especificació} & \textbf{Hores Setup} \\
-    \hline
-    Host VMware/Hyper-V & CPU 8-core, RAM 32GB, SSD 500GB & 3.0h \\
-    EVE-NG & Simulador de xarxes corporatiu & 4.0h \\
-    Kali Linux x3 & Màquines de pentesting & 2.5h \\
-    Windows Server & Sistema objectiu & 1.5h \\
-    Xarxes virtuals & 3 VLANS, DMZ, backend & 2.0h \\
-    \hline
-    \textbf{SUBTOTAL} & & \textbf{13.0h} \\
-    \hline
-    \end{tabular}
-\end{table}
-
-
-\chapter{Appendix C: Total Time Tracking}
-
-
-\begin{table}[H]
-    \centering
-    \begin{tabular}{|l|r|r|}
-    \hline
-    \textbf{Activitat} & \textbf{Hores} & \textbf{Percentatge} \\
-    \hline
-    Infraestructura LaTeX & 8.0h & 6\% \\
-    Infraestructura Homelab & 13.0h & 10\% \\
-    Investigació i Disseny & 20.0h & 15\% \\
-    Implementació de Laboratoris & 50.0h & 37\% \\
-    Documentació & 25.0h & 19\% \\
-    Testing i Validació & 15.0h & 11\% \\
-    Gestió de Projecte & 5.0h & 4\% \\
-    \hline
-    \textbf{TOTAL ESTIMAT} & \textbf{136.0h} & \textbf{100\%} \\
-    \hline
-    \end{tabular}
-\end{table}
-\end{comment}
-
-% ============================================================================
-% BIBLIOGRAFIA
+% BIBLIOGRAPHY
 % ============================================================================
 
 
@@ -547,7 +292,7 @@ els artefactes (PDF, índexs, glosaris) es generin de manera consistent.
 \printbibliography
 
 
-% Incluir el appendici de registre de temps si existeix (evita fallades si falta)
+% Include time log appendix if it exists (avoids build failures if missing)
 
 \appendix
 \cleardoublepage

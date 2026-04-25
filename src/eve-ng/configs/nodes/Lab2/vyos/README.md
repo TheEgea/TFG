@@ -1,39 +1,39 @@
-# VyOS-LAB2 — Configuración
+# VyOS-LAB2 -- Configuration
 
-## Acceso
-- Consola: `ssh eve-ng "telnet localhost 32770"` (usuario: vyos / vyos)
-- SSH: **no configurado** — pendiente añadir bloque `service ssh` en config.boot
-- Desde EVE-NG host cuando SSH activo: `sshpass -p vyos ssh vyos@192.168.30.1`
+## Access
+- Console: ssh eve-ng then telnet localhost 32770 (user: vyos / vyos)
+- SSH: not configured -- pending: add service ssh block to config.boot
+- From EVE-NG host when SSH active: sshpass -p vyos ssh vyos@192.168.30.1
 
 ## Interfaces
-| Interfaz | IP              | Red           | Descripción          |
-|----------|-----------------|---------------|----------------------|
-| eth0     | 172.16.1.2/30   | Net-Link      | Uplink a pfSense LAN |
-| eth1     | 192.168.30.1/24 | Net-DMZ       | Gateway DMZ servers  |
-| eth2     | 10.0.40.1/24    | Net-Attackers | Gateway Parrot       |
-| eth3     | —               | —             | Sin uso              |
+| Interface | IP              | Network       | Description           |
+|-----------|-----------------|---------------|-----------------------|
+| eth0      | 172.16.1.2/30   | Net-Link      | Uplink to pfSense LAN |
+| eth1      | 192.168.30.1/24 | Net-DMZ       | DMZ servers gateway   |
+| eth2      | 10.0.40.1/24    | Net-Attackers | Parrot gateway        |
+| eth3      | unused          | --            | --                    |
 
 ## NAT (source)
-- Rule 10: 10.0.40.0/24 → masquerade saliendo por eth0
-- Rule 20: 192.168.30.0/24 → masquerade saliendo por eth0
+- Rule 10: 10.0.40.0/24 -> masquerade out eth0
+- Rule 20: 192.168.30.0/24 -> masquerade out eth0
 
 ## Routing
 - Default route: 0.0.0.0/0 via 172.16.1.1 (pfSense LAN)
 
 ## DNS Forwarding
-- Escucha en: 192.168.30.1, 10.0.40.1
-- Permite desde: 192.168.30.0/24, 10.0.40.0/24
+- Listens on: 192.168.30.1, 10.0.40.1
+- Allowed from: 192.168.30.0/24, 10.0.40.0/24
 
 ## Static host mappings
-- attacker.lab2.internal → 10.0.40.10
-- server-a.lab2.internal → 192.168.30.10
-- server-b.lab2.internal → 192.168.30.20
-- router.lab2.internal   → 192.168.30.1
+- attacker.lab2.internal  -> 10.0.40.10
+- server-a.lab2.internal  -> 192.168.30.10
+- server-b.lab2.internal  -> 192.168.30.20
+- router.lab2.internal    -> 192.168.30.1
 
-## Pendiente
-- Añadir `service ssh` para acceso SSH
-- Verificar DHCP server para red Net-Attackers (Parrot sin IP actualmente)
+## Pending
+- Add service ssh for SSH access
+- Verify DHCP server for Net-Attackers (Parrot currently without IP)
 
-## Nota post-reboot
-Los bridges del host EVE-NG pierden sus IPs al reiniciar EVE-NG host.
-Ejecutar: `bash /usr/local/bin/lab2-bridges-up.sh`
+## Post-reboot note
+EVE-NG host bridges lose their IPs on restart.
+Run: bash /usr/local/bin/lab2-bridges-up.sh

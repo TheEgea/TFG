@@ -34,7 +34,7 @@ set service dhcp-server shared-network-name VLAN20-Servers subnet 192.168.20.0/2
 set service dhcp-server shared-network-name VLAN20-Servers subnet 192.168.20.0/24 range 0 start '192.168.20.50'
 set service dhcp-server shared-network-name VLAN20-Servers subnet 192.168.20.0/24 range 0 stop '192.168.20.100'
 
-#### Basic system bits (optional, si no los tienes ya) ####
+#### Basic system bits (optional, if not already configured) ####
 set system host-name 'Router'
 set system name-server '8.8.8.8'
 
