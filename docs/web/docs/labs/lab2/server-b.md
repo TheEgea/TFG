@@ -7,7 +7,7 @@ Server-B hosts the SYNAPSE DataVault — a Flask application with an intentional
 ## Access
 
 ```bash
-sshpass -p ubuntu ssh ubuntu@192.168.30.x  # Server-B IP
+sshpass -p S3rv3rB ssh ubuntu@192.168.30.x  # Server-B IP
 # From EVE-NG host with bridge vnet0_2 active (IP 192.168.30.x/24)
 ```
 

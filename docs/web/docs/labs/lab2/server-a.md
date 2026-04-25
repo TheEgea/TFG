@@ -7,7 +7,7 @@ Server-A hosts the SYNAPSE Intelligence Portal — a deliberately vulnerable Fla
 ## Access
 
 ```bash
-sshpass -p ubuntu ssh ubuntu@192.168.30.x
+sshpass -p S3rv3rA ssh ubuntu@192.168.30.x
 # From EVE-NG host with bridge vnet0_2 active (IP 192.168.30.x/24)
 ```
 

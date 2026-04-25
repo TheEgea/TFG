@@ -54,9 +54,12 @@ XSS -> Cookie Hijack -> Broken Auth -> SQLi -> Admin Panel -> YAML Deserializati
 
 | User | Password | System | Role |
 |------|----------|--------|------|
+| ubuntu | S3rv3rA | Server-A OS | SSH access |
 | admin | Admin@Synapse2024 | Server-A Portal | admin |
 | guest | guest123 | Server-A Portal | guest |
+| ubuntu | S3rv3rB | Server-B OS | SSH access |
 | operator | D4t4V4ult#2024 | Server-B DataVault | operator |
+| lab2 | L4b2 | Parrot OS | SSH access |
 
 The path from Server-A to Server-B credentials is through the admin panel — reached via SQLi + broken auth.
 
@@ -67,12 +70,12 @@ The path from Server-A to Server-B credentials is through the admin panel — re
 bash /usr/local/bin/lab2-bridges-up.sh
 
 # 2. Start SYNAPSE Portal on Server-A:
-sshpass -p ubuntu ssh ubuntu@192.168.30.x
+sshpass -p S3rv3rA ssh ubuntu@192.168.30.x
 cd /opt/synapse && docker-compose up -d
 docker-compose ps  # 3 containers: flask, nginx, victim
 
 # 3. Start DataVault on Server-B:
-sshpass -p ubuntu ssh ubuntu@192.168.30.x  # Server-B IP
+sshpass -p S3rv3rB ssh ubuntu@192.168.30.x  # Server-B IP
 cd /opt/datavault && sudo docker compose up -d
 sudo docker compose ps  # datavault-flask Up on port 80
 

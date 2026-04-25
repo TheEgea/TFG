@@ -51,6 +51,7 @@ nav:
           - Parrot (Attacker): labs/lab1/parrot.md
       - LAB2 – Web Vulnerabilities:
           - Overview: labs/lab2/index.md
+          - Infrastructure: labs/lab2/infra.md
           - VyOS Router: labs/lab2/vyos.md
           - Server-A (SYNAPSE Portal): labs/lab2/server-a.md
           - Server-B (DataVault): labs/lab2/server-b.md
