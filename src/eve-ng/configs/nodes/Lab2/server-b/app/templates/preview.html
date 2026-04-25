@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head><title>DataVault — Preview</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:monospace;background:#080c14;color:#4fc3f7}
+nav{background:#0d1b2a;border-bottom:1px solid #1e3a5f;padding:14px 28px;display:flex;justify-content:space-between;align-items:center}
+nav span{letter-spacing:3px;font-size:0.9em}
+nav a{color:#37474f;text-decoration:none;margin-left:20px;font-size:0.8em;letter-spacing:1px}
+nav a:hover{color:#4fc3f7}
+.container{padding:32px;max-width:900px}
+h2{letter-spacing:3px;font-size:0.95em;color:#37474f;margin-bottom:24px;border-bottom:1px solid #1e3a5f;padding-bottom:12px}
+.section{background:#0d1b2a;border:1px solid #1e3a5f;padding:20px;margin-bottom:20px}
+.section h3{font-size:0.8em;letter-spacing:2px;color:#1e3a5f;margin-bottom:12px}
+pre{color:#80cbc4;font-size:0.85em;white-space:pre-wrap;word-break:break-all;max-height:400px;overflow-y:auto}
+.parsed{color:#ffb74d}
+.error{color:#ef5350;font-size:0.85em}
+.meta{font-size:0.75em;color:#1e3a5f;margin-bottom:16px}
+a.back{color:#37474f;font-size:0.8em;letter-spacing:1px;text-decoration:none}
+a.back:hover{color:#4fc3f7}
+</style></head>
+<body>
+<nav>
+  <span>SYNAPSE DATAVAULT</span>
+  <div>
+    <a href="/">REPOSITORY</a>
+    <span style="color:#1e3a5f;font-size:0.8em;margin-left:20px">{{ username }}</span>
+  </div>
+</nav>
+<div class="container">
+  <h2>[ DOCUMENT PREVIEW ]</h2>
+  <p class="meta">FILE: {{ filename }}</p>
+  <a class="back" href="/">BACK TO REPOSITORY</a>
+
+  {% if content %}
+  <div class="section" style="margin-top:16px">
+    <h3>RAW CONTENT</h3>
+    <pre>{{ content }}</pre>
+  </div>
+  {% endif %}
+
+  {% if parsed %}
+  <div class="section">
+    <h3>PARSED OUTPUT</h3>
+    <pre class="parsed">{{ parsed }}</pre>
+  </div>
+  {% endif %}
+
+  {% if error %}
+  <div class="section">
+    <h3>PROCESSING ERROR</h3>
+    <p class="error">{{ error }}</p>
+  </div>
+  {% endif %}
+</div>
+</body></html>

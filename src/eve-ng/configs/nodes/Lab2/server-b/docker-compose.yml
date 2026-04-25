@@ -1,0 +1,16 @@
+version: '3.8'
+services:
+  flask:
+    image: python:3.11-slim
+    container_name: datavault-flask
+    working_dir: /app
+    volumes:
+      - ./app:/app
+      - ./uploads:/app/uploads
+      - ./data:/app/data
+    command: >
+      sh -c "pip install flask==3.0.0 pyyaml werkzeug==3.0.1 -q &&
+             python app.py"
+    ports:
+      - "80:5000"
+    restart: unless-stopped

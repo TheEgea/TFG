@@ -1,0 +1,47 @@
+SYNAPSE INTELLIGENCE CORPORATION
+OPERATION NEXUS — CLASSIFIED CORPORATE DATA
+Classification: TOP SECRET / COMPARTMENTED
+
+========================================
+  FINANCIAL INTELLIGENCE
+========================================
+Q1 Revenue (Actual):      $44,871,320
+Q2 Revenue (Projected):   $52,100,000
+Offshore routing account: CH-8472-NEXUS-PRIV
+SWIFT code:               SYNPCH22XXX
+Undisclosed liabilities:  $8.2M (unreported to SEC)
+
+========================================
+  PERSONNEL — EXECUTIVE TIER
+========================================
+CEO:  Marcus Webb        <m.webb@synapse-corp.internal>
+CTO:  Elena Kovacs       <e.kovacs@synapse-corp.internal>
+CSO:  [IDENTITY REDACTED]
+CFO:  Daniel Okafor      <d.okafor@synapse-corp.internal>
+
+========================================
+  OPERATION NEXUS — ACTIVE
+========================================
+Objective:  Covert data collection from government infrastructure
+Contract:   Classified DHS sub-contract #DHS-2024-NEXUS-007
+Budget:     $12,400,000 USD
+Phase:      2 of 4 (active exfiltration)
+Exfil server: 185.220.101.x (Tor exit node)
+
+Discovered vulnerabilities exploited:
+  - SYNAPSE Portal: XSS + SQLi + Broken Auth
+  - DataVault: Insecure YAML deserialization (PyYAML)
+
+========================================
+  FINAL FLAG
+========================================
+FLAG{synapse_nexus_exfil_complete}
+
+========================================
+  INCIDENT LOG
+========================================
+[!] UNAUTHORIZED ACCESS DETECTED
+    Attacker IP: 10.0.40.x (Net-Attackers segment)
+    Method: YAML deserialization reverse shell
+    Time: see system logs
+    Status: DATA EXFILTRATED

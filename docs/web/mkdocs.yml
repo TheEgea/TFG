@@ -52,7 +52,8 @@ nav:
       - LAB2 – Web Vulnerabilities:
           - Overview: labs/lab2/index.md
           - VyOS Router: labs/lab2/vyos.md
-          - Server-A (SYNAPSE): labs/lab2/server-a.md
+          - Server-A (SYNAPSE Portal): labs/lab2/server-a.md
+          - Server-B (DataVault): labs/lab2/server-b.md
           - Flask App: labs/lab2/flask.md
           - Nginx: labs/lab2/nginx.md
           - Victim Bot: labs/lab2/victim.md

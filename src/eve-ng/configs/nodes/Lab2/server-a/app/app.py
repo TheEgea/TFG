@@ -9,6 +9,13 @@ def get_db():
     conn.row_factory = sqlite3.Row
     return conn
 
+def get_session():
+    session = request.cookies.get('session', '')
+    if not session or ':' not in session:
+        return None, None, None
+    parts = session.split(':')
+    return parts[0] if len(parts)>0 else None, parts[1] if len(parts)>1 else 'guest', parts[2] if len(parts)>2 else 'unknown'
+
 @app.route('/')
 def index():
     return redirect(url_for('login'))
@@ -34,16 +41,25 @@ def login():
 
 @app.route('/portal')
 def portal():
-    session = request.cookies.get('session', '')
-    if not session:
+    uid, role, username = get_session()
+    if not uid:
         return redirect(url_for('login'))
-    parts = session.split(':')
-    role = parts[1] if len(parts) > 1 else 'guest'
-    username = parts[2] if len(parts) > 2 else 'unknown'
     db = get_db()
     reports = db.execute("SELECT * FROM reports ORDER BY id DESC LIMIT 5").fetchall()
     db.close()
     return render_template('portal.html', username=username, role=role, reports=reports)
+
+@app.route('/admin')
+def admin():
+    uid, role, username = get_session()
+    if not uid:
+        return redirect(url_for('login'))
+    if role != 'admin':
+        return render_template('forbidden.html'), 403
+    db = get_db()
+    intel = db.execute("SELECT * FROM classified_intel ORDER BY id DESC").fetchall()
+    db.close()
+    return render_template('admin.html', username=username, role=role, intel=intel)
 
 @app.route('/comments', methods=['GET','POST'])
 def comments():
@@ -51,10 +67,7 @@ def comments():
     db = get_db()
     if request.method == 'POST':
         body = request.form.get('body', '')
-        if session and ':' in session and len(session.split(':')) > 2:
-            author = session.split(':')[2]
-        else:
-            author = 'anonymous'
+        author = session.split(':')[2] if session and len(session.split(':'))>2 else 'anonymous'
         db.execute("INSERT INTO comments (body, author) VALUES (?, ?)", (body, author))
         db.commit()
     comments = db.execute("SELECT * FROM comments ORDER BY id DESC").fetchall()
@@ -63,8 +76,8 @@ def comments():
 
 @app.route('/search')
 def search():
-    session = request.cookies.get('session', '')
-    if not session:
+    uid, role, username = get_session()
+    if not uid:
         return redirect(url_for('login'))
     q = request.args.get('q', '')
     results = []
