@@ -226,13 +226,22 @@ Technological requirements specify the infrastructure, tools, and platforms requ
 
 \item \textbf{TR2.1}: Attacking Platform
 \begin{itemize}
-\item Primary: Kali Linux 2024.x~\cite{kali_linux}
-\item Alternative: Parrot Security OS~\cite{parrot_os}
+\item Primary: Parrot OS Security 6.x~\cite{parrot_os}
+\item Alternative: Kali Linux~\cite{kali_linux}
 \item Installation method: EVE-NG pre-built image or custom import
 \item Tools package: Full toolkit including reconnaissance, scanning, and exploitation
 \end{itemize}
+\textbf{Rationale}: Parrot OS Security was selected over Kali Linux as the primary
+attacking platform for three reasons. First, its base system is significantly lighter
+in terms of disk and memory footprint, which is relevant when running multiple VMs
+concurrently inside EVE-NG on constrained lab hardware. Second, the Parrot image
+integrates cleanly into EVE-NG without requiring manual QEMU parameter adjustments.
+Third, Parrot's desktop environment and tool organisation are more approachable for
+students who are not yet familiar with dedicated cybersecurity distributions, reducing
+the cognitive overhead of the attacker node itself so that students can focus on the
+lab objectives.
 
-\item \textbf{TR2.2}: Core Security Tools (installed on Kali)
+\item \textbf{TR2.2}: Core Security Tools (installed on Parrot OS Security)
 \begin{itemize}
 \item \textbf{Reconnaissance}: Nmap, Shodan CLI, Amass, Sublist3r
 \item \textbf{Scanning}: Nessus (optional), OpenVAS, Nikto
@@ -492,7 +501,7 @@ Non-functional requirements specify quality attributes and operational character
     RF3.2  & Functional   & Assessment rubrics                             & All labs     \\
     TR1.1  & Technical    & EVE-NG 5.0+                                    & Platform     \\
     TR1.3  & Technical    & Host 64GB RAM, 2TB storage                     & Infrastructure \\
-    TR2.1  & Technical    & Kali Linux 2024 as attacking platform         & Tools        \\
+    TR2.1  & Technical    & Parrot OS Security as attacking platform      & Tools        \\
     NFR1.1 & Non-Func.    & Deploy in $\leq$ 2 minutes                     & Performance  \\
     NFR2.1 & Non-Func.    & NIST alignment                                 & Compliance   \\
     NFR3.1 & Non-Func.    & MTBF $\geq$ 100h                               & Reliability  \\

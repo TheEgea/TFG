@@ -48,11 +48,11 @@ The 37 tasks have been distributed across 7 categories:
 \begin{itemize}
     \item Task 0.1: HomeLab Initialization Setup (64h)
     \item Task 0.2: VSCode Setup for thesis development (18h) 
-    \item Task 0.3: Kali Linux Setup and Basic Tools (15h) 
+    \item Task 0.3: Parrot OS Security Setup and Basic Tools (15h) 
     \item Task 0.4: Home Lab As-Built Documentation (8h) 
 \end{itemize}
 
-This phase established the technical infrastructure necessary for project development, including virtualization environment (EVE-NG)\cite{eve_ng}, development tools (VSCode, LaTeX)\cite{vscode,latex_project}, and pentesting platform (Kali Linux)\cite{kali_linux}.
+This phase established the technical infrastructure necessary for project development, including virtualization environment (EVE-NG)\cite{eve_ng}, development tools (VSCode, LaTeX)\cite{vscode,latex_project}, and pentesting platform (Parrot OS Security)\cite{parrot_os}.
 Although this infrastructure consolidation phase extended through November, it should not be formally counted as bachelor's thesis work. The virtualization environment, development tools, and pentesting platform were pre-existing components already deployed on personal hardware. 
 This phase primarily involved migrating and centralizing these tools onto a dedicated server infrastructure for enhanced accessibility and project organization, rather than engineering or developing new systems specifically for the bachelor's thesis.
 
@@ -239,7 +239,7 @@ The hourly rate of 15 \euro/hour corresponds to a junior cybersecurity engineer 
     \textbf{Resource} & \textbf{License Type} & \textbf{Unit Cost} & \textbf{Total} \\
     \hline
     EVE-NG Community Edition & Free/Open Source & 0 \euro & 0 \euro \\
-    Kali Linux & Free/Open Source & 0 \euro & 0 \euro \\
+    Parrot OS Security & Free/Open Source & 0 \euro & 0 \euro \\
     VMware Workstation Pro (Educational) & Educational License & 0 \euro & 0 \euro \\
     Metasploitable VMs & Free/Open Source & 0 \euro & 0 \euro \\
     DVWA (Damn Vulnerable Web App) & Free/Open Source & 0 \euro & 0 \euro \\
@@ -307,9 +307,9 @@ A significant advantage of this project is the reliance on free and open-source 
 The project demonstrates \textbf{high technical feasibility} due to the following factors:
 
 \begin{itemize}
-    \item \textbf{Completed Infrastructure Setup}: Phase 0 (Preparation) has been 100\% completed, with HomeLab server, EVE-NG platform, Kali Linux, and development environment fully operational and documented.
+    \item \textbf{Completed Infrastructure Setup}: Phase 0 (Preparation) has been 100\% completed, with HomeLab server, EVE-NG platform, Parrot OS Security, and development environment fully operational and documented.
     
-    \item \textbf{Open-Source Ecosystem}: All software components (EVE-NG, Kali Linux, vulnerable VMs, pentesting tools) are mature, well-documented, and widely adopted in professional cybersecurity training.\cite{metasploit}
+    \item \textbf{Open-Source Ecosystem}: All software components (EVE-NG, Parrot OS Security, vulnerable VMs, pentesting tools) are mature, well-documented, and widely adopted in professional cybersecurity training.\cite{metasploit}
     
     \item \textbf{Proven Technology Stack}: The selected technologies (VMware/EVE-NG for virtualization, Python/Bash for scripting, LaTeX for documentation) are industry-standard and have established best practices.\cite{murphy2018}
     
@@ -360,7 +360,7 @@ The project's critical assets have been identified and categorized according to 
 \textbf{Software Assets}:
 \begin{itemize}
     \item EVE-NG community edition - Availability critical
-    \item Kali Linux distribution - Integrity critical
+    \item Parrot OS Security distribution - Integrity critical
     \item Vulnerable VMs (Metasploitable, DVWA) - Integrity critical
     \item Development tools (VSCode, Git, LaTeX) - Integrity critical
 \end{itemize}
@@ -528,7 +528,7 @@ For each identified risk, mitigation strategies follow NIST SP 800-30 response a
 \begin{itemize}
     \item \textbf{VM Incompatibility} [PREVENTION Strategy]:
     \begin{itemize}
-        \item Early testing: Validate all VM images (Metasploitable, DVWA, Kali Linux)\cite{dvwa} in target environment before production use
+        \item Early testing: Validate all VM images (Metasploitable, DVWA, Parrot OS Security)\cite{dvwa} in target environment before production use
         \item Format standardization: Standardize on QCOW2 for EVE-NG compatibility
         \item Image redundancy: Maintain alternative repositories (VulnHub, GitHub) for rapid replacement
         \item Result: Reduces probability from Medium to Low
@@ -701,7 +701,7 @@ The project incorporates several sustainability practices:
 The project complies with intellectual property regulations:
 
 \begin{itemize}
-    \item \textbf{Open-Source Software}: All utilized software (EVE-NG, Kali Linux, Metasploitable, DVWA) is licensed under permissive open-source licenses (GPL, MIT, Apache 2.0) that explicitly allow educational use, modification, and redistribution.
+    \item \textbf{Open-Source Software}: All utilized software (EVE-NG, Parrot OS Security, Metasploitable, DVWA) is licensed under permissive open-source licenses (GPL, MIT, Apache 2.0) that explicitly allow educational use, modification, and redistribution.
     
     \item \textbf{Virtual Machine Images}: Vulnerable VMs (Metasploitable, DVWA) are provided by their respective projects with explicit permission for cybersecurity training and research purposes.
     
@@ -742,32 +742,32 @@ The project follows Tecnocampus ESUPT bachelor's thesis regulations (approved Se
 
 \subsection{Gender and Diversity Perspective}
 
-\subsubsection{Inclusive Language and Representation}
-
-The project incorporates gender and diversity considerations:
-
-\begin{itemize}
-    \item \textbf{Inclusive Language}: All documentation (thesis, technical write-ups, student guides) uses gender-neutral language where possible, avoiding gender-biased assumptions.
-    
-    \item \textbf{Diverse Examples}: Laboratory scenarios and fictional user accounts employ diverse names and backgrounds, reflecting the multicultural and gender-diverse nature of the cybersecurity profession.
-    
-    \item \textbf{Accessibility}: Documentation is structured to be accessible to students with diverse learning needs, including clear formatting, descriptive headings, and optional use of dyslexia-friendly fonts (OpenDyslexic) in LaTeX template.
-\end{itemize}
-
-\subsubsection{Addressing the Gender Gap in Cybersecurity}
-
-Cybersecurity remains a male-dominated field. This project contributes to bridging the gender gap:
+The \textit{Introduction to Cybersecurity} course at TecnoCampus has no gender or
+diversity restrictions: participation is open to all GEISI students regardless of
+background or identity. In consultation with the responsible professor, the practical
+barriers to engagement are not demographic but relate to two specific factors:
 
 \begin{itemize}
-    \item \textbf{Accessible Entry Point}: Well-documented, structured laboratories lower barriers to entry for students traditionally underrepresented in technical fields, providing a supportive learning environment.
-    
-    \item \textbf{Ethical Framework}: Emphasizing the ethical aspects of cybersecurity (responsible disclosure, defensive security, societal impact) may appeal to a broader demographic beyond the stereotype of "hacker culture."
-    
-    \item \textbf{Collaborative Learning}: The design encourages collaborative problem-solving and knowledge sharing rather than competitive dynamics, fostering an inclusive learning culture.
+    \item \textbf{Prior knowledge}: Students with limited background in networking or
+          operating systems may find the early labs more demanding. This is mitigated
+          through structured lab guides that introduce concepts and tools progressively,
+          with explicit hints and a tools reference section in each student PDF.
+
+    \item \textbf{Reading difficulties (dyslexia)}: Dense technical documentation can
+          be harder to process for students with dyslexia. This project addresses the
+          issue directly by typesetting the entire thesis in OpenDyslexic, a typeface
+          specifically designed to improve readability for dyslexic readers. Lab
+          documentation is additionally structured with short paragraphs, descriptive
+          headings, and code blocks visually separated from prose.
 \end{itemize}
 
-\textbf{Conclusion}: The project demonstrates \textbf{awareness and commitment} to gender and diversity considerations, incorporating inclusive language, diverse representation, and accessibility measures that align with modern educational best practices.
+All documentation uses gender-neutral language throughout. Fictional user accounts and
+scenario names used in the laboratory environments are culturally neutral and carry no
+gender or demographic assumptions.
 
+\textbf{Conclusion}: The inclusion measures in this project are grounded in the real
+barriers identified for this specific academic context --- knowledge scaffolding and
+typographic accessibility --- rather than generic demographic targets.
 
 
 
