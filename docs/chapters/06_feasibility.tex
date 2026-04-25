@@ -16,7 +16,7 @@ The project has been structured in 37 tasks distributed across three main phases
     \item \textbf{Critical path flag}: Identification of tasks that directly impact delivery deadlines
 \end{itemize}
 
-\subsubsection{Task Categories}
+\subsection{Task Categories}
 
 The 37 tasks have been distributed across 7 categories:
 
@@ -41,7 +41,7 @@ The 37 tasks have been distributed across 7 categories:
     \label{tab:task_categories}
 \end{table}
 
-\subsubsection{Phase Breakdown}
+\subsection{Phase Breakdown}
 
 \textbf{Phase 0: Preparation (July - November 2025)}
 
@@ -52,9 +52,7 @@ The 37 tasks have been distributed across 7 categories:
     \item Task 0.4: Home Lab As-Built Documentation (8h) 
 \end{itemize}
 
-This phase established the technical infrastructure necessary for project development, including virtualization environment (EVE-NG)\cite{eve_ng}, development tools (VSCode, LaTeX)\cite{vscode,latex_project}, and pentesting platform (Parrot OS Security)\cite{parrot_os}.
-Although this infrastructure consolidation phase extended through November, it should not be formally counted as bachelor's thesis work. The virtualization environment, development tools, and pentesting platform were pre-existing components already deployed on personal hardware. 
-This phase primarily involved migrating and centralizing these tools onto a dedicated server infrastructure for enhanced accessibility and project organization, rather than engineering or developing new systems specifically for the bachelor's thesis.
+The detailed activities and deliverables for this phase are described in the Methodology chapter (Chapter~4).
 
 \textbf{Phase 1: Avantprojecte (October 2025 - January 2026)}
 
@@ -71,7 +69,7 @@ This phase primarily involved migrating and centralizing these tools onto a dedi
     \item \textbf{Milestone 1.10: Preliminary Project (40h)} - \textbf{Delivery: January 16, 2026}
 \end{itemize}
 
-This phase focuses on conceptual design, requirements analysis, and detailed planning. Critical tasks for the January 16 deadline include completing the pentesting methodology, risk analysis, and resource inventory.
+The detailed activities and deliverables for this phase are described in the Methodology chapter (Chapter~4).
 
 \textbf{Phase 2: Interim Report (January - March 2026)}
 
@@ -90,7 +88,7 @@ This phase focuses on conceptual design, requirements analysis, and detailed pla
     \item \textbf{Milestone 2.11: Intermediate Thesis (50h)} - \textbf{Delivery: March 20, 2026}
 \end{itemize}
 
-This phase implements the first three laboratories and validates them with pilot users. Total estimated hours: 212h.
+This phase implements the first three laboratories and validates them through informal pilot sessions with a small group of GEISI students (4--5 participants) conducted as each lab is completed. Total estimated hours: 212h.
 
 \textbf{Phase 3: Final Delivery (March - May 2026)}
 
@@ -111,9 +109,9 @@ This phase implements the first three laboratories and validates them with pilot
     \item \textbf{Milestone 3.14: Final Report (5h)} - \textbf{Delivery: May 27, 2026}
 \end{itemize}
 
-This phase completes the fourth laboratory, performs exhaustive testing, develops automation scripts, and writes the final report. Total estimated hours: 315h.
+This phase completes the fourth laboratory, performs final validation, develops automation scripts, and writes the final report. Total estimated hours: 315h.
 
-\subsubsection{Gantt Chart}
+\subsection{Gantt Chart}
 
 The complete project planning has been managed using an interactive web-based Gantt chart application developed specifically for this bachelor's thesis. The tool provides:
 
@@ -135,7 +133,7 @@ The complete project planning has been managed using an interactive web-based Ga
 \end{figure}
 
 
-\subsubsection{Critical Paths}
+\subsection{Critical Paths}
 
 Critical path tasks are those that directly impact the delivery deadlines and cannot be delayed without affecting subsequent milestones. The project has identified \textbf{13 critical tasks}:
 
@@ -175,7 +173,7 @@ Any delay in these tasks will cascade to subsequent activities and potentially j
 
 \section{Budget}
 
-\subsubsection{Cost of Human Resources}
+\subsection{Cost of Human Resources}
 
 The total estimated effort for the bachelor's thesis is \textbf{820 hours}, corresponding to the 20 ECTS credits
  assigned to the subject (25 hours per ECTS). The distribution is as follows:
@@ -204,7 +202,7 @@ The hourly rate of 15 \euro/hour corresponds to a junior cybersecurity engineer 
  project but an academic exercise. Also, considering the educational context,
  this cost is not billed to any entity and less being 15 €/hour.
 
-\subsubsection{Cost of Hardware and Software Resources}
+\subsection{Cost of Hardware and Software Resources}
 
 \subsubsection{Hardware Infrastructure}
 
@@ -214,7 +212,7 @@ The hourly rate of 15 \euro/hour corresponds to a junior cybersecurity engineer 
     \hline
     \textbf{Resource} & \textbf{Quantity} & \textbf{Unit Cost} & \textbf{Total} \\
     \hline
-    HomeLab Server (CPU 28-core, 32GB RAM, +32TB SSD) & 1 & 800 \euro & 800 \euro \\
+    HomeLab Server (2× Xeon E5-2680v4, 64GB RAM, HDD+SSD) & 1 & 800 \euro & 800 \euro \\
     Development Workstation (Laptop + Desktop Computer) & 1 & 1200 \euro & 1200 \euro \\
     Network Equipment (Router, Switch) & 1 set & 150 \euro & 150 \euro \\
     External Storage (Backup) & 1 & 100 \euro & 100 \euro \\
@@ -226,10 +224,12 @@ The hourly rate of 15 \euro/hour corresponds to a junior cybersecurity engineer 
     \label{tab:hardware_costs}
 \end{table}
 
-\textbf{Note}: The HomeLab server is a one-time investment that will be reused for future projects and courses,
- amortizing its cost over multiple years. The development workstation and network equipment are also reusable assets.
- Although that the use of the HomeLab server, a laptop and a desktop computer is already assumed on Phase 0,
- and its cost is not directly billed to the project, it's included here for completeness.
+\textbf{Note}: The HomeLab server is a one-time investment reused across multiple projects and academic years,
+ amortizing its cost over 3--5 years. The development workstation and network equipment are similarly reusable.
+ Although these assets were already operational at the start of the project (Phase~0), they are included here
+ for completeness. An additional 32\,GB RAM module was acquired during the project to meet the memory demands
+ of running multiple EVE-NG nodes concurrently alongside other services hosted on the same infrastructure;
+ this cost (\textasciitilde 80\,\euro) is not reflected in the original budget estimate.
 \subsubsection{Software and Licenses}
 
 \begin{table}[H]
@@ -240,7 +240,7 @@ The hourly rate of 15 \euro/hour corresponds to a junior cybersecurity engineer 
     \hline
     EVE-NG Community Edition & Free/Open Source & 0 \euro & 0 \euro \\
     Parrot OS Security & Free/Open Source & 0 \euro & 0 \euro \\
-    VMware Workstation Pro (Educational) & Educational License & 0 \euro & 0 \euro \\
+    Proxmox VE & Free/Open Source & 0 \euro & 0 \euro \\
     Metasploitable VMs & Free/Open Source & 0 \euro & 0 \euro \\
     DVWA (Damn Vulnerable Web App) & Free/Open Source & 0 \euro & 0 \euro \\
     Visual Studio Code & Free/Open Source & 0 \euro & 0 \euro \\
@@ -259,7 +259,7 @@ The hourly rate of 15 \euro/hour corresponds to a junior cybersecurity engineer 
 A significant advantage of this project is the reliance on free and open-source tools,
  which reduces costs to zero for software licensing while maintaining professional-grade capabilities.
 
-\subsubsection{Other Costs}
+\subsection{Other Costs}
 %there's no cost on printing and binding, as it's all digital submission
 \begin{table}[H]
     \centering
@@ -279,7 +279,7 @@ A significant advantage of this project is the reliance on free and open-source 
     \label{tab:other_costs}
 \end{table}
 
-\subsubsection{Total Budget Summary}
+\subsection{Total Budget Summary}
 
 \begin{table}[H]
     \centering
@@ -301,7 +301,7 @@ A significant advantage of this project is the reliance on free and open-source 
 
 \section{Feasibility Analysis}
 
-\subsubsection{Technical Feasibility}
+\subsection{Technical Feasibility}
 
 \subsubsection{Infrastructure Availability}
 The project demonstrates \textbf{high technical feasibility} due to the following factors:
@@ -311,9 +311,9 @@ The project demonstrates \textbf{high technical feasibility} due to the followin
     
     \item \textbf{Open-Source Ecosystem}: All software components (EVE-NG, Parrot OS Security, vulnerable VMs, pentesting tools) are mature, well-documented, and widely adopted in professional cybersecurity training.\cite{metasploit}
     
-    \item \textbf{Proven Technology Stack}: The selected technologies (VMware/EVE-NG for virtualization, Python/Bash for scripting, LaTeX for documentation) are industry-standard and have established best practices.\cite{murphy2018}
+    \item \textbf{Proven Technology Stack}: The selected technologies (Proxmox~VE/EVE-NG for virtualization, Python/Bash for scripting, LaTeX for documentation) are industry-standard and have established best practices.\cite{murphy2018}
     
-    \item \textbf{Academic Support}: Access to institutional resources at Tecnocampus, including academic licenses for software (VMware Workstation Pro), library resources for research, and tutor expertise in cybersecurity and network administration.
+    \item \textbf{Academic Support}: Access to institutional resources at TecnoCampus, including library resources for research and tutor expertise in cybersecurity and network administration.
 \end{itemize}
 \newpage
 \subsubsection{Technical Competencies}
@@ -345,13 +345,13 @@ The student has demonstrated competence in these areas through completed courses
 
 Following the five-phase risk assessment methodology defined in NIST SP 800-30, this section systematically identifies, evaluates, and prioritizes technical risks to ensure appropriate mitigation strategies.
 
-\subsubsection{Phase 1: Asset Identification and Scope Definition}
+\paragraph{Phase 1: Asset Identification and Scope Definition}
 
 The project's critical assets have been identified and categorized according to the CIA triad (Confidentiality, Integrity, Availability):
 
 \textbf{Hardware Assets}:
 \begin{itemize}
-    \item HomeLab server (28-core CPU, 32GB RAM, 32TB SSD) - Availability critical
+    \item HomeLab server (2× Xeon E5-2680v4, 64GB RAM) - Availability critical
     \item Development workstations (laptop + desktop) - Integrity critical
     \item Network equipment (router, switch) - Availability critical
     \item External storage devices (backup) - Confidentiality + Availability critical
@@ -382,7 +382,7 @@ The project's critical assets have been identified and categorized according to 
 
 \textbf{Scope Definition}: The risk assessment focuses on infrastructure and technical risks within the controlled laboratory environment. Excluded from scope: organizational risks (staffing, budget), regulatory risks (compliance), and external threats beyond the academic context.
 
-\subsubsection{Phase 2: Threat and Vulnerability Identification}
+\paragraph{Phase 2: Threat and Vulnerability Identification}
 
 \textbf{Threat Identification}:
 
@@ -436,7 +436,7 @@ Vulnerabilities are the weaknesses that allow threats to impact assets:
     \end{itemize}
 \end{itemize}
 
-\subsubsection{Phase 3: Impact and Likelihood Analysis}
+\paragraph{Phase 3: Impact and Likelihood Analysis}
 
 Risk assessment requires evaluating both likelihood (probability) and impact (consequence) of each identified threat exploiting a vulnerability. Scales follow NIST SP 800-30:
 
@@ -478,7 +478,7 @@ Risk assessment requires evaluating both likelihood (probability) and impact (co
 \end{table}
 
 
-\subsubsection{Phase 4: Risk Evaluation and Prioritization}
+\paragraph{Phase 4: Risk Evaluation and Prioritization}
 
 Based on the impact-likelihood analysis, risks are prioritized to guide mitigation investment:
 
@@ -506,7 +506,7 @@ Based on the impact-likelihood analysis, risks are prioritized to guide mitigati
     \item \textbf{Hardware Degradation} - Aging server components approaching end-of-life. Low probability, manageable through preventive maintenance.
 \end{enumerate}
 
-\subsubsection{Phase 5: Mitigation Strategies}
+\paragraph{Phase 5: Mitigation Strategies}
 
 For each identified risk, mitigation strategies follow NIST SP 800-30 response approaches:
 
@@ -515,7 +515,7 @@ For each identified risk, mitigation strategies follow NIST SP 800-30 response a
 \begin{itemize}
     \item \textbf{EVE-NG Performance Issues} [REDUCTION Strategy]:
     \begin{itemize}
-        \item Hardware dimensioning: Allocate 32GB RAM, 8-core CPU dedicated to EVE-NG to prevent resource exhaustion
+        \item Hardware dimensioning: Allocate at least 32\,GB RAM and 8 CPU cores dedicated to EVE-NG; the project ultimately required 64\,GB on the host to run all nodes concurrently alongside other services (see Chapter~8)
         \item Resource optimization: Implement memory tuning, network simulation limits, VM suspension when idle
         \item Monitoring implementation: Deploy Prometheus + Grafana (Phase 2) for real-time performance alerting
         \item Documented fallback: Maintain VirtualBox installation as alternative hypervisor if critical failure occurs

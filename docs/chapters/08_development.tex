@@ -64,6 +64,19 @@ This reduced set balances realism and manageability, keeps all software licences
 aligned with the academic context, and limits the overhead of maintaining multiple
 image versions across labs.
 
+Parrot OS Security Edition was selected over the more widely known Kali
+Linux~\cite{kali_linux} after evaluating both options during image integration.
+The Kali image proved substantially heavier, required additional QEMU guest
+configuration to work reliably inside EVE-NG, and produced higher per-instance
+resource overhead. Parrot OS provides an equivalent toolset --- Nmap, Metasploit,
+Burp Suite, Hydra, Gobuster, and all tools required by the labs --- with a
+lighter footprint and cleaner EVE-NG integration. An additional consideration
+was accessibility: Parrot OS includes OpenDyslexic and other accessibility fonts
+by default, consistent with the inclusive design principles adopted for the lab
+documentation. This decision is reflected in the requirements specification
+(Section~TR2.1).
+
+
 \subsection{Image Organisation in EVE-NG}
 
 To ensure consistency and reproducibility, all images were organised under the
@@ -179,6 +192,22 @@ never rename a volume group belonging to the host operating system. When a namin
 conflict arises with a guest disk, only the guest volume group is renamed, using a
 descriptive identifier that includes the lab and node reference.
 
+\subsection{Memory Capacity Constraint}
+
+During concurrent development of the first two laboratories, peak memory
+consumption on the EVE-NG virtual machine regularly exceeded the initial
+32\,GB RAM allocation of the host server. Running pfSense, VyOS, Ubuntu Server,
+Ubuntu Desktop, and Parrot OS simultaneously --- alongside other services
+co-hosted on the same Proxmox infrastructure (monitoring stack, reverse proxy,
+storage services) --- produced memory pressure that caused nodes to be killed
+by the hypervisor's out-of-memory handler, interrupting development sessions.
+
+An additional 32\,GB RAM module was acquired and installed, bringing the host
+to 64\,GB total. This resolved the stability issues and allowed all lab nodes
+to run concurrently without further intervention. The upgrade was not included
+in the original project budget estimate; its approximate cost
+(\textasciitilde 80\,\euro) is noted in Chapter~6 as a post-planning expenditure.
+
 
 % ------------------------------------------------------------
 \section{Lab Topologies}
@@ -196,7 +225,7 @@ their primary learning objective, and their current implementation status.
 \textbf{Lab} & \textbf{Primary Objective} & \textbf{Status} \\
 \hline
 Lab 1: Reconnaissance \& Enumeration & Port scanning, web content discovery, SSH & Implemented \\
-Lab 2: Web Application Vulnerabilities & OWASP Top~10 exploitation~\cite{owasp2021}              & Pending \\
+Lab 2: Web Application Vulnerabilities & OWASP Top~10 exploitation~\cite{owasp2021}              & Implemented \\
 Lab 3: Network Analysis                & Traffic capture, lateral movement       & Pending \\
 Lab 4: Privilege Escalation            & Local privilege escalation techniques   & Pending \\
 \hline

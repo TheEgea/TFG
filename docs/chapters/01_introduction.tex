@@ -33,3 +33,29 @@ course currently lacks a structured, reusable, and automatable lab environment t
     \item Remains cost-effective and institution-independent (open-source, 
           locally maintained)
 \end{itemize}
+
+\section{Proposed Solution}
+
+This project proposes a reusable penetration testing lab package built on
+EVE-NG~\cite{eve_ng} and deployed on self-hosted infrastructure, designed
+specifically for the \textit{Introduction to Cybersecurity} course at TecnoCampus.
+The package comprises four progressive lab scenarios covering network reconnaissance
+and enumeration, web application vulnerabilities, network traffic analysis, and
+privilege escalation. Each lab is self-contained: it includes an EVE-NG topology
+file (\texttt{.unl}), a student guide (\textit{enunciado}) and an instructor
+resolution guide (\textit{resolució}), an assessment rubric, and supporting
+configuration and automation scripts. The entire package is open-source, vendor-
+independent, and deployable on any institution running a compatible hypervisor.
+
+\section{Document Structure}
+
+The remainder of this document is organised as follows.
+Chapter~2 reviews the state of the art in cybersecurity education platforms and
+lab environments, situating this project within the existing landscape.
+Chapter~3 presents the feasibility study, covering the project timeline, budget,
+technical viability, and risk assessment.
+Chapter~4 defines the project objectives and measurable KPIs.
+Chapter~5 describes the methodology, project phases, and research methods.
+Chapter~6 specifies the functional and technical requirements of the lab package.
+Chapter~7 documents the development process, including platform setup, infrastructure
+decisions, and a detailed description of each implemented lab.

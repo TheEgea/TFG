@@ -66,22 +66,27 @@ Develop, implement, and validate a reusable teaching package of practical cybers
 
 \subsection{OE4: Validate Usability and Educational Effectiveness}
 
-\textbf{Description}: Verify that the package meets educational and technical requirements.
+\textbf{Description}: Verify that the package meets educational and technical requirements through a reduced pilot group representative of the target student population.
 
 \textbf{Measurable KPIs}:
 \begin{itemize}
-\item Average resolution time per lab: 90-120 minutes
-\item Successful completion rate $\geq$ 85\% (pilot with 10 users)
-\item User satisfaction score $\geq$ 4/5
-\item Zero critical incidents in production environment
+\item Average lab resolution time within the 90--120 minute target window
+\item All pilot participants able to complete the lab with the provided guide
+\item User satisfaction score $\geq$ 4/5 (post-session survey)
+\item Zero blocking technical incidents during pilot sessions
 \end{itemize}
 
 \textbf{Deliverables}:
 \begin{itemize}
-\item Pilot validation report
-\item Usability and performance metrics
-\item Implemented improvement recommendations
+\item Pilot session report with timing and usability observations
+\item Post-session survey results (satisfaction, difficulty, clarity)
+\item List of improvements implemented based on pilot feedback
 \end{itemize}
+
+\textbf{Note}: The pilot group comprises 4--5 individuals from the GEISI student
+population, potentially including participants with documented learning
+difficulties (e.g.\ dyslexia), to assess the effectiveness of the
+accessibility measures incorporated into the lab documentation.
 
 \section{Definition of the Client and Final User}
 
@@ -137,7 +142,7 @@ Beyond the primary users, the material is designed for reuse across different ed
     \item Design and implementation of 4 pentesting labs in EVE-NG
     \item Integration of real vulnerabilities and techniques aligned with 
           OWASP Top 10\cite{owasp2021} and CIS Critical Controls\cite{cis_controls}
-    \item Automation scripts for deployment, validation, and lab reset
+    \item Utility automation scripts for recurring lab management tasks (e.g.\ bridge configuration, ISO upload, connectivity checks)
     \item Complete technical documentation for instructors and future maintainers
     \item Student guides and learning objectives for each lab
     \item Assessment rubrics for evaluating student lab completion
@@ -195,7 +200,7 @@ Scenario reproducibility & 100\% & Automated tests \\
 \midrule
 Lab resolution time & 90--120 min & Time tracking during pilot \\
 \midrule
-Successful completion rate & $\geq$ 85\% & User progress tracking during pilot \\
+Lab completion (pilot) & All participants & Observation during pilot sessions \\
 \midrule
 User satisfaction & $\geq$ 4/5 & Post-use survey \\
 \midrule
@@ -230,4 +235,4 @@ Interface usability & $\geq$ 4/5 & UX heuristic evaluation \\
   \label{tab:kpi_quality}
 \end{table}
 
-\noindent \textbf{Note}: All KPIs will be measured during the pilot validation phase (April-May 2026) and documented in the final bachelor's thesis report.
+\noindent \textbf{Note}: KPIs are being measured during the pilot validation phase (April--May 2026) and will be documented in the final report.

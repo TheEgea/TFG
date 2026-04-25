@@ -92,8 +92,8 @@ The project is structured in four distinct phases, each with specific deliverabl
 \item \textbf{Resource Inventory and Allocation} (5h)
 \begin{itemize}
 \item Hardware requirements: dual-socket server with Proxmox
-\item Software stack: EVE-NG Professional, Parrot OS Security images, security tools
-\item Human resources: student (320h), faculty supervisor, pilot users
+\item Software stack: EVE-NG Community Edition, Parrot OS Security images, security tools
+\item Human resources: student (\textasciitilde 820h total project scope), faculty supervisor
 \item Budget considerations and open-source alternatives
 \end{itemize}
 
@@ -115,7 +115,7 @@ The project is structured in four distinct phases, each with specific deliverabl
 \item Requirements specification document (functional and non-functional)
 \end{itemize}
 
-\textbf{Duration}: 82 hours | \textbf{Status}: In progress (70\%)
+\textbf{Duration}: 82 hours | \textbf{Status}: Completed
 
 \textbf{Milestone Deadline}: January 16, 2026
 
@@ -153,10 +153,10 @@ The project is structured in four distinct phases, each with specific deliverabl
 
 \item \textbf{Pilot Validation with Users} (20h + 6h revision)
 \begin{itemize}
-\item Recruitment of 8-10 pilot users from GEISI cohort
-\item Lab execution sessions with timing and metrics collection
-\item User satisfaction surveys and usability assessment
-\item Performance metrics: completion rates, average resolution time
+\item Informal testing sessions with a small group of GEISI students (4--5 participants) conducted as each lab is completed
+\item Usability observations and timing notes during sessions
+\item Post-session survey on satisfaction, difficulty, and guide clarity
+\item Adjustments applied based on participant feedback
 \end{itemize}
 
 \item \textbf{Topology Adjustments and Optimization} (30h)
@@ -166,11 +166,13 @@ The project is structured in four distinct phases, each with specific deliverabl
 \item Network configuration refinement for stability
 \end{itemize}
 
-\item \textbf{Technical Documentation} (40h)
+\item \textbf{Teaching Material} (40h)
 \begin{itemize}
-\item Student manuals for each lab (15-20 pages minimum)
-\item Teacher deployment guides and customization instructions
-\item Assessment rubrics with quantifiable criteria
+\item Student lab guide PDF (enunciado) per lab --- task description,
+      objectives, hints, and tool reference
+\item Instructor resolution guide PDF (resolució) per lab --- one possible
+      walkthrough, flag values, assessment rubric, and common errors
+\item Technical configuration reference per lab in the repository
 \end{itemize}
 
 \end{enumerate}
@@ -178,12 +180,12 @@ The project is structured in four distinct phases, each with specific deliverabl
 \textbf{Deliverables}:
 \begin{itemize}
 \item 3 fully functional and tested EVE-NG labs
-\item Student and teacher documentation
-\item Pilot validation report with metrics
-\item Technical write-ups and learning materials
+\item Student lab guides and instructor resolution guides (PDF per lab)
+\item Pilot validation report with observations
+\item Technical configuration references per lab
 \end{itemize}
 
-\textbf{Duration}: 188 hours | \textbf{Status}: Planned
+\textbf{Duration}: 188 hours | \textbf{Status}: In progress
 
 \textbf{Milestone Deadline}: March 20, 2026
 
@@ -203,28 +205,26 @@ The project is structured in four distinct phases, each with specific deliverabl
 \item Validation: Successful privilege elevation and system compromise
 \end{itemize}
 
-\item \textbf{Comprehensive Penetration Testing} (30h Phase 1 + 25h Phase 2)
+\item \textbf{Comprehensive Penetration Testing} (30h Round 1 + 25h Round 2)
 \begin{itemize}
-\item Phase 1: Sequential testing of Labs 1, 2, and 3
-\item Phase 2: Integrated testing across all 4 laboratories
+\item Round 1: Sequential testing of Labs 1, 2, and 3
+\item Round 2: Integrated testing across all 4 laboratories
 \item Documentation of all findings and remediation strategies
 \item Validation of security effectiveness
 \end{itemize}
 
-\item \textbf{Automation Framework Development} (30h)
+\item \textbf{Automation Scripts Development} (30h)
 \begin{itemize}
-\item Deploy scripts (Bash/Python) for lab initialization
-\item Reset scripts for state restoration
-\item Validation scripts for automated verification
-\item Integration into CI/CD pipeline
+\item Utility scripts (Bash/Python) for recurring lab management tasks
+\item Bridge configuration, ISO upload, and connectivity check scripts
+\item Scripts documented and tested in the project EVE-NG environment
 \end{itemize}
 
 \item \textbf{Final User Validation and Iteration} (18h)
 \begin{itemize}
-\item Extended pilot with 15-20 users over 2-week period
-\item Collection of usage metrics and satisfaction data
-\item Implementation of final improvements
-\item User acceptance testing (UAT)
+\item Final informal validation sessions with the pilot group (4--5 participants)
+\item Collection of post-session survey data and usability notes
+\item Implementation of final adjustments based on feedback
 \end{itemize}
 
 \item \textbf{Bachelor's thesis Report Writing and Finalization} (90h)
@@ -241,13 +241,13 @@ The project is structured in four distinct phases, each with specific deliverabl
 \textbf{Deliverables}:
 \begin{itemize}
 \item 4 fully functional and tested EVE-NG laboratories
-\item Complete automation framework (12+ scripts)
-\item Final bachelor's thesis report (70-120 pages)
-\item User validation report and lessons learned
+\item Utility automation scripts for common lab management tasks
+\item Final bachelor's thesis report
+\item Pilot validation report with observations and improvements
 \item Deployment package ready for institutional use
 \end{itemize}
 
-\textbf{Duration}: 315 hours | \textbf{Status}: Planned
+\textbf{Duration}: 315 hours | \textbf{Status}: In progress
 
 \textbf{Final Milestone Deadline}: May 27, 2026
 
@@ -300,7 +300,7 @@ The research methodology employs multiple information gathering techniques:
 
 \item \textbf{User Research and Validation}
 \begin{itemize}
-\item Pilot testing with real students (10-20 participants)
+\item Informal pilot sessions with a small group of GEISI students (4--5 participants) conducted as each lab is completed
 \item Qualitative feedback through interviews
 \item Quantitative metrics collection (time-on-task, completion rates)
 \item Usability assessment using standardized scales
@@ -375,118 +375,27 @@ The project adopts an iterative, agile-inspired approach with clear phases and m
 \end{itemize}
 
 
-\section{Comparative Analysis}
+\section{Platform Selection Rationale}
 
-\begin{enumerate}
-    \item \textbf{HackTheBox}: 
-    \begin{itemize}
-        \item Strengths: Large collection of pre-built challenges, strong community
-        \item Limitations: Pre-built scenarios; limited network topology customization; 
-                external platform dependency; content aligned to commercial 
-                pentesting certifications, not specific degree curricula
-        \item Verdict: Unsuitable for curriculum-aligned, institution-controlled labs
-    \end{itemize}
-    
-    \item \textbf{TryHackMe}: 
-    \begin{itemize}
-        \item Strengths: Gamified learning paths, beginner-friendly
-        \item Limitations: Content managed externally; platform-dependent; 
-                free tier is limited; scenarios often oversimplified for 
-                professional preparation
-        \item Verdict: Useful for introduction but insufficient for degree-level 
-                practical integration
-    \end{itemize}
-    
-    \item \textbf{SEED Labs}: 
-    \begin{itemize}
-        \item Strengths: Comprehensive, research-backed cybersecurity exercises; 
-                Docker-based portability
-        \item Limitations: Fixed scenarios; limited virtualization topology control; 
-                minimal automation for lab reset
-        \item Verdict: Good for specific security concepts but less suitable for 
-                integrated network pentesting scenarios
-    \end{itemize}
-    
-    \item \textbf{EVE-NG}: 
-    \begin{itemize}
-        \item Strengths: Full network topology customization; open-source; 
-                locally deployable; supports multiple virtualized OS; 
-                excellent automation capabilities; vendor-independent
-        \item Limitations: Steeper learning curve; requires institutional IT infrastructure
-        \item Verdict: Optimal for institution-controlled, curriculum-aligned, 
-                reusable labs
-    \end{itemize}
-\end{enumerate}
-
-\section{Key Advantages of EVE-NG}
-
-\begin{enumerate}
-    \item \textbf{Institutional Independence}: Open-source platform ensures 
-          no vendor lock-in, long-term sustainability, and 
-          institution-controlled customization
-    
-    \item \textbf{Customization and Control}: Full topology design allows labs 
-          to reflect real infrastructure complexity (routing misconfigurations, 
-          network segmentation failures, hybrid cloud scenarios)
-    
-    \item \textbf{Automation and Reproducibility}: Lab deployment, reset, and 
-          validation can be fully automated, enabling consistent student 
-          experiences and reducing instructor overhead
-    
-    \item \textbf{Curriculum Integration}: Labs can embed specific technologies 
-          taught in parallel courses (OSPF routing, SQL databases, Active 
-          Directory authentication), creating the nexus where theoretical 
-          knowledge meets security contexts
-    
-    \item \textbf{Cost-Effectiveness}: Zero licensing costs; compatible with 
-          open-source tools (Parrot OS Security, Metasploit Framework, Nmap); 
-          appropriate for educational institutions with limited budgets
-    
-    \item \textbf{Scalability}: Lab files are portable and exportable, enabling 
-          future deployment across multiple course sections, institutions, 
-          or as a resource for the broader educational community
-\end{enumerate}
-
+A detailed comparative analysis of existing cybersecurity training platforms ---
+including HackTheBox, TryHackMe, Cisco NetAcad, SEED Labs, GOAD, VulnHub, and
+Hack4u --- is presented in the State of the Art chapter. That analysis evaluates
+each platform across multiple dimensions (customisation, institutional control,
+automation, cost, and curriculum alignment) and concludes that EVE-NG is the
+optimal choice for this project. Its key advantages --- open-source licensing,
+full topology customisation, local deployability, and automation support ---
+directly address the gaps identified in existing platforms and are discussed in
+detail in that chapter.
 
 \section{Validation and Success Criteria}
 
-Success measurement is based on the KPIs defined in Chapter 3 (Objectives and Scope), organized into three categories:
-
-\subsection{Technical Success Criteria}
-
-\begin{itemize}
-
-\item Lab deployment time $\leq$ 2 minutes per lab (95\% of cases)
-\item VM boot success rate $\geq$ 95\%
-\item Full reset time $\leq$ 30 seconds
-\item Scenario reproducibility: 100\% repeatability
-\item Zero critical incidents in production environment
-
-\end{itemize}
-
-\subsection{Educational Success Criteria}
-
-\begin{itemize}
-
-\item Average lab resolution time: 90-120 minutes
-\item Successful completion rate $\geq$ 85\% (pilot with 10+ users)
-\item Key concept understanding $\geq$ 80\% correct
-\item User satisfaction score $\geq$ 4/5
-\item Assessment alignment with GEISI curriculum
-
-\end{itemize}
-
-\subsection{Sustainability Success Criteria}
-
-\begin{itemize}
-
-\item Full documentation coverage (100\% of features)
-\item Open-source tools only (ensuring long-term maintainability)
-\item Compatibility with EVE-NG Community and Professional editions
-\item Institutional readiness for multi-year deployment
-\item Faculty capacity to deploy and customize
-
-\end{itemize}
+Success is measured against the KPIs defined in the Objectives chapter (Chapter~3),
+which cover three dimensions: technical performance (deployment time, boot success
+rate, reproducibility), educational effectiveness (lab resolution time, completion
+rate, user satisfaction), and sustainability (documentation coverage, open-source
+compliance, institutional readiness). Validation is conducted through pilot sessions
+with a representative group of GEISI students and through automated technical checks
+at each development milestone.
 
 \section{Risk Management}
 

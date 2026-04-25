@@ -5,7 +5,7 @@
 % Licensed under CC BY-NC-SA 4.0
 % Template for Final Degree Projects at Centre Universitari TecnoCampus
 
-\documentclass[a4paper, twoside, 12pt, openright]{report}
+\documentclass[a4paper, twoside, 12pt, openany]{report}
 
 % ============================================================================
 % PREAMBLE — Packages and configuration
@@ -206,8 +206,6 @@
 
 
 \newpage
-\null
-\newpage
 
 \fancypagestyle{plain}{
     \fancyhf{}
@@ -286,7 +284,7 @@
 % ============================================================================
 
 
-\cleardoublepage
+\clearpage
 \phantomsection
 \addcontentsline{toc}{chapter}{Bibliography}
 \printbibliography
@@ -295,7 +293,7 @@
 % Include time log appendix if it exists (avoids build failures if missing)
 
 \appendix
-\cleardoublepage
+\clearpage
 
 
 
