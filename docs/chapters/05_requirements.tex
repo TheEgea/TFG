@@ -133,10 +133,9 @@ Functional requirements define the core capabilities and behaviors expected from
 
 \item \textbf{RF3.2}: Assessment rubrics:
 \begin{itemize}
-\item Detailed rubrics for each lab (minimum 15 pages per lab)
-\item Quantifiable evaluation criteria
+\item Detailed assessment rubric per lab with quantifiable criteria
 \item Point allocation per criterion (clear grading scale)
-\item Example student responses (exemplars)
+\item Included in the instructor resolution guide
 \end{itemize}
 
 \item \textbf{RF3.3}: Support materials:
@@ -235,10 +234,11 @@ lab objectives.
 
 \item \textbf{TR2.3}: Target System Images
 \begin{itemize}
-\item Ubuntu Server 18.04/20.04 LTS (Linux targets)
-\item CentOS 7/8 (enterprise Linux)
-\item Windows Server 2016/2019 (Windows targets)
-\item Vulnerable applications: DVWA, WebGoat, Juice Shop, Mutillidae
+\item Ubuntu Server 24.04 LTS (Linux target servers)
+\item Ubuntu Desktop 24.04 LTS (internal workstation)
+\item pfSense CE (perimeter firewall and NAT)
+\item VyOS (routing and inter-VLAN switching)
+\item Vulnerable web application: SYNAPSE (custom, Lab~2)
 \end{itemize}
 
 \item \textbf{TR2.4}: Compliance and Documentation
@@ -264,10 +264,10 @@ lab objectives.
 
 \item \textbf{TR3.2}: Automation Scripts
 \begin{itemize}
-\item Deploy scripts: Initialize lab topologies and configurations
-\item Reset scripts: Restore lab to initial vulnerable state
-\item Validation scripts: Verify security effectiveness and readiness
-\item Monitoring scripts: Track lab health and performance
+\item At least one utility script per lab for a recurring management task
+\item ISO upload automation (\texttt{Iso\_uploader.py}): SCP-based image onboarding
+\item Bridge configuration and connectivity check scripts
+\item All scripts documented with usage instructions in the repository
 \end{itemize}
 
 \item \textbf{TR3.3}: Integration Points
@@ -305,9 +305,9 @@ Non-functional requirements specify quality attributes and operational character
 
 \item \textbf{NFR1.3}: Scalability
 \begin{itemize}
-\item Support for 20+ simultaneous students (1 lab per student minimum)
-\item Support for 30+ concurrent educational deployments
-\item Horizontal scaling through distributed EVE-NG nodes
+\item Current infrastructure supports 3--4 concurrent lab instances on the project HomeLab server
+\item Architecture is horizontally scalable: additional EVE-NG nodes can be added on institutional infrastructure
+\item EVE-NG Professional Edition supports larger concurrent deployments for full classroom use
 \end{itemize}
 
 \end{itemize}
@@ -493,9 +493,3 @@ Non-functional requirements specify quality attributes and operational character
   \caption[Requirements traceability]{Requirements traceability matrix for the EVE-NG laboratory platform}
   \label{tab:requirements_traceability}
 \end{table}
-
-\begin{comment}
-\section{Conclusion}
-
-These comprehensive functional, technological, and non-functional requirements provide the complete specification for the EVE-NG-based cybersecurity teaching package. Adherence to these requirements ensures that the deliverables meet educational objectives, technical quality standards, and institutional sustainability criteria.
-\end{comment}
