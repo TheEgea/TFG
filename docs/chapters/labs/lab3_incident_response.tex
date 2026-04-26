@@ -1,0 +1,776 @@
+% ============================================================
+% Lab 3: Incident Response and Log Forensics — HELIX Systems
+% ============================================================
+
+\section{Lab 3: Incident Response and Log Forensics --- HELIX Systems}
+\label{lab3:sec-main}
+
+\subsection{Overview and Learning Objectives}
+\label{lab3:subsec-overview}
+
+The third laboratory represents a deliberate shift in perspective from the
+previous two labs. Where Labs~1 and~2 place the student in the role of an
+attacker, Lab~3 places them in the role of a \textbf{Security Operations
+Centre (SOC) analyst}. The attack has already occurred: the student's task
+is to connect to the affected systems, collect and correlate log evidence,
+and reconstruct the attacker's complete activity timeline.
+
+The scenario is built around a fictional company named \textit{HELIX Systems},
+which operates a two-tier internal infrastructure consisting of a web-facing
+server and a database server. An unknown threat actor has gained initial
+access, escalated privileges via a misconfigured \texttt{sudoers} entry,
+established persistence by creating a backdoor account, and moved laterally
+to the database server to access sensitive client data. The student's goal
+is to identify each of these steps from the available log artefacts.
+
+The intended learning outcomes are:
+
+\begin{itemize}
+    \item Interpret SSH authentication log entries in \texttt{/var/log/auth.log}
+          to distinguish brute-force attempts from successful logins.
+    \item Identify privilege escalation events caused by a \texttt{sudoers}
+          misconfiguration that grants unrestricted \texttt{NOPASSWD} access to
+          a utility binary (\texttt{/usr/bin/find}).
+    \item Recognise attacker persistence techniques: creation of a backdoor
+          operating system user and modification of the \texttt{sudoers} file.
+    \item Correlate lateral movement evidence across two separate hosts using
+          \texttt{auth.log} entries on the destination server.
+    \item Identify data exfiltration indicators by examining file-system
+          artefacts on the database server.
+    \item Produce a structured incident report documenting the complete attack
+          chain with timestamps, affected accounts, and a recommended remediation
+          plan.
+\end{itemize}
+
+The lab requires no offensive tools. Students work exclusively with standard
+\textsc{Unix} utilities available on the Ubuntu Server nodes: \texttt{grep},
+\texttt{awk}, \texttt{less}, \texttt{cat}, \texttt{find}, and \texttt{journalctl}.
+This reflects the real-world SOC analyst workflow, where the analyst connects
+to affected hosts and examines their native log artefacts without running
+additional tooling.
+
+
+\subsection{Network Topology}
+\label{lab3:subsec-topology}
+
+The topology consists of four nodes interconnected across three network
+segments, as illustrated in Figure~\ref{lab3:fig-topology}.
+
+\begin{figure}[h!]
+    \centering
+    \fbox{\parbox{0.9\textwidth}{\centering\textit{[Topology diagram --- pending EVE-NG screenshot]}}}
+    \caption{Lab 3 network topology: homelab management, perimeter firewall,
+             internal router, web server (HELIX), and database server (HELIX).}
+    \label{lab3:fig-topology}
+\end{figure}
+%TODO: Replace PLACEHOLDER_lab3-topology.png with the actual EVE-NG topology screenshot.
+
+The \textbf{pfSense-LAB3} firewall connects the homelab management network
+(\texttt{192.168.0.0/24}) to the internal \textit{Net-Link} transit segment
+(\texttt{172.16.2.0/30}). It provides NAT, acts as the default outbound
+gateway, and exposes the student entry point via a DNAT rule that forwards
+TCP port~22 from the WAN address to the \textit{Server-Web} node.
+
+The \textbf{VyOS-LAB3} router interconnects three segments:
+\textit{Net-Link} (\texttt{172.16.2.0/30}), \textit{Net-Servers}
+(\texttt{192.168.50.0/24}), and \textit{Net-Internal} (\texttt{192.168.60.0/24}).
+It provides Layer~3 routing and SNAT masquerade for both internal segments,
+but provides neither DHCP nor DNS forwarding, as all addresses in this lab
+are configured statically.
+
+The \textbf{Server-Web} node (Ubuntu Server 24.04, \texttt{192.168.50.10})
+is the primary forensic target. It hosts the injected attack evidence: the
+brute-force and authentication log entries in \texttt{/var/log/auth.log},
+the attacker's post-escalation command history in
+\texttt{/home/devops/.bash\_history}, and the backdoor account
+\texttt{maint} in \texttt{/etc/passwd} and \texttt{/etc/sudoers.d/}.
+
+The \textbf{Server-DB} node (Ubuntu Server 24.04, \texttt{192.168.60.10})
+is the lateral movement and data exfiltration target. Its
+\texttt{/var/log/auth.log} records the attacker's SSH login from Server-Web,
+and \texttt{/opt/helix/data/} contains the HELIX client database
+(\texttt{clients.db}) and an exfiltration marker file (\texttt{.exfil\_marker}).
+
+\subsubsection{Network Addressing}
+\label{lab3:subsubsec-addressing}
+
+Table~\ref{lab3:tab-addressing} summarises the IP addressing scheme across
+all nodes and interfaces.
+
+\begin{table}[h!]
+\centering
+\caption{Lab 3 --- IP addressing table}
+\label{lab3:tab-addressing}
+\begin{tabular}{@{}lllll@{}}
+\toprule
+\textbf{Node} & \textbf{Interface} & \textbf{IP Address} & \textbf{Network} & \textbf{Role} \\
+\midrule
+pfSense-LAB3 & vtnet0 (WAN) & \textasciitilde{}192.168.0.x/24 (DHCP) & Homelab      & Student entry point (DNAT) \\
+pfSense-LAB3 & vtnet1 (LAN) & 172.16.2.1/30                           & Net-Link     & Transit to VyOS \\
+VyOS-LAB3    & eth0         & 172.16.2.2/30                           & Net-Link     & Uplink to pfSense \\
+VyOS-LAB3    & eth1         & 192.168.50.1/24                         & Net-Servers  & Server-Web gateway \\
+VyOS-LAB3    & eth2         & 192.168.60.1/24                         & Net-Internal & Server-DB gateway \\
+Server-Web   & ens3         & 192.168.50.10/24                        & Net-Servers  & Primary forensic target \\
+Server-DB    & ens3         & 192.168.60.10/24                        & Net-Internal & Lateral movement target \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[h!]
+\centering
+\caption{Lab 3 --- access credentials}
+\label{lab3:tab-credentials}
+\begin{tabular}{@{}llll@{}}
+\toprule
+\textbf{System} & \textbf{Username} & \textbf{Password} & \textbf{Role} \\
+\midrule
+pfSense-LAB3 & admin   & pfsense      & Firewall management \\
+VyOS-LAB3    & vyos    & vyos         & Router console \\
+Server-Web   & analyst & An@lyst2024  & Student entry account (legitimate) \\
+Server-Web   & devops  & D3v0ps\#2023 & Compromised account \\
+Server-Web   & maint   & ---          & Backdoor account (created by attacker) \\
+Server-DB    & analyst & An@lyst2024  & Internal access \\
+Server-DB    & devops  & D3v0ps\#2023 & Compromised account (reused password) \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsubsection{EVE-NG Bridge Mapping}
+\label{lab3:subsubsec-bridges}
+
+The EVE-NG host exposes two Linux bridge interfaces that connect the virtual
+lab segments to the management network. These bridges require explicit IP
+assignment after each host reboot via the \texttt{udev} rule
+\texttt{99-lab3-bridges.rules}:
+
+\begin{table}[h!]
+\centering
+\caption{Lab 3 --- EVE-NG host bridge assignments}
+\label{lab3:tab-bridges}
+\begin{tabular}{@{}lll@{}}
+\toprule
+\textbf{Bridge} & \textbf{Network} & \textbf{Segment} \\
+\midrule
+vnet0\_2 & 192.168.50.0/24 & Net-Servers \\
+vnet0\_3 & 192.168.60.0/24 & Net-Internal \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+
+\subsection{Infrastructure Design Decisions}
+\label{lab3:subsec-design}
+
+\subsubsection{Role Reversal: Defender Perspective}
+
+The primary pedagogical decision for Lab~3 was to shift the student's role
+from attacker to defender. After two labs that focused on identifying and
+exploiting vulnerabilities, the blue-team perspective provides a complementary
+skill set that is equally critical in the security profession. This role
+reversal also allows the lab to introduce concepts --- log correlation,
+timeline reconstruction, evidence collection --- that cannot be naturally
+taught from the offensive side.
+
+\subsubsection{Pre-staged Attack}
+
+Rather than requiring the student to execute the attack live, the attack
+is pre-staged: log entries are injected into \texttt{/var/log/auth.log},
+command history is written to \texttt{/home/devops/.bash\_history}, and
+file-system artefacts are created on Server-DB before the lab session
+begins. This approach has two advantages.
+
+First, it allows the lab to include a realistic brute-force phase (25 failed
+authentication attempts) without requiring the student to run a credential
+attack tool, which would be out of scope for a forensics exercise. Second, it
+ensures that the evidence is exactly as designed, without variation introduced
+by live execution. The pre-staged approach is common in SOC training exercises
+and reflects the practical reality that analysts work with historical data
+rather than live attack streams.
+
+\subsubsection{Isolated Two-Tier Architecture}
+
+Placing the database server on a separate, non-exposed segment models a
+realistic enterprise deployment where database servers are isolated from the
+front-end tier. The lateral movement event --- the attacker connecting from
+Server-Web to Server-DB using credentials reused from the initial compromise
+--- demonstrates the impact of password reuse across segmented systems and
+emphasises that network segmentation alone does not prevent lateral movement
+if credential hygiene is poor.
+
+\subsubsection{Single Point of Entry via DNAT}
+
+The student accesses the lab environment by SSH-ing to the pfSense WAN
+address on a port-forwarded TCP~22 rule that maps to Server-Web. This
+mirrors the realistic scenario in which a compromised server is the initial
+foothold that an analyst must access. The student therefore begins their
+investigation from the same host the attacker used, which reinforces the
+principle that forensic analysis is performed in-place on the affected
+system.
+
+
+\subsection{Infrastructure Configuration}
+\label{lab3:subsec-infra}
+
+\subsubsection{VyOS-LAB3}
+\label{lab3:subsubsec-vyos}
+
+The VyOS router provides inter-segment routing and SNAT masquerade for both
+internal networks. Unlike Lab~2, no DHCP or DNS forwarding is configured,
+as all node addresses are static.
+
+\paragraph{Interface and routing configuration.}
+
+\begin{lstlisting}[language=bash, caption={VyOS-LAB3 interface and static route configuration}]
+set interfaces ethernet eth0 address '172.16.2.2/30'
+set interfaces ethernet eth0 description 'UPLINK-PFSENSE'
+set interfaces ethernet eth1 address '192.168.50.1/24'
+set interfaces ethernet eth1 description 'Net-Servers'
+set interfaces ethernet eth2 address '192.168.60.1/24'
+set interfaces ethernet eth2 description 'Net-Internal'
+
+set protocols static route 0.0.0.0/0 next-hop 172.16.2.1
+\end{lstlisting}
+
+\paragraph{NAT Source rules.}
+
+\begin{lstlisting}[language=bash, caption={VyOS-LAB3 SNAT masquerade rules for both internal segments}]
+set nat source rule 10 outbound-interface name 'eth0'
+set nat source rule 10 source address '192.168.50.0/24'
+set nat source rule 10 translation address 'masquerade'
+
+set nat source rule 20 outbound-interface name 'eth0'
+set nat source rule 20 source address '192.168.60.0/24'
+set nat source rule 20 translation address 'masquerade'
+\end{lstlisting}
+
+\paragraph{SSH service.}
+
+\begin{lstlisting}[language=bash, caption={VyOS-LAB3 SSH service activation}]
+set service ssh
+commit
+save
+\end{lstlisting}
+
+\subsubsection{pfSense-LAB3}
+\label{lab3:subsubsec-pfsense}
+
+The pfSense-LAB3 firewall was configured through the web GUI. The same two
+default behaviour corrections required for Lab~2 --- removal of the
+\textit{Block private networks} rule and the \textit{reply-to} directive ---
+were applied, for the same reason: the WAN interface shares the homelab
+management subnet (\texttt{192.168.0.0/24}), which is RFC~1918 space.
+
+\paragraph{Interface assignment.}
+
+\texttt{vtnet0} was assigned as the WAN interface (DHCP from the homelab
+router) and \texttt{vtnet1} was assigned as the LAN interface with the static
+address \texttt{172.16.2.1/30}.
+
+\paragraph{DNAT rule for student entry.}
+
+A port-forward rule was created on the WAN interface to redirect incoming
+TCP~22 connections to Server-Web:
+
+\begin{itemize}
+    \item Interface: WAN
+    \item Protocol: TCP
+    \item Destination port: 22
+    \item Redirect target: \texttt{192.168.50.10}, port~22
+\end{itemize}
+
+The corresponding automatically-generated pass rule allows the forwarded
+traffic through the firewall. Students connect to the lab by running
+\texttt{ssh analyst@<pfSense-WAN-IP>}, which lands them directly on
+Server-Web.
+
+\paragraph{Static route.}
+
+A static route was added pointing \texttt{192.168.50.0/24} and
+\texttt{192.168.60.0/24} via VyOS (\texttt{172.16.2.2}), allowing
+pfSense to route return traffic for both internal segments.
+
+\subsubsection{Server-Web}
+\label{lab3:subsubsec-server-web}
+
+Server-Web (hostname \texttt{helix-web}) runs Ubuntu Server 24.04 with a
+static network configuration applied via Netplan:
+
+\begin{lstlisting}[caption={Server-Web Netplan static IP configuration}]
+network:
+  version: 2
+  ethernets:
+    ens3:
+      addresses:
+        - 192.168.50.10/24
+      routes:
+        - to: default
+          via: 192.168.50.1
+\end{lstlisting}
+
+Four operating system accounts are configured on Server-Web:
+
+\begin{itemize}
+    \item \textbf{ubuntu} --- default installer account (administrative).
+    \item \textbf{analyst} --- student entry account, member of the
+          \texttt{adm} group to allow reading \texttt{/var/log/auth.log}.
+    \item \textbf{devops} --- the compromised developer account used by
+          the attacker in the simulated incident.
+    \item \textbf{maint} --- the backdoor account created by the attacker
+          after privilege escalation; present in \texttt{/etc/passwd} with
+          a creation timestamp of 03:19.
+\end{itemize}
+
+\paragraph{Sudoers misconfiguration.}
+
+The privilege escalation vector is a \texttt{sudoers} drop-in file that
+grants the \texttt{devops} account unrestricted \texttt{NOPASSWD} access
+to the \texttt{find} utility:
+
+\begin{lstlisting}[caption={/etc/sudoers.d/devops --- misconfigured sudoers entry}]
+devops ALL=(ALL) NOPASSWD: /usr/bin/find
+\end{lstlisting}
+
+This configuration allows \texttt{devops} to invoke \texttt{sudo find}
+and use \texttt{find}'s \texttt{-exec} option to run arbitrary commands as
+root. The corresponding \texttt{auth.log} entry is:
+
+\begin{lstlisting}[caption={auth.log entry showing the sudo find privilege escalation}]
+Apr 24 03:18:01 helix-web sudo: devops : TTY=pts/0 ;
+  PWD=/home/devops ; USER=root ; COMMAND=/usr/bin/find
+\end{lstlisting}
+
+\subsubsection{Server-DB}
+\label{lab3:subsubsec-server-db}
+
+Server-DB (hostname \texttt{helix-db}) runs Ubuntu Server 24.04 with a
+static network configuration placing it on the \textit{Net-Internal} segment:
+
+\begin{lstlisting}[caption={Server-DB Netplan static IP configuration}]
+network:
+  version: 2
+  ethernets:
+    ens3:
+      addresses:
+        - 192.168.60.10/24
+      routes:
+        - to: default
+          via: 192.168.60.1
+\end{lstlisting}
+
+The HELIX client data directory is pre-created at \texttt{/opt/helix/data/}.
+It contains two artefacts relevant to the investigation:
+
+\begin{itemize}
+    \item \textbf{clients.db} --- an SQLite database containing fictional
+          HELIX Systems client records. Its presence in the attacker's activity
+          establishes the data-access motive.
+    \item \textbf{.exfil\_marker} --- a hidden file created by the attacker
+          containing the timestamp and source IP of the access event:
+\end{itemize}
+
+\begin{lstlisting}[caption={.exfil\_marker content on Server-DB}]
+185.220.101.47 - 2026-04-24 03:22 - data accessed
+\end{lstlisting}
+
+
+\subsection{Simulated Attack Scenario}
+\label{lab3:subsec-scenario}
+
+The attack timeline covers a seventeen-minute window on 24 April 2026
+between 03:05 and 03:22. Table~\ref{lab3:tab-timeline} summarises the
+complete sequence of events that students must reconstruct.
+
+\begin{table}[h!]
+\centering
+\caption{Lab 3 --- simulated attack timeline}
+\label{lab3:tab-timeline}
+\begin{tabular}{@{}llp{8.5cm}@{}}
+\toprule
+\textbf{Time} & \textbf{Host} & \textbf{Event} \\
+\midrule
+03:05 & Server-Web &
+    25 failed SSH authentication attempts for user \texttt{devops}
+    from external IP \texttt{185.220.101.47}. \\
+03:17 & Server-Web &
+    Successful SSH login as \texttt{devops} (password compromised). \\
+03:18 & Server-Web &
+    \texttt{sudo /usr/bin/find} executed; privilege escalation to root
+    via \texttt{NOPASSWD} sudoers misconfiguration. \\
+03:19 & Server-Web &
+    As root: \texttt{useradd maint} creates backdoor account;
+    added to \texttt{/etc/sudoers.d/maint} for persistence. \\
+03:21 & Server-DB &
+    SSH login as \texttt{devops} from \texttt{192.168.50.10}
+    (Server-Web IP); password reuse enables lateral movement. \\
+03:22 & Server-DB &
+    Access to \texttt{/opt/helix/data/clients.db};
+    creation of \texttt{.exfil\_marker} hidden file. \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+
+\subsection{Evidence Walkthrough}
+\label{lab3:subsec-walkthrough}
+
+The following steps describe the intended investigation progression. Each
+step corresponds to one or more specific log artefacts that the student is
+expected to locate and interpret.
+
+\subsubsection{Step 1 --- Establish Context and Initial Access}
+\label{lab3:subsubsec-step1}
+
+The student connects to Server-Web via the pfSense DNAT entry point:
+
+\begin{lstlisting}[language=bash, caption={Student entry point via pfSense DNAT}]
+$ ssh analyst@<pfSense-WAN-IP>
+analyst@helix-web:~$
+\end{lstlisting}
+
+Before examining log files, the student is expected to orient themselves:
+identify the hostname, the operating system version, configured users, and
+running services.
+
+\begin{lstlisting}[language=bash, caption={Initial system orientation commands}]
+$ hostname
+helix-web
+$ grep -v nologin /etc/passwd | grep -v false
+root:x:0:0:root:/root:/bin/bash
+ubuntu:x:1000:1000:ubuntu:/home/ubuntu:/bin/bash
+analyst:x:1001:1001::/home/analyst:/bin/bash
+devops:x:1002:1002::/home/devops:/bin/bash
+maint:x:1003:1003::/home/maint:/bin/bash
+\end{lstlisting}
+
+The presence of the \texttt{maint} account is the first observable anomaly:
+it is not a standard system account and has no documented business purpose.
+
+\subsubsection{Step 2 --- Brute Force Identification}
+\label{lab3:subsubsec-step2}
+
+The student examines the SSH authentication log for evidence of the
+brute-force phase:
+
+\begin{lstlisting}[language=bash,
+    caption={Identifying failed SSH attempts from auth.log}]
+$ grep 'Failed password' /var/log/auth.log | head -3
+Apr 24 03:05:03 helix-web sshd[1201]: Failed password for devops
+  from 185.220.101.47 port 42001 ssh2
+Apr 24 03:05:06 helix-web sshd[1202]: Failed password for devops
+  from 185.220.101.47 port 42002 ssh2
+...
+$ grep 'Failed password for devops' /var/log/auth.log | wc -l
+25
+\end{lstlisting}
+
+Twenty-five consecutive failures from a single external IP address within
+the same minute window constitutes a clear brute-force indicator.
+
+\subsubsection{Step 3 --- Successful Login and Privilege Escalation}
+\label{lab3:subsubsec-step3}
+
+The student identifies the successful authentication and the subsequent
+privilege escalation:
+
+\begin{lstlisting}[language=bash, caption={Locating the successful login and sudo escalation}]
+$ grep -E 'Accepted|sudo' /var/log/auth.log
+Apr 24 03:17:42 helix-web sshd[1231]: Accepted password for devops
+  from 185.220.101.47 port 43100 ssh2
+Apr 24 03:18:01 helix-web sudo: devops : TTY=pts/0 ;
+  PWD=/home/devops ; USER=root ; COMMAND=/usr/bin/find
+\end{lstlisting}
+
+The twelve-minute gap between the last failed attempt (03:05) and the
+successful login (03:17) is consistent with the attacker pausing to verify
+the correct password before establishing the session. The use of
+\texttt{/usr/bin/find} via \texttt{sudo} is anomalous: a developer account
+has no legitimate reason to escalate privileges using a file search utility.
+
+\subsubsection{Step 4 --- Persistence via Backdoor Account}
+\label{lab3:subsubsec-step4}
+
+The attacker's post-escalation activity is visible in two artefacts:
+the \texttt{auth.log} entry for the \texttt{useradd} call, and the
+\texttt{.bash\_history} of the \texttt{devops} account:
+
+\begin{lstlisting}[language=bash, caption={Backdoor account creation in auth.log}]
+$ grep 'useradd\|maint' /var/log/auth.log
+Apr 24 03:19:15 helix-web useradd[2041]: new user: name=maint,
+  UID=1003, GID=1003, home=/home/maint, shell=/bin/bash
+\end{lstlisting}
+
+\begin{lstlisting}[language=bash, caption={Attacker post-escalation command history}]
+$ sudo cat /home/devops/.bash_history
+id
+whoami
+sudo /usr/bin/find / -name "*.conf" -exec cat {} \;
+useradd -m maint
+echo "maint ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/maint
+chmod 440 /etc/sudoers.d/maint
+exit
+\end{lstlisting}
+
+The \texttt{.bash\_history} confirms the exact privilege escalation technique
+and documents the backdoor account creation in the attacker's own command
+sequence.
+
+\subsubsection{Step 5 --- Lateral Movement to Server-DB}
+\label{lab3:subsubsec-step5}
+
+From Server-Web the student pivots to Server-DB to examine the lateral
+movement evidence:
+
+\begin{lstlisting}[language=bash, caption={Pivoting from Server-Web to Server-DB}]
+analyst@helix-web:~$ ssh analyst@192.168.60.10
+analyst@helix-db:~$
+\end{lstlisting}
+
+\begin{lstlisting}[language=bash, caption={Lateral movement entry in Server-DB auth.log}]
+$ grep 'Accepted' /var/log/auth.log
+Apr 24 03:21:03 helix-db sshd[987]: Accepted password for devops
+  from 192.168.50.10 port 51234 ssh2
+\end{lstlisting}
+
+The source address \texttt{192.168.50.10} is the internal IP of Server-Web,
+confirming that the lateral movement originated from the previously compromised
+host.
+
+\subsubsection{Step 6 --- Data Access and Exfiltration Marker}
+\label{lab3:subsubsec-step6}
+
+The student examines the HELIX data directory:
+
+\begin{lstlisting}[language=bash, caption={Locating the exfiltration artefacts on Server-DB}]
+$ ls -la /opt/helix/data/
+total 28
+drwxr-xr-x 2 root root 4096 Apr 24 03:22 .
+drwxr-xr-x 3 root root 4096 Apr 24 03:10 ..
+-rw-r--r-- 1 root root 8192 Apr 24 03:10 clients.db
+-rw-r--r-- 1 root root   47 Apr 24 03:22 .exfil_marker
+
+$ cat /opt/helix/data/.exfil_marker
+185.220.101.47 - 2026-04-24 03:22 - data accessed
+\end{lstlisting}
+
+The hidden file records the attacker's external IP address and the timestamp
+of the access, providing confirmation that the \texttt{clients.db} file was
+opened. The timestamp \texttt{03:22} is consistent with the lateral movement
+login at \texttt{03:21}, confirming the sequence of events.
+
+\subsubsection{Step 7 --- Incident Summary}
+\label{lab3:subsubsec-step7}
+
+Table~\ref{lab3:tab-findings} summarises the key findings that students
+are expected to document in their incident report.
+
+\begin{table}[h!]
+\centering
+\caption{Lab 3 --- incident findings summary}
+\label{lab3:tab-findings}
+\begin{tabular}{@{}lllp{5cm}@{}}
+\toprule
+\textbf{Time} & \textbf{Host} & \textbf{Artefact} & \textbf{Finding} \\
+\midrule
+03:05--03:16 & Server-Web & auth.log          & 25 failed SSH attempts (brute force) \\
+03:17        & Server-Web & auth.log          & Successful login as \texttt{devops} \\
+03:18        & Server-Web & auth.log          & Privilege escalation via \texttt{sudo find} \\
+03:19        & Server-Web & auth.log + passwd & Backdoor account \texttt{maint} created \\
+03:21        & Server-DB  & auth.log          & Lateral movement from \texttt{192.168.50.10} \\
+03:22        & Server-DB  & .exfil\_marker    & Access to \texttt{clients.db} confirmed \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+
+\subsection{Problems Encountered and Solutions}
+\label{lab3:subsec-problems}
+
+\subsubsection{LVM Volume Group Naming Conflict}
+
+As in Lab~2, the Ubuntu Server installer created an LVM volume group named
+\texttt{ubuntu-vg} on both disk images. When mounted on the EVE-NG host via
+\texttt{nbd} for post-install configuration, the host LVM subsystem discovered
+naming conflicts. Both guest volume groups were renamed to descriptive,
+lab-specific identifiers (\texttt{lab3-web-vg} and \texttt{lab3-db-vg})
+before mounting. The GRUB configuration inside each guest was updated
+accordingly:
+
+\begin{lstlisting}[language=bash, caption={Guest VG rename and GRUB update for Server-Web}]
+# On EVE-NG host after nbd connect:
+sudo pvscan --cache /dev/nbd0p3
+sudo vgchange -ay lab3-web-vg
+# Confirm rename applied in guest /boot/grub/grub.cfg:
+# root=/dev/mapper/lab3--web--vg-ubuntu--lv
+\end{lstlisting}
+
+\subsubsection{Read-only nbd Device}
+
+During evidence injection, a previous \texttt{nbd} connection on
+\texttt{/dev/nbd2} had left the device in a persistent read-only state.
+Subsequent connection attempts to the same device succeeded at the block
+layer but the mounted filesystem refused writes. The resolution was to use
+\texttt{/dev/nbd0} exclusively for all Lab~3 disk operations and to run
+\texttt{pvscan --cache} after each reconnect to ensure the LVM subsystem
+picked up the new block device association.
+
+\subsubsection{analyst Group Membership for Log Access}
+
+After the first boot of Server-Web, the \texttt{analyst} user could not
+read \texttt{/var/log/auth.log} because the file is owned by \texttt{root}
+with group \texttt{adm} and mode \texttt{640}. The user was not a member of
+the \texttt{adm} group by default. The fix was applied via \texttt{nbd} mount
+before the first student session:
+
+\begin{lstlisting}[language=bash, caption={Adding analyst to the adm group for auth.log read access}]
+# Chroot into guest to modify group membership:
+sudo chroot /mnt/lab3-web usermod -aG adm analyst
+\end{lstlisting}
+
+\subsubsection{pfSense Console Access via QEMU Monitor}
+
+pfSense CE 2.6.0 outputs exclusively to the VGA framebuffer and produces no
+output on the serial line. The EVE-NG telnet console (port~32769) is therefore
+silent when pfSense is running. Console interaction requires switching from the
+telnet data channel to the QEMU monitor by sending the escape sequence
+\texttt{Ctrl-A C} over the raw socket connection. Once in monitor mode, the
+VGA text buffer can be read with \texttt{xp /40wx 0xb8000} (two characters
+per 32-bit word, attribute byte interleaved) and keystrokes can be injected
+with \texttt{sendkey}. This technique was first developed for Lab~2 pfSense
+interaction and reused without modification for Lab~3.
+
+
+\subsection{Mitigation and Defensive Analysis}
+\label{lab3:subsec-mitigations}
+
+Table~\ref{lab3:tab-mitigations} maps each attack phase to its root cause
+and the corresponding defensive control.
+
+\begin{table}[h!]
+\centering
+\caption{Lab 3 --- attack phase to mitigation mapping}
+\label{lab3:tab-mitigations}
+\begin{tabular}{@{}p{3.0cm}p{3.0cm}p{7.0cm}@{}}
+\toprule
+\textbf{Attack phase} & \textbf{Root cause} & \textbf{Mitigation} \\
+\midrule
+Brute force (SSH)       & No rate limiting   & fail2ban or equivalent; SSH key authentication only; disable password auth \\
+Initial access          & Weak/reused password & Enforce strong password policy; multi-factor authentication \\
+Privilege escalation    & \texttt{NOPASSWD: /usr/bin/find} in sudoers & Never grant NOPASSWD to utility binaries; principle of least privilege \\
+Persistence             & Unrestricted root access & Audit \texttt{/etc/passwd} and \texttt{sudoers.d/} changes; file integrity monitoring \\
+Lateral movement        & Password reuse across hosts & Unique credentials per system; SSH key-based authentication \\
+Data exfiltration       & No access control on \texttt{/opt/helix/data/} & Least-privilege file ownership; audit logging for sensitive directories \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsubsection{SSH Hardening}
+
+The brute-force phase succeeded because the SSH daemon accepted password
+authentication from any source address without rate limiting. Three controls
+would have prevented or significantly impeded this phase:
+
+\begin{enumerate}
+    \item \textbf{Disable password authentication}: Setting
+          \texttt{PasswordAuthentication no} in \texttt{sshd\_config} forces
+          all clients to use public-key authentication, making brute-force
+          attacks against the SSH service ineffective.
+    \item \textbf{fail2ban}: A simple intrusion prevention daemon that
+          monitors authentication logs and blocks source IPs after a configurable
+          number of failures within a time window. This would have blocked
+          \texttt{185.220.101.47} after the first few failures.
+    \item \textbf{Port restriction}: Restricting SSH access to known management
+          source addresses via the firewall eliminates exposure to external
+          brute-force attempts entirely.
+\end{enumerate}
+
+\subsubsection{Sudoers Least Privilege}
+
+The \texttt{NOPASSWD: /usr/bin/find} sudoers entry is a well-known privilege
+escalation vector. \texttt{find}'s \texttt{-exec} option allows arbitrary
+command execution as the target user. The correct principle is to grant
+\texttt{sudo} access only to the specific commands that a user's role
+legitimately requires, and never to tools that can spawn child processes or
+execute arbitrary code. If \texttt{find} access is required for a script, the
+script itself should be granted \texttt{sudo} access, not the underlying
+utility.
+
+\subsubsection{File Integrity Monitoring}
+
+The backdoor account creation would have been immediately detectable if a
+file integrity monitoring (FIM) tool such as \texttt{auditd} had been
+configured to alert on writes to \texttt{/etc/passwd}, \texttt{/etc/shadow},
+and the \texttt{/etc/sudoers.d/} directory. Real-time FIM alerts are a
+standard component of enterprise endpoint detection systems and would have
+reduced the attacker's dwell time from 17 minutes to seconds.
+
+
+\subsection{Results and Conclusions}
+\label{lab3:subsec-conclusions}
+
+\subsubsection{Infrastructure Status}
+
+Table~\ref{lab3:tab-infra-status} summarises the completion status of each
+infrastructure component.
+
+\begin{table}[h!]
+\centering
+\caption{Lab 3 --- infrastructure component status}
+\label{lab3:tab-infra-status}
+\begin{tabular}{@{}lll@{}}
+\toprule
+\textbf{Component} & \textbf{Status} & \textbf{Notes} \\
+\midrule
+pfSense-LAB3   & Operational & WAN DHCP, DNAT TCP~22, blockpriv + reply-to resolved \\
+VyOS-LAB3      & Operational & Interfaces, SNAT, static routing configured \\
+Server-Web     & Operational & Evidence injected: auth.log, .bash\_history, maint account \\
+Server-DB      & Operational & Evidence injected: auth.log, .exfil\_marker, clients.db \\
+End-to-end F5  & Pending     & Student SSH chain not yet verified end-to-end \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsubsection{Techniques Demonstrated}
+
+The lab demonstrates a complete attack chain across five MITRE ATT\&CK
+tactic categories:
+
+\begin{itemize}
+    \item \textbf{Initial Access (TA0001)}: Valid Account --- brute-force SSH
+          to obtain credentials for the \texttt{devops} account.
+    \item \textbf{Privilege Escalation (TA0004)}: Sudo and Sudo Caching ---
+          exploitation of an insecure \texttt{NOPASSWD: /usr/bin/find} rule.
+    \item \textbf{Persistence (TA0003)}: Create Account --- addition of the
+          \texttt{maint} backdoor account to \texttt{/etc/sudoers.d/}.
+    \item \textbf{Lateral Movement (TA0008)}: Remote Services --- SSH from
+          Server-Web to Server-DB using reused credentials.
+    \item \textbf{Exfiltration (TA0010)}: Exfiltration Over C2 Channel ---
+          access to \texttt{clients.db} confirmed by \texttt{.exfil\_marker}.
+\end{itemize}
+
+\subsubsection{Lessons Learned}
+
+\begin{itemize}
+    \item \textbf{Log correlation across hosts is essential.}
+          The complete attack chain is not visible from any single log file.
+          Combining \texttt{auth.log} from Server-Web with \texttt{auth.log}
+          from Server-DB and the file-system artefacts on both hosts is
+          required to reconstruct the full timeline. This reinforces the role
+          of centralised log aggregation in real SOC environments.
+    \item \textbf{Utility binary NOPASSWD is a well-known misconfiguration.}
+          The \texttt{sudo find} escalation path is documented on GTFOBins
+          and is a common finding in real penetration tests of Linux
+          environments. The lab presents this in a forensic context to help
+          students recognise it when reviewing sudoers configurations during
+          an investigation.
+    \item \textbf{Pre-staged evidence enables controlled learning outcomes.}
+          The log injection approach guarantees that all students encounter
+          exactly the same artefacts regardless of the order in which they
+          explore the systems. This consistency simplifies assessment and
+          allows the exercise to be used in a classroom setting with a fixed
+          expected solution.
+    \item \textbf{Password reuse remains a critical risk even in segmented
+          networks.} The lateral movement phase succeeded purely because the
+          same password was configured on both servers. Network segmentation
+          prevented direct external access to Server-DB, but a compromised
+          front-end node with reused credentials provides an equivalent path.
+\end{itemize}
