@@ -22,10 +22,10 @@ The 37 tasks have been distributed across 7 categories:
 
 \begin{table}[H]
     \centering
-    \begin{tabularx}{\textwidth}{|X|r|r|}
-    \hline
+    \begin{tabularx}{\textwidth}{Xrr}
+\toprule
     \textbf{Category} & \textbf{Number of Tasks} & \textbf{Total Hours} \\
-    \hline
+\midrule
     Preparation & 4 & 105h \\
     Analysis & 5 & 49h \\
     Documentation & 6 & 95h \\
@@ -33,9 +33,8 @@ The 37 tasks have been distributed across 7 categories:
     Testing & 5 & 123h \\
     Implementation & 6 & 220h \\
     Milestones & 3 & 95h \\
-    \hline
     \textbf{TOTAL} & \textbf{37} & \textbf{820h} \\
-    \hline
+\bottomrule
     \end{tabularx}
     \caption{Distribution of tasks by category}
     \label{tab:task_categories}
@@ -76,7 +75,7 @@ The detailed activities and deliverables for this phase are described in the Met
 \begin{itemize}
     \item Task 2.1: Lab 1 Research - Reconnaissance (14h) - \textbf{CRITICAL}
     \item Task 2.2: Lab 2 Research - Web Vulnerabilities (14h) - \textbf{CRITICAL}
-    \item Task 2.3: Lab 3 Research - Privilege Escalation (14h) - \textbf{CRITICAL}
+    \item Task 2.3: Lab 3 Research - Network Analysis and Incident Response (14h) - \textbf{CRITICAL}
     \item Task 2.4: Technical Write-ups Labs 1 \& 2 (13h)
     \item Task 2.5: Topology Adjustments (30h)
     \item Task 2.6: Pre-validation with Pilot Users (20h) - \textbf{CRITICAL}
@@ -88,16 +87,16 @@ The detailed activities and deliverables for this phase are described in the Met
     \item \textbf{Milestone 2.11: Intermediate Thesis (50h)} - \textbf{Delivery: March 20, 2026}
 \end{itemize}
 
-This phase implements the first three laboratories and validates them through informal pilot sessions with a small group of GEISI students (4--5 participants) conducted as each lab is completed. Total estimated hours: 212h.
+This phase implements the first three laboratories (Reconnaissance, Web Vulnerabilities, and Network Analysis) and validates them through informal pilot sessions with a small group of GEISI students (4--5 participants) conducted as each lab is completed. Total estimated hours: 212h.
 
 \textbf{Phase 3: Final Delivery (March - May 2026)}
 
 \begin{itemize}
     \item Task 3.1: Lab 4 Research - Post-Exploitation (16h) - \textbf{CRITICAL}
-    \item Task 3.2: Lab 3 Validation with Users (12h)
+    \item Task 3.2: Lab 3 Network Analysis Validation with Users (12h)
     \item Task 3.3: Technical Write-ups Labs 3 \& 4 (19h)
-    \item Task 3.4: Penetration Testing Phase 1 (Labs 1-2-3) (30h) - \textbf{CRITICAL}
-    \item Task 3.5: Penetration Testing Phase 2 (All Labs) (25h) - \textbf{CRITICAL}
+    \item Task 3.4: Penetration Testing Round 1 (Labs 1-2-3) (30h) - \textbf{CRITICAL}
+    \item Task 3.5: Penetration Testing Round 2 (All Labs) (25h) - \textbf{CRITICAL}
     \item Task 3.6: Python Automation Scripts (30h)
     \item Task 3.7: Final Validation with Pilot Users (18h)
     \item Task 3.8: Final Review and Project Polishing (25h)
@@ -113,7 +112,7 @@ This phase completes the fourth laboratory, performs final validation, develops 
 
 \subsection{Gantt Chart}
 
-The complete project timeline was planned and visualized using a custom interactive web application developed specifically for this thesis. The tool is available in the project repository at \texttt{docs/resources/gantt/index.html} and supports task management, critical path identification, progress tracking by phase, and PNG/CSV export. The exported Gantt chart image is stored at \texttt{docs/images/gantt\_planning.png} for reference.
+The complete project timeline was planned and visualized using a custom interactive web application developed specifically for this thesis. The tool is available in the project repository at \\ \texttt{docs/resources/gantt/index.html} and supports task management, critical path identification, progress tracking by phase, and PNG/CSV export. The exported Gantt chart image is stored at \texttt{docs/images/gantt\_planning.png} for reference.
 
 
 \subsection{Critical Paths}
@@ -133,12 +132,12 @@ Critical path tasks are those that directly impact the delivery deadlines and ca
     1.10  & Milestone: Preliminary Project                  & 40h & Jan 16, 2026 \\
     2.1   & Lab 1 Research                                  & 14h & Jan 26, 2026 \\
     2.2   & Lab 2 Research                                  & 14h & Jan 31, 2026 \\
-    2.3   & Lab 3 Research                                  & 14h & Feb 7, 2026  \\
+    2.3   & Lab 3 Research -- Network Analysis \& IR        & 14h & Feb 7, 2026  \\
     2.6   & Pre-validation with Pilot Users                 & 20h & Feb 23, 2026 \\
     2.6.1 & Pre-validation Revision                         & 6h  & Mar 1, 2026  \\
     3.1   & Lab 4 Research                                  & 16h & Mar 23, 2026 \\
-    3.4   & Penetration Testing Phase 1                     & 30h & Apr 16, 2026 \\
-    3.5   & Penetration Testing Phase 2                     & 25h & Apr 30, 2026 \\
+    3.4   & Penetration Testing Round 1                     & 30h & Apr 16, 2026 \\
+    3.5   & Penetration Testing Round 2                     & 25h & Apr 30, 2026 \\
     3.9   & Bachelor's thesis Report Writing I              & 15h & May 1, 2026  \\
     3.10  & Bachelor's thesis Report Writing II             & 40h & May 20, 2026 \\
     3.11  & Bachelor's thesis Report Writing III            & 35h & May 25, 2026 \\
@@ -163,17 +162,16 @@ The total estimated effort for the bachelor's thesis is \textbf{820 hours}, corr
 
 \begin{table}[H]
     \centering
-    \begin{tabularx}{\textwidth}{|X|r|r|r|}
-    \hline
+    \begin{tabularx}{\textwidth}{Xrrr}
+\toprule
     \textbf{Phase} & \textbf{Hours} & \textbf{Hourly Rate} & \textbf{Total Cost} \\
-    \hline
+\midrule
     Phase 0: Preparation & 105h & 15 \euro/h & 1,575 \euro \\
     Phase 1: Avantprojecte & 188h & 15 \euro/h & 2,820 \euro \\
     Phase 2: Interim Report & 212h & 15 \euro/h & 3,180 \euro \\
     Phase 3: Final Delivery & 315h & 15 \euro/h & 4,725 \euro \\
-    \hline
     \textbf{TOTAL} & \textbf{820h} & & \textbf{12,300 \euro} \\
-    \hline
+\bottomrule
     \end{tabularx}
     \caption{Human resources cost estimation based on junior engineer hourly rate}
     \label{tab:human_resources_cost}
@@ -191,17 +189,16 @@ The hourly rate of 15 \euro/hour corresponds to a junior cybersecurity engineer 
 
 \begin{table}[H]
     \centering
-    \begin{tabularx}{\textwidth}{|X|r|r|r|}
-    \hline
+    \begin{tabularx}{\textwidth}{Xrrr}
+\toprule
     \textbf{Resource} & \textbf{Quantity} & \textbf{Unit Cost} & \textbf{Total} \\
-    \hline
+\midrule
     HomeLab Server (2× Xeon E5-2680v4, 64GB RAM, HDD+SSD) & 1 & 800 \euro & 800 \euro \\
     Development Workstation (Laptop + Desktop Computer) & 1 & 1200 \euro & 1200 \euro \\
     Network Equipment (Router, Switch) & 1 set & 150 \euro & 150 \euro \\
     External Storage (Backup) & 1 & 100 \euro & 100 \euro \\
-    \hline
     \textbf{SUBTOTAL Hardware} & & & \textbf{2,250 \euro} \\
-    \hline
+\bottomrule
     \end{tabularx}
     \caption{Hardware infrastructure costs}
     \label{tab:hardware_costs}
@@ -217,10 +214,10 @@ The hourly rate of 15 \euro/hour corresponds to a junior cybersecurity engineer 
 
 \begin{table}[H]
     \centering
-    \begin{tabularx}{\textwidth}{|X|r|r|r|}
-    \hline
+    \begin{tabularx}{\textwidth}{Xrrr}
+\toprule
     \textbf{Resource} & \textbf{License Type} & \textbf{Unit Cost} & \textbf{Total} \\
-    \hline
+\midrule
     EVE-NG Community Edition & Free/Open Source & 0 \euro & 0 \euro \\
     Parrot OS Security & Free/Open Source & 0 \euro & 0 \euro \\
     Proxmox VE & Free/Open Source & 0 \euro & 0 \euro \\
@@ -231,9 +228,8 @@ The hourly rate of 15 \euro/hour corresponds to a junior cybersecurity engineer 
     Git + GitHub (Student Pack) & Free/Student & 0 \euro & 0 \euro \\
     Burp Suite Community & Free & 0 \euro & 0 \euro \\
     Wireshark & Free/Open Source & 0 \euro & 0 \euro \\
-    \hline
     \textbf{SUBTOTAL Software} & & & \textbf{0 \euro} \\
-    \hline
+\bottomrule
     \end{tabularx}
     \caption{Software and license costs (all free/open-source for educational use)}
     \label{tab:software_costs}
@@ -243,20 +239,17 @@ A significant advantage of this project is the reliance on free and open-source 
  which reduces costs to zero for software licensing while maintaining professional-grade capabilities.
 
 \subsection{Other Costs}
-%there's no cost on printing and binding, as it's all digital submission
 \begin{table}[H]
     \centering
-    \begin{tabularx}{\textwidth}{|X|r|}
-    \hline
+    \begin{tabularx}{\textwidth}{Xr}
+\toprule
     \textbf{Concept} & \textbf{Cost} \\
-    \hline
+\midrule
     Electricity consumption (820h × 0.15 kWh × 0.20 \euro/kWh) & 25 \euro \\
     Internet connectivity (9 months × 40 \euro/month) & 360 \euro \\
-    Documentation printing and binding (3 copies) & 60 \euro \\
     Contingency fund (5\% of total) & 635 \euro \\
-    \hline
-    \textbf{TOTAL Other Costs} & \textbf{1,080 \euro} \\
-    \hline
+    \textbf{TOTAL Other Costs} & \textbf{1,020 \euro} \\
+\bottomrule
     \end{tabularx}
     \caption{Additional operational costs}
     \label{tab:other_costs}
@@ -266,17 +259,16 @@ A significant advantage of this project is the reliance on free and open-source 
 
 \begin{table}[H]
     \centering
-    \begin{tabularx}{\textwidth}{|X|r|}
-    \hline
+    \begin{tabularx}{\textwidth}{Xr}
+\toprule
     \textbf{Category} & \textbf{Total Cost} \\
-    \hline
+\midrule
     Human Resources & 12,300 \euro \\
     Hardware Resources & 2,250 \euro \\
     Software Resources & 0 \euro \\
-    Other Costs & 1,080 \euro \\
-    \hline
-    \textbf{TOTAL PROJECT BUDGET} & \textbf{15,630 \euro} \\
-    \hline
+    Other Costs & 1,020 \euro \\
+    \textbf{TOTAL PROJECT BUDGET} & \textbf{15,570 \euro} \\
+\bottomrule
     \end{tabularx}
     \caption{Complete project budget breakdown}
     \label{tab:total_budget}
@@ -305,17 +297,17 @@ The project requires competencies in multiple areas:
 
 \begin{table}[H]
     \centering
-    \begin{tabularx}{\textwidth}{|X|X|c|}
-    \hline
+    \begin{tabularx}{\textwidth}{XXc}
+\toprule
     \textbf{Area} & \textbf{Required Competency} & \textbf{Level} \\
-    \hline
+\midrule
     Network Administration & Configuration of virtual networks, VLANs, routing, firewall rules & Intermediate \\
-    Operating Systems & Linux administration, Windows Server configuration & Intermediate \\
+    Operating Systems & GNU/Linux administration (Debian/Ubuntu), system configuration & Intermediate \\
     Virtualization & EVE-NG topology design, VM management, resource optimization & Advanced \\
     Pentesting & Reconnaissance, exploitation, privilege escalation, web vulnerabilities & Intermediate \\
     Scripting & Python and Bash for automation and validation & Intermediate \\
     Documentation & LaTeX, technical writing, academic formatting & Intermediate \\
-    \hline
+\bottomrule
     \end{tabularx}
     \caption{Required technical competencies and current proficiency level}
     \label{tab:technical_competencies}
@@ -344,7 +336,7 @@ The project's critical assets have been identified and categorized according to 
 \begin{itemize}
     \item EVE-NG community edition - Availability critical
     \item Parrot OS Security distribution - Integrity critical
-    \item Vulnerable VMs (Metasploitable, DVWA) - Integrity critical
+    \item Reference VMs (Metasploitable, DVWA) --- consulted as design reference for lab scenarios
     \item Development tools (VSCode, Git, LaTeX) - Integrity critical
 \end{itemize}
 
@@ -500,7 +492,6 @@ For each identified risk, mitigation strategies follow NIST SP 800-30 response a
     \begin{itemize}
         \item Hardware dimensioning: Allocate at least 32\,GB RAM and 8 CPU cores dedicated to EVE-NG; the project ultimately required 64\,GB on the host to run all nodes concurrently alongside other services (see Chapter~8)
         \item Resource optimization: Implement memory tuning, network simulation limits, VM suspension when idle
-        \item Monitoring implementation: Deploy Prometheus + Grafana (Phase 2) for real-time performance alerting
         \item Documented fallback: Maintain VirtualBox installation as alternative hypervisor if critical failure occurs
         \item Result: Reduces probability from Medium to Low
     \end{itemize}
@@ -708,6 +699,18 @@ The project adheres to ethical hacking principles and legal boundaries:
     
     \item \textbf{Responsible Disclosure}: In the unlikely event that previously unknown vulnerabilities are discovered in open-source software during testing, they will be reported responsibly to the respective maintainers following coordinated disclosure practices.
 \end{itemize}
+
+
+\subsubsection{Use of Artificial Intelligence Tools}
+
+In the development of this bachelor's thesis, auxiliary artificial intelligence tools
+were used --- both locally deployed language models running on the project's HomeLab
+infrastructure (offline, on dedicated hardware) and complementary online AI services.
+Their use was strictly limited to reviewing draft text, detecting inconsistencies, and
+checking for errors in documentation. No AI tool was used to generate original technical
+content, conclusions, research findings, or design decisions; all creative, analytical,
+and engineering work is the author's own. This disclosure is provided in accordance with
+the academic integrity guidelines applicable to the programme.
 
 \subsubsection{Compliance with Academic Regulations}
 

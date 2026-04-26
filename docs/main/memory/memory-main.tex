@@ -20,14 +20,14 @@
 \usepackage{csquotes}
 \usepackage{eurosym}
 
-\usepackage{fancyhdr} % Per personalitzar capçaleres i peus de pàgina
-\usepackage{etoolbox} % Per canviar estils de numeració
-\usepackage{geometry} % Per ajustar marges
-\usepackage{setspace} % Per ajustar l'interlineat
-\usepackage{titlesec} % Paquet per personalitzar els títols
-\usepackage[nottoc, numbib]{tocbibind} % Inclou bibliografia i índexs automàticament al ToC
-\usepackage[nonumberlist, toc]{glossaries} % Paquet per a la generació del glossari
-\usepackage[style=ieee, backend=biber]{biblatex} % Paquet per gestionar la bibliografia en format IEEE
+\usepackage{fancyhdr} % Header and footer customization
+\usepackage{etoolbox} % Page numbering style control
+\usepackage{geometry} % Margin configuration
+\usepackage{setspace} % Line spacing adjustment
+\usepackage{titlesec} % Section and chapter title formatting
+\usepackage[nottoc, numbib]{tocbibind} % Auto-include bibliography and indexes in ToC
+\usepackage[nonumberlist, toc]{glossaries} % Glossary generation
+\usepackage[style=ieee, backend=biber]{biblatex} % Bibliography management in IEEE format
 
 % Complex tables for time tracking
 \usepackage{array}
@@ -123,13 +123,9 @@
 
 \geometry{top=3cm, bottom=2.54cm, left=2.54cm, right=2.54cm, bindingoffset=0.46cm}
 \setlength{\headheight}{14.5pt}
-\setlength{\parindent}{0pt}
 
 
-\setlength{\headheight}{14.5pt} % Augmentar l'altura de la capçalera
-
-
-\setlength{\parindent}{0pt} % Desactiva el sagnat dels paràgrafs
+\setlength{\parindent}{0pt} % Disable paragraph indentation
 
 
 % Imatges
@@ -194,7 +190,7 @@
 \pagenumbering{Roman}
 
 \tableofcontents
-%\listoffigures
+\listoffigures
 \listoftables
 
 
@@ -222,7 +218,7 @@
 % ============================================================================
 % DEDICATION
 % ============================================================================
-%\input{../chapters/dedicatoria.tex}
+\input{../../chapters/dedication.tex}
 
 % ============================================================================
 % CHAPTER 1: INTRODUCTION

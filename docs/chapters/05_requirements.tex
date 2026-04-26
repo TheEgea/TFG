@@ -100,7 +100,7 @@ Functional requirements define the core capabilities and behaviors expected from
 \item Local privilege escalation vulnerabilities
 \item Kernel exploits (outdated systems)
 \item Weak file permissions and sudo misconfigurations
-\item Windows privilege escalation (UAC bypass, token impersonation)
+\item Linux privilege escalation: SUID/SGID binaries, sudo misconfigurations, writable cron jobs, and capabilities
 \item Post-exploitation persistence mechanisms
 \end{itemize}
 
@@ -169,7 +169,7 @@ Technological requirements specify the infrastructure, tools, and platforms requ
 \begin{itemize}
 \item Version: EVE-NG 5.0 or later
 \item Editions supported: Community (free) and Professional
-\item Deployment: Docker container or bare-metal installation
+\item Deployment: Virtual machine on Proxmox VE host or bare-metal installation
 \item Web interface: Accessible via HTTPS on port 443
 \item API: RESTful API for automation and integration
 \end{itemize}
@@ -228,7 +228,7 @@ lab objectives.
 \item \textbf{Exploitation}: Metasploit Framework 6.x~\cite{metasploit}, ExploitDB, Searchsploit
 \item \textbf{Web Testing}: Burp Suite Community/Professional~\cite{burp_suite}, OWASP ZAP~\cite{owasp_zap}
 \item \textbf{Network Analysis}: Wireshark\cite{wireshark}, tcpdump, mitmproxy
-\item \textbf{Post-Exploitation}: Mimikatz, Rubeus, BloodHound
+%\item \textbf{Post-Exploitation}: Mimikatz, Rubeus, BloodHound  % Windows AD tools -- reserved for Lab 4 if Windows targets are added
 \item \textbf{Programming}: Python 3.10+, Bash scripting
 \end{itemize}
 
@@ -273,8 +273,8 @@ lab objectives.
 \item \textbf{TR3.3}: Integration Points
 \begin{itemize}
 \item EVE-NG API integration for programmatic lab management
-\item Webhook support for event-driven automation
-\item Container orchestration (Docker) for microservices
+%\item Webhook support for event-driven automation  % not implemented
+\item Docker for internal lab application deployment (e.g., SYNAPSE web app in Lab~2)
 \item Version control integration (Git, GitHub)
 \end{itemize}
 
@@ -416,8 +416,8 @@ Non-functional requirements specify quality attributes and operational character
 \item \textbf{NFR5.2}: Documentation and Support
 \begin{itemize}
 \item Comprehensive user manuals and quick-start guides
-\item Video tutorials for complex procedures (2-3 minutes each)
-\item FAQ documentation (minimum 50 entries)
+%\item Video tutorials for complex procedures (2-3 minutes each)  % not produced
+%\item FAQ documentation (minimum 50 entries)  % not produced
 \item Responsive support channel (email, discussion forum, chat)
 \end{itemize}
 
