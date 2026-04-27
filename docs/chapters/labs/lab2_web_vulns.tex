@@ -91,6 +91,7 @@ nodes and interfaces.
 \centering
 \caption{Lab 2 --- IP addressing table}
 \label{lab2:tab-addressing}
+\resizebox{\textwidth}{!}{%
 \begin{tabular}{@{}lllll@{}}
 \toprule
 \textbf{Node} & \textbf{Interface} & \textbf{IP Address} & \textbf{Network} & \textbf{Role} \\
@@ -104,14 +105,17 @@ Server-A        & ens3         & 192.168.30.10/24                         & Net-
 Server-B        & ens3         & 192.168.30.20/24                         & Net-DMZ       & Monitor service \\
 Parrot-Attacker & ens4         & 10.0.40.5/24                             & Net-Attackers & Pentesting node \\
 \bottomrule
-\end{tabular}
+\end{tabular}%
+}
 \end{table}
 
 \begin{table}[h!]
 \centering
 \caption{Lab 2 --- access credentials}
 \label{lab2:tab-credentials}
-\begin{tabular}{@{}llll@{}}
+\small
+\setlength{\tabcolsep}{3pt}
+\begin{tabularx}{\textwidth}{@{}lllX@{}}
 \toprule
 \textbf{System} & \textbf{Username} & \textbf{Password} & \textbf{Access} \\
 \midrule
@@ -124,7 +128,7 @@ Server-B OS     & ubuntu   & S3rv3rB            & SSH 192.168.30.20 \\
 Server-B DataVault & operator & D4t4V4ult\#2024  & http://192.168.30.20 \\
 Parrot-Attacker & lab2     & L4b2               & SSH 10.0.40.5 \\
 \bottomrule
-\end{tabular}
+\end{tabularx}
 \end{table}
 
 \subsubsection{EVE-NG Bridge Mapping}
@@ -179,9 +183,12 @@ and the attacker interface (\texttt{10.0.40.1}), with static host mappings for
 all nodes:
 
 \begin{lstlisting}[language=bash, caption={VyOS static DNS host mappings for Lab 2}]
-set system static-host-mapping host-name server-a.lab2.internal inet 192.168.30.10
-set system static-host-mapping host-name server-b.lab2.internal inet 192.168.30.20
-set system static-host-mapping host-name attacker.lab2.internal inet 10.0.40.10
+set system static-host-mapping \
+  host-name server-a.lab2.internal inet 192.168.30.10
+set system static-host-mapping \
+  host-name server-b.lab2.internal inet 192.168.30.20
+set system static-host-mapping \
+  host-name attacker.lab2.internal inet 10.0.40.10
 \end{lstlisting}
 
 This allows the lab instructions to reference servers by name rather than by raw
@@ -252,9 +259,11 @@ set service dhcp-server shared-network-name NET-DMZ subnet 192.168.30.0/24
 set service dhcp-server shared-network-name NET-DMZ subnet 192.168.30.0/24
     default-router 192.168.30.1
 
-set service dhcp-server shared-network-name NET-ATTACKERS subnet 10.0.40.0/24
+set service dhcp-server shared-network-name\
+    NET-ATTACKERS subnet 10.0.40.0/24
     address-range start 10.0.40.10 stop 10.0.40.50
-set service dhcp-server shared-network-name NET-ATTACKERS subnet 10.0.40.0/24
+set service dhcp-server shared-network-name\
+    NET-ATTACKERS subnet 10.0.40.0/24
     default-router 10.0.40.1
 \end{lstlisting}
 
@@ -267,9 +276,12 @@ set service dns forwarding allow-from 192.168.30.0/24
 set service dns forwarding allow-from 10.0.40.0/24
 set service dns forwarding system
 
-set system static-host-mapping host-name server-a.lab2.internal inet 192.168.30.10
-set system static-host-mapping host-name server-b.lab2.internal inet 192.168.30.20
-set system static-host-mapping host-name attacker.lab2.internal inet 10.0.40.10
+set system static-host-mapping \
+  host-name server-a.lab2.internal inet 192.168.30.10
+set system static-host-mapping \
+  host-name server-b.lab2.internal inet 192.168.30.20
+set system static-host-mapping \
+  host-name attacker.lab2.internal inet 10.0.40.10
 \end{lstlisting}
 
 \paragraph{SSH service.}
@@ -355,14 +367,16 @@ destination networks and the associated gateway.
 \centering
 \caption{Lab 2 --- pfSense static routes}
 \label{lab2:tab-pfsense-routes}
-\begin{tabular}{@{}lll@{}}
+\small
+\setlength{\tabcolsep}{3pt}
+\begin{tabularx}{\textwidth}{@{}llX@{}}
 \toprule
 \textbf{Destination} & \textbf{Gateway} & \textbf{Purpose} \\
 \midrule
 192.168.30.0/24 & VyOS\_GW (172.16.1.2) & Route to Net-DMZ via VyOS \\
 10.0.40.0/24    & VyOS\_GW (172.16.1.2) & Route to Net-Attackers via VyOS \\
 \bottomrule
-\end{tabular}
+\end{tabularx}
 \end{table}
 
 pfSense requires that static routes reference a \textbf{named gateway} entry
@@ -541,7 +555,8 @@ app = Flask(__name__)
 @app.route('/ping', methods=['POST'])
 def ping():
     host = request.form.get('host', '')
-    # VULNERABLE: user input concatenated directly into shell command
+    # VULNERABLE: user input concatenated
+    # directly into shell command
     result = os.popen("ping -c 1 " + host).read()
     return render_template('ping.html', result=result)
 \end{lstlisting}
@@ -710,16 +725,18 @@ obtained throughout the attack chain.
 \centering
 \caption{Lab 2 --- captured artefacts and flags}
 \label{lab2:tab-flags}
-\begin{tabular}{@{}llll@{}}
+\small
+\setlength{\tabcolsep}{3pt}
+\begin{tabularx}{\textwidth}{@{}lXll@{}}
 \toprule
 \textbf{Step} & \textbf{Artefact} & \textbf{Location} & \textbf{Status} \\
 \midrule
 XSS theft        & Session cookie (guest)    & Browser cookie store       & Deployed \\
-SQL Injection    & FLAG\{synapse\_sqli\_creds\_dumped\} & admin\_users table & Deployed \\
-Admin Panel      & FLAG\{synapse\_admin\_classified\_accessed\} & classified\_intel & Deployed \\
-YAML Deser.      & FLAG\{synapse\_nexus\_exfil\_complete\} & /app/data/finalData.txt & Deployed \\
+SQL Injection    & \path{FLAG{synapse_sqli_creds_dumped}} & admin\_users table & Deployed \\
+Admin Panel      & \path{FLAG{synapse_admin_classified_accessed}} & classified\_intel & Deployed \\
+YAML Deser.      & \path{FLAG{synapse_nexus_exfil_complete}} & /app/data/finalData.txt & Deployed \\
 \bottomrule
-\end{tabular}
+\end{tabularx}
 \end{table}
 %TODO: Update status column from "Planned" to "Validated" once walkthrough is executed (Phases F3-F6 complete).
 
@@ -845,7 +862,9 @@ control and the corresponding OWASP category.
 \centering
 \caption{Lab 2 --- vulnerability-to-mitigation mapping}
 \label{lab2:tab-mitigations}
-\begin{tabular}{@{}p{3.0cm}p{2.8cm}p{7.5cm}@{}}
+\small
+\setlength{\tabcolsep}{4pt}
+\begin{tabularx}{\textwidth}{@{}p{3.5cm}p{3.2cm}X@{}}
 \toprule
 \textbf{Vulnerability} & \textbf{OWASP (2021)} & \textbf{Mitigation} \\
 \midrule
@@ -855,7 +874,7 @@ SQL Injection           & A03 --- Injection      & Parameterised queries (prepar
 Command Injection       & A03 --- Injection      & \texttt{subprocess} with list args; no \texttt{shell=True}; input allowlisting \\
 Broken Access Control   & A01 --- BAC            & Least-privilege service accounts; secret management system; segmentation \\
 \bottomrule
-\end{tabular}
+\end{tabularx}
 \end{table}
 
 \subsubsection{Output Encoding and Content Security Policy}
@@ -884,7 +903,8 @@ provided by the \texttt{sqlite3} driver:
 def search():
     q = request.args.get('q', '')
     # SAFE: parameterised query
-    query = "SELECT id, title, summary FROM reports WHERE title LIKE ?"
+    query = ("SELECT id, title, summary FROM reports"
+             " WHERE title LIKE ?")
     results = db.execute(query, ('%' + q + '%',)).fetchall()
     return render_template('search.html', results=results)
 \end{lstlisting}
@@ -944,7 +964,9 @@ infrastructure component as of the current development phase.
 \centering
 \caption{Lab 2 --- infrastructure component status}
 \label{lab2:tab-infra-status}
-\begin{tabular}{@{}lll@{}}
+\small
+\setlength{\tabcolsep}{3pt}
+\begin{tabularx}{\textwidth}{@{}llX@{}}
 \toprule
 \textbf{Component} & \textbf{Status} & \textbf{Notes} \\
 \midrule
@@ -957,7 +979,7 @@ SYNAPSE Portal (F3)  & Complete      & Docker Compose, 3 vulns + admin panel \\
 DataVault (F4)       & Complete      & YAML UnsafeLoader, reverse shell, final flag \\
 Full walkthrough (F6) & Pending      & Pending Parrot static IP (F5) \\
 \bottomrule
-\end{tabular}
+\end{tabularx}
 \end{table}
 
 \subsubsection{Vulnerabilities Demonstrated}
@@ -1036,7 +1058,9 @@ observed state of each node.
 \centering
 \caption{LAB2 node state --- 2026-04-24}
 \label{tab:lab2-node-state-20260424}
-\begin{tabular}{llll}
+\small
+\setlength{\tabcolsep}{3pt}
+\begin{tabularx}{\textwidth}{@{}p{3cm}p{3.5cm}lX@{}}
 \toprule
 \textbf{Node} & \textbf{IP} & \textbf{SSH} & \textbf{Notes} \\
 \midrule
@@ -1046,7 +1070,7 @@ Server-B-SYNAPSE & 192.168.30.20             & \checkmark   & OS installed, app 
 Parrot-Attacker  & 10.0.40.x (DHCP)          & --           & Booting from CD; F5 pending \\
 pfSense-LAB2     & WAN: 192.168.0.23 (DHCP)  & --           & UEFI/SeaBIOS mismatch; needs manual start \\
 \bottomrule
-\end{tabular}
+\end{tabularx}
 \end{table}
 
 \paragraph{VyOS console access.}
@@ -1061,7 +1085,7 @@ configuration persisted correctly across the reboot.
 The pfSense-LAB2 node was installed in UEFI mode (GPT + EFI partition)
 during a previous session. EVE-NG's default launcher uses SeaBIOS
 (\texttt{machine type=pc}), which cannot boot a UEFI installation. A
-dedicated start script at \texttt{/usr/local/bin/pfsense-lab2-start.sh}
+dedicated start script at \path{/usr/local/bin/pfsense-lab2-start.sh}
 must be used instead; it invokes QEMU with \texttt{machine type=q35} and
 OVMF firmware. This is the expected procedure after any EVE-NG host reboot.
 
@@ -1084,8 +1108,8 @@ consists of three containers:
           stolen via XSS.
 \end{itemize}
 
-The Docker Compose file is located at \texttt{/opt/synapse/docker-compose.yml}
-on Server-A. Application source files reside in \texttt{/opt/synapse/app/}.
+The Docker Compose file is located at \path{/opt/synapse/docker-compose.yml}
+on Server-A. Application source files reside in \path{/opt/synapse/app/}.
 
 \paragraph{Database schema.}
 The SQLite database is initialised by \texttt{init\_db.py} at container
@@ -1100,12 +1124,12 @@ start. It creates four tables:
     \item \textbf{comments} --- user-submitted comments, rendered without
           sanitisation (XSS sink).
     \item \textbf{admin\_users} --- credential and flag store. Contains
-          \texttt{FLAG\{synapse\_sqli\_creds\_dumped\}} (FLAG~\#1).
+          \linebreak[0]{\small\texttt{FLAG\{synapse\_sqli\_creds\_dumped\}}} (FLAG~\#1).
     \item \textbf{classified\_intel} --- classified intelligence table.
-          Contains \texttt{FLAG\{synapse\_admin\_classified\_accessed\}} (FLAG~\#2)
+          Contains \linebreak[0]{\small\texttt{FLAG\{synapse\_admin\_classified\_accessed\}}} (FLAG~\#2)
           and Server-B credentials (\texttt{operator / D4t4V4ult\#2024}).
           Contains \texttt{monitor} / \texttt{M0nit0r2024} and
-          \texttt{FLAG\{synapse\_sqli\_creds\_dumped\}}.
+          \linebreak[0]{\small\texttt{FLAG\{synapse\_sqli\_creds\_dumped\}}}.
 \end{itemize}
 
 \paragraph{Vulnerability 1 --- Stored XSS (\texttt{/comments}).}
@@ -1151,7 +1175,7 @@ parts = session.split(':')
 role  = parts[1] if len(parts) > 1 else 'guest'
 \end{lstlisting}
 
-Setting \texttt{document.cookie = "session=1:admin:admin; path=/"} in
+Setting \linebreak[0]{\small\texttt{document.cookie = "session=1:admin:admin; path=/"}} in
 the browser console immediately grants admin-level access to all
 restricted routes without knowing the admin password.
 
@@ -1171,7 +1195,7 @@ credentials from the \texttt{admin\_users} table is:
 ' UNION SELECT 1,username,flag,password,5 FROM admin_users--
 \end{lstlisting}
 
-This returns \texttt{FLAG\{synapse\_sqli\_creds\_dumped\}} (FLAG~\#1).
+This returns \linebreak[0]{\small\texttt{FLAG\{synapse\_sqli\_creds\_dumped\}}} (FLAG~\#1).
 The student then navigates to \texttt{/admin} with the forged admin cookie
 to obtain FLAG~\#2 and Server-B DataVault credentials.
 
@@ -1205,7 +1229,7 @@ parsed = str(yaml.load(raw, Loader=yaml.UnsafeLoader))
     \item In reverse shell: \texttt{cat /app/data/finalData.txt}.
 \end{enumerate}
 
-The final flag is \texttt{FLAG\{synapse\_nexus\_exfil\_complete\}} (FLAG~\#3).
+The final flag is \linebreak[0]{\small\texttt{FLAG\{synapse\_nexus\_exfil\_complete\}}} (FLAG~\#3).
 
 % ----------------------------------------
 \subsubsection{Pending Phases}
@@ -1240,5 +1264,5 @@ This session completed the final configuration of the lab environment:
           \texttt{nc}, \texttt{sqlmap}.
     \item \textbf{Application configs exported.}
           All source files and Docker Compose definitions are backed up
-          to \texttt{src/eve-ng/configs/nodes/Lab2/} in the repository.
+          to \path{src/eve-ng/configs/nodes/Lab2/} in the repository.
 \end{itemize}

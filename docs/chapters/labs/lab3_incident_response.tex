@@ -83,12 +83,12 @@ is the primary forensic target. It hosts the injected attack evidence: the
 brute-force and authentication log entries in \texttt{/var/log/auth.log},
 the attacker's post-escalation command history in
 \texttt{/home/devops/.bash\_history}, and the backdoor account
-\texttt{maint} in \texttt{/etc/passwd} and \texttt{/etc/sudoers.d/}.
+\texttt{maint} in \path{/etc/passwd} and \texttt{/etc/sudoers.d/}.
 
 The \textbf{Server-DB} node (Ubuntu Server 24.04, \texttt{192.168.60.10})
 is the lateral movement and data exfiltration target. Its
 \texttt{/var/log/auth.log} records the attacker's SSH login from Server-Web,
-and \texttt{/opt/helix/data/} contains the HELIX client database
+and \path{/opt/helix/data/} contains the HELIX client database
 (\texttt{clients.db}) and an exfiltration marker file (\texttt{.exfil\_marker}).
 
 \subsubsection{Network Addressing}
@@ -101,6 +101,7 @@ all nodes and interfaces.
 \centering
 \caption{Lab 3 --- IP addressing table}
 \label{lab3:tab-addressing}
+\resizebox{\textwidth}{!}{%
 \begin{tabular}{@{}lllll@{}}
 \toprule
 \textbf{Node} & \textbf{Interface} & \textbf{IP Address} & \textbf{Network} & \textbf{Role} \\
@@ -113,14 +114,17 @@ VyOS-LAB3    & eth2         & 192.168.60.1/24                         & Net-Inte
 Server-Web   & ens3         & 192.168.50.10/24                        & Net-Servers  & Primary forensic target \\
 Server-DB    & ens3         & 192.168.60.10/24                        & Net-Internal & Lateral movement target \\
 \bottomrule
-\end{tabular}
+\end{tabular}%
+}
 \end{table}
 
 \begin{table}[h!]
 \centering
 \caption{Lab 3 --- access credentials}
 \label{lab3:tab-credentials}
-\begin{tabular}{@{}llll@{}}
+\small
+\setlength{\tabcolsep}{3pt}
+\begin{tabularx}{\textwidth}{@{}lllX@{}}
 \toprule
 \textbf{System} & \textbf{Username} & \textbf{Password} & \textbf{Role} \\
 \midrule
@@ -132,7 +136,7 @@ Server-Web   & maint   & ---          & Backdoor account (created by attacker) \
 Server-DB    & analyst & An@lyst2024  & Internal access \\
 Server-DB    & devops  & D3v0ps\#2023 & Compromised account (reused password) \\
 \bottomrule
-\end{tabular}
+\end{tabularx}
 \end{table}
 
 \subsubsection{EVE-NG Bridge Mapping}
@@ -316,7 +320,7 @@ Four operating system accounts are configured on Server-Web:
     \item \textbf{devops} --- the compromised developer account used by
           the attacker in the simulated incident.
     \item \textbf{maint} --- the backdoor account created by the attacker
-          after privilege escalation; present in \texttt{/etc/passwd} with
+          after privilege escalation; present in \path{/etc/passwd} with
           a creation timestamp of 03:19.
 \end{itemize}
 
@@ -357,7 +361,7 @@ network:
           via: 192.168.60.1
 \end{lstlisting}
 
-The HELIX client data directory is pre-created at \texttt{/opt/helix/data/}.
+The HELIX client data directory is pre-created at \path{/opt/helix/data/}.
 It contains two artefacts relevant to the investigation:
 
 \begin{itemize}
@@ -390,7 +394,7 @@ complete sequence of events that students must reconstruct.
 \midrule
 03:05 & Server-Web &
     25 failed SSH authentication attempts for user \texttt{devops}
-    from external IP \texttt{185.220.101.47}. \\
+    from external IP \path{185.220.101.47}. \\
 03:17 & Server-Web &
     Successful SSH login as \texttt{devops} (password compromised). \\
 03:18 & Server-Web &
@@ -403,7 +407,7 @@ complete sequence of events that students must reconstruct.
     SSH login as \texttt{devops} from \texttt{192.168.50.10}
     (Server-Web IP); password reuse enables lateral movement. \\
 03:22 & Server-DB &
-    Access to \texttt{/opt/helix/data/clients.db};
+    Access to \path{/opt/helix/data/clients.db};
     creation of \texttt{.exfil\_marker} hidden file. \\
 \bottomrule
 \end{tabular}
@@ -649,18 +653,20 @@ and the corresponding defensive control.
 \centering
 \caption{Lab 3 --- attack phase to mitigation mapping}
 \label{lab3:tab-mitigations}
-\begin{tabular}{@{}p{3.0cm}p{3.0cm}p{7.0cm}@{}}
+\small
+\setlength{\tabcolsep}{4pt}
+\begin{tabularx}{\textwidth}{@{}p{2.8cm}XX@{}}
 \toprule
 \textbf{Attack phase} & \textbf{Root cause} & \textbf{Mitigation} \\
 \midrule
 Brute force (SSH)       & No rate limiting   & fail2ban or equivalent; SSH key authentication only; disable password auth \\
 Initial access          & Weak/reused password & Enforce strong password policy; multi-factor authentication \\
-Privilege escalation    & \texttt{NOPASSWD: /usr/bin/find} in sudoers & Never grant NOPASSWD to utility binaries; principle of least privilege \\
-Persistence             & Unrestricted root access & Audit \texttt{/etc/passwd} and \texttt{sudoers.d/} changes; file integrity monitoring \\
+Privilege escalation    & \texttt{NOPASSWD:} \path{/usr/bin/find} in sudoers & Never grant NOPASSWD to utility binaries; principle of least privilege \\
+Persistence             & Unrestricted root access & Audit \path{/etc/passwd} and \path{sudoers.d/} changes; file integrity monitoring \\
 Lateral movement        & Password reuse across hosts & Unique credentials per system; SSH key-based authentication \\
-Data exfiltration       & No access control on \texttt{/opt/helix/data/} & Least-privilege file ownership; audit logging for sensitive directories \\
+Data exfiltration       & No access control on \path{/opt/helix/data/} & Least-privilege file ownership; audit logging for sensitive directories \\
 \bottomrule
-\end{tabular}
+\end{tabularx}
 \end{table}
 
 \subsubsection{SSH Hardening}
@@ -670,8 +676,8 @@ authentication from any source address without rate limiting. Three controls
 would have prevented or significantly impeded this phase:
 
 \begin{enumerate}
-    \item \textbf{Disable password authentication}: Setting
-          \texttt{PasswordAuthentication no} in \texttt{sshd\_config} forces
+    \item \textbf{Disable password auth.}: \texttt{Password\-}
+          \texttt{Authentication no} in \path{sshd_config} forces
           all clients to use public-key authentication, making brute-force
           attacks against the SSH service ineffective.
     \item \textbf{fail2ban}: A simple intrusion prevention daemon that
@@ -698,7 +704,7 @@ utility.
 
 The backdoor account creation would have been immediately detectable if a
 file integrity monitoring (FIM) tool such as \texttt{auditd} had been
-configured to alert on writes to \texttt{/etc/passwd}, \texttt{/etc/shadow},
+configured to alert on writes to \path{/etc/passwd}, \texttt{/etc/shadow},
 and the \texttt{/etc/sudoers.d/} directory. Real-time FIM alerts are a
 standard component of enterprise endpoint detection systems and would have
 reduced the attacker's dwell time from 17 minutes to seconds.
@@ -716,7 +722,9 @@ infrastructure component.
 \centering
 \caption{Lab 3 --- infrastructure component status}
 \label{lab3:tab-infra-status}
-\begin{tabular}{@{}lll@{}}
+\small
+\setlength{\tabcolsep}{3pt}
+\begin{tabularx}{\textwidth}{@{}llX@{}}
 \toprule
 \textbf{Component} & \textbf{Status} & \textbf{Notes} \\
 \midrule
@@ -726,7 +734,7 @@ Server-Web     & Operational & Evidence injected: auth.log, .bash\_history, main
 Server-DB      & Operational & Evidence injected: auth.log, .exfil\_marker, clients.db \\
 End-to-end F5  & Pending     & Student SSH chain not yet verified end-to-end \\
 \bottomrule
-\end{tabular}
+\end{tabularx}
 \end{table}
 
 \subsubsection{Techniques Demonstrated}

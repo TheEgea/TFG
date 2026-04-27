@@ -71,6 +71,7 @@ nodes and interfaces.
 \centering
 \caption{Lab 1 — IP addressing table}
 \label{tab:lab1-addressing}
+\resizebox{\textwidth}{!}{%
 \begin{tabular}{@{}llll@{}}
 \toprule
 \textbf{Node} & \textbf{Interface} & \textbf{IP Address} & \textbf{Role} \\
@@ -84,7 +85,8 @@ Server (pebcak) & ens3 & 192.168.20.50/24 & Target — web + SSH \\
 PC1     & ens3         & 192.168.10.50/24 & Internal workstation \\
 Attacker (Parrot) & pnet0 & DHCP / 192.168.0.x & Pentesting node \\
 \bottomrule
-\end{tabular}
+\end{tabular}%
+}
 \end{table}
 
 
@@ -349,14 +351,16 @@ asymmetry and stabilised all TCP connections.
 \centering
 \caption{Lab 1 — captured flags}
 \label{tab:lab1-flags}
-\begin{tabular}{@{}lll@{}}
+\small
+\setlength{\tabcolsep}{3pt}
+\begin{tabularx}{\textwidth}{@{}lXl@{}}
 \toprule
 \textbf{Flag} & \textbf{Value} & \textbf{Location} \\
 \midrule
 Primary flag   & \texttt{FLAG\{p3bc4k\_s3rv3r\_0wn3d\}} & \texttt{\textasciitilde/flag.txt} on server \\
 Bonus access   & pfSense admin credentials & Embedded in flag file \\
 \bottomrule
-\end{tabular}
+\end{tabularx}
 \end{table}
 
 \subsubsection{Vulnerabilities Demonstrated}

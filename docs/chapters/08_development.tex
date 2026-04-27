@@ -80,16 +80,16 @@ documentation. This decision is reflected in the requirements specification
 \subsection{Image Organisation in EVE-NG}
 
 To ensure consistency and reproducibility, all images were organised under the
-standard EVE-NG path \texttt{/opt/unetlab/addons/qemu/}. Each system was placed in
+standard EVE-NG path \path{/opt/unetlab/addons/qemu/}. Each system was placed in
 a dedicated directory with a normalised name following the pattern
-\texttt{<type>-<version>} (e.g., \texttt{pfsense-2.7.2},
-\texttt{vyos-1.x-rolling-amd64}, \texttt{linux-ubuntu-server-24.04}).
+\texttt{<type>-<version>} (e.g., \path{pfsense-2.7.2},
+\path{vyos-1.x-rolling-amd64}, \path{linux-ubuntu-server-24.04}).
 
 For GNU/Linux systems, the \texttt{linux-} prefix was applied consistently
-(e.g., \texttt{linux-ubuntu-desktop-24.04}, \texttt{linux-parrot-rolling}), since
+(e.g., \path{linux-ubuntu-desktop-24.04}, \path{linux-parrot-rolling}), since
 EVE-NG only makes the \textit{Linux} node category available in the interface when
 at least one directory with this prefix exists. Each directory contains a bootable
-image named \texttt{cdrom.iso} and a \texttt{virtioa.qcow2} disk image sized
+image named \path{cdrom.iso} and a \path{virtioa.qcow2} disk image sized
 according to the role of the node.
 
 \subsection{ISO Upload Automation}
@@ -101,8 +101,8 @@ and error-prone during initial experiments. To address this, a Python script nam
 
 The script presents a graphical file picker, uploads the selected ISO files to the
 EVE-NG server via SCP, and then automates the remaining preparation steps: directory
-creation under \texttt{/opt/unetlab/addons/qemu/}, renaming the ISO to
-\texttt{cdrom.iso}, creation of the \texttt{virtioa.qcow2} disk at a size inferred
+creation under \path{/opt/unetlab/addons/qemu/}, renaming the ISO to
+\path{cdrom.iso}, creation of the \path{virtioa.qcow2} disk at a size inferred
 from the image type, and execution of \texttt{unl\_wrapper -a fixpermissions}. This
 tool reduces the time required to onboard a new image and enforces a uniform
 directory structure across deployments.
@@ -220,16 +220,18 @@ their primary learning objective, and their current implementation status.
 
 \begin{table}[h]
 \centering
-\begin{tabular}{|l|l|l|}
-\hline
+\small
+\setlength{\tabcolsep}{5pt}
+\begin{tabularx}{\textwidth}{@{}lXl@{}}
+\toprule
 \textbf{Lab} & \textbf{Primary Objective} & \textbf{Status} \\
-\hline
-Lab 1: Reconnaissance \& Enumeration & Port scanning, web content discovery, SSH & Implemented \\
-Lab 2: Web Application Vulnerabilities & OWASP Top~10 exploitation~\cite{owasp2021}              & Implemented \\
-Lab 3: Network Analysis                & Traffic capture, lateral movement       & Pending \\
-Lab 4: Privilege Escalation            & Local privilege escalation techniques   & Pending \\
-\hline
-\end{tabular}
+\midrule
+Lab~1: Reconnaissance \& Enumeration & Port scanning, web content discovery, SSH & Implemented \\
+Lab~2: Web Application Vulnerabilities & OWASP Top~10 exploitation & Implemented \\
+Lab~3: Network Analysis & Traffic capture, lateral movement, incident response & Pending \\
+Lab~4: Privilege Escalation & Local privilege escalation techniques & Pending \\
+\bottomrule
+\end{tabularx}
 \caption{Overview of the four EVE-NG lab topologies designed for the course.}
 \label{tab:lab-overview}
 \end{table}
