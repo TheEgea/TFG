@@ -1,0 +1,232 @@
+% ============================================================
+% Appendix H: Requirements Detail -- Sub-requirements RF, TR, and NFR
+% ============================================================
+
+\chapter{Requirements: Detailed Sub-Requirements}
+\label{app:requirements-detail}
+
+This appendix expands the requirements in Chapter~\ref{ch:requirements} with the full
+sub-requirement specifications for each functional requirement (RF), technological
+requirement (TR), and non-functional requirement (NFR).
+
+\section{Functional Requirements: Sub-Specifications}
+
+\subsection{RF1: Design and Implement EVE-NG Topologies}
+
+\begin{itemize}
+
+\item \textbf{RF1.2}: Each topology must include:
+\begin{itemize}
+\item Minimum 5--8 virtual machines per lab
+\item Realistic network architecture (DMZ, internal networks, monitoring zones)
+\item Vulnerable services configured per OWASP and NIST standards
+\item Network segmentation with VLANs where appropriate
+\end{itemize}
+
+\item \textbf{RF1.3}: EVE-NG compatibility requirements:
+\begin{itemize}
+\item .unl file format compatible with EVE-NG Community Edition
+\item Additional compatibility with EVE-NG Professional Edition
+\item KVM hypervisor support (Ubuntu 20.04+ LTS)
+\item Minimum host specification: 16~GB RAM, 200~GB storage
+\end{itemize}
+
+\item \textbf{RF1.4}: Topology documentation:
+\begin{itemize}
+\item Network diagram for each lab (logical and physical views)
+\item IP addressing scheme documented
+\item Service inventory and port mappings
+\item Attack surface identification and justification
+\end{itemize}
+
+\end{itemize}
+
+\subsection{RF2: Implement Vulnerabilities and Attack Scenarios}
+
+\begin{itemize}
+
+\item \textbf{RF2.5}: Vulnerability implementation standards:
+\begin{itemize}
+\item All vulnerabilities must be fixable by administrators
+\item No permanently broken or unrecoverable systems
+\item Clear reset procedure for each vulnerability state
+\item Automated scanning tools must successfully identify vulnerabilities
+\end{itemize}
+
+\end{itemize}
+
+\subsection{RF3: Create Structured Assessment Materials}
+
+\begin{itemize}
+
+\item \textbf{RF3.3}: Support materials:
+\begin{itemize}
+\item Student lab manuals with step-by-step guidance
+\item Teacher guides with deployment and customisation instructions
+\item Expected outcomes and common pitfalls documentation
+\item Troubleshooting guides for common technical issues
+\end{itemize}
+
+\item \textbf{RF3.4}: Validation materials:
+\begin{itemize}
+\item Automated validation scripts to verify successful lab completion
+\item Manual verification procedures for educators
+\item Documentation of success indicators
+\end{itemize}
+
+\end{itemize}
+
+\section{Technological Requirements: Sub-Specifications}
+
+\subsection{TR1: Virtualisation Infrastructure}
+
+\begin{itemize}
+
+\item \textbf{TR1.2}: Hypervisor:
+\begin{itemize}
+\item Primary: KVM (Kernel-based Virtual Machine)
+\item Host OS: Ubuntu Server 20.04 LTS or 22.04 LTS
+\item QEMU integration for VM management
+\item Nested virtualisation support for advanced scenarios
+\end{itemize}
+
+\item \textbf{TR1.4}: Network configuration:
+\begin{itemize}
+\item Layer 2 switching capabilities within EVE-NG
+\item VLAN support for network segmentation scenarios
+\item IPv4 and IPv6 support
+\end{itemize}
+
+\end{itemize}
+
+\subsection{TR2: Security Tools and Penetration Testing Framework}
+
+\begin{itemize}
+
+\item \textbf{TR2.4}: Compliance and documentation:
+\begin{itemize}
+\item All tools must be freely available or have educational licences
+\item Open-source preference for long-term sustainability
+\item Tool version specifications documented
+\item Legal and ethical use guidelines included
+\end{itemize}
+
+\end{itemize}
+
+\subsection{TR3: Scripting and Automation}
+
+\begin{itemize}
+
+\item \textbf{TR3.3}: Integration points:
+\begin{itemize}
+\item EVE-NG API integration for programmatic lab management
+\item Webhook support for event-driven automation
+\item Container orchestration (Docker) for microservices
+\item Version control integration (Git, GitHub)
+\end{itemize}
+
+\end{itemize}
+
+\section{Non-Functional Requirements: Detailed Subsections}
+
+\subsection{NFR1: Performance and Efficiency}
+
+\textbf{NFR1.1 -- Deployment Performance}:
+\begin{itemize}
+\item Lab deployment time $\leq$ 2 minutes from topology load to ready state
+\item VM boot time $\leq$ 90 seconds per VM (95\% of cases)
+\item Reset operation $\leq$ 30 seconds to restore to initial state
+\item Concurrent lab instances: support minimum 5 simultaneous labs
+\end{itemize}
+
+\textbf{NFR1.2 -- Resource Optimisation}:
+\begin{itemize}
+\item VM image sizes $\leq$ 5~GB per image (compressed)
+\item Memory footprint $\leq$ 6~GB per lab instance during execution
+\item Minimal external dependencies (all local simulation)
+\end{itemize}
+
+\textbf{NFR1.3 -- Scalability}:
+\begin{itemize}
+\item Current infrastructure supports 3--4 concurrent instances on the project HomeLab server
+\item Architecture horizontally scalable: additional EVE-NG nodes can be added
+\item EVE-NG Professional Edition supports larger concurrent deployments
+\end{itemize}
+
+\subsection{NFR2: Compliance with Security Frameworks}
+
+\textbf{NFR2.1 -- NIST Cybersecurity Framework}~\cite{nist_framework}:
+Core Functions (Identify, Protect, Detect, Respond, Recover) mapped to lab exercises;
+assessment procedures aligned with NIST guidelines.
+
+\textbf{NFR2.2 -- CIS Critical Controls}~\cite{cis_controls}:
+Controls 1--18 incorporated where pedagogically appropriate; assessment rubrics aligned
+with CIS benchmarks; remediation procedures follow CIS recommendations.
+
+\textbf{NFR2.3 -- OWASP Standards}~\cite{owasp2021,owasp_testing_guide}:
+OWASP Top 10 fully covered; OWASP Testing Guide methodology integrated;
+development practices reflected in lab design.
+
+\textbf{NFR2.4 -- Penetration Testing Standards}~\cite{ptes,ceh_framework}:
+PTES phases mapped to labs; CEH curriculum alignment; ethical hacking principles strictly
+enforced.
+
+\subsection{NFR3: Reliability and Availability}
+
+\textbf{NFR3.1 -- System Reliability}:
+\begin{itemize}
+\item MTBF $\geq$ 100 hours continuous operation
+\item MTTR $\leq$ 5 minutes
+\item Scenario reproducibility: 100\% (deterministic behaviour)
+\item Zero critical bugs at release
+\end{itemize}
+
+\textbf{NFR3.2 -- Data Integrity}:
+No unintended data loss during lab operations; snapshot and restore functionality;
+backup procedures for sensitive configurations.
+
+\textbf{NFR3.3 -- Availability}:
+Planned maintenance windows weekends only; system availability $\geq$ 99\% during
+instructional periods; graceful degradation if resources become limited.
+
+\subsection{NFR4: Security and Ethical Compliance}
+
+\textbf{NFR4.1 -- Educational Sandbox Isolation}:
+Complete network isolation from production systems; no outbound internet access from lab
+environments; contained attack scenarios (no external targets).
+
+\textbf{NFR4.2 -- Access Control and Accountability}:
+Role-based access control (RBAC) for lab management; audit logs of all student actions
+where applicable; clear identification of authorised vs.\ unauthorised activities.
+
+\textbf{NFR4.3 -- Ethical Guardrails}:
+Mandatory ethics training before lab access; written agreements regarding responsible use;
+monitoring and escalation procedures for suspicious activities.
+
+\subsection{NFR5: Usability and Support}
+
+\textbf{NFR5.1 -- Ease of Use}:
+Average faculty deploy time 5--10 minutes; intuitive web interface with clear navigation;
+minimal technical prerequisites for students.
+
+\textbf{NFR5.2 -- Documentation and Support}:
+Comprehensive user manuals and quick-start guides; FAQ documentation; responsive support
+channel.
+
+\textbf{NFR5.3 -- Accessibility}:
+WCAG 2.1 Level~AA compliance for web interfaces; screen reader compatibility; keyboard
+navigation support; clear contrast ratios.
+
+\subsection{NFR6: Institutional Sustainability}
+
+\textbf{NFR6.1 -- Long-term Maintainability}:
+All components open-source or freely available; no vendor lock-in; source code in GitHub
+with clear documentation; backward compatibility with older EVE-NG versions where feasible.
+
+\textbf{NFR6.2 -- Curriculum Alignment}:
+Explicit mapping to GEISI degree learning outcomes; integration with existing course
+structures; flexible customisation for different instructional contexts.
+
+\textbf{NFR6.3 -- Scalability for Institutional Adoption}:
+Deployable on institutional infrastructure (not SaaS-dependent); support for multiple
+faculty deployments simultaneously; resource reservation and scheduling capabilities.

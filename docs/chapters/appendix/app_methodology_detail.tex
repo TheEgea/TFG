@@ -1,0 +1,203 @@
+% ============================================================
+% Appendix G: Methodology Detail -- Phase Activities, QA, and Documentation
+% ============================================================
+
+\chapter{Methodology: Detailed Phase Activities and Quality Assurance}
+\label{app:methodology-detail}
+
+This appendix expands the phase summaries in Chapter~\ref{ch:methodology} with full
+activity lists, quality assurance procedures, and documentation and version control practices.
+
+\section{Detailed Phase Activity Lists}
+
+\subsection{Phase 0: Preparation and Infrastructure (July--November 2025)}
+
+\begin{itemize}
+\item HomeLab infrastructure initialisation (Proxmox\cite{proxmox}, networking, storage)
+\item Development environment setup (VSCode\cite{vscode}, LaTeX\cite{latex_project}, Git)
+\item Security tools installation (Parrot OS Security\cite{parrot_os},
+      Metasploit\cite{metasploit}, Burp Suite\cite{burp_suite})
+\item Technical documentation and baseline establishment
+\end{itemize}
+
+\textbf{Deliverables}: Fully operational virtualisation infrastructure; development
+environment configuration; baseline documentation of system architecture.
+
+\textbf{Duration}: 105 hours \quad \textbf{Status}: Completed (100\%)
+
+\subsection{Phase 1: Avantprojecte and Conceptual Design (October 2025--January 2026)}
+
+\begin{enumerate}
+
+\item \textbf{SMART Objectives Definition} (4h) --- Specification of Main Objective (MO):
+develop a reusable teaching package. Definition of 4 Specific Objectives (OE1--OE4) with
+measurable KPIs. Alignment with institutional GEISI curriculum requirements.
+
+\item \textbf{State of the Art Analysis} (15h) --- Comprehensive review of 7 major
+cybersecurity training platforms (HackTheBox, TryHackMe, Cisco Academy, SEED Labs, GOAD,
+VulnHub, Hack4u). Identification of pedagogical gaps. Comparative analysis matrix across
+multiple dimensions.
+
+\item \textbf{Functional and Non-Functional Requirements} (10h) --- RF1: design and
+implement 4 EVE-NG topologies (.unl files). RF2: implement vulnerabilities per
+PTES\cite{ptes}, OWASP\cite{owasp_testing_guide}, NIST\cite{nist_framework}, and
+CEH\cite{ceh_framework} standards. RF3: create structured assessment materials and rubrics.
+NFR1--NFR3 covering performance, framework compliance, and institutional sustainability.
+
+\item \textbf{Pentesting Methodology and Validation Framework} (8h) --- Adaptation of PTES
+for educational context. Definition of ethical hacking principles (EC-Council CEH).
+Mapping of attack phases to lab objectives. Validation criteria for security effectiveness.
+
+\item \textbf{Design Decisions Justification} (5h) --- Rationale for EVE-NG selection vs
+alternative platforms. Technology stack justification (Parrot OS Security, Metasploit, Burp,
+OWASP ZAP). Pedagogical approach: hands-on labs with automation.
+
+\item \textbf{Risk Analysis and Mitigation Planning} (15h) --- Identification of 12+ project
+risks (technical, pedagogical, institutional). Assessment of impact and probability.
+Definition of mitigation strategies.
+
+\item \textbf{Resource Inventory and Allocation} (5h) --- Hardware requirements: dual-socket
+server with Proxmox. Software stack: EVE-NG Community Edition, Parrot OS Security images,
+security tools. Human resources: student (\textasciitilde{}820h total), faculty supervisor.
+Budget considerations and open-source alternatives.
+
+\item \textbf{Gantt Chart and Critical Path Analysis} (20h) --- Development of detailed
+project timeline with 37 tasks. Identification of 13 critical path tasks. CSV export and
+interactive web-based visualisation. Progress tracking and milestone definition.
+
+\end{enumerate}
+
+\textbf{Deliverables}: Formal project proposal (Avantprojecte); detailed Gantt chart with
+critical paths; risk register and mitigation plan; requirements specification (functional
+and non-functional).
+
+\textbf{Duration}: 82 hours \quad \textbf{Status}: Completed \quad
+\textbf{Milestone Deadline}: January 16, 2026
+
+\subsection{Phase 2: Implementation and Interim Validation (January--March 2026)}
+
+\begin{enumerate}
+
+\item \textbf{Lab 1: Reconnaissance Development} (14h research + 20h dev) ---
+Scenario: intelligence gathering phase using PTES framework.
+Tools: Nmap\cite{nmap}, passive reconnaissance techniques.
+Topology: multi-tier network with passive monitoring capabilities.
+Validation: successful execution of reconnaissance workflow.
+
+\item \textbf{Lab 2: Web Vulnerabilities Development} (14h research + 25h dev) ---
+Scenario: OWASP Top 10 vulnerability exploitation.
+Tools: Burp Suite, OWASP ZAP, manual testing techniques.
+Topology: web application server with vulnerable services.
+Validation: exploitation success and reporting accuracy.
+
+\item \textbf{Lab 3: Incident Response Development} (14h research + 25h dev) ---
+Scenario: log forensics and incident response (NIST SP 800-61\cite{nist_sp80061} standards).
+Tools: Wireshark\cite{wireshark}, tcpdump, network enumeration tools.
+Topology: multi-segment network with pre-staged attack artefacts.
+Validation: successful timeline reconstruction and flag recovery.
+
+\item \textbf{Pilot Validation with Users} (20h + 6h revision) ---
+Informal testing sessions with 4--5 GEISI students conducted as each lab is completed.
+Usability observations and timing notes. Post-session survey on satisfaction, difficulty,
+and guide clarity. Adjustments applied based on participant feedback.
+
+\item \textbf{Topology Adjustments and Optimisation} (30h) ---
+Performance tuning based on pilot feedback.
+VM image optimisation and deployment time reduction.
+Network configuration refinement for stability.
+
+\item \textbf{Teaching Material Production} (40h) ---
+Student lab guide PDF (\textit{enunciado}) per lab: task description, objectives, hints,
+and tool reference. Instructor resolution guide PDF (\textit{resolucio}) per lab:
+one possible walkthrough, flag values, assessment rubric, and common errors.
+Technical configuration reference per lab in the repository.
+
+\end{enumerate}
+
+\textbf{Deliverables}: 3 fully functional EVE-NG labs; student and instructor guides;
+pilot validation report; technical configuration references.
+
+\textbf{Duration}: 188 hours \quad \textbf{Status}: Completed \quad
+\textbf{Milestone Deadline}: March 20, 2026
+
+\subsection{Phase 3: Completion and Final Validation (March--May 2026)}
+
+\begin{enumerate}
+
+\item \textbf{Lab 4: Privilege Escalation Development} (16h research + 30h dev) ---
+Scenario: post-exploitation and privilege escalation (CEH framework).
+Tools: Metasploit, manual exploitation, system enumeration.
+Topology: hardened systems with privilege escalation vectors.
+Validation: successful privilege elevation and system compromise.
+
+\item \textbf{Comprehensive Penetration Testing} (30h Round 1 + 25h Round 2) ---
+Round 1: sequential testing of Labs 1, 2, and 3.
+Round 2: integrated testing across all 4 laboratories.
+Documentation of all findings and remediation strategies.
+
+\item \textbf{Automation Scripts Development} (30h) ---
+Utility scripts (Bash/Python) for recurring lab management tasks:
+bridge configuration, ISO upload, and connectivity check scripts.
+Scripts documented and tested in the project EVE-NG environment.
+
+\item \textbf{Final User Validation and Iteration} (18h) ---
+Final informal validation sessions with the pilot group (4--5 participants).
+Collection of post-session survey data and usability notes.
+Implementation of final adjustments based on feedback.
+
+\item \textbf{Bachelor's Thesis Report Writing and Finalisation} (90h) ---
+Phase I (15h): Introduction, Objectives, Literature Review.
+Phase II (40h): Methodology, Requirements, Implementation Results.
+Phase III (35h): Validation, Analysis, Conclusions.
+Final revision, bibliography integration, and publication preparation (35h).
+
+\end{enumerate}
+
+\textbf{Deliverables}: 4 fully functional labs; utility automation scripts; final
+bachelor's thesis report; pilot validation report; deployment package ready for
+institutional use.
+
+\textbf{Duration}: 315 hours \quad \textbf{Status}: In progress \quad
+\textbf{Final Milestone Deadline}: May 27, 2026
+
+\section{Quality Assurance Procedures}
+
+\subsection{Technical Validation}
+
+\begin{itemize}
+\item Automated testing of lab deployment and reset
+\item Manual security testing and penetration verification
+\item Performance benchmarking against KPI targets
+\item Compatibility testing across EVE-NG versions
+\end{itemize}
+
+\subsection{Pedagogical Validation}
+
+\begin{itemize}
+\item Alignment with GEISI learning outcomes
+\item Assessment of student understanding through rubrics
+\item Effectiveness in achieving educational objectives
+\item Feedback from faculty and student participants
+\end{itemize}
+
+\subsection{Usability Testing}
+
+\begin{itemize}
+\item User interface and documentation clarity
+\item Accessibility and ease of deployment
+\item Support and documentation adequacy
+\item User satisfaction scoring ($\geq$~4/5 target)
+\end{itemize}
+
+\section{Documentation and Version Control}
+
+\begin{itemize}
+\item GitHub repository (\texttt{TheEgea/TFG}) for all code, scripts, and documentation,
+      licensed under CC~BY-NC-SA~4.0
+\item LaTeX (XeLaTeX + OpenDyslexic) for formal academic documentation (Volume~I and
+      Volume~II)
+\item MkDocs Material for the operational web documentation site
+\item Versioning system for all deliverables with semantic commit messages
+\item Change logs and improvement tracking through pull requests
+\item Deployment guides and runbooks per lab
+\end{itemize}

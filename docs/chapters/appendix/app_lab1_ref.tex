@@ -1,0 +1,110 @@
+% ============================================================
+% Appendix B: Lab 1 — Instructor Reference
+% ============================================================
+
+\chapter{Lab~1: PEBCAK Corp --- Instructor Reference}
+\label{app:lab1}
+
+This appendix provides the deployment reference for Lab~1 (Reconnaissance and
+Enumeration). It is intended for instructors and system administrators responsible
+for setting up and resetting the lab environment. The student-facing guide and
+interactive walkthrough are available at \path{docs/web/docs/labs/lab1/}.
+
+\section*{Credentials and Access}
+
+\begin{table}[H]
+\centering
+\begin{tabularx}{\textwidth}{llXl}
+\toprule
+\textbf{Node} & \textbf{Username} & \textbf{Password} & \textbf{Access method} \\
+\midrule
+pfSense        & admin      & pfsense         & Web UI / SSH \\
+VyOS           & vyos       & vyos            & EVE-NG console \\
+Server (PEBCAK)& blackmesa  & \texttt{!Bl4kM3s\$} & SSH (via pfSense DNAT) \\
+PC1            & ubuntu     & ubuntu          & EVE-NG console / VNC \\
+Parrot OS      & parrot     & parrot          & EVE-NG console / VNC \\
+\bottomrule
+\end{tabularx}
+\caption{Lab~1 credentials (instructor reference --- do not distribute to students)}
+\label{tab:lab1-creds}
+\end{table}
+
+\section*{Network Segments}
+
+\begin{table}[H]
+\centering
+\begin{tabularx}{\textwidth}{lllX}
+\toprule
+\textbf{Segment} & \textbf{Subnet} & \textbf{Gateway} & \textbf{Purpose} \\
+\midrule
+Homelab / WAN & 192.168.0.0/24  & 192.168.0.1     & Parrot attacker + pfSense WAN \\
+Net-Link      & 172.16.0.0/30   & pfSense vtnet0  & pfSense $\leftrightarrow$ VyOS uplink \\
+Users LAN     & 192.168.10.0/24 & 192.168.10.x    & PC1 internal workstation \\
+Servers LAN   & 192.168.20.0/24 & 192.168.20.1    & PEBCAK Corp server segment \\
+\bottomrule
+\end{tabularx}
+\caption{Lab~1 network segments}
+\label{tab:lab1-segments}
+\end{table}
+
+\section*{Lab Startup Checklist}
+
+\begin{enumerate}
+    \item Start all nodes from the EVE-NG web interface in order:
+          pfSense $\to$ VyOS $\to$ Server $\to$ PC1 $\to$ Parrot.
+    \item Run the bridge script on the EVE-NG host (lost on reboot; persistent via
+          \texttt{udev} rule):
+\begin{lstlisting}[language=bash]
+ip addr add 192.168.20.x/24 dev vnet0_2
+ip addr add 192.168.10.x/24 dev vnet0_3
+ip route add 172.16.0.0/30 via 192.168.20.1
+\end{lstlisting}
+    \item Verify DNS resolution from Parrot: the DNS server on Parrot must point to
+          pfSense's WAN IP so that \texttt{lab1} resolves.
+\begin{lstlisting}[language=bash]
+# On Parrot:
+curl http://lab1          # Should return PEBCAK Corp HTML
+\end{lstlisting}
+    \item Confirm flag is in place on the Server node:
+\begin{lstlisting}[language=bash]
+sshpass -p '!Bl4kM3s$' ssh blackmesa@192.168.20.x cat ~/flag.txt
+# Expected: FLAG{p3bc4k_s3rv3r_0wn3d}
+\end{lstlisting}
+\end{enumerate}
+
+\section*{Expected Student Workflow}
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabularx}{\textwidth}{lXl}
+\toprule
+\textbf{Step} & \textbf{Action} & \textbf{Tool} \\
+\midrule
+1 & Navigate to \texttt{http://lab1} in Parrot browser & Firefox \\
+2 & Inspect page source; find HTML comment: \texttt{<!\,-\!- sometimes simplify and search -\!->} & Browser devtools \\
+3 & Access \texttt{http://lab1/pebcak.html}; read SSH credentials & Browser \\
+4 & \texttt{ssh blackmesa@lab1} (pfSense DNAT forwards TCP~22) & SSH \\
+5 & \texttt{cat \textasciitilde/flag.txt} --- retrieves Flag~1 and pfSense credentials & Terminal \\
+6 & SSH to pfSense from Server: \texttt{ssh admin@172.16.x.x} & SSH (optional) \\
+\bottomrule
+\end{tabularx}
+\caption{Lab~1 expected student workflow}
+\label{tab:lab1-workflow}
+\end{table}
+
+\section*{Flags}
+
+\begin{table}[H]
+\centering
+\begin{tabularx}{\textwidth}{lXl}
+\toprule
+\textbf{Flag} & \textbf{Value} & \textbf{Location} \\
+\midrule
+Flag~1 & \texttt{FLAG\{p3bc4k\_s3rv3r\_0wn3d\}} & \texttt{/home/blackmesa/flag.txt} on Server \\
+Flag~2 & \texttt{FLAG\{pebcak\_firewall\_pivot\}} & pfSense admin panel (optional bonus) \\
+\bottomrule
+\end{tabularx}
+\caption{Lab~1 flags}
+\label{tab:lab1-flags-ref}
+\end{table}

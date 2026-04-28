@@ -1,123 +1,38 @@
 \chapter{Feasibility Study}
+\label{ch:feasibility}
 
-\textbf{Initial Planning}
-
-The project has been structured in 37 tasks distributed across three main phases: Preparation (Phase 0), Avantprojecte (Phase 1), and Implementation and Final Delivery (Phases 2 and 3). Each task has been carefully defined with the following attributes:
 \section{Gantt Chart and Task Definition}
 
-
-\begin{itemize}
-    \item \textbf{Task identifier}: Unique numeric code (e.g., 0.1, 1.0, 2.1, 3.4)
-    \item \textbf{Task name}: Descriptive title of the activity
-    \item \textbf{Category}: Classification (Preparation, Analysis, Documentation, Development, Testing, Implementation, Milestones)
-    \item \textbf{Estimated hours}: Time allocation based on complexity and dependencies
-    \item \textbf{Start and end dates}: Temporal boundaries for execution
-    \item \textbf{Completion percentage}: Current progress indicator
-    \item \textbf{Critical path flag}: Identification of tasks that directly impact delivery deadlines
-\end{itemize}
-
-\subsection{Task Categories}
-
-The 37 tasks have been distributed across 7 categories:
+The project comprises \textbf{37 tasks} across 7 categories, totalling 820 hours
+(20 ECTS $\times$ 25 h/ECTS). The detailed phase breakdown and activity descriptions
+are provided in the Methodology chapter (Chapter~5).
 
 \begin{table}[H]
     \centering
     \begin{tabularx}{\textwidth}{Xrr}
 \toprule
-    \textbf{Category} & \textbf{Number of Tasks} & \textbf{Total Hours} \\
+    \textbf{Category} & \textbf{Tasks} & \textbf{Hours} \\
 \midrule
-    Preparation & 4 & 105h \\
-    Analysis & 5 & 49h \\
-    Documentation & 6 & 95h \\
-    Development & 8 & 178h \\
-    Testing & 5 & 123h \\
-    Implementation & 6 & 220h \\
-    Milestones & 3 & 95h \\
-    \textbf{TOTAL} & \textbf{37} & \textbf{820h} \\
+    Preparation      & 4  & 105h \\
+    Analysis         & 5  & 49h  \\
+    Documentation    & 6  & 95h  \\
+    Development      & 8  & 178h \\
+    Testing          & 5  & 123h \\
+    Implementation   & 6  & 220h \\
+    Milestones       & 3  & 95h  \\
+    \textbf{TOTAL}   & \textbf{37} & \textbf{820h} \\
 \bottomrule
     \end{tabularx}
     \caption{Distribution of tasks by category}
     \label{tab:task_categories}
 \end{table}
 
-\subsection{Phase Breakdown}
+The complete Gantt chart was built with a custom interactive web tool available at
+\path{docs/resources/gantt/index.html} in the project repository.
 
-\textbf{Phase 0: Preparation (July - November 2025)}
+\subsection{Critical Path}
 
-\begin{itemize}
-    \item Task 0.1: HomeLab Initialization Setup (64h)
-    \item Task 0.2: VSCode Setup for thesis development (18h) 
-    \item Task 0.3: Parrot OS Security Setup and Basic Tools (15h) 
-    \item Task 0.4: Home Lab As-Built Documentation (8h) 
-\end{itemize}
-
-The detailed activities and deliverables for this phase are described in the Methodology chapter (Chapter~4).
-
-\textbf{Phase 1: Avantprojecte (October 2025 - January 2026)}
-
-\begin{itemize}
-    \item Task 1.0: Thesis Development (22h) 
-    \item Task 1.1: SMART Objectives Definition (4h) 
-    \item Task 1.2: State of the Art: Frameworks and Tools (15h) 
-    \item Task 1.3: Functional and Non-Functional Requirements (10h) 
-    \item Task 1.4: Pentesting Methodology and Validation (8h) 
-    \item Task 1.5: Design Decisions and Justification (5h) 
-    \item Task 1.6: Gantt Chart Development (20h) 
-    \item Task 1.7: Risk Analysis and Mitigation Plan (15h) 
-    \item Task 1.8: Resource Inventory (5h)
-    \item \textbf{Milestone 1.10: Preliminary Project (40h)} - \textbf{Delivery: January 16, 2026}
-\end{itemize}
-
-The detailed activities and deliverables for this phase are described in the Methodology chapter (Chapter~4).
-
-\textbf{Phase 2: Interim Report (January - March 2026)}
-
-\begin{itemize}
-    \item Task 2.1: Lab 1 Research - Reconnaissance (14h) - \textbf{CRITICAL}
-    \item Task 2.2: Lab 2 Research - Web Vulnerabilities (14h) - \textbf{CRITICAL}
-    \item Task 2.3: Lab 3 Research - Network Analysis and Incident Response (14h) - \textbf{CRITICAL}
-    \item Task 2.4: Technical Write-ups Labs 1 \& 2 (13h)
-    \item Task 2.5: Topology Adjustments (30h)
-    \item Task 2.6: Pre-validation with Pilot Users (20h) - \textbf{CRITICAL}
-    \item Task 2.6.1: Pre-validation Revision (6h) - \textbf{CRITICAL}
-    \item Task 2.7: Analyze and Write Hackathon Results (17h)
-    \item Task 2.8: Interim Report Formalization (40h)
-    \item Task 2.9: Set Up Servers, VMs and EVE-NG (20h)
-    \item Task 2.10: Backup and Documentation of EVE-NG (10h)
-    \item \textbf{Milestone 2.11: Intermediate Thesis (50h)} - \textbf{Delivery: March 20, 2026}
-\end{itemize}
-
-This phase implements the first three laboratories (Reconnaissance, Web Vulnerabilities, and Network Analysis) and validates them through informal pilot sessions with a small group of GEISI students (4--5 participants) conducted as each lab is completed. Total estimated hours: 212h.
-
-\textbf{Phase 3: Final Delivery (March - May 2026)}
-
-\begin{itemize}
-    \item Task 3.1: Lab 4 Research - Post-Exploitation (16h) - \textbf{CRITICAL}
-    \item Task 3.2: Lab 3 Network Analysis Validation with Users (12h)
-    \item Task 3.3: Technical Write-ups Labs 3 \& 4 (19h)
-    \item Task 3.4: Penetration Testing Round 1 (Labs 1-2-3) (30h) - \textbf{CRITICAL}
-    \item Task 3.5: Penetration Testing Round 2 (All Labs) (25h) - \textbf{CRITICAL}
-    \item Task 3.6: Python Automation Scripts (30h)
-    \item Task 3.7: Final Validation with Pilot Users (18h)
-    \item Task 3.8: Final Review and Project Polishing (25h)
-    \item Task 3.9: Bachelor's thesis Report Writing I (15h) - \textbf{CRITICAL}
-    \item Task 3.10: Bachelor's thesis Report Writing II (40h) - \textbf{CRITICAL}
-    \item Task 3.11: Bachelor's thesis Report Writing III (35h) - \textbf{CRITICAL}
-    \item Task 3.12: Final Revision (15h)
-    \item Task 3.13: Final Report Preparation (20h)
-    \item \textbf{Milestone 3.14: Final Report (5h)} - \textbf{Delivery: May 27, 2026}
-\end{itemize}
-
-This phase completes the fourth laboratory, performs final validation, develops automation scripts, and writes the final report. Total estimated hours: 315h.
-
-\subsection{Gantt Chart}
-
-The complete project timeline was planned and visualized using a custom interactive web application developed specifically for this thesis. The tool is available in the project repository at \path{docs/resources/gantt/index.html} and supports task management, critical path identification, progress tracking by phase, and PNG/CSV export. The exported Gantt chart image is stored at \path{docs/images/gantt_planning.png} for reference.
-
-
-\subsection{Critical Paths}
-
-Critical path tasks are those that directly impact the delivery deadlines and cannot be delayed without affecting subsequent milestones. The project has identified \textbf{13 critical tasks}:
+The project has \textbf{13 critical tasks} (277 h total) that directly impact milestone deadlines:
 
 \begin{table}[H]
   \centering
@@ -142,135 +57,74 @@ Critical path tasks are those that directly impact the delivery deadlines and ca
     3.10  & Bachelor's thesis Report Writing II             & 40h & May 20, 2026 \\
     3.11  & Bachelor's thesis Report Writing III            & 35h & May 25, 2026 \\
     \midrule
-    \multicolumn{2}{l}{\textbf{TOTAL CRITICAL PATH}}        & \textbf{277h} & \\
+    \multicolumn{2}{l}{\textbf{TOTAL CRITICAL PATH}} & \textbf{277h} & \\
     \bottomrule
   \end{tabularx}
-  \caption[Critical path tasks]{Critical path tasks requiring strict adherence to deadlines}
+  \caption[Critical path tasks]{Critical path tasks and deadlines}
   \label{tab:critical_task}
 \end{table}
 
-
-Any delay in these tasks will cascade to subsequent activities and potentially jeopardize milestone delivery dates.
- Special monitoring and contingency planning are allocated to these tasks.
-
 \section{Budget}
 
-\subsection{Cost of Human Resources}
-
-The total estimated effort for the bachelor's thesis is \textbf{820 hours}, corresponding to the 20 ECTS credits
- assigned to the subject (25 hours per ECTS). The distribution is as follows:
+\subsection{Human Resources}
 
 \begin{table}[H]
     \centering
     \begin{tabularx}{\textwidth}{Xrrr}
 \toprule
-    \textbf{Phase} & \textbf{Hours} & \textbf{Hourly Rate} & \textbf{Total Cost} \\
+    \textbf{Phase} & \textbf{Hours} & \textbf{Rate} & \textbf{Total} \\
 \midrule
-    Phase 0: Preparation & 105h & 15 \euro/h & 1,575 \euro \\
-    Phase 1: Avantprojecte & 188h & 15 \euro/h & 2,820 \euro \\
-    Phase 2: Interim Report & 212h & 15 \euro/h & 3,180 \euro \\
-    Phase 3: Final Delivery & 315h & 15 \euro/h & 4,725 \euro \\
-    \textbf{TOTAL} & \textbf{820h} & & \textbf{12,300 \euro} \\
+    Phase 0: Preparation   & 105h & 15\,\euro/h & 1{,}575\,\euro \\
+    Phase 1: Avantprojecte & 188h & 15\,\euro/h & 2{,}820\,\euro \\
+    Phase 2: Interim       & 212h & 15\,\euro/h & 3{,}180\,\euro \\
+    Phase 3: Final         & 315h & 15\,\euro/h & 4{,}725\,\euro \\
+    \textbf{TOTAL}         & \textbf{820h} & & \textbf{12{,}300\,\euro} \\
 \bottomrule
     \end{tabularx}
-    \caption{Human resources cost estimation based on junior engineer hourly rate}
+    \caption{Human resources cost (junior engineer rate, 15\,\euro/h, theoretical)}
     \label{tab:human_resources_cost}
 \end{table}
 
-The hourly rate of 15 \euro/hour corresponds to a junior cybersecurity engineer or IT student performing
- practical work, based on market rates in Spain for internships and entry-level positions in 2025-2026.
- Despite this, the cost remains theoretical, as the bachelor's thesis is not a commercial
- project but an academic exercise. Also, considering the educational context,
- this cost is not billed to any entity and less being 15 €/hour.
-
-\subsection{Cost of Hardware and Software Resources}
-
-\subsubsection{Hardware Infrastructure}
+\subsection{Hardware and Software}
 
 \begin{table}[H]
     \centering
     \begin{tabularx}{\textwidth}{Xrrr}
 \toprule
-    \textbf{Resource} & \textbf{Quantity} & \textbf{Unit Cost} & \textbf{Total} \\
+    \textbf{Resource} & \textbf{Qty} & \textbf{Unit} & \textbf{Total} \\
 \midrule
-    HomeLab Server (2× Xeon E5-2680v4, 64GB RAM, HDD+SSD) & 1 & 800 \euro & 800 \euro \\
-    Development Workstation (Laptop + Desktop Computer) & 1 & 1200 \euro & 1200 \euro \\
-    Network Equipment (Router, Switch) & 1 set & 150 \euro & 150 \euro \\
-    External Storage (Backup) & 1 & 100 \euro & 100 \euro \\
-    \textbf{SUBTOTAL Hardware} & & & \textbf{2,250 \euro} \\
+    HomeLab Server (2$\times$ Xeon E5-2680v4, 64\,GB, HDD+SSD) & 1 & 800\,\euro & 800\,\euro \\
+    Development Workstation & 1 & 1{,}200\,\euro & 1{,}200\,\euro \\
+    Network Equipment & 1 set & 150\,\euro & 150\,\euro \\
+    External Storage & 1 & 100\,\euro & 100\,\euro \\
+    \textbf{SUBTOTAL Hardware} & & & \textbf{2{,}250\,\euro} \\
+    \textbf{SUBTOTAL Software} & & & \textbf{0\,\euro} \\
 \bottomrule
     \end{tabularx}
-    \caption{Hardware infrastructure costs}
+    \caption{Hardware and software costs (all software is free/open-source)}
     \label{tab:hardware_costs}
 \end{table}
 
-\textbf{Note}: The HomeLab server is a one-time investment reused across multiple projects and academic years,
- amortizing its cost over 3--5 years. The development workstation and network equipment are similarly reusable.
- Although these assets were already operational at the start of the project (Phase~0), they are included here
- for completeness. An additional 32\,GB RAM module was acquired during the project to meet the memory demands
- of running multiple EVE-NG nodes concurrently alongside other services hosted on the same infrastructure;
- this cost (\textasciitilde 80\,\euro) is not reflected in the original budget estimate.
-\subsubsection{Software and Licenses}
+The server is a one-time investment reused across multiple projects. An additional 32\,GB RAM
+module (\textasciitilde{}80\,\euro) was acquired during the project and is not reflected
+in the original estimate.
 
-\begin{table}[H]
-    \centering
-    \begin{tabularx}{\textwidth}{Xrrr}
-\toprule
-    \textbf{Resource} & \textbf{License Type} & \textbf{Unit Cost} & \textbf{Total} \\
-\midrule
-    EVE-NG Community Edition & Free/Open Source & 0 \euro & 0 \euro \\
-    Parrot OS Security & Free/Open Source & 0 \euro & 0 \euro \\
-    Proxmox VE & Free/Open Source & 0 \euro & 0 \euro \\
-    Metasploitable VMs & Free/Open Source & 0 \euro & 0 \euro \\
-    DVWA (Damn Vulnerable Web App) & Free/Open Source & 0 \euro & 0 \euro \\
-    Visual Studio Code & Free/Open Source & 0 \euro & 0 \euro \\
-    LaTeX (TeX Live) & Free/Open Source & 0 \euro & 0 \euro \\
-    Git + GitHub (Student Pack) & Free/Student & 0 \euro & 0 \euro \\
-    Burp Suite Community & Free & 0 \euro & 0 \euro \\
-    Wireshark & Free/Open Source & 0 \euro & 0 \euro \\
-    \textbf{SUBTOTAL Software} & & & \textbf{0 \euro} \\
-\bottomrule
-    \end{tabularx}
-    \caption{Software and license costs (all free/open-source for educational use)}
-    \label{tab:software_costs}
-\end{table}
-
-A significant advantage of this project is the reliance on free and open-source tools,
- which reduces costs to zero for software licensing while maintaining professional-grade capabilities.
-
-\subsection{Other Costs}
-\begin{table}[H]
-    \centering
-    \begin{tabularx}{\textwidth}{Xr}
-\toprule
-    \textbf{Concept} & \textbf{Cost} \\
-\midrule
-    Electricity consumption (820h × 0.15 kWh × 0.20 \euro/kWh) & 25 \euro \\
-    Internet connectivity (9 months × 40 \euro/month) & 360 \euro \\
-    Contingency fund (5\% of total) & 635 \euro \\
-    \textbf{TOTAL Other Costs} & \textbf{1,020 \euro} \\
-\bottomrule
-    \end{tabularx}
-    \caption{Additional operational costs}
-    \label{tab:other_costs}
-\end{table}
-
-\subsection{Total Budget Summary}
+\subsection{Total Budget}
 
 \begin{table}[H]
     \centering
     \begin{tabularx}{\textwidth}{Xr}
 \toprule
-    \textbf{Category} & \textbf{Total Cost} \\
+    \textbf{Category} & \textbf{Total} \\
 \midrule
-    Human Resources & 12,300 \euro \\
-    Hardware Resources & 2,250 \euro \\
-    Software Resources & 0 \euro \\
-    Other Costs & 1,020 \euro \\
-    \textbf{TOTAL PROJECT BUDGET} & \textbf{15,570 \euro} \\
+    Human Resources  & 12{,}300\,\euro \\
+    Hardware         & 2{,}250\,\euro  \\
+    Software         & 0\,\euro        \\
+    Other (electricity, internet, contingency) & 1{,}020\,\euro \\
+    \textbf{TOTAL}   & \textbf{15{,}570\,\euro} \\
 \bottomrule
     \end{tabularx}
-    \caption{Complete project budget breakdown}
+    \caption{Complete project budget}
     \label{tab:total_budget}
 \end{table}
 
@@ -278,22 +132,9 @@ A significant advantage of this project is the reliance on free and open-source 
 
 \subsection{Technical Feasibility}
 
-\subsubsection{Infrastructure Availability}
-The project demonstrates \textbf{high technical feasibility} due to the following factors:
-
-\begin{itemize}
-    \item \textbf{Completed Infrastructure Setup}: Phase 0 (Preparation) has been 100\% completed, with HomeLab server, EVE-NG platform, Parrot OS Security, and development environment fully operational and documented.
-    
-    \item \textbf{Open-Source Ecosystem}: All software components (EVE-NG, Parrot OS Security, vulnerable VMs, pentesting tools) are mature, well-documented, and widely adopted in professional cybersecurity training.\cite{metasploit}
-    
-    \item \textbf{Proven Technology Stack}: The selected technologies (Proxmox~VE\slash{}EVE-NG for virtualization, Python/Bash for scripting, LaTeX for documentation) are industry-standard and have established best practices.\cite{murphy2018}
-    
-    \item \textbf{Academic Support}: Access to institutional resources at TecnoCampus, including library resources for research and tutor expertise in cybersecurity and network administration.
-\end{itemize}
-\newpage
-\subsubsection{Technical Competencies}
-
-The project requires competencies in multiple areas:
+Phase 0 infrastructure is 100\% operational (EVE-NG, Proxmox\cite{proxmox}, Parrot OS\cite{parrot_os},
+development environment). All software is open-source and widely adopted in professional
+cybersecurity training. The required competencies are:
 
 \begin{table}[H]
     \centering
@@ -301,135 +142,20 @@ The project requires competencies in multiple areas:
 \toprule
     \textbf{Area} & \textbf{Required Competency} & \textbf{Level} \\
 \midrule
-    Network Administration & Configuration of virtual networks, VLANs, routing, firewall rules & Intermediate \\
-    Operating Systems & GNU/Linux administration (Debian/Ubuntu), system configuration & Intermediate \\
-    Virtualization & EVE-NG topology design, VM management, resource optimization & Advanced \\
-    Pentesting & Reconnaissance, exploitation, privilege escalation, web vulnerabilities & Intermediate \\
-    Scripting & Python and Bash for automation and validation & Intermediate \\
-    Documentation & LaTeX, technical writing, academic formatting & Intermediate \\
+    Network Administration & VLANs, routing, firewall rules & Intermediate \\
+    Operating Systems      & GNU/Linux administration (Debian/Ubuntu) & Intermediate \\
+    Virtualisation         & EVE-NG topology design, VM management & Advanced \\
+    Pentesting             & Reconnaissance, exploitation, web vulns & Intermediate \\
+    Scripting              & Python and Bash for automation & Intermediate \\
+    Documentation          & LaTeX, technical writing & Intermediate \\
 \bottomrule
     \end{tabularx}
-    \caption{Required technical competencies and current proficiency level}
+    \caption{Required technical competencies}
     \label{tab:technical_competencies}
 \end{table}
 
-The student has demonstrated competence in these areas through completed courses
- (Network Administration, Operating Systems, Software Engineering) and the successful completion of
-  Phase 0 infrastructure setup.
-\subsubsection{Risk Assessment Framework}
-
-Following the five-phase risk assessment methodology defined in NIST SP 800-30, this section systematically identifies, evaluates, and prioritizes technical risks to ensure appropriate mitigation strategies.
-
-\paragraph{Phase 1: Asset Identification and Scope Definition}
-
-The project's critical assets have been identified and categorized according to the CIA triad (Confidentiality, Integrity, Availability):
-
-\textbf{Hardware Assets}:
-\begin{itemize}
-    \item HomeLab server (2× Xeon E5-2680v4, 64GB RAM) - Availability critical
-    \item Development workstations (laptop + desktop) - Integrity critical
-    \item Network equipment (router, switch) - Availability critical
-    \item External storage devices (backup) - Confidentiality + Availability critical
-\end{itemize}
-
-\textbf{Software Assets}:
-\begin{itemize}
-    \item EVE-NG community edition - Availability critical
-    \item Parrot OS Security distribution - Integrity critical
-    \item Reference VMs (Metasploitable, DVWA) --- consulted as design reference for lab scenarios
-    \item Development tools (VSCode, Git, LaTeX) - Integrity critical
-\end{itemize}
-
-\textbf{Data Assets}:
-\begin{itemize}
-    \item Thesis source code and documentation - Confidentiality + Integrity critical
-    \item Lab topology configurations - Integrity + Availability critical
-    \item Student learning materials - Availability critical
-    \item Project research findings - Confidentiality + Integrity critical
-\end{itemize}
-
-\textbf{Infrastructure Assets}:
-\begin{itemize}
-    \item Virtual network topology (EVE-NG) - Availability critical
-    \item Network segmentation (VLANs) - Integrity critical
-    \item Backup systems - Availability critical
-\end{itemize}
-
-\textbf{Scope Definition}: The risk assessment focuses on infrastructure and technical risks within the controlled laboratory environment. Excluded from scope: organizational risks (staffing, budget), regulatory risks (compliance), and external threats beyond the academic context.
-
-\paragraph{Phase 2: Threat and Vulnerability Identification}
-
-\textbf{Threat Identification}:
-
-Threats are categorized by source according to NIST SP 800-30\cite{nist_sp80030}:
-
-\begin{itemize}
-    \item \textbf{Hardware Threats}: Disk failures, power supply degradation, CPU overheating, memory exhaustion
-    
-    \item \textbf{Software/Configuration Threats}: Outdated VM images, incompatible software versions, configuration drift, EVE-NG platform crashes
-    
-    \item \textbf{Knowledge Gap Threats}: Insufficient expertise in advanced networking, virtualization optimization, security best practices
-    
-    \item \textbf{Resource Constraint Threats}: Limited RAM for simultaneous VM operations, storage capacity limits, bandwidth limitations
-    
-    \item \textbf{Integration Threats}: EVE-NG network compatibility issues with host systems, tool interoperability problems
-    
-    \item \textbf{Data Loss Threats}: Accidental deletion, corruption, hardware failure causing data unavailability
-\end{itemize}
-
-\textbf{Vulnerability Identification}:
-
-Vulnerabilities are the weaknesses that allow threats to impact assets:
-
-\begin{itemize}
-    \item \textbf{Hardware Vulnerabilities}: 
-    \begin{itemize}
-        \item Aging server components (3-5 year lifespan approaching end-of-life)
-        \item Single point of failure in HomeLab infrastructure (no redundancy)
-        \item Limited RAM capacity for production-scale virtualization
-    \end{itemize}
-    
-    \item \textbf{Software Vulnerabilities}:
-    \begin{itemize}
-        \item EVE-NG community edition limitations (no commercial support)
-        \item Outdated VM image libraries
-        \item Dependency on end-of-life operating system versions
-    \end{itemize}
-    
-    \item \textbf{Operational Vulnerabilities}:
-    \begin{itemize}
-        \item Inadequate documentation of network topology state
-        \item Limited backup redundancy (single backup location)
-        \item No automated disaster recovery procedures
-    \end{itemize}
-    
-    \item \textbf{Competency Vulnerabilities}:
-    \begin{itemize}
-        \item Limited hands-on experience with large-scale virtualization
-        \item Advanced network configuration knowledge gaps
-        \item Insufficient production-grade infrastructure management experience
-    \end{itemize}
-\end{itemize}
-
-\paragraph{Phase 3: Impact and Likelihood Analysis}
-
-Risk assessment requires evaluating both likelihood (probability) and impact (consequence) of each identified threat exploiting a vulnerability. Scales follow NIST SP 800-30:
-
-\textbf{Probability Scale}:
-\begin{itemize}
-    \item \textbf{Low}: < 25\% probability within project timeline
-    \item \textbf{Medium}: 25-75\% probability
-    \item \textbf{High}: > 75\% probability
-\end{itemize}
-
-\textbf{Impact Scale}:
-\begin{itemize}
-    \item \textbf{Low}: Minor delays, easy workarounds possible
-    \item \textbf{Medium}: Project delays, workarounds required
-    \item \textbf{High}: Project jeopardy, timeline at significant risk
-\end{itemize}
-
-\textbf{Risk Assessment Matrix}:
+Risk assessment follows NIST SP 800-30\cite{nist_sp80030}. Table~\ref{tab:risk_matrix}
+summarises the six identified risks with probability, impact, and mitigation strategy.
 
 \begin{table}[H]
   \centering
@@ -438,137 +164,24 @@ Risk assessment requires evaluating both likelihood (probability) and impact (co
   \renewcommand{\arraystretch}{1.1}
   \begin{tabularx}{\textwidth}{XcccX}
     \toprule
-    \textbf{Risk Scenario} & \textbf{Probability} & \textbf{Impact} & \textbf{Risk Level} & \textbf{Primary Asset} \\
+    \textbf{Risk} & \textbf{Prob.} & \textbf{Impact} & \textbf{Level} & \textbf{Mitigation} \\
     \midrule
-    EVE-NG Performance Issues                & Medium & High   & HIGH   & Infrastructure, Labs       \\
-    VM Image Incompatibility                 & Medium & Medium & MEDIUM & Development, Labs          \\
-    Knowledge Gaps in Advanced Networking    & Medium & Medium & MEDIUM & Development, Timeline      \\
-    Hardware Degradation / Disk Failure      & Low    & High   & MEDIUM & Infrastructure             \\
-    Data Loss (insufficient backup)          & Low    & High   & MEDIUM & Documentation              \\
-    Configuration Documentation Gaps         & Medium & Medium & MEDIUM & Operations                 \\
+    EVE-NG Performance Issues       & Med & High & HIGH   & Dedicated 32\,GB RAM; VirtualBox fallback \\
+    VM Image Incompatibility        & Med & Med  & MEDIUM & Early validation; QCOW2 standardisation \\
+    Knowledge Gaps (advanced net.)  & Med & Med  & MEDIUM & Structured learning; tutor consultation \\
+    Hardware Degradation            & Low & High & MEDIUM & Quarterly diagnostics; S.M.A.R.T. alerts \\
+    Data Loss (backup insufficient) & Low & High & MEDIUM & Daily backups; Git + off-site cloud \\
+    Configuration Gaps              & Med & Med  & MEDIUM & Continuous docs; topology exports via Git \\
     \bottomrule
   \end{tabularx}
-  \caption[Risk assessment matrix]{Risk assessment matrix with probability and impact evaluation (NIST SP 800-30)}
+  \caption[Risk assessment]{Risk assessment matrix (NIST SP 800-30). No risk is project-blocking.}
   \label{tab:risk_matrix}
 \end{table}
 
-
-\paragraph{Phase 4: Risk Evaluation and Prioritization}
-
-Based on the impact-likelihood analysis, risks are prioritized to guide mitigation investment:
-
-\textbf{HIGH Priority Risks}:
-
-\begin{enumerate}
-    \item \textbf{EVE-NG Performance Issues} - Infrastructure bottlenecks causing lab functionality failures. Medium probability, high impact. Requires immediate resource optimization and monitoring implementation.
-\end{enumerate}
-
-\textbf{MEDIUM Priority Risks}:
-
-\begin{enumerate}
-    \item \textbf{VM Incompatibility} - Disparate image formats and versions causing integration problems. Medium probability, medium impact.
-    
-    \item \textbf{Knowledge Gaps} - Team experience gaps in advanced networking and virtualization. Medium probability, medium impact on timeline.
-    
-    \item \textbf{Configuration Documentation} - Inadequate topology documentation complicating troubleshooting and knowledge transfer. Medium probability, medium impact.
-    
-    \item \textbf{Data Loss} - Insufficient backup redundancy creating single point of failure. Low probability, high impact if occurs.
-\end{enumerate}
-
-\textbf{LOW Priority Risks}:
-
-\begin{enumerate}
-    \item \textbf{Hardware Degradation} - Aging server components approaching end-of-life. Low probability, manageable through preventive maintenance.
-\end{enumerate}
-
-\paragraph{Phase 5: Mitigation Strategies}
-
-For each identified risk, mitigation strategies follow NIST SP 800-30 response approaches:
-
-\textbf{HIGH Priority Risk Mitigation}:
-
-\begin{itemize}
-    \item \textbf{EVE-NG Performance Issues} [REDUCTION Strategy]:
-    \begin{itemize}
-        \item Hardware dimensioning: Allocate at least 32\,GB RAM and 8 CPU cores dedicated to EVE-NG; the project ultimately required 64\,GB on the host to run all nodes concurrently alongside other services (see Chapter~8)
-        \item Resource optimization: Implement memory tuning, network simulation limits, VM suspension when idle
-        \item Documented fallback: Maintain VirtualBox installation as alternative hypervisor if critical failure occurs
-        \item Result: Reduces probability from Medium to Low
-    \end{itemize}
-\end{itemize}
-
-\textbf{MEDIUM Priority Risk Mitigation}:
-
-\begin{itemize}
-    \item \textbf{VM Incompatibility} [PREVENTION Strategy]:
-    \begin{itemize}
-        \item Early testing: Validate all VM images (Metasploitable, DVWA, Parrot OS Security)\cite{dvwa} in target environment before production use
-        \item Format standardization: Standardize on QCOW2 for EVE-NG compatibility
-        \item Image redundancy: Maintain alternative repositories (VulnHub, GitHub) for rapid replacement
-        \item Result: Reduces probability from Medium to Low
-    \end{itemize}
-
-    \item \textbf{Knowledge Gaps} [PREVENTION + REDUCTION]:
-    \begin{itemize}
-        \item Structured learning: Task 1.2 (State of the Art: 15h) provides comprehensive research on frameworks and tools
-        \item Continuous upskilling: Learning during implementation phases (Labs 1-4 research tasks)
-        \item Expert consultation: Access to tutor expertise in cybersecurity and network administration
-        \item Technical references: NIST SP 800-115\cite{nist_sp800115}, OWASP Testing Guide\cite{owasp_testing_guide}
-        \item Result: Reduces impact from Medium to Low-Medium
-    \end{itemize}
-
-    \item \textbf{Configuration Documentation} [PREVENTION]:
-    \begin{itemize}
-        \item Continuous documentation: Update topology diagrams during development
-        \item Automated export: Use EVE-NG built-in topology export functionality
-        \item Version control: All network configs via Git repository
-        \item Enforcement: All topology changes require corresponding documentation updates before milestone completion
-        \item Result: Reduces probability from Medium to Low
-    \end{itemize}
-
-    \item \textbf{Data Loss} [REDUCTION]:
-    \begin{itemize}
-        \item Daily automated backups: Encrypt and backup critical files to external storage device
-        \item Version control: All source code and documentation in Git repository with commit history
-        \item Off-site backup: Cloud storage (student account) with encryption for geographic redundancy
-        \item Restore testing: Quarterly restore tests to verify backup integrity
-        \item Result: Reduces both probability and impact (Low probability, Low impact)
-    \end{itemize}
-\end{itemize}
-
-\textbf{LOW Priority Risk Mitigation}:
-
-\begin{itemize}
-    \item \textbf{Hardware Degradation} [PREVENTION]:
-    \begin{itemize}
-        \item Preventive maintenance: Quarterly hardware diagnostics (disk health, temperature monitoring)
-        \item Component monitoring: Automated alerts for disk S.M.A.R.T. errors, CPU temperature thresholds
-        \item Replacement planning: Component procurement plan with 6-month horizon for critical parts
-        \item Result: Enables early detection and prevents critical failure
-    \end{itemize}
-\end{itemize}
-
-\textbf{Risk Assessment Conclusion}:
-
-All identified risks have been systematically evaluated and assigned appropriate mitigation strategies. No individual risk is considered project-blocking. The comprehensive mitigation plan following NIST SP 800-30 methodology ensures the project can proceed with acceptable technical risk levels. The infrastructure is well-prepared, technology stack is appropriate, and mitigation strategies are concrete and implementable. Main technical challenges are manageable with proper planning and documented contingency measures.
+\textbf{Conclusion}: High technical feasibility. All risks have concrete mitigations and none
+is project-blocking.
 
 \subsection{Economic Feasibility}
-
-\subsubsection{Cost-Benefit Analysis}
-
-The project presents \textbf{excellent economic feasibility} for the following reasons:
-
-\begin{itemize}
-    \item \textbf{Zero Software Licensing Costs}: The exclusive use of free and open-source software eliminates recurring licensing expenses, making the solution sustainable for long-term educational use.
-    
-    \item \textbf{Low Infrastructure Investment}: The hardware infrastructure (2,250 \euro) is a one-time investment that can be reused across multiple academic years and courses, amortizing costs over 3-5 years.
-    
-    \item \textbf{Reusability and Scalability}: The teaching package is designed to be reused in multiple course editions (Introduction to Cybersecurity) with minimal maintenance costs, generating value beyond the initial development.
-    
-    \item \textbf{Institutional Value}: The deliverable provides long-term value to Tecnocampus by establishing a reproducible, automated laboratory infrastructure that reduces preparation time for faculty and enhances learning outcomes for students.
-\end{itemize}
-\newpage
-\subsubsection{Cost Comparison with Alternatives}
 
 \begin{table}[H]
   \centering
@@ -579,55 +192,28 @@ The project presents \textbf{excellent economic feasibility} for the following r
     \toprule
     \textbf{Alternative} & \textbf{Description} & \textbf{Annual Cost} \\
     \midrule
-    This Project          & Custom EVE-NG labs with automation, tailored to curriculum         & 0 \euro/year*         \\
-    HackTheBox Academy    & Commercial platform with pre-built labs and guided exercises       & 1,200 \euro/year      \\
-    TryHackMe Education   & Gamified learning platform with structured learning paths         & 800 \euro/year        \\
-    Cybrary for Teams     & Video-based training with labs and certification prep             & 1,500 \euro/year      \\
-    Custom Enterprise Labs& Outsourced lab development by specialized company                 & 8,000--15,000 \euro   \\
+    \textbf{This Project} & Custom EVE-NG labs, curriculum-aligned & \textbf{0\,\euro/year*} \\
+    HackTheBox Academy    & Commercial labs platform               & 1{,}200\,\euro/year \\
+    TryHackMe Education   & Gamified learning paths               & 800\,\euro/year     \\
+    Cybrary for Teams     & Video training + labs                 & 1{,}500\,\euro/year \\
+    Custom Enterprise Labs& Outsourced development                & 8{,}000--15{,}000\,\euro \\
     \bottomrule
   \end{tabularx}
   \caption[Cost comparison]{Cost comparison with commercial alternatives (*excludes initial development)}
   \label{tab:cost_comparison}
 \end{table}
 
-
-While commercial platforms offer convenience, they lack customization to specific curriculum needs, do not integrate with institutional learning management systems, and incur recurring annual costs. This project provides a tailored, cost-effective, and sustainable solution.
-
-\textbf{Conclusion}: The project demonstrates \textbf{high economic feasibility} with minimal ongoing costs, significant institutional value, and favorable comparison to commercial alternatives.
+\textbf{Conclusion}: High economic feasibility. Zero recurring software costs; hardware
+amortised over 3--5 years; commercially comparable alternatives cost 800--1{,}500\,\euro/year.
 
 \subsection{Environmental Feasibility}
 
-\subsubsection{Energy Consumption Analysis}
-
-The environmental impact of this project is primarily related to energy consumption during development and operation:
-
-\begin{itemize}
-    \item \textbf{Development Phase (820 hours)}: 
-    \begin{itemize}
-        \item HomeLab server power consumption: 150W average
-        \item Development workstation: 65W average
-        \item Network equipment: 15W
-        \item Total power: 230W × 820h = 188.6 kWh
-        \item CO\textsuperscript{2} emissions (Spain avg. 0.25 kg CO\textsuperscript{2}/kWh): 47.15 kg CO\textsuperscript{2}\cite{red_electrica}
-        \item \textbf{Solar Energy Offset (Home Installation)}: Home infrastructure powered by 5kWp rooftop solar installation:
-        \begin{itemize}
-            \item 2025 annual generation: 6,634.9 kWh (real data from Can Regasol installation)
-            \item 2025 household consumption: 7,708.9 kWh (grid + solar)
-            \item Daily average generation during development: \(\sim\)18.2 kWh/day
-            \item Estimated solar offset for development phase: 34\% of 188.6 kWh (\(\sim\)64.1 kWh from solar)
-            \item Adjusted CO\textsuperscript{2} emissions (with solar): 31.95 kg CO\textsuperscript{2} (32\% reduction)\cite{red_electrica, murugesan2008}
-        \end{itemize}
-    \end{itemize}
-    
-    \item \textbf{Operational Phase (per academic year)}:
-    \begin{itemize}
-        \item Estimated usage: 4 laboratory sessions × 30 students × 3 hours = 360 hours/year
-        \item Power consumption: 230W × 360h = 82.8 kWh/year
-        \item CO\textsuperscript{2} emissions: 20.7 kg CO\textsuperscript{2}/year
-    \end{itemize}
-\end{itemize}
-
-\subsubsection{Comparison with Traditional Alternatives}
+The project's energy footprint is dominated by the HomeLab server (150\,W avg.) and
+workstation (65\,W avg.). Development phase consumption: 188.6\,kWh; operational phase
+(4 sessions $\times$ 30 students $\times$ 3\,h/year): 82.8\,kWh/year. A 5\,kWp rooftop
+solar installation at the author's home generated 6{,}634.9\,kWh in 2025 (real data),
+offsetting approximately 34\% of development-phase consumption and reducing CO\textsubscript{2}
+emissions by 32\% relative to grid-only scenarios\cite{red_electrica,murugesan2008}.
 
 \begin{table}[H]
   \centering
@@ -636,131 +222,96 @@ The environmental impact of this project is primarily related to energy consumpt
   \renewcommand{\arraystretch}{1.1}
   \begin{tabularx}{\textwidth}{lXrr}
     \toprule
-    \textbf{Scenario} & \textbf{Description} & \textbf{Annual CO\textsubscript{2}} & \textbf{With Solar*} \\
+    \textbf{Scenario} & \textbf{Description} & \textbf{CO\textsubscript{2}/year} & \textbf{With Solar} \\
     \midrule
-    This Project         & Virtualized labs on shared HomeLab infrastructure                   & 20.7 kg & 14.1 kg \\
-    This Project (Dev)   & Development phase with solar offset (6.6 MWh/year avg)              & 47.15 kg & 31.95 kg \\
-    Individual VMs       & Each student runs labs on personal computer (30 × 200W × 12h)       & 180 kg & -- \\
-    Cloud-Based Labs     & AWS/Azure hosted environments (datacenter PUE 1.5)                  & 95 kg  & -- \\
-    Physical Network Lab & Dedicated hardware devices (switches, routers, servers)             & 450 kg & -- \\
+    This Project (ops)  & Virtualised shared HomeLab           & 20.7\,kg & 14.1\,kg \\
+    This Project (dev)  & Development phase, solar-offset      & 47.2\,kg & 32.0\,kg \\
+    Individual VMs      & 30 students $\times$ personal laptop & 180\,kg  & --       \\
+    Cloud-Based Labs    & AWS/Azure (PUE 1.5)                  & 95\,kg   & --       \\
+    Physical Lab        & Dedicated hardware switches/routers  & 450\,kg  & --       \\
     \bottomrule
   \end{tabularx}
-  \caption[CO\textsuperscript{2} comparison]{CO\textsuperscript{2} emissions comparison across laboratory approaches (*Solar offset based on 5kWp installation producing 6.6 MWh/year)}
+  \caption[CO\textsuperscript{2} comparison]{CO\textsuperscript{2} comparison across laboratory approaches}
   \label{tab:co2_comparison}
 \end{table}
 
+Sustainability measures: VMs suspended when idle; digital-only documentation (3 printed
+copies required by regulation); modular server hardware designed for 3--5 year longevity;
+open-source stack extends usable lifespan of existing hardware.
 
-\subsubsection{Sustainability Measures}
-
-The project incorporates several sustainability practices:
-
-\begin{itemize}
-    \item \textbf{Renewable Energy Integration (Solar-Powered Infrastructure)}: The entire HomeLab and development environment operates on a 5kWp rooftop photovoltaic installation located at Can Regasol (Catalunya, Spain). Real operational data from 2025 demonstrates 6,634.9 kWh annual generation with household consumption of 7,708.9 kWh, indicating robust solar capacity with 3,796.4 kWh annual export to grid. This configuration offsets approximately 34\% of development phase energy consumption (64.1 kWh from 188.6 kWh total), reducing CO\textsuperscript{2} emissions by 32\% compared to grid-only scenarios. The installation demonstrates practical implementation of distributed renewable energy for academic research infrastructure\cite{murugesan2008, red_electrica}.
-    
-    \item \textbf{Resource Optimization}: VMs are configured with minimal resource allocation, suspended when idle, and share infrastructure efficiently through virtualization.
-    
-    \item \textbf{Digital Documentation}: All documentation is maintained in digital format (LaTeX source, PDF outputs), avoiding paper waste except for required printed thesis copies (3 units).
-    
-    \item \textbf{Hardware Longevity}: The HomeLab server is designed for longevity (3-5 years) with modular components that can be upgraded rather than replaced entirely.
-    
-    \item \textbf{Open-Source Philosophy}: Reliance on open-source software reduces electronic waste by extending the lifespan of existing hardware that might be considered obsolete for commercial software requirements.
-\end{itemize}
-
-\textbf{Conclusion}: The project presents \textbf{good environmental feasibility} with significantly lower carbon footprint compared to physical lab alternatives or individual VM deployments. The virtualized approach maximizes resource efficiency and minimizes environmental impact.
+\textbf{Conclusion}: Good environmental feasibility; significantly lower carbon footprint
+than physical labs or individual student deployments.
 
 \subsection{Legal Aspects}
 
 \subsubsection{Intellectual Property and Licensing}
 
-The project complies with intellectual property regulations:
-
-\begin{itemize}
-    \item \textbf{Open-Source Software}: All utilized software (EVE-NG, Parrot OS Security, Metasploitable, DVWA) is licensed under permissive open-source licenses (GPL, MIT, Apache 2.0) that explicitly allow educational use, modification, and redistribution.
-    
-    \item \textbf{Virtual Machine Images}: Vulnerable VMs (Metasploitable, DVWA) are provided by their respective projects with explicit permission for cybersecurity training and research purposes.
-    
-    \item \textbf{Documentation Ownership}: Per UPF regulations (Article 10), intellectual property of the bachelor's thesis belongs to the student. Exploitation rights default to the student unless otherwise agreed with the tutor and institution.
-    
-    \item \textbf{Third-Party Content}: All references, citations, and external resources used in documentation follow IEEE citation standards, ensuring proper attribution and avoiding plagiarism.
-\end{itemize}
+All software (EVE-NG, Parrot OS Security, Metasploitable, DVWA) is licensed under
+permissive open-source licenses (GPL, MIT, Apache 2.0) that permit educational use,
+modification, and redistribution. Per UPF regulations (Article 10), intellectual property
+of the bachelor's thesis belongs to the student; exploitation rights default to the
+student unless otherwise agreed with the tutor and institution. All citations follow
+IEEE standards.
 
 \subsubsection{Ethical and Legal Considerations for Pentesting}
 
-The project adheres to ethical hacking principles and legal boundaries:
-
-\begin{itemize}
-    \item \textbf{Controlled Environment}: All pentesting activities are conducted within isolated virtualized environments (EVE-NG sandbox), with no connection to production networks or systems outside the lab.
-    
-    \item \textbf{Authorized Targets}: Only intentionally vulnerable systems (Metasploitable, DVWA) designed explicitly for pentesting training are used as targets\cite{dvwa}.
-    
-    \item \textbf{Educational Purpose}: The project is conducted under academic supervision (Pere Vidiella i Catalan, tutor) within the scope of the "Introduction to Cybersecurity" course curriculum, satisfying the educational exception for security research.
-    
-    \item \textbf{Data Privacy}: No personally identifiable information (PII) or sensitive data is processed during laboratory exercises. All scenarios use synthetic data or publicly available test datasets.
-    
-    \item \textbf{Responsible Disclosure}: In the unlikely event that previously unknown vulnerabilities are discovered in open-source software during testing, they will be reported responsibly to the respective maintainers following coordinated disclosure practices.
-\end{itemize}
-
+All pentesting activities are conducted within isolated EVE-NG sandboxes with no
+connection to production networks. Only intentionally vulnerable systems (Metasploitable,
+DVWA\cite{dvwa}) designed explicitly for training are used as targets. The project is
+conducted under academic supervision (Pere Vidiella i Catalan) within the scope of the
+``Introduction to Cybersecurity'' curriculum. No personally identifiable information
+is processed; all scenarios use synthetic data.
 
 \subsubsection{Use of Artificial Intelligence Tools}
 
-In the development of this bachelor's thesis, auxiliary artificial intelligence tools
-were used --- both locally deployed language models running on the project's HomeLab
-infrastructure (offline, on dedicated hardware) and complementary online AI services.
-Their use was strictly limited to reviewing draft text, detecting inconsistencies, and
-checking for errors in documentation. No AI tool was used to generate original technical
-content, conclusions, research findings, or design decisions; all creative, analytical,
-and engineering work is the author's own. This disclosure is provided in accordance with
-the academic integrity guidelines applicable to the programme.
+Auxiliary AI tools --- both locally deployed language models on the HomeLab and
+complementary online services --- were used strictly to review draft text, detect
+inconsistencies, and check documentation errors. No AI tool was used to generate
+original technical content, conclusions, research findings, or design decisions;
+all creative, analytical, and engineering work is the author's own. This disclosure
+is provided in accordance with the academic integrity guidelines applicable to the
+programme.
 
 \subsubsection{Compliance with Academic Regulations}
 
-The project follows Tecnocampus ESUPT bachelor's thesis regulations (approved September 30, 2021):
-
-\begin{itemize}
-    \item \textbf{Plagiarism Prevention}: All work is original, properly cited, and verified using plagiarism detection tools. Adherence to Article 11 (Plagiarism) ensuring academic integrity.
-    
-    \item \textbf{Evaluation Criteria}: The project structure follows Chapter 9 (Evaluation) requirements, including continuous assessment (avantprojecte, interim report, final delivery) and tribunal defense.
-    
-    \item \textbf{Documentation Standards}: Formatting adheres to the "Guia per a la redacció i edició del bachelor's thesis" (ESUPT guidelines), ensuring compliance with submission requirements.
-\end{itemize}
-
-\textbf{Conclusion}: The project demonstrates \textbf{full legal compliance} with intellectual property regulations, ethical hacking principles, and institutional academic standards.
+The project follows Tecnocampus ESUPT bachelor's thesis regulations (approved
+September 30, 2021): original work with IEEE citation standards (Article 11 on
+plagiarism); structure aligned with Chapter 9 evaluation requirements (continuous
+assessment: avantprojecte, interim, final delivery, tribunal defence); formatting
+per the ESUPT redaction guide.
 
 \subsection{Gender and Diversity Perspective}
 
-The \textit{Introduction to Cybersecurity} course at TecnoCampus has no gender or
-diversity restrictions: participation is open to all GEISI students regardless of
-background or identity. In consultation with the responsible professor, the practical
-barriers to engagement are not demographic but relate to two specific factors:
+The \textit{Introduction to Cybersecurity} course has no gender or diversity
+restrictions. In consultation with the responsible professor, the practical barriers
+to engagement are not demographic but relate to two specific factors:
 
 \begin{itemize}
     \item \textbf{Prior knowledge}: Students with limited background in networking or
-          operating systems may find the early labs more demanding. This is mitigated
-          through structured lab guides that introduce concepts and tools progressively,
-          with explicit hints and a tools reference section in each student PDF.
+          operating systems may find early labs more demanding. Mitigated through
+          structured guides with progressive hints and a tools reference section
+          in each student PDF.
 
-    \item \textbf{Reading difficulties (dyslexia)}: Dense technical documentation can
-          be harder to process for students with dyslexia. This project addresses the
-          issue directly by typesetting the entire thesis in OpenDyslexic, a typeface
-          specifically designed to improve readability for dyslexic readers. Lab
-          documentation is additionally structured with short paragraphs, descriptive
-          headings, and code blocks visually separated from prose.
+    \item \textbf{Reading difficulties (dyslexia)}: Dense technical documentation
+          can be harder to process for dyslexic readers. This thesis is typeset in
+          OpenDyslexic; lab documentation uses short paragraphs, descriptive headings,
+          and visually separated code blocks.
 \end{itemize}
 
-All documentation uses gender-neutral language throughout. Fictional user accounts and
-scenario names used in the laboratory environments are culturally neutral and carry no
-gender or demographic assumptions.
+All documentation uses gender-neutral language. Fictional accounts and scenario names
+are culturally neutral and carry no gender or demographic assumptions.
 
-\textbf{Conclusion}: The inclusion measures in this project are grounded in the real
-barriers identified for this specific academic context --- knowledge scaffolding and
-typographic accessibility --- rather than generic demographic targets.
+\textbf{Conclusion}: Inclusion measures are grounded in the real barriers identified
+for this academic context --- knowledge scaffolding and typographic accessibility.
 
+\medskip
+\textbf{Overall Feasibility.} The project is feasible across all evaluated dimensions. Technical risks have been
+mitigated through hardware investment (64~GB RAM, additional module acquired during
+development). The budget is within academic scope and the cost model is transparent.
+Legal and ethical obligations are satisfied through open-source licensing and a locally
+controlled infrastructure. All planned activities fit within the TecnoCampus normative
+timeline. No identified risk is considered project-blocking.
 
-
-
-%Bibliography{refs} only Feasibility Study
-
-
-
-% Only cite references actually used in Feasibility Study
-
+Full phase task lists (Task IDs, hours, critical flags), the five-phase NIST SP 800-30
+risk assessment, and detailed budget breakdowns are provided in
+Appendix~\ref{app:feasibility-detail}.

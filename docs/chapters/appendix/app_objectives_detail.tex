@@ -1,0 +1,156 @@
+% ============================================================
+% Appendix F: Objectives Detail — Deliverables, KPIs, and Audience
+% ============================================================
+
+\chapter{Objectives: Deliverables, Detailed KPIs, and Audience}
+\label{app:objectives-detail}
+
+This appendix complements Chapter~\ref{ch:objectives} with the full deliverable specifications
+per specific objective, the detailed per-category KPI tables, and the extended audience
+analysis that frames the project's reuse potential.
+
+\section{Deliverables by Specific Objective}
+
+\subsection{OE1: Design and Implement EVE-NG Labs}
+
+\begin{itemize}
+\item 4 \texttt{.unl} topology files (Lab~1: implemented; Labs~2--4: planned)
+\item 8--12 optimised virtual machine images
+\item Technical configuration documentation for each lab
+\end{itemize}
+
+\subsection{OE2: Develop Automation Scripts}
+
+\begin{itemize}
+\item Bash/Python utility scripts for common tasks (e.g.\ bridge configuration,
+      ISO upload, node connectivity checks)
+\item Scripts documented with usage instructions in the repository
+\end{itemize}
+
+\subsection{OE3: Develop Structured Teaching Material}
+
+\begin{itemize}
+\item Student lab guide PDF (\textit{enunciado}) per lab --- task description, objectives,
+      hints, and tools reference
+\item Instructor resolution guide PDF (\textit{resolució}) per lab --- full walkthrough,
+      flag values, rubric (100~pts), and common errors
+\item Technical configuration reference per lab in the repository
+\end{itemize}
+
+\subsection{OE4: Validate Usability and Educational Effectiveness}
+
+\begin{itemize}
+\item Pilot session report with timing and usability observations
+\item Post-session survey results (satisfaction, difficulty, clarity)
+\item List of improvements implemented based on pilot feedback
+\end{itemize}
+
+\textbf{Pilot note}: The pilot group comprises 4--5 individuals from the GEISI student
+population, potentially including participants with documented learning difficulties
+(e.g.\ dyslexia), to assess the effectiveness of the accessibility measures
+incorporated in the lab documentation.
+
+\section{Detailed KPI Tables}
+
+The following tables break down the consolidated KPIs from Table~\ref{tab:kpi_all}
+by category for reference.
+
+\subsection{Technical Indicators}
+
+\begin{table}[H]
+  \centering
+  \small
+  \setlength{\tabcolsep}{4pt}
+  \renewcommand{\arraystretch}{1.1}
+  \begin{tabularx}{\textwidth}{l l X}
+    \toprule
+    \textbf{Metric} & \textbf{Objective} & \textbf{Measurement Method} \\
+    \midrule
+    Lab deployment time & $\leq$ 2 min & Automated timing \\
+    \midrule
+    VM boot success rate & $\geq$ 95\% & System logs + validation scripts \\
+    \midrule
+    Full reset time & $\leq$ 30 s & Scripts with timestamps \\
+    \midrule
+    Scenario reproducibility & 100\% & Automated tests \\
+    \bottomrule
+  \end{tabularx}
+  \caption{Technical KPIs for EVE-NG lab deployment}
+  \label{tab:kpi_technical_detail}
+\end{table}
+
+\subsection{Educational Indicators}
+
+\begin{table}[H]
+  \centering
+  \small
+  \setlength{\tabcolsep}{4pt}
+  \renewcommand{\arraystretch}{1.1}
+  \begin{tabularx}{\textwidth}{l l X}
+    \toprule
+    \textbf{Metric} & \textbf{Objective} & \textbf{Measurement Method} \\
+    \midrule
+    Lab resolution time & 90--120 min & Time tracking during pilot \\
+    \midrule
+    Lab completion (pilot) & All participants & Observation during pilot sessions \\
+    \midrule
+    User satisfaction & $\geq$ 4/5 & Post-use survey \\
+    \midrule
+    Key concept understanding & $\geq$ 80\% correct & Assessment questionnaire \\
+    \bottomrule
+  \end{tabularx}
+  \caption{Educational KPIs for lab effectiveness}
+  \label{tab:kpi_educational_detail}
+\end{table}
+
+\subsection{Quality Indicators}
+
+\begin{table}[H]
+  \centering
+  \small
+  \setlength{\tabcolsep}{4pt}
+  \renewcommand{\arraystretch}{1.1}
+  \begin{tabularx}{\textwidth}{l l X}
+    \toprule
+    \textbf{Metric} & \textbf{Objective} & \textbf{Measurement Method} \\
+    \midrule
+    Documentation coverage & 100\% of features & Verification checklist \\
+    \midrule
+    Critical errors & 0 & Exhaustive testing \\
+    \midrule
+    EVE-NG version compatibility & 100\% & Tests in multiple environments \\
+    \midrule
+    Interface usability & $\geq$ 4/5 & UX heuristic evaluation \\
+    \bottomrule
+  \end{tabularx}
+  \caption{Quality KPIs for lab package}
+  \label{tab:kpi_quality_detail}
+\end{table}
+
+\section{Extended Audience Analysis}
+
+\subsection{Secondary End Users}
+
+\begin{itemize}
+\item \textbf{Cybersecurity Faculty}: Other teachers interested in reusing the material
+      for related courses
+\item \textbf{Postgraduate Students}: Possible extensions of the material for advanced levels
+\end{itemize}
+
+\subsection{Potential Audience Beyond Tecnocampus}
+
+\subsubsection{Internal Scope (Tecnocampus)}
+
+\begin{itemize}
+\item Other courses related to cybersecurity
+\item Research projects in computer security
+\item Continuing education and professional certifications
+\end{itemize}
+
+\subsubsection{External Scope}
+
+\begin{itemize}
+\item Educational institutions with training programmes in cybersecurity
+\item Specialised vocational training centres
+\item Companies with internal security training programmes
+\end{itemize}

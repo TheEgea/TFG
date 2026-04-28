@@ -9,7 +9,11 @@ This chapter describes the implementation of the penetration testing lab environ
 built on EVE-NG. It covers the platform setup, the management of virtual machine
 images, the lab management interface, the infrastructure problems encountered during
 development, and an overview of the lab topologies designed for the course. Each
-individual lab is then described in its own section.
+individual lab is then described in its own section, with a summary of the network
+topology, techniques, and problems encountered. Detailed instructor references ---
+including deployment credentials, startup procedures, and flag locations --- are
+compiled in Appendices~ef{app:lab1}--ef{app:lab3}. The EVE-NG installation
+procedure is documented in Appendix~ef{app:eve-setup}.
 
 
 % ------------------------------------------------------------
@@ -206,7 +210,7 @@ An additional 32\,GB RAM module was acquired and installed, bringing the host
 to 64\,GB total. This resolved the stability issues and allowed all lab nodes
 to run concurrently without further intervention. The upgrade was not included
 in the original project budget estimate; its approximate cost
-(\textasciitilde 80\,\euro) is noted in Chapter~6 as a post-planning expenditure.
+(\textasciitilde 80\,\euro) is noted in Chapter~3 as a post-planning expenditure.
 
 
 % ------------------------------------------------------------
@@ -228,7 +232,7 @@ their primary learning objective, and their current implementation status.
 \midrule
 Lab~1: Reconnaissance \& Enumeration & Port scanning, web content discovery, SSH & Implemented \\
 Lab~2: Web Application Vulnerabilities & OWASP Top~10 exploitation & Implemented \\
-Lab~3: Network Analysis & Traffic capture, lateral movement, incident response & Pending \\
+Lab~3: Network Analysis & Traffic capture, lateral movement, incident response & Implemented \\
 Lab~4: Privilege Escalation & Local privilege escalation techniques & Pending \\
 \bottomrule
 \end{tabularx}

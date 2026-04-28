@@ -1,0 +1,89 @@
+% ============================================================
+% Appendix C: Lab 2 — Instructor Reference
+% ============================================================
+
+\chapter{Lab~2: SYNAPSE Intelligence Portal --- Instructor Reference}
+\label{app:lab2}
+
+This appendix provides the deployment reference for Lab~2 (Web Application
+Vulnerabilities). It is intended for instructors and administrators. The
+application source code, Docker Compose files, and interactive walkthrough
+are at \path{docs/web/docs/labs/lab2/}.
+
+\section*{Credentials and Access}
+
+\begin{table}[H]
+\centering
+\begin{tabularx}{\textwidth}{llXl}
+\toprule
+\textbf{System} & \textbf{Username} & \textbf{Password} & \textbf{Role} \\
+\midrule
+pfSense-LAB2  & admin     & pfsense              & Firewall management \\
+VyOS-LAB2     & vyos      & vyos                 & Router console \\
+Server-A OS   & ubuntu    & \texttt{S3rv3rA}     & SSH access \\
+Server-A Portal & admin   & \texttt{Admin@Synapse2024} & Web application admin \\
+Server-A Portal & guest   & guest123             & Web application guest \\
+Server-B OS   & ubuntu    & \texttt{S3rv3rB}     & SSH access \\
+Server-B DataVault & operator & \texttt{D4t4V4ult\#2024} & API access \\
+Parrot-LAB2   & lab2      & L4b2                 & Attacker node \\
+\bottomrule
+\end{tabularx}
+\caption{Lab~2 credentials (instructor reference --- do not distribute to students)}
+\label{tab:lab2-creds}
+\end{table}
+
+\section*{Vulnerability Chain and Flag Locations}
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabularx}{\textwidth}{lllXl}
+\toprule
+\textbf{Step} & \textbf{OWASP} & \textbf{Vuln} & \textbf{Implementation} & \textbf{Flag} \\
+\midrule
+1 & A03:2021 & Stored XSS    & \texttt{|safe} filter in Jinja2 template; \texttt{/comments} endpoint & --- \\
+2 & A07:2021 & Cookie theft  & \texttt{HttpOnly=False}; victim bot (Playwright) auto-visits comments & --- \\
+3 & A07:2021 & Broken auth   & Cookie format \texttt{ID:ROLE:USERNAME}; unsigned; forgeable & --- \\
+4 & A03:2021 & SQL injection & \texttt{/search?q=} uses string concatenation & FLAG~1 \\
+5 & A01:2021 & Admin access  & \texttt{/admin} panel reveals Server-B credentials & FLAG~2 \\
+6 & A08:2021 & YAML deser.   & Server-B \texttt{/preview} uses \texttt{yaml.UnsafeLoader} & --- \\
+7 & A08:2021 & RCE           & \texttt{!!python/object/apply:os.system} payload via POST & FLAG~3 \\
+\bottomrule
+\end{tabularx}
+\caption{Lab~2 vulnerability chain and flag locations}
+\label{tab:lab2-vuln-chain}
+\end{table}
+
+\section*{Lab Startup Procedure}
+
+\begin{enumerate}
+    \item After EVE-NG host reboot, restore bridge addresses:
+\begin{lstlisting}[language=bash]
+bash /usr/local/bin/lab2-bridges-up.sh
+\end{lstlisting}
+    \item Start the SYNAPSE Portal on Server-A:
+\begin{lstlisting}[language=bash]
+sshpass -p S3rv3rA ssh ubuntu@192.168.30.x
+cd /opt/synapse && docker-compose up -d
+docker-compose ps   # expect: flask, nginx, victim — all Up
+\end{lstlisting}
+    \item Start the DataVault on Server-B:
+\begin{lstlisting}[language=bash]
+sshpass -p S3rv3rB ssh ubuntu@192.168.30.x   # Server-B IP
+cd /opt/datavault && sudo docker compose up -d
+sudo docker compose ps   # expect: datavault-flask Up on :80
+\end{lstlisting}
+    \item Configure Parrot static IP and verify connectivity:
+\begin{lstlisting}[language=bash]
+# On Parrot (10.0.40.x/24, GW 10.0.40.x):
+nmcli con mod "Wired connection 1" ipv4.method manual \
+  ipv4.addresses 10.0.40.x/24 ipv4.gateway 10.0.40.x
+nmcli con up "Wired connection 1"
+curl http://192.168.30.x   # Should return SYNAPSE Portal HTML
+\end{lstlisting}
+\end{enumerate}
+
+\noindent\textbf{Note:} pfSense-LAB2 is installed in UEFI mode. If it fails to boot,
+use the start script: \texttt{/usr/local/bin/pfsense-lab2-start.sh}. Server-A
+uses \texttt{docker-compose} (v1, hyphen); Server-B uses \texttt{docker compose}
+(v2, space).

@@ -4,6 +4,7 @@
 % ============================================================
 
 \chapter{State of the Art}
+\label{ch:state-of-art}
 
 Cybersecurity education has experienced exponential growth over the past decade, driven by
 increasing industry demand for skilled professionals and the accessibility of online learning
@@ -14,79 +15,17 @@ gaps in current offerings, and positions this bachelor's thesis within the broad
 cybersecurity pedagogical innovation.
 
 
-\section{Existing Laboratory and Training Platforms}
+\section{Existing Platforms Overview}
 
-The following subsections summarise the major platforms used for cybersecurity training,
-with a focus on their pedagogical approach and the limitations most relevant to
-curriculum-aligned institutional deployment.
-
-\subsection{HackTheBox}
-
-HackTheBox \cite{hackthebox} is one of the most widely recognised online platforms for
-penetration testing practice, offering a large library of intentionally vulnerable machines and
-Capture-the-Flag challenges categorised by difficulty. The platform benefits from a strong
-community and industry recognition, making it a common supplementary resource for
-professional certifications. However, its challenges are isolated: there is no network topology
-connecting systems, no formal curriculum mapping to specific degree programmes, and the
-platform cannot be deployed on institutional infrastructure, which limits customisation and
-assessment integration.
-
-\subsection{TryHackMe}
-
-TryHackMe \cite{tryhackme} adopts a gamified, beginner-friendly approach, combining structured
-learning paths with guided interactive labs accessible entirely from a browser. Its low barrier to
-entry and progressive structure make it effective for initial skill development. However, the
-platform is externally managed and subscription-dependent, scenarios are simplified to ensure
-completion within short timeframes, and it does not support local institutional deployment or
-integration with academic learning management systems.
-
-\subsection{Cisco Networking Academy}
-
-Cisco Networking Academy \cite{cisco_netacad} provides institution-backed curriculum aligned with
-professional certifications (CCNA, CyberOps) and uses Packet Tracer for network simulation.
-Its formal structure and vendor support are strengths for foundational networking education.
-However, the programme is primarily defensive and networking-oriented, Packet Tracer does not
-support full operating system simulation or security tool integration, and the curriculum is
-tightly coupled to Cisco technologies.
-
-\subsection{SEED Labs}
-
-SEED Labs \cite{seedlabs} is an open-source, research-backed collection of Docker-based security
-exercises covering specific concepts such as buffer overflows, SQL injection, and cryptographic
-protocols. The academic rigour and local deployability are significant advantages. Nevertheless,
-each lab is conceptually isolated, there is no structured penetration testing workflow spanning
-multiple systems, and significant instructor customisation is required to integrate SEED exercises
-into a complete curriculum.
-
-\subsection{Game of Active Directory (GOAD)}
-
-GOAD \cite{goad} provides an Infrastructure-as-Code vulnerable Active Directory environment
-designed for realistic Windows domain penetration testing. Its use of Terraform and Vagrant enables
-reproducible deployment and the scenarios reflect real corporate environments. The platform is,
-however, narrowly focused on Windows AD: it does not cover reconnaissance, web application
-vulnerabilities, or network traffic analysis, and it lacks formal instructor resources or
-curriculum structure.
-
-\subsection{VulnHub}
-
-VulnHub \cite{vulnhub} is a community-driven repository of downloadable vulnerable virtual machines
-for local deployment. Its open, self-directed nature suits independent learners well, but the
-absence of structured progression, inconsistent quality across community-contributed machines,
-and lack of automation for deployment and reset make institutional integration impractical
-without significant instructor effort.
-
-\subsection{Hack4u Academy}
-
-Hack4u Academy \cite{hack4u} stands out for its emphasis on penetration testing methodology over
-tool memorisation, offering structured video-based courses with integrated practical exercises.
-Its curriculum is well-designed and the community active. The platform is, however,
-subscription-based and externally hosted, making local institutional deployment and automated
-large-scale assessment impossible.
-
-
-\section{Comparative Platform Analysis Matrix}
-
-The following table synthesises key characteristics across all reviewed platforms:
+The major platforms used for cybersecurity training share a common limitation: they are designed
+for independent learners or certification preparation rather than curriculum-aligned institutional
+deployment. Table~\ref{tab:platform_comparison} summarises their key characteristics.
+Platforms such as HackTheBox~\cite{hackthebox} and TryHackMe~\cite{tryhackme} are externally hosted
+and cannot be deployed on institutional infrastructure. SEED Labs~\cite{seedlabs} and
+GOAD~\cite{goad} support local deployment but cover only isolated concepts or narrow domains.
+VulnHub~\cite{vulnhub} and Hack4u~\cite{hack4u} lack automation and assessment integration.
+Cisco Networking Academy~\cite{cisco_netacad} provides formal structure but is tightly coupled
+to vendor technology and limited to network simulation.
 
 \begin{table}[H]
 \centering
@@ -109,6 +48,9 @@ Hack4u Academy & Methodology & External & Strong & Minimal & Limited \\
 \label{tab:platform_comparison}
 \end{table}
 
+Full individual platform descriptions, including detailed discussion of each platform's
+pedagogical approach, deployment model, and specific limitations, are provided in
+Appendix~\ref{app:platforms}.
 
 \section{Security Frameworks and Methodologies}
 
@@ -125,7 +67,7 @@ Lab 2 of this project is directly aligned with OWASP Top 10 categories.
 \subsection{CIS Critical Controls}
 
 The CIS Critical Controls (v8.0) represent a prioritised set of defensive techniques spanning
-network defence, data protection, and incident response \cite{cis_controls}. Labs 1 and 4
+network defence, data protection, and incident response \cite{cis_controls}. Labs 1 and 3
 incorporate defensive controls so that students understand not only how to attack but why
 specific security measures are implemented.
 
@@ -136,6 +78,28 @@ Protect, Detect, Respond, and Recover \cite{nist_framework}. The lab design foll
 principles by enabling students to identify vulnerabilities through hands-on exercises and
 understand corresponding protective measures.
 
+
+
+
+\section{Prior Academic Research}
+
+Academic research consistently validates the effectiveness of hands-on, laboratory-based
+approaches in cybersecurity education. Conti and Di Pietro \cite{conti2019} demonstrate that
+challenge-based environments significantly improve skill retention and practical competency
+compared to purely theoretical instruction. Murphy et al.\ \cite{murphy2018} provide a
+structured methodology for designing laboratory exercises that are explicitly aligned with
+curriculum outcomes, validating the need for scenario-specific tasks and integrated
+assessment. Sponj and Heri\v{c}ko \cite{sponj2021} conducted a systematic review of
+cybersecurity education research, identifying hands-on practice and authentic task design as
+the two most influential factors in learner engagement and competency development.
+Al~Mohanadi and Furnell \cite{almohannadi2016} further establish a requirements-driven
+approach to information security assessment laboratories, emphasising that lab tasks must
+map directly to defined learning outcomes to achieve meaningful pedagogical impact.
+
+These findings directly inform the design choices in this project: each lab is built around
+scenario-based flags mapped to specific learning objectives, includes an instructor reference
+sheet, and culminates in an automated assessment mechanism, addressing the gap between
+platform availability and curriculum integration identified in the prior literature.
 
 \section{Gap Analysis: What Existing Solutions Miss}
 

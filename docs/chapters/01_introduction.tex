@@ -5,34 +5,75 @@
 
 %\section{Problem Statement and Educational Gap}
 
-Cybersecurity education faces a critical challenge: the disconnect between 
-theoretical knowledge of IT systems and practical understanding of how 
-security failures manifest in integrated environments. While students in 
-the Computer Engineering degree program learn fundamental concepts---databases, 
-network protocols, operating system internals, and software architecture---they 
-rarely experience how misconfigurations and design flaws in these domains 
+Cybersecurity education faces a critical challenge: the disconnect between
+theoretical knowledge of IT systems and practical understanding of how
+security failures manifest in integrated environments. While students in
+the Computer Engineering degree program learn fundamental concepts in databases,
+network protocols, operating system internals, and software architecture,
+they rarely experience how misconfigurations and design flaws in these domains
 directly translate to security vulnerabilities.
 
-Current training approaches amplify this gap. Commercial platforms such as 
-HackTheBox\cite{hackthebox} and TryHackMe\cite{tryhackme} focus on isolated challenge-based scenarios that 
-abstract away system complexity. Professional pentesting certifications 
-(e.g., CEH, OSCP\cite{ceh_framework,oscp_exam}) expect hands-on experience in realistic environments, yet 
-many academic programs struggle to provide such environments due to cost, 
+Current training approaches amplify this gap. Commercial platforms such as
+HackTheBox\cite{hackthebox} and TryHackMe\cite{tryhackme} focus on isolated challenge-based scenarios that
+abstract away system complexity. Professional pentesting certifications
+(e.g., CEH, OSCP\cite{ceh_framework,oscp_exam}) expect hands-on experience in realistic environments, yet
+many academic programmes struggle to provide such environments due to cost,
 complexity, or vendor lock-in.
 
-Within the TecnoCampus Bachelor's Degree in Computer Engineering 
-(Management and Information Systems track), the ``Introduction to Cybersecurity'' 
+Within the TecnoCampus Bachelor's Degree in Computer Engineering
+(Management and Information Systems track), the ``Introduction to Cybersecurity''
 course currently lacks a structured, reusable, and automatable lab environment that:
 
 \begin{itemize}
     \item Aligns pentesting scenarios with specific degree learning outcomes
-    \item Enables students to recognize vulnerabilities within integrated systems 
+    \item Enables students to recognise vulnerabilities within integrated systems
           (not isolated exploits)
     \item Provides reproducible environments for consistent assessment
     \item Reduces instructor workload through automation and documentation
-    \item Remains cost-effective and institution-independent (open-source, 
+    \item Remains cost-effective and institution-independent (open-source,
           locally maintained)
 \end{itemize}
+
+\section{Context}
+
+The Centre Universitari TecnoCampus~\cite{tecnocampus} offers applied science degrees
+oriented towards professional practice in technology, business, creative industries,
+and health. Affiliated with the Universitat Pompeu Fabra, it carries that
+university's quality seal. Established in 2023 through the merger of three schools---the
+Escola Superior Politecnica (ESUPT), the Escola Superior de Ciencies Socials i de
+l'Empresa (ESCSET), and the Escola Superior de Ciencies de la Salut (ESCST)---it is
+located at the technology park of the same name in Mataro, combining academic
+infrastructure with an entrepreneurial ecosystem that facilitates student participation
+in innovation and industry-facing projects.
+
+The primary beneficiary of this project is the Bachelor's Degree in Computer
+Engineering (Management and Information Systems track). Students in this programme
+acquire foundational competencies in networks, operating systems, databases, and
+software engineering all of which are directly relevant to security practice.
+The \textit{Introduction to Cybersecurity} course is a natural integration point
+for these skills, yet it currently lacks a dedicated hands-on environment.
+
+Three perspectives illustrate the gap this project addresses:
+
+\paragraph{Institutional perspective.}
+The absence of dedicated cybersecurity lab infrastructure limits the institution's
+capacity to offer competitive, hands-on security training aligned with degree
+learning outcomes. Commercial alternatives such as HackTheBox and TryHackMe are
+externally hosted, non-customisable, and not designed to map to specific academic
+curricula or assessment rubrics.
+
+\paragraph{Student perspective.}
+Students encounter security concepts as isolated theoretical constructs rather than
+as failures observable in realistic, integrated environments. Without exposure to
+multi-component systems---firewalls, routers, servers, and applications working
+together---they cannot develop the diagnostic reasoning required in professional
+security roles.
+
+\paragraph{Instructor perspective.}
+Designing and maintaining practical security exercises is resource-intensive.
+The absence of reusable, automatable lab environments forces instructors to
+improvise or rely on third-party platforms, reducing pedagogical control and
+limiting reproducibility across cohorts.
 
 \section{Proposed Solution}
 
@@ -40,22 +81,13 @@ This project proposes a reusable penetration testing lab package built on
 EVE-NG~\cite{eve_ng} and deployed on self-hosted infrastructure, designed
 specifically for the \textit{Introduction to Cybersecurity} course at TecnoCampus.
 The package comprises four progressive lab scenarios covering network reconnaissance
-and enumeration, web application vulnerabilities, network traffic analysis, and
-privilege escalation. Each lab is self-contained: it includes an EVE-NG topology
+and enumeration, web application vulnerabilities, incident response and log forensics, and
+privilege escalation. Labs~1--3 are fully implemented and validated; Lab~4
+(privilege escalation) is in progress and will be completed in Phase~3. Each lab is self-contained: it includes an EVE-NG topology
 file (\texttt{.unl}), a student guide (\textit{enunciado}) and an instructor
 resolution guide (\textit{resolució}), an assessment rubric, and supporting
 configuration and automation scripts. The entire package is open-source, vendor-
 independent, and deployable on any institution running a compatible hypervisor.
-
-\section{Document Structure}
-
-The remainder of this document is organised as follows.
-Chapter~2 reviews the state of the art in cybersecurity education platforms and
-lab environments, situating this project within the existing landscape.
-Chapter~3 presents the feasibility study, covering the project timeline, budget,
-technical viability, and risk assessment.
-Chapter~4 defines the project objectives and measurable KPIs.
-Chapter~5 describes the methodology, project phases, and research methods.
-Chapter~6 specifies the functional and technical requirements of the lab package.
-Chapter~7 documents the development process, including platform setup, infrastructure
-decisions, and a detailed description of each implemented lab.
+Instructor deployment references, credentials, and lab-specific configuration
+details are compiled in the Annexos (Volume~II), which accompanies this memory
+and is also published online at \path{docs/web/docs/assets/official\_Documents/annexos.md}.

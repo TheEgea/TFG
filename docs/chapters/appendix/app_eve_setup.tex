@@ -1,0 +1,78 @@
+% ============================================================
+% Appendix A: EVE-NG Installation on Proxmox VE
+% ============================================================
+
+\chapter{EVE-NG Installation on Proxmox VE}
+\label{app:eve-setup}
+
+This appendix documents the configuration used to deploy EVE-NG Community Edition
+on the Proxmox VE server used for this project. The procedure has been validated and
+the same steps can be used to reproduce the environment on any compatible Proxmox
+host. Screenshots and extended notes are available in the companion web documentation
+at \path{docs/web/docs/guides/eve_ng_install_proxmox/}.
+
+\section*{Virtual Machine Requirements}
+
+\begin{table}[H]
+\centering
+\begin{tabularx}{\textwidth}{lX}
+\toprule
+\textbf{Parameter} & \textbf{Value used in this project} \\
+\midrule
+Hypervisor        & Proxmox VE 8.x \\
+CPU type          & \texttt{host} (required for nested virtualisation) \\
+vCPU cores        & 16 (minimum 8) \\
+RAM               & 32\,GB per EVE-NG instance (host upgraded to 64\,GB total) \\
+Disk              & 100\,GB VirtIO, SSD-backed Proxmox pool \\
+SCSI controller   & VirtIO SCSI \\
+Network           & VirtIO, bridged on \texttt{vmbr0} (management); \texttt{pnet0}--\texttt{pnetN} as cloud bridges \\
+BIOS              & SeaBIOS (default; OVMF also works) \\
+\bottomrule
+\end{tabularx}
+\caption{EVE-NG VM configuration parameters}
+\label{tab:eve-vm-params}
+\end{table}
+
+\section*{Installation Steps}
+
+\begin{enumerate}
+    \item Download the EVE-NG Community Edition ISO from the official website.
+    \item In Proxmox, create a new VM with the parameters in Table~\ref{tab:eve-vm-params}.
+          Ensure the CPU type is set to \texttt{host} so that virtualisation extensions
+          (VT-x / AMD-V) are exposed to the guest.
+    \item Boot from the ISO and follow the Ubuntu Server installation wizard. Assign
+          a static IP address and install the OpenSSH server during setup.
+    \item After the first reboot, follow the EVE-NG Community post-install wizard
+          (\texttt{/opt/unetlab/wrappers/unl\_wrapper -a postinstall}) and configure
+          the management interface.
+    \item Run \texttt{apt update \&\& apt upgrade -y} and reboot once more to ensure
+          all EVE-NG patches are applied.
+    \item Access the web interface at \texttt{https://<EVE-NG-IP>/} and change the
+          default credentials immediately.
+\end{enumerate}
+
+\section*{Proxmox Network Configuration}
+
+Two bridge types are used:
+
+\begin{itemize}
+    \item \textbf{\texttt{vmbr0} (bridged)} --- management access from the LAN; also
+          used as \texttt{pnet0} inside EVE-NG for labs that require connectivity to
+          the homelab network (e.g., Lab~1).
+    \item \textbf{\texttt{vmbr1} (NAT)} --- optional internet-facing bridge to keep
+          lab traffic isolated from the LAN while allowing outbound connectivity.
+\end{itemize}
+
+\section*{Post-Install Checklist}
+
+\begin{itemize}
+    \item[$\square$] CPU type set to \texttt{host} in Proxmox VM options.
+    \item[$\square$] VM autostart enabled in Proxmox.
+    \item[$\square$] Snapshot taken after successful EVE-NG installation.
+    \item[$\square$] Default admin password changed.
+    \item[$\square$] OS Client Side installed on instructor workstation (HTML5 console
+          option does not require it).
+    \item[$\square$] Image directories created under
+          \path{/opt/unetlab/addons/qemu/} and permissions fixed
+          with \texttt{unl\_wrapper -a fixpermissions}.
+\end{itemize}

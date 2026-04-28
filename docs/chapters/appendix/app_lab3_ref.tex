@@ -1,0 +1,103 @@
+% ============================================================
+% Appendix D: Lab 3 — Instructor Reference
+% ============================================================
+
+\chapter{Lab~3: HELIX Systems --- Instructor Reference}
+\label{app:lab3}
+
+This appendix provides the deployment and pre-staging reference for Lab~3 (Incident
+Response and Log Forensics). It documents all accounts, the pre-staged attack timeline,
+and the evidence artefacts that students are expected to find. The step-by-step
+investigation walkthrough is at \path{docs/web/docs/labs/lab3/walkthrough/}.
+
+\section*{Accounts}
+
+\begin{table}[H]
+\centering
+\begin{tabularx}{\textwidth}{llXl}
+\toprule
+\textbf{System} & \textbf{Username} & \textbf{Password} & \textbf{Role} \\
+\midrule
+pfSense-LAB3  & admin    & pfsense          & Firewall management \\
+VyOS-LAB3     & vyos     & vyos             & Router console \\
+Server-Web    & analyst  & \texttt{An@lyst2024}  & \textbf{Student entry account} \\
+Server-Web    & devops   & \texttt{D3v0ps\#2023} & Compromised account (brute-forced) \\
+Server-Web    & maint    & ---              & Backdoor account (attacker-created) \\
+Server-DB     & analyst  & \texttt{An@lyst2024}  & Internal access \\
+Server-DB     & devops   & \texttt{D3v0ps\#2023} & Compromised (password reuse) \\
+\bottomrule
+\end{tabularx}
+\caption{Lab~3 accounts (instructor reference)}
+\label{tab:lab3-accounts}
+\end{table}
+
+\section*{Pre-Staged Attack Timeline}
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabularx}{\textwidth}{llX}
+\toprule
+\textbf{Time} & \textbf{Host} & \textbf{Event} \\
+\midrule
+03:05--03:16 & Server-Web & 25 failed SSH attempts for \texttt{devops} from \texttt{185.220.101.47} \\
+03:17        & Server-Web & Successful SSH login as \texttt{devops} \\
+03:18        & Server-Web & \texttt{sudo /usr/bin/find} --- privilege escalation to root via GTFOBins \\
+03:19        & Server-Web & \texttt{useradd maint} + \texttt{/etc/sudoers.d/maint} --- backdoor + persistence \\
+03:21        & Server-DB  & SSH login as \texttt{devops} from \texttt{192.168.50.10} (lateral movement) \\
+03:22        & Server-DB  & Access to \texttt{clients.db}; \texttt{.exfil\_marker} created \\
+\bottomrule
+\end{tabularx}
+\caption{Lab~3 pre-staged attack timeline}
+\label{tab:lab3-timeline}
+\end{table}
+
+\section*{Evidence Artefact Locations}
+
+\begin{table}[H]
+\centering
+\begin{tabularx}{\textwidth}{lXl}
+\toprule
+\textbf{Artefact} & \textbf{Path} & \textbf{Host} \\
+\midrule
+SSH brute-force log    & \texttt{/var/log/auth.log}                  & Server-Web \\
+Privilege escalation   & \texttt{/var/log/auth.log} (sudo entry)     & Server-Web \\
+Backdoor account       & \texttt{/etc/passwd}, \texttt{/etc/sudoers.d/maint} & Server-Web \\
+Sudoers misconfiguration & \texttt{/etc/sudoers.d/devops}            & Server-Web \\
+Bash history           & \texttt{/home/devops/.bash\_history}        & Server-Web \\
+Lateral movement log   & \texttt{/var/log/auth.log}                  & Server-DB \\
+Exfiltration marker    & \texttt{/opt/helix/data/.exfil\_marker}     & Server-DB \\
+Sensitive data         & \texttt{/opt/helix/data/clients.db}         & Server-DB \\
+\bottomrule
+\end{tabularx}
+\caption{Lab~3 evidence artefact locations}
+\label{tab:lab3-artefacts}
+\end{table}
+
+\section*{Student Entry Point}
+
+Students connect via SSH to pfSense's WAN IP; pfSense DNAT forwards TCP~22 directly to
+Server-Web:
+
+\begin{lstlisting}[language=bash]
+ssh analyst@<pfSense-WAN-IP>
+# Password: An@lyst2024
+# Lands on: analyst@helix-web:~$
+\end{lstlisting}
+
+No offensive tools are required. Students use only standard Unix utilities:
+\texttt{grep}, \texttt{awk}, \texttt{less}, \texttt{cat}, \texttt{find},
+\texttt{journalctl}.
+
+\section*{Lab Reset Procedure}
+
+To restore the lab to its initial forensic state after a student session:
+
+\begin{lstlisting}[language=bash]
+# Restore EVE-NG snapshot to pre-exercise state
+# (from EVE-NG host or web interface)
+unl_wrapper -a ...    # see web docs for exact snapshot name
+\end{lstlisting}
+
+\noindent Alternatively, revert both Server-Web and Server-DB QCOW2 images from
+the pre-staged backup stored at \path{/opt/unetlab/addons/qemu/lab3-backups/}.

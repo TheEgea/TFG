@@ -1,0 +1,293 @@
+% ============================================================
+% Appendix I: Feasibility Detail -- Task Lists and NIST Risk Assessment
+% ============================================================
+
+\chapter{Feasibility: Task Breakdown and NIST Risk Assessment}
+\label{app:feasibility-detail}
+
+This appendix complements Chapter~\ref{ch:feasibility} with the full per-phase task
+lists (task IDs, estimated hours, critical path flags) and the five-phase NIST SP 800-30
+risk assessment that underpins the risk matrix in that chapter.
+
+\section{Phase Task Lists}
+
+\subsection{Phase 0: Preparation (July--November 2025)}
+
+\begin{itemize}
+\item Task 0.1: HomeLab Initialisation Setup (64h)
+\item Task 0.2: VSCode Setup for thesis development (18h)
+\item Task 0.3: Parrot OS Security Setup and Basic Tools (15h)
+\item Task 0.4: Home Lab As-Built Documentation (8h)
+\end{itemize}
+
+\textbf{Duration}: 105 hours \quad \textbf{Status}: Completed (100\%)
+
+\subsection{Phase 1: Avantprojecte (October 2025--January 2026)}
+
+\begin{itemize}
+\item Task 1.0: Thesis Development (22h)
+\item Task 1.1: SMART Objectives Definition (4h)
+\item Task 1.2: State of the Art: Frameworks and Tools (15h)
+\item Task 1.3: Functional and Non-Functional Requirements (10h)
+\item Task 1.4: Pentesting Methodology and Validation (8h) --- \textbf{CRITICAL}
+\item Task 1.5: Design Decisions and Justification (5h)
+\item Task 1.6: Gantt Chart Development (20h)
+\item Task 1.7: Risk Analysis and Mitigation Plan (15h)
+\item Task 1.8: Resource Inventory (5h)
+\item \textbf{Milestone 1.10}: Preliminary Project (40h) --- \textbf{Delivery: January 16, 2026}
+\end{itemize}
+
+\textbf{Duration}: 82 hours \quad \textbf{Status}: Completed
+
+\subsection{Phase 2: Interim Report (January--March 2026)}
+
+\begin{itemize}
+\item Task 2.1: Lab 1 Research --- Reconnaissance (14h) --- \textbf{CRITICAL}
+\item Task 2.2: Lab 2 Research --- Web Vulnerabilities (14h) --- \textbf{CRITICAL}
+\item Task 2.3: Lab 3 Research --- Network Analysis/IR (14h) --- \textbf{CRITICAL}
+\item Task 2.4: Technical Write-ups Labs 1 \& 2 (13h)
+\item Task 2.5: Topology Adjustments (30h)
+\item Task 2.6: Pre-validation with Pilot Users (20h) --- \textbf{CRITICAL}
+\item Task 2.6.1: Pre-validation Revision (6h) --- \textbf{CRITICAL}
+\item Task 2.7: Analyse and Write Hackathon Results (17h)
+\item Task 2.8: Interim Report Formalisation (40h)
+\item Task 2.9: Set Up Servers, VMs, and EVE-NG (20h)
+\item Task 2.10: Backup and Documentation of EVE-NG (10h)
+\item \textbf{Milestone 2.11}: Intermediate Thesis (50h) --- \textbf{Delivery: March 20, 2026}
+\end{itemize}
+
+\textbf{Duration}: 212 hours \quad \textbf{Status}: Completed
+
+\subsection{Phase 3: Final Delivery (March--May 2026)}
+
+\begin{itemize}
+\item Task 3.1: Lab 4 Research --- Post-Exploitation (16h) --- \textbf{CRITICAL}
+\item Task 3.2: Lab 3 Validation with Users (12h)
+\item Task 3.3: Technical Write-ups Labs 3 \& 4 (19h)
+\item Task 3.4: Penetration Testing Round 1 (Labs 1--2--3) (30h) --- \textbf{CRITICAL}
+\item Task 3.5: Penetration Testing Round 2 (All Labs) (25h) --- \textbf{CRITICAL}
+\item Task 3.6: Python Automation Scripts (30h)
+\item Task 3.7: Final Validation with Pilot Users (18h)
+\item Task 3.8: Final Review and Project Polishing (25h)
+\item Task 3.9: Bachelor's Thesis Report Writing I (15h) --- \textbf{CRITICAL}
+\item Task 3.10: Bachelor's Thesis Report Writing II (40h) --- \textbf{CRITICAL}
+\item Task 3.11: Bachelor's Thesis Report Writing III (35h) --- \textbf{CRITICAL}
+\item Task 3.12: Final Revision (15h)
+\item Task 3.13: Final Report Preparation (20h)
+\item \textbf{Milestone 3.14}: Final Report (5h) --- \textbf{Delivery: May 27, 2026}
+\end{itemize}
+
+\textbf{Duration}: 315 hours \quad \textbf{Status}: In progress
+
+\section{NIST SP 800-30 Five-Phase Risk Assessment}
+
+This section details the systematic risk assessment following NIST SP 800-30\cite{nist_sp80030}.
+The summary risk matrix is provided in Table~\ref{tab:risk_matrix} in Chapter~\ref{ch:feasibility}.
+
+\subsection{Phase 1: Asset Identification and Scope Definition}
+
+Critical assets are categorised by CIA triad:
+
+\textbf{Hardware Assets}:
+\begin{itemize}
+\item HomeLab server (2$\times$ Xeon E5-2680v4, 64~GB RAM) --- Availability critical
+\item Development workstations (laptop + desktop) --- Integrity critical
+\item Network equipment (router, switch) --- Availability critical
+\item External storage (backup) --- Confidentiality + Availability critical
+\end{itemize}
+
+\textbf{Software Assets}:
+\begin{itemize}
+\item EVE-NG Community Edition --- Availability critical
+\item Parrot OS Security distribution --- Integrity critical
+\item Vulnerable VMs (Metasploitable, DVWA) --- Integrity critical
+\item Development tools (VSCode, Git, LaTeX) --- Integrity critical
+\end{itemize}
+
+\textbf{Data Assets}:
+\begin{itemize}
+\item Thesis source code and documentation --- Confidentiality + Integrity critical
+\item Lab topology configurations --- Integrity + Availability critical
+\item Student learning materials --- Availability critical
+\item Project research findings --- Confidentiality + Integrity critical
+\end{itemize}
+
+\textbf{Scope}: Infrastructure and technical risks within the controlled laboratory
+environment. Excluded: organisational, regulatory, and external threats beyond the
+academic context.
+
+\subsection{Phase 2: Threat and Vulnerability Identification}
+
+\textbf{Threat categories (NIST SP 800-30)}:
+\begin{itemize}
+\item \textbf{Hardware Threats}: Disk failures, power supply degradation, CPU overheating,
+      memory exhaustion
+\item \textbf{Software/Configuration Threats}: Outdated VM images, incompatible versions,
+      configuration drift, EVE-NG crashes
+\item \textbf{Knowledge Gap Threats}: Insufficient expertise in advanced networking,
+      virtualisation optimisation, security best practices
+\item \textbf{Resource Constraint Threats}: Limited RAM for simultaneous VM operations,
+      storage capacity limits
+\item \textbf{Integration Threats}: EVE-NG network compatibility issues, tool interoperability
+\item \textbf{Data Loss Threats}: Accidental deletion, corruption, hardware failure
+\end{itemize}
+
+\textbf{Key vulnerabilities}:
+\begin{itemize}
+\item Aging server components (end-of-life approaching)
+\item Single point of failure --- no infrastructure redundancy
+\item EVE-NG Community Edition has no commercial support
+\item Limited RAM capacity for production-scale virtualisation
+\item Inadequate documentation of network topology state
+\item Limited backup redundancy (single backup location)
+\end{itemize}
+
+\subsection{Phase 3: Impact and Likelihood Analysis}
+
+Scales follow NIST SP 800-30: Probability (Low $<$25\%, Medium 25--75\%, High $>$75\%);
+Impact (Low: minor delays, Medium: project delays, High: project jeopardy).
+
+\begin{table}[H]
+  \centering
+  \footnotesize
+  \setlength{\tabcolsep}{3pt}
+  \renewcommand{\arraystretch}{1.1}
+  \begin{tabularx}{\textwidth}{XcccX}
+    \toprule
+    \textbf{Risk Scenario} & \textbf{Prob.} & \textbf{Impact} & \textbf{Level} & \textbf{Primary Asset} \\
+    \midrule
+    EVE-NG Performance Issues          & Medium & High   & HIGH   & Infrastructure, Labs \\
+    VM Image Incompatibility           & Medium & Medium & MEDIUM & Development, Labs \\
+    Knowledge Gaps (advanced net.)     & Medium & Medium & MEDIUM & Development, Timeline \\
+    Hardware Degradation / Disk Failure & Low   & High   & MEDIUM & Infrastructure \\
+    Data Loss (insufficient backup)    & Low    & High   & MEDIUM & Documentation \\
+    Configuration Documentation Gaps   & Medium & Medium & MEDIUM & Operations \\
+    \bottomrule
+  \end{tabularx}
+  \caption{Risk assessment matrix with probability and impact (NIST SP 800-30)}
+  \label{tab:risk_matrix_detail}
+\end{table}
+
+\subsection{Phase 4: Risk Evaluation and Prioritisation}
+
+\textbf{HIGH Priority}: EVE-NG Performance Issues --- infrastructure bottlenecks causing
+lab functionality failures. Medium probability, high impact. Requires immediate resource
+optimisation and monitoring implementation.
+
+\textbf{MEDIUM Priority}:
+\begin{enumerate}
+\item VM Incompatibility --- disparate image formats causing integration problems
+\item Knowledge Gaps --- experience gaps in advanced networking/virtualisation
+\item Configuration Documentation --- inadequate topology documentation
+\item Data Loss --- insufficient backup redundancy (single point of failure)
+\end{enumerate}
+
+\textbf{LOW Priority}: Hardware Degradation --- aging components manageable through
+preventive maintenance.
+
+\subsection{Phase 5: Mitigation Strategies}
+
+\textbf{EVE-NG Performance Issues (REDUCTION)}:
+\begin{itemize}
+\item Hardware dimensioning: 64~GB RAM dedicated to the server running EVE-NG
+      (32~GB proved insufficient --- additional module acquired, \textasciitilde{}80\,\euro)
+\item Resource optimisation: memory tuning, VM suspension when idle
+\item Documented fallback: VirtualBox as alternative hypervisor if critical failure
+\item \textit{Result}: Probability reduced from Medium to Low
+\end{itemize}
+
+\textbf{VM Incompatibility (PREVENTION)}:
+\begin{itemize}
+\item Early testing: validate all images in target environment before use
+\item Format standardisation: QCOW2 for EVE-NG compatibility
+\item Alternative repositories maintained (VulnHub, GitHub)
+\item \textit{Result}: Probability reduced from Medium to Low
+\end{itemize}
+
+\textbf{Knowledge Gaps (PREVENTION + REDUCTION)}:
+\begin{itemize}
+\item Structured learning: Task 1.2 (15h) comprehensive framework research
+\item Continuous upskilling during lab research phases (Tasks 2.1--3.1)
+\item Expert consultation with tutor Pere Vidiella i Catalan
+\item Technical references: NIST\cite{nist_sp800115}, OWASP\cite{owasp_testing_guide}
+\item \textit{Result}: Impact reduced from Medium to Low-Medium
+\end{itemize}
+
+\textbf{Configuration Documentation (PREVENTION)}:
+\begin{itemize}
+\item Continuous documentation: update topology diagrams during development
+\item Automated export: EVE-NG built-in topology export
+\item Version control: all network configs via Git repository
+\item \textit{Result}: Probability reduced from Medium to Low
+\end{itemize}
+
+\textbf{Data Loss (REDUCTION)}:
+\begin{itemize}
+\item Daily automated encrypted backups to external storage
+\item Version control: full Git history on GitHub
+\item Off-site cloud backup (student account)
+\item \textit{Result}: Probability Low, Impact Low
+\end{itemize}
+
+\textbf{Hardware Degradation (PREVENTION)}:
+\begin{itemize}
+\item Quarterly hardware diagnostics (disk health, temperature monitoring)
+\item Automated S.M.A.R.T. alerts for disk errors and CPU temperature thresholds
+\item Component procurement plan with 6-month horizon for critical parts
+\end{itemize}
+
+\textbf{Risk Assessment Conclusion}: All identified risks have been systematically
+evaluated and assigned concrete mitigation strategies. No individual risk is
+considered project-blocking.
+
+\section{Detailed Budget Tables}
+
+\subsection{Software and Licences}
+
+\begin{table}[H]
+    \centering
+    \begin{tabularx}{\textwidth}{Xlrr}
+    \toprule
+    \textbf{Resource} & \textbf{Licence Type} & \textbf{Unit} & \textbf{Total} \\
+    \midrule
+    EVE-NG Community Edition  & Free/Open Source  & 0\,\euro & 0\,\euro \\
+    Parrot OS Security        & Free/Open Source  & 0\,\euro & 0\,\euro \\
+    Proxmox VE                & Free/Open Source  & 0\,\euro & 0\,\euro \\
+    Metasploitable VMs        & Free/Open Source  & 0\,\euro & 0\,\euro \\
+    DVWA                      & Free/Open Source  & 0\,\euro & 0\,\euro \\
+    Visual Studio Code        & Free/Open Source  & 0\,\euro & 0\,\euro \\
+    LaTeX (TeX Live)          & Free/Open Source  & 0\,\euro & 0\,\euro \\
+    Git + GitHub (Student)    & Free/Student      & 0\,\euro & 0\,\euro \\
+    Burp Suite Community      & Free              & 0\,\euro & 0\,\euro \\
+    Wireshark                 & Free/Open Source  & 0\,\euro & 0\,\euro \\
+    \midrule
+    \textbf{SUBTOTAL Software} & & & \textbf{0\,\euro} \\
+    \bottomrule
+    \end{tabularx}
+    \caption{Software and licence costs (all free/open-source for educational use)}
+    \label{tab:software_costs}
+\end{table}
+
+\subsection{Other Operational Costs}
+
+\begin{table}[H]
+    \centering
+    \begin{tabularx}{\textwidth}{Xr}
+    \toprule
+    \textbf{Concept} & \textbf{Cost} \\
+    \midrule
+    Electricity (820\,h $\times$ 0.15\,kWh $\times$ 0.20\,\euro/kWh) & 25\,\euro \\
+    Internet connectivity (9 months $\times$ 40\,\euro/month)          & 360\,\euro \\
+    Documentation printing and binding (3 copies)                      & 60\,\euro \\
+    Contingency fund (5\% of total)                                    & 635\,\euro \\
+    \midrule
+    \textbf{TOTAL Other Costs} & \textbf{1{,}080\,\euro} \\
+    \bottomrule
+    \end{tabularx}
+    \caption{Detailed breakdown of additional operational costs}
+    \label{tab:other_costs}
+\end{table}
+
+\textbf{Note}: The total budget summary in Chapter~\ref{ch:feasibility}
+(Table~\ref{tab:total_budget}) uses a rounded figure of 1{,}020\,\euro for other
+costs, reflecting the exclusion of the contingency fund from the base estimate.

@@ -27,7 +27,6 @@ theme:
     - content.code.copy
     - content.code.annotate
     - content.tabs
-    - navigation.sections
     - navigation.indexes
     - search.suggest
     - search.highlight
@@ -37,6 +36,7 @@ nav:
   - Thesis Documentation:
       - Memory: assets/Temp.md
       - Feasibility Study: assets/official_Documents/feasibility.md
+      - Appendices: annexos/index.md
   - Basic Configuration:
       - Selected ISOs: assets/init_configs/selected-isos/index.md
       - Router (VyOS): assets/init_configs/Router.md
@@ -66,6 +66,17 @@ nav:
           - Server-Web (helix-web): labs/lab3/server-web.md
           - Server-DB (helix-db): labs/lab3/server-db.md
           - Evidence Walkthrough: labs/lab3/walkthrough.md
+  - Appendices:
+      - Overview: annexos/index.md
+      - "App A — EVE-NG Installation": annexos/app-a/index.md
+      - "App B — Lab 1 Reference": annexos/app-b/index.md
+      - "App C — Lab 2 Reference": annexos/app-c/index.md
+      - "App D — Lab 3 Reference": annexos/app-d/index.md
+      - "App E — Platforms": annexos/app-e/index.md
+      - "App F — Objectives & KPIs": annexos/app-f/index.md
+      - "App G — Methodology": annexos/app-g/index.md
+      - "App H — Requirements": annexos/app-h/index.md
+      - "App I — Feasibility": annexos/app-i/index.md
 #  - Pentest Labs:
 #      - Reconnaissance: labs/recon.md
 #      - Web Vulns: labs/web-vulns.md

@@ -312,10 +312,10 @@ note = {Bachelor program curriculum and learning outcomes. Accessed: 4 March 202
 }
 
 @online{ub_tfg_guide,
-title = {Guia per a la {{TFG}} - Universitat de Barcelona},
-organization = {Universitat de Barcelona},
+title = {Guia per a la {{TFG}} - Universitat Pompeu Fabra},
+organization = {Universitat Pompeu Fabra},
 year = {2024},
-url = {https://www.ub.edu/},
+url = {https://www.upf.edu/},
 note = {Institutional TFG guidelines. Accessed: 4 March 2026}
 }
 
@@ -323,27 +323,27 @@ note = {Institutional TFG guidelines. Accessed: 4 March 2026}
 % SECTION 7: CYBERSECURITY EDUCATION RESEARCH
 % ============================================================
 
-% @article{sponj2021,
-% author = {Sponj, Marko and Heričko, Marjan},
-% title = {Cybersecurity Education: A Systematic Review},
-% journal = {Journal of Educational Computing Research},
-% year = {2021},
-% volume = {59},
-% number = {4},
-% pages = {528--562},
-% doi = {10.1177/0735633120968370}
-% }
+@article{sponj2021,
+author = {Sponj, Marko and Heričko, Marjan},
+title = {Cybersecurity Education: A Systematic Review},
+journal = {Journal of Educational Computing Research},
+year = {2021},
+volume = {59},
+number = {4},
+pages = {528--562},
+doi = {10.1177/0735633120968370}
+}
 
-% @article{conti2019,
-% author = {Conti, Giovanni and Di Pietro, Roberto},
-% title = {Hands-on Cybersecurity: A Challenge-Based Approach},
-% journal = {IEEE Security \& Privacy},
-% year = {2019},
-% volume = {17},
-% number = {2},
-% pages = {19--27},
-% doi = {10.1109/MSEC.2019.2891308}
-% }
+@article{conti2019,
+author = {Conti, Giovanni and Di Pietro, Roberto},
+title = {Hands-on Cybersecurity: A Challenge-Based Approach},
+journal = {IEEE Security \& Privacy},
+year = {2019},
+volume = {17},
+number = {2},
+pages = {19--27},
+doi = {10.1109/MSEC.2019.2891308}
+}
 
 % @article{okafor2020,
 % author = {Okafor, Kelechukwu C. and Kshetri, Nir},
@@ -356,16 +356,16 @@ note = {Institutional TFG guidelines. Accessed: 4 March 2026}
 % doi = {10.1109/MSEC.2020.3000411}
 % }
 
-% @article{almohannadi2016,
-% author = {Al Mohanadi, Hana and Furnell, Steven},
-% title = {A Requirements-Driven Approach to Designing an Assessment Laboratory for Information Security},
-% journal = {Journal of Educational Computing Research},
-% year = {2016},
-% volume = {54},
-% number = {4},
-% pages = {469--494},
-% doi = {10.1177/0735633115623065}
-% }
+@article{almohannadi2016,
+author = {Al Mohanadi, Hana and Furnell, Steven},
+title = {A Requirements-Driven Approach to Designing an Assessment Laboratory for Information Security},
+journal = {Journal of Educational Computing Research},
+year = {2016},
+volume = {54},
+number = {4},
+pages = {469--494},
+doi = {10.1177/0735633115623065}
+}
 
 % @inproceedings{toppo2015,
 % author = {Toppo, Aarav and Mishra, Bikash},
@@ -534,12 +534,21 @@ note = {Public repository of exploits and vulnerability PoCs. Accessed: 4 March 
 % ============================================================
 
 @online{nist_sp800861,
-title = {Computer Security Incident Handling Guide},
+title = {Guide to Integrating Forensic Techniques into Incident Response},
 organization = {National Institute of Standards and Technology},
 number = {SP 800-86},
-year = {2016},
+year = {2006},
 url = {https://nvlpubs.nist.gov/nistpubs/Legacy/SP/nistspecialpublication800-86.pdf},
 note = {Accessed: 4 March 2026}
+}
+
+@online{nist_sp80061,
+title = {Computer Security Incident Handling Guide},
+organization = {National Institute of Standards and Technology},
+number = {SP 800-61, Revision 2},
+year = {2012},
+url = {https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-61r2.pdf},
+note = {Primary NIST guide for incident response. Accessed: 27 April 2026}
 }
 
 % ============================================================
@@ -739,3 +748,44 @@ note = {Open-source recursive DNS resolver used by pfSense. Accessed: 8 April 20
 
 % END OF BIBLIOGRAPHY
 % ============================================================
+
+@online{tecnocampus,
+  author       = {{Centre Universitari TecnoCampus}},
+  title        = {Centre Universitari TecnoCampus --- Official Website},
+  organization = {Centre Universitari TecnoCampus},
+  year         = {2024},
+  url          = {https://www.tecnocampus.cat},
+  note         = {Accessed: 2025}
+}
+
+@misc{rfc793,
+  author       = {Jon Postel},
+  title        = {{RFC 793: Transmission Control Protocol}},
+  howpublished = {IETF},
+  year         = {1981},
+  url          = {https://www.rfc-editor.org/rfc/rfc793}
+}
+
+@misc{rfc1035,
+  author       = {P. Mockapetris},
+  title        = {{RFC 1035: Domain Names --- Implementation and Specification}},
+  howpublished = {IETF},
+  year         = {1987},
+  url          = {https://www.rfc-editor.org/rfc/rfc1035}
+}
+
+@misc{rfc4252,
+  author       = {T. Ylonen and C. Lonvick},
+  title        = {{RFC 4252: The Secure Shell (SSH) Authentication Protocol}},
+  howpublished = {IETF},
+  year         = {2006},
+  url          = {https://www.rfc-editor.org/rfc/rfc4252}
+}
+
+@misc{rfc1918,
+  author       = {Y. Rekhter and B. Moskowitz and D. Karrenberg and G. J. de Groot and E. Lear},
+  title        = {{RFC 1918: Address Allocation for Private Internets}},
+  howpublished = {IETF},
+  year         = {1996},
+  url          = {https://www.rfc-editor.org/rfc/rfc1918}
+}

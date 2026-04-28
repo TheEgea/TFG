@@ -1,0 +1,231 @@
+\documentclass[a4paper, 12pt]{article}
+
+\usepackage{fontspec}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage[english]{babel}
+\usepackage{geometry}
+\usepackage{titlesec}
+\usepackage{hyperref}
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{xcolor}
+\usepackage{mdframed}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{listings}
+
+\geometry{top=2.5cm, bottom=2.5cm, left=3cm, right=2.5cm}
+
+\setmainfont{OpenDyslexic}[
+    Path = /usr/share/fonts/opentype/opendyslexic/,
+    Extension = .otf,
+    UprightFont = *-Regular,
+    BoldFont = *-Bold,
+    ItalicFont = *-Italic,
+    BoldItalicFont = *-BoldItalic
+]
+\setmonofont{OpenDyslexicMono}[
+    Path = /usr/share/fonts/opentype/opendyslexic/,
+    Extension = .otf,
+    UprightFont = *-Regular
+]
+
+\definecolor{labblue}{RGB}{25,80,160}
+\definecolor{labgray}{RGB}{245,245,245}
+\definecolor{labred}{RGB}{180,30,30}
+\definecolor{flagcolor}{RGB}{0,120,0}
+
+\hypersetup{colorlinks=true, linkcolor=black, urlcolor=labblue}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\textit{Lab 3 -- Solution Guide}}
+\fancyhead[R]{\small\textit{\color{labred}INSTRUCTOR ONLY}}
+\fancyfoot[C]{\small\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt}
+
+\titleformat{\section}{\large\bfseries\color{labblue}}{}{0em}{}[\titlerule]
+\titleformat{\subsection}{\normalsize\bfseries}{}{0em}{}
+
+\lstset{
+    basicstyle=\small\ttfamily,
+    backgroundcolor=\color{labgray},
+    frame=single,
+    breaklines=true
+}
+
+\begin{document}
+
+% ---- Cover ------------------------------------------------------------------
+\begin{titlepage}
+\centering
+\includegraphics[width=0.6\linewidth]{../../../../docs/images/logo-tecnocampus.png}
+\vspace{1.5cm}
+{\small Bachelor in Computer Engineering -- Management and Information Systems}\\[0.5cm]
+{\small Introduction to Cybersecurity}
+\vspace{3cm}
+
+{\LARGE\bfseries Lab 3 -- Solution Guide}\\[0.4cm]
+{\Large\bfseries Incident Response \& Log Forensics (HELIX Systems)}
+
+\vspace{1cm}
+{\large\color{labred}\bfseries INSTRUCTOR ONLY --- DO NOT DISTRIBUTE}
+
+\vspace{4cm}
+\begin{tabular}{ll}
+\textbf{Techniques}  & Brute force, sudo privesc, persistence, lateral movement \\
+\textbf{MITRE}       & TA0001, TA0004, TA0003, TA0008, TA0010 \\
+\textbf{Max points}  & 20 \\
+\end{tabular}
+
+\vfill
+{\small TecnoCampus \textperiodcentered{} GEISI \textperiodcentered{} 2025--2026}
+\end{titlepage}
+
+% ---- Task 1 -----------------------------------------------------------------
+\section{Task 1 --- Initial Access on helix-web (3 points)}
+
+\textbf{Attacker IP:} \texttt{185.220.101.47}\\
+\textbf{Targeted user:} \texttt{devops}\\
+\textbf{Successful login time:} \texttt{03:17:42}
+
+Key log lines:
+\begin{lstlisting}
+Apr 24 03:05:03 helix-web sshd[1201]: Failed password for devops
+  from 185.220.101.47 port 42001 ssh2
+...  (25 total failures)
+Apr 24 03:17:42 helix-web sshd[1231]: Accepted password for devops
+  from 185.220.101.47 port 43100 ssh2
+\end{lstlisting}
+
+Commands expected from the student:
+\begin{lstlisting}[language=bash]
+grep "Failed password\|Accepted password" /var/log/auth.log
+grep 'Failed password for devops' /var/log/auth.log | wc -l
+# 25
+\end{lstlisting}
+
+% ---- Task 2 -----------------------------------------------------------------
+\section{Task 2 --- Privilege Escalation (4 points)}
+
+\textbf{Command used:} \texttt{sudo /usr/bin/find}\\
+\textbf{Misconfiguration:} \texttt{/etc/sudoers.d/devops} contains \texttt{NOPASSWD: /usr/bin/find}\\
+\textbf{MITRE technique:} T1548.003 --- Abuse Elevation Control Mechanism: Sudo and Sudo Caching\\
+\textbf{Prevention:} Remove \texttt{NOPASSWD}; apply principle of least privilege; use \texttt{visudo}
+
+Key log lines:
+\begin{lstlisting}
+Apr 24 03:18:01 helix-web sudo: devops : TTY=pts/0 ;
+  PWD=/home/devops ; USER=root ; COMMAND=/usr/bin/find
+\end{lstlisting}
+
+\begin{lstlisting}[language=bash]
+# /etc/sudoers.d/devops
+devops ALL=(ALL) NOPASSWD: /usr/bin/find
+\end{lstlisting}
+
+\begin{mdframed}[backgroundcolor=labgray, linewidth=0.5pt]
+\textbf{GTFOBins vector:} \texttt{find}'s \texttt{-exec} flag executes arbitrary commands as root.\\
+\texttt{sudo find / -name "*.conf" -exec cat \{\} \textbackslash;}
+\end{mdframed}
+
+% ---- Task 3 -----------------------------------------------------------------
+\section{Task 3 --- Persistence \& Post-Exploitation (3 points)}
+
+\textbf{Backdoor account:} \texttt{maint} (UID 1003)\\
+\textbf{Privileges:} \texttt{NOPASSWD: ALL} via \texttt{/etc/sudoers.d/maint}
+
+Key log lines:
+\begin{lstlisting}
+Apr 24 03:19:15 helix-web useradd[2041]: new user: name=maint,
+  UID=1003, GID=1003, home=/home/maint, shell=/bin/bash
+\end{lstlisting}
+
+Full attacker command history (\texttt{/home/devops/.bash\_history}):
+\begin{lstlisting}[language=bash]
+id
+whoami
+sudo /usr/bin/find / -name "*.conf" -exec cat {} \;
+useradd -m maint
+echo "maint ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/maint
+chmod 440 /etc/sudoers.d/maint
+exit
+\end{lstlisting}
+
+% ---- Task 4 -----------------------------------------------------------------
+\section{Task 4 --- Lateral Movement to helix-db (3 points)}
+
+\textbf{Source IP:} \texttt{192.168.50.10} (helix-web internal IP)\\
+\textbf{User:} \texttt{devops} (same compromised credentials --- password reuse)\\
+\textbf{Time:} \texttt{03:21:03}
+
+Key log line on \texttt{helix-db}:
+\begin{lstlisting}
+Apr 24 03:21:03 helix-db sshd[987]: Accepted password for devops
+  from 192.168.50.10 port 51234 ssh2
+\end{lstlisting}
+
+\begin{lstlisting}[language=bash]
+# Student pivot from helix-web:
+ssh analyst@192.168.60.10   # An@lyst2024
+grep 'Accepted' /var/log/auth.log
+\end{lstlisting}
+
+% ---- Task 5 -----------------------------------------------------------------
+\section{Task 5 --- Data Exfiltration Evidence (3 points)}
+
+\textbf{Sensitive data:} \texttt{/opt/helix/data/clients.db} (SQLite with fictional client records)\\
+\textbf{Evidence:} \texttt{/opt/helix/data/.exfil\_marker}
+
+\begin{lstlisting}
+185.220.101.47 - 2026-04-24 03:22 - data accessed
+\end{lstlisting}
+
+The external IP matches the initial brute-force source. Timestamp \texttt{03:22}
+follows the lateral movement login at \texttt{03:21}.
+
+% ---- Task 6 -----------------------------------------------------------------
+\section{Task 6 --- Incident Report (4 points)}
+
+\subsection*{Indicators of Compromise (IOCs)}
+\begin{itemize}[leftmargin=1.5em]
+  \item \textbf{IP:} \texttt{185.220.101.47} (external attacker)
+  \item \textbf{User:} \texttt{devops} (compromised via brute force)
+  \item \textbf{Backdoor:} \texttt{maint} account (UID~1003, \texttt{NOPASSWD: ALL})
+  \item \textbf{Files:} \texttt{/opt/helix/data/clients.db}, \texttt{.exfil\_marker}
+  \item \textbf{Technique:} GTFOBins \texttt{sudo find} (T1548.003)
+\end{itemize}
+
+\subsection*{Complete attack timeline}
+\begin{table}[H]
+\centering
+\begin{tabularx}{\textwidth}{llX}
+\toprule
+\textbf{Time} & \textbf{Host} & \textbf{Event} \\
+\midrule
+03:05--03:16 & helix-web & 25 failed SSH attempts for \texttt{devops} from \texttt{185.220.101.47} \\
+03:17        & helix-web & Successful login as \texttt{devops} \\
+03:18        & helix-web & Privilege escalation via \texttt{sudo find} \\
+03:19        & helix-web & Backdoor account \texttt{maint} created \\
+03:21        & helix-db  & Lateral movement from \texttt{192.168.50.10} \\
+03:22        & helix-db  & Access to \texttt{clients.db} + \texttt{.exfil\_marker} created \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\subsection*{Recommended remediation}
+\begin{enumerate}[leftmargin=2em]
+  \item Disable \texttt{devops} and \texttt{maint} accounts immediately
+  \item Remove \texttt{NOPASSWD} from \texttt{/etc/sudoers.d/devops}
+  \item Rotate all credentials on both servers
+  \item Implement SSH key-based auth; disable password authentication
+  \item Deploy \texttt{fail2ban} + \texttt{auditd} on all servers
+  \item Apply least-privilege ownership on \texttt{/opt/helix/data/}
+\end{enumerate}
+
+\end{document}

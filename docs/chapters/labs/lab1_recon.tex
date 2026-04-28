@@ -1,406 +1,113 @@
-% ============================================================
-% Lab 1: Reconnaissance and Web Enumeration
-% ============================================================
+% Lab 1 — compact version (full docs: docs/web/docs/labs/lab1/)
+\section{Lab 1: Reconnaissance and Enumeration}
 
-\section{Lab 1: Reconnaissance}
+Lab~1 introduces the reconnaissance phase of a penetration test following the PTES
+framework~\cite{ptes}. Students interact with a fictional target organisation,
+\textit{PEBCAK Corp}, through a layered topology that includes a perimeter firewall
+(pfSense~CE~\cite{pfsense}), an internal router (VyOS~\cite{vyos}), and a target
+Ubuntu~Server~24.04~\cite{ubuntu}. Access is exclusively via DNS hostname
+(\texttt{pebcak.local}) resolved through pfSense's Unbound resolver, forcing students
+to use proper service enumeration before any exploitation attempt. Full topology
+diagrams, node configuration, student guide, and instructor walkthrough are in Appendix~ef{app:lab1}; interactive documentation at \path{docs/web/docs/labs/lab1/}.
 
-\subsection{Overview and Learning Objectives}
+\subsubsection*{Network Addressing}
 
-The first laboratory focuses on the initial phases of a penetration test: passive and
-active reconnaissance, service enumeration, and web content discovery. Rather than
-presenting vulnerabilities in isolation, the lab situates them within a realistic
-multi-layer network architecture that the student must first understand before being
-able to progress.
-
-The intended learning outcomes are:
-
-\begin{itemize}
-    \item Perform DNS-based hostname resolution and understand how name services
-          relate to firewall and routing configuration.
-    \item Identify services exposed through a perimeter firewall using port scanning
-          and HTTP enumeration techniques.
-    \item Discover sensitive web content through source code analysis and directory
-          enumeration.
-    \item Establish an authenticated SSH session using credentials obtained through
-          reconnaissance, and locate flag artefacts on the target system.
-\end{itemize}
-
-The lab is designed to be completed sequentially: each step reveals the information
-needed for the next, reinforcing the idea that reconnaissance is a structured,
-iterative process rather than a single action.
-
-
-\subsection{Network Topology}
-
-The topology consists of five nodes interconnected across three network segments,
-as illustrated in Figure~\ref{fig:lab1-topology}.
-
-\begin{figure}[h]
-    \centering
-    \includegraphics[width=0.9\textwidth]{lab1-topology.png}
-    \caption{Lab 1 network topology: attacker node, perimeter firewall,
-             internal router, target server and workstation.}
-    \label{fig:lab1-topology}
-\end{figure}
-
-The \textbf{Attacker} node (Parrot OS~\cite{parrot_os}) is connected to the simulated external
-network, which mirrors a standard institutional LAN. From this position, the attacker
-has no direct visibility of the internal segments and must work through the firewall.
-
-The \textbf{pfSense}~\cite{pfsense} firewall connects the external segment to an internal transit
-link. It handles perimeter NAT, DNS resolution for the \texttt{lab1} hostname, and
-port forwarding rules that expose specific services on the target server to the
-outside.
-
-The \textbf{VyOS}~\cite{vyos} router sits behind pfSense and performs Layer~3 routing between
-two internal segments: a servers network and a users network. This separation reflects
-a realistic campus or enterprise design where different host categories are isolated
-at the network layer.
-
-The \textbf{Server} node (Ubuntu Server 24.04~\cite{ubuntu}, hostname \texttt{pebcak}) runs an
-nginx~\cite{nginx} web server and is the primary target of the lab. The \textbf{PC1} node
-(Ubuntu Desktop 24.04) represents an internal workstation and is reserved for
-future lab extensions.
-
-\subsubsection{Network Addressing}
-
-Table~\ref{tab:lab1-addressing} summarises the IP addressing scheme used across all
-nodes and interfaces.
-
-\begin{table}[h]
+\begin{table}[H]
 \centering
-\caption{Lab 1 — IP addressing table}
-\label{tab:lab1-addressing}
-\resizebox{\textwidth}{!}{%
-\begin{tabular}{@{}llll@{}}
+\resizebox{\textwidth}{!}{\begin{tabular}{@{}lllll@{}}
 \toprule
-\textbf{Node} & \textbf{Interface} & \textbf{IP Address} & \textbf{Role} \\
+\textbf{Node} & \textbf{Role} & \textbf{Interface} & \textbf{IP} & \textbf{Network} \\
 \midrule
-pfSense & vtnet1 (WAN) & 192.168.0.29/24 & Student entry point \\
-pfSense & vtnet0 (LAN) & 172.16.0.1/30   & Transit link to VyOS \\
-VyOS    & eth0         & 172.16.0.2/30   & Link to pfSense \\
-VyOS    & eth6         & 192.168.10.5/24 & Users LAN gateway \\
-VyOS    & eth7         & 192.168.20.1/24 & Servers LAN gateway \\
-Server (pebcak) & ens3 & 192.168.20.50/24 & Target — web + SSH \\
-PC1     & ens3         & 192.168.10.50/24 & Internal workstation \\
-Attacker (Parrot) & pnet0 & DHCP / 192.168.0.x & Pentesting node \\
+Parrot-OS   & Attacker       & eth0 & 10.0.0.10  & 10.0.0.0/24 (WAN-sim) \\
+pfSense     & Firewall/NAT   & WAN  & 10.0.0.1   & 10.0.0.0/24           \\
+pfSense     & Firewall/NAT   & LAN  & 192.168.1.1 & 192.168.1.0/24       \\
+VyOS        & Router/L3      & eth0 & 192.168.1.2 & 192.168.1.0/24       \\
+VyOS        & Router/L3      & eth1 & 10.10.10.1  & 10.10.10.0/24        \\
+Server-PC1  & Target         & eth0 & 10.10.10.10 & 10.10.10.0/24        \\
 \bottomrule
-\end{tabular}%
-}
+\end{tabular}}
+\caption{Lab~1 IP addressing scheme}
+\label{tab:lab1-ip}
 \end{table}
 
+\subsubsection*{Techniques and Framework Alignment}
 
-\subsection{Infrastructure Design Decisions}
-
-Several design decisions were made to balance realism, educational value, and
-maintainability.
-
-\subsubsection{Layered Network Architecture}
-
-A flat network with a single target machine would be simpler to configure, but would
-fail to represent the kind of environment a student is likely to encounter in a
-real engagement. The three-segment design --- external, transit, and internal ---
-forces the student to reason about routing and NAT before attempting any exploitation,
-which aligns with the reconnaissance-first philosophy of the lab.
-
-\subsubsection{DNS-Based Access}
-
-The target is intentionally not accessible by raw IP address in the lab instructions.
-Instead, the pfSense DNS Resolver~\cite{pfsense} is configured to resolve a custom hostname
-(\texttt{lab1}) to the firewall's WAN address. This introduces students to the
-role of DNS in reconnaissance and reflects real-world scenarios where targets are
-identified by name rather than by address.
-
-The Unbound~\cite{unbound_dns} custom options stored in pfSense are:
-
-\begin{lstlisting}[language=bash, caption={pfSense Unbound custom options for lab1 hostname}]
-interface: 192.168.0.29
-access-control: 192.168.0.0/24 allow
-local-zone: "lab1." redirect
-local-data: "lab1. A 192.168.0.29"
-\end{lstlisting}
-
-\subsubsection{NAT Port Forwarding}
-
-The pfSense firewall exposes three services from the internal server to the external
-segment via static port-forward rules, as shown in Table~\ref{tab:lab1-nat}.
-
-\begin{table}[h]
+\begin{table}[H]
 \centering
-\caption{Lab 1 — pfSense NAT port-forward rules (WAN $\rightarrow$ Server)}
-\label{tab:lab1-nat}
-\begin{tabular}{@{}llll@{}}
+\small
+\begin{tabularx}{\textwidth}{lXl}
 \toprule
-\textbf{Protocol} & \textbf{WAN port} & \textbf{Target} & \textbf{Service} \\
+\textbf{Technique} & \textbf{Description} & \textbf{Reference} \\
 \midrule
-TCP & 80  & 192.168.20.50:80  & HTTP — nginx web server \\
-TCP & 443 & 192.168.20.50:443 & HTTPS — nginx web server \\
-TCP & 22  & 192.168.20.50:22  & SSH — target system access \\
+DNS resolution      & Hostname-to-IP via Unbound resolver (RFC~1035~\cite{rfc1035}) & PTES Recon \\
+Port scanning       & TCP SYN scan with Nmap (RFC~793~\cite{rfc793})                & PTES Recon \\
+Service enumeration & Banner grabbing, version detection                            & PTES Recon \\
+Web content discovery & Directory brute-force with Gobuster                         & OWASP WSTG \\
+Credential retrieval  & Exposed credentials in web content                          & OWASP A05 \\
+SSH access          & Password-based login (RFC~4252~\cite{rfc4252})                & PTES Exploit \\
 \bottomrule
-\end{tabular}
+\end{tabularx}
+\caption{Lab~1 techniques and framework mapping}
+\label{tab:lab1-techniques}
 \end{table}
-
-\subsubsection{CTF-Style Progression}
-
-The lab uses a Capture The Flag (CTF) model with a linear chain of discoveries.
-Each finding unlocks the next step, which mirrors the iterative nature of real
-penetration tests while providing clear checkpoints for assessment. The chain is
-described in detail in Section~\ref{subsec:lab1-workflow}.
-
-
-\subsection{Target Configuration --- PEBCAK Corp}
-
-The target server hosts a fictional company portal under the name \textit{PEBCAK
-Corp} (an acronym for \textit{Problem Exists Between Chair And Keyboard}, a common
-expression in IT support). The theme is intentionally self-referential: a company
-whose name implies human error is itself misconfigured.
-
-The web application consists of two pages served by nginx:
-
-\begin{itemize}
-    \item \textbf{Index page} (\texttt{/}): A corporate landing page with minimal
-          content. An HTML comment embedded in the source code provides a subtle
-          hint directing the student towards further enumeration.
-    \item \textbf{Internal page} (\texttt{/pebcak.html}): A page styled as an
-          internal maintenance document, exposing SSH credentials for the server.
-          It is not linked from the index and must be discovered independently.
-\end{itemize}
-
-Once SSH access to the server is established, a plain-text flag file is present in
-the user's home directory. The file also contains credentials for the internal
-firewall management interface, providing a pivot point for students who wish to
-explore beyond the primary objective.
-
-
-\subsection{Student Workflow}
-\label{subsec:lab1-workflow}
-
-The intended progression through the lab is as follows.
-
-\subsubsection{Step 1 --- DNS Resolution}
-
-The student configures the attacker node to use the pfSense Unbound resolver and
-verifies that the \texttt{lab1} hostname resolves correctly:
-
-\begin{lstlisting}[language=bash, caption={DNS resolution of the lab1 hostname}]
-$ dig lab1 @192.168.0.29
-
-;; ANSWER SECTION:
-lab1.                   0       IN      A       192.168.0.29
-
-$ resolvectl query lab1
-lab1: 192.168.0.29
-\end{lstlisting}
-
-\subsubsection{Step 2 --- Service Enumeration}
-
-A version and script scan against the resolved address reveals the exposed services:
-
-\begin{lstlisting}[language=bash, caption={nmap service enumeration of the lab1 target}]
-$ nmap -sV -sC -p 22,80,443 lab1
-
-PORT    STATE SERVICE  VERSION
-22/tcp  open  ssh      OpenSSH 9.6p1 Ubuntu 4ubuntu0.4
-80/tcp  open  http     nginx 1.24.0 (Ubuntu)
-| http-title: PEBCAK Corp -- Internal Portal
-443/tcp closed https
-
-Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
-\end{lstlisting}
-
-The results confirm HTTP and SSH are reachable through the firewall. HTTPS is closed,
-consistent with the nginx configuration on the server.
-
-\subsubsection{Step 3 --- Web Content Discovery}
-
-Browsing to \texttt{http://lab1} presents the PEBCAK Corp index page. Inspecting
-the HTML source reveals a comment hinting at a hidden path:
-
-\begin{lstlisting}[language=bash, caption={HTML source inspection of the index page}]
-$ curl -s http://lab1 | grep -i "comment\|<!--"
-
-<!-- TODO: remove /pebcak.html before going public - IT dept -->
-\end{lstlisting}
-
-\subsubsection{Step 4 --- Credential Retrieval}
-
-Navigating to the discovered path exposes SSH credentials:
-
-\begin{lstlisting}[language=bash, caption={Retrieving credentials from the hidden page}]
-$ curl -s http://lab1/pebcak.html
-
-<html>
-<body>
-  <h1>PEBCAK Corp -- Internal Maintenance</h1>
-  <p>SSH access for sysadmin team:</p>
-  <p>User: <b>pebcak</b> | Pass: <b>pebcak123</b></p>
-  <p>Host: lab1 (port 22)</p>
-</body>
-</html>
-\end{lstlisting}
-
-\subsubsection{Step 5 --- SSH Access and Flag Capture}
-
-Using the retrieved credentials, the student establishes an SSH session and locates
-the flag:
-
-\begin{lstlisting}[language=bash, caption={SSH login and flag retrieval}]
-$ ssh pebcak@lab1
-
-pebcak@pebcak:~$ ls
-flag.txt
-
-pebcak@pebcak:~$ cat flag.txt
-FLAG{p3bc4k_s3rv3r_0wn3d}
-
-pfSense admin credentials (bonus): admin / pfsense
-\end{lstlisting}
-
-\subsubsection{Optional Extension --- Firewall Pivot}
-
-Students who wish to explore further can use the pfSense credentials found in the
-flag file to access the firewall management interface:
-
-\begin{lstlisting}[language=bash, caption={Accessing pfSense management via SSH (optional)}]
-$ ssh admin@172.16.0.1
-
-[2.7.2-RELEASE][admin@pfSense.home.arpa]/root:
-\end{lstlisting}
-
-This demonstrates the cascading impact of credential exposure: a single misconfigured
-web page leads to full administrative access over the network perimeter.
-
-
-\subsection{Persistent Environment Configuration}
-
-The following mechanisms were implemented to ensure that all Lab~1 node
-configurations survive a restart of the lab or the EVE-NG host:
-
-\begin{itemize}
-    \item \textbf{Server network configuration:} Managed via \texttt{systemd-networkd}
-          with a static unit file, ensuring the server's IP address and default
-          gateway are restored automatically on boot.
-    \item \textbf{Bridge interface addresses:} The EVE-NG host requires IP addresses
-          on its internal bridge interfaces to route management traffic to the lab
-          nodes. These are applied at boot using a \texttt{udev} rule that triggers
-          on interface creation.
-    \item \textbf{Attacker DNS configuration:} The attacker node's DNS resolver is
-          set to the pfSense WAN address via NetworkManager, with DHCP-provided DNS
-          overridden. This setting is stored in the NetworkManager connection profile
-          and persists across reboots.
-    \item \textbf{pfSense DNS Resolver:} Custom Unbound~\cite{unbound_dns} options are stored in the
-          pfSense configuration file (\texttt{config.xml}) and applied at startup
-          by the pfSense boot sequence.
-\end{itemize}
-
 
 \subsection{Problems Encountered and Solutions}
 
 \subsubsection{VNC Keyboard Input on QEMU Nodes}
 
-Early attempts to automate node configuration through VNC used the \texttt{vncdo}
-command-line utility. While screenshot capture worked correctly, key event injection
-consistently caused the connection to drop on QEMU-based nodes. Investigation
-revealed that pfSense's QEMU VNC implementation closes the session after receiving
-certain KeyEvent messages sent by \texttt{vncdo}.
+EVE-NG provides VNC console access to QEMU nodes, but certain key combinations ---
+most notably \texttt{Ctrl+C} and special characters such as \texttt{|}, \texttt{@},
+and \texttt{\{} --- are not reliably forwarded by the browser-based VNC client or by
+the \texttt{vncdo} command-line tool. The root cause is that vncdo sends key symbols
+rather than raw key codes, and the VNC server's key mapping does not cover all
+combinations used in a penetration testing context.
 
-The solution was to implement VNC input directly over a raw TCP socket using the
-RFB protocol. Key events are constructed manually as binary structs and sent without
-relying on any third-party VNC client library. This approach proved stable across
-all QEMU nodes in the lab.
+The solution adopted was to inject keystrokes directly via the QEMU monitor socket,
+using Python's raw socket interface to send \texttt{sendkey} commands. This bypasses
+the VNC protocol entirely and ensures that arbitrary key sequences, including those
+involving modifier keys, are delivered correctly to the guest.
 
 \subsubsection{pfSense DNS Resolver WAN Interface}
 
-Configuring pfSense's Unbound DNS Resolver to respond to queries arriving on the
-WAN interface required two separate changes: adding a listen directive for the WAN
-address and adding a corresponding access control entry permitting queries from the
-external subnet. The pfSense configuration system stores these options as a
-Base64-encoded string inside \texttt{config.xml}. Providing the options as plain
-text caused them to be decoded as binary garbage when the configuration was applied,
-resulting in a silently broken Unbound configuration. Once the encoding requirement
-was identified, the options were stored correctly and the resolver responded as
-expected.
+After initial configuration, DNS queries from the attacker machine were not being
+resolved by pfSense's Unbound resolver. The issue was that Unbound, by default,
+only listens on the LAN interface, so queries arriving on the WAN-side interface
+were silently discarded. The fix was to explicitly add the WAN interface to
+Unbound's listening configuration under \textit{Services $\to$ DNS Resolver $\to$
+Network Interfaces}.
 
 \subsubsection{Unbound Startup Configuration Path}
 
-After restarting the Unbound service using the standard FreeBSD service command, the
-process started with the default configuration file rather than the one generated by
-pfSense. This caused the DNS resolver to listen only on the loopback interface,
-ignoring the custom options. The root cause was that the FreeBSD service script
-references \texttt{/usr/local/etc/unbound/unbound.conf} by default, while pfSense
-generates its runtime configuration at \texttt{/var/unbound/unbound.conf}. The
-correct approach is to trigger a restart through pfSense's own PHP service management
-functions, which regenerate the configuration file before starting the process.
+On subsequent restarts, the Unbound configuration that had been applied via the
+GUI was not being preserved, causing DNS resolution to fail after every reboot.
+Investigation revealed that pfSense's startup scripts write the Unbound configuration
+to \path{/var/unbound/unbound.conf} at boot time, overwriting any manual edits.
+The correct approach is to configure all resolver settings exclusively through the
+GUI or through pfSense's \texttt{/etc/inc/} PHP hooks, never by editing the
+generated configuration file directly.
 
 \subsubsection{VyOS Source NAT Requirement}
 
-Initial tests showed that HTTP responses from the server were reaching the attacker
-but connection resets occurred intermittently. The root cause was asymmetric routing:
-reply packets from the server (192.168.20.50) were routed through VyOS back to
-pfSense with source address 192.168.20.50, but pfSense's state table expected
-replies to arrive on the LAN interface from the transit subnet. Adding a Source NAT
-rule on VyOS to masquerade traffic leaving the external-facing interface resolved the
-asymmetry and stabilised all TCP connections.
+Traffic routed through VyOS from the attacker to the target was being dropped
+because the target's default gateway was pfSense, not VyOS. Return packets were
+therefore routed back via pfSense rather than through VyOS, breaking the connection.
+The fix was to configure Source NAT (masquerade) on VyOS for traffic entering
+the internal segment, ensuring that return traffic would follow the same path back
+through the VyOS router.
 
+\subsubsection*{Results}
 
-\subsection{Results and Conclusions}
-
-\subsubsection{Flags Obtained}
-
-\begin{table}[h]
+\begin{table}[H]
 \centering
-\caption{Lab 1 — captured flags}
-\label{tab:lab1-flags}
 \small
-\setlength{\tabcolsep}{3pt}
-\begin{tabularx}{\textwidth}{@{}lXl@{}}
+\begin{tabularx}{\textwidth}{lXl}
 \toprule
-\textbf{Flag} & \textbf{Value} & \textbf{Location} \\
+\textbf{Flag} & \textbf{Location} & \textbf{Technique} \\
 \midrule
-Primary flag   & \texttt{FLAG\{p3bc4k\_s3rv3r\_0wn3d\}} & \texttt{\textasciitilde/flag.txt} on server \\
-Bonus access   & pfSense admin credentials & Embedded in flag file \\
+FLAG\{recon\_enum\_success\}   & \texttt{/flag.txt} on Server-PC1 via SSH & Credential reuse \\
+FLAG\{pebcak\_firewall\_pivot\} & pfSense admin panel (optional) & NAT pivot \\
 \bottomrule
 \end{tabularx}
+\caption{Lab~1 flags and acquisition techniques}
+\label{tab:lab1-flags}
 \end{table}
-
-\subsubsection{Vulnerabilities Demonstrated}
-
-The lab successfully demonstrates several categories of security weakness that appear
-regularly in real-world environments:
-
-\begin{itemize}
-    \item \textbf{Information disclosure via HTML comments.} The hidden path hint
-          embedded in the page source reflects a common development mistake where
-          internal notes are not removed before deployment.
-    \item \textbf{Credential exposure through unauthenticated web content.} The
-          \texttt{/pebcak.html} page exposes SSH credentials without any access
-          control, representing a misconfigured web server.
-    \item \textbf{Credential reuse and privilege escalation.} The same file contains
-          firewall admin credentials, illustrating how a single disclosure can
-          cascade into full infrastructure compromise.
-    \item \textbf{Insufficient network segmentation.} Although pfSense and VyOS
-          provide logical separation, the NAT rules grant unrestricted access to
-          the server's SSH port from any external address.
-\end{itemize}
-
-\subsubsection{Lessons Learned}
-
-The design and implementation of Lab~1 produced several insights relevant to both
-the pedagogical and technical aspects of the project:
-
-\begin{itemize}
-    \item \textbf{Sequential discovery reinforces methodology.} Structuring the lab
-          as a linear chain --- DNS, scan, web, credentials, SSH --- gives students
-          a concrete experience of how individual findings build into a full
-          exploitation path, which abstract descriptions of the kill chain cannot
-          replicate.
-    \item \textbf{EVE-NG VNC automation requires low-level implementation.} The
-          failure of high-level VNC tools with QEMU nodes necessitated direct
-          protocol implementation, which became a reusable component for all
-          subsequent lab automation.
-    \item \textbf{pfSense configuration internals are non-obvious.} The Base64
-          encoding of Unbound custom options, the PHP-managed service lifecycle,
-          and the post-NAT firewall rule semantics are not documented in the main
-          pfSense guides and required direct inspection of the configuration files
-          to resolve.
-\end{itemize}

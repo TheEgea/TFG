@@ -4,425 +4,128 @@
 % ============================================================
 
 \chapter{Methodology}
+\label{ch:methodology}
 
-%\section{Introduction}
-
-This chapter outlines the comprehensive methodology employed in this bachelor's thesis project, encompassing research strategy, development approach, validation methods, and project lifecycle management. The project integrates principles from software engineering, cybersecurity pedagogy, and empirical research to ensure systematic development and validation of the EVE-NG\cite{eve_ng}-based teaching package.
+This chapter outlines the research strategy, development approach, validation methods, and
+project lifecycle management employed in this bachelor's thesis. The project integrates
+principles from software engineering, cybersecurity pedagogy, and empirical research to
+ensure systematic development and validation of the EVE-NG\cite{eve_ng}-based teaching package.
 
 \section{Research and Development Phases}
 
-The project is structured in four distinct phases, each with specific deliverables, milestones, and validation checkpoints:
+The project is structured in four distinct phases:
 
-\subsection{Phase 0: Preparation and Infrastructure (July-November 2025)}
+\subsection{Phase 0: Preparation and Infrastructure (July--November 2025)}
 
 \textbf{Objective}: Establish the technical foundation and personal capacity for the project.
+Activities included HomeLab infrastructure initialisation (Proxmox\cite{proxmox}), development
+environment setup (VSCode\cite{vscode}, LaTeX\cite{latex_project}, Git), and security tools
+installation (Parrot OS\cite{parrot_os}, Metasploit\cite{metasploit}, Burp Suite\cite{burp_suite}).
 
-\textbf{Activities}:
-\begin{itemize}
-\item HomeLab infrastructure initialization (Proxmox\cite{proxmox}, networking, storage)
-\item Development environment setup (VSCode\cite{vscode}, LaTeX\cite{latex_project}, Git)
-\item Security tools installation (Parrot OS Security\cite{parrot_os}, Metasploit\cite{metasploit}, Burp Suite\cite{burp_suite})
-\item Technical documentation and baseline establishment
-\end{itemize}
+\textbf{Duration}: 105 hours \quad \textbf{Status}: Completed (100\%)
 
-\textbf{Deliverables}:
-\begin{itemize}
-\item Fully operational virtualization infrastructure
-\item Development environment configuration
-\item Baseline documentation of system architecture
-\end{itemize}
+\subsection{Phase 1: Avantprojecte and Conceptual Design (October 2025--January 2026)}
 
-\textbf{Duration}: 105 hours | \textbf{Status}: 100\% completed
+\textbf{Objective}: Define project scope, objectives, and detailed planning.
+Work covered SMART objectives definition, state-of-the-art analysis of 7 platforms,
+functional and non-functional requirements specification, pentesting methodology selection
+(PTES\cite{ptes}, OWASP\cite{owasp_testing_guide}, CEH\cite{ceh_framework}), risk analysis
+with 12+ identified risks, resource allocation, and Gantt chart construction with 37 tasks
+across the critical path.
 
-\subsection{Phase 1: Avantprojecte and Conceptual Design (October 2025 - January 2026)}
+\textbf{Duration}: 188 hours \quad \textbf{Status}: Completed \quad
+\textbf{Milestone}: January 16, 2026
 
-\textbf{Objective}: Define project scope, objectives, and detailed planning through comprehensive documentation.
+\subsection{Phase 2: Implementation and Interim Validation (January--March 2026)}
 
-\textbf{Key Activities}:
+\textbf{Objective}: Develop the first three laboratories and conduct preliminary validation.
+Labs 1--3 were built and tested (reconnaissance, web vulnerabilities, and network/incident
+response), covering research, topology design, vulnerability implementation, and teaching
+material production. Informal pilot sessions with 4--5 GEISI students were conducted as each
+lab was completed, with usability observations, post-session surveys, and feedback-driven
+adjustments.
 
-\begin{enumerate}
+\textbf{Duration}: 212 hours \quad \textbf{Status}: In progress \quad
+\textbf{Milestone}: March 20, 2026
 
-\item \textbf{SMART Objectives Definition} (4h)
-\begin{itemize}
-\item Specification of Main Objective (MO): Develop a reusable teaching package
-\item Definition of 4 Specific Objectives (OE1-OE4) with measurable KPIs
-\item Alignment with institutional GEISI curriculum requirements
-\end{itemize}
+\subsection{Phase 3: Completion and Final Validation (March--May 2026)}
 
-\item \textbf{State of the Art Analysis} (15h)
-\begin{itemize}
-\item Comprehensive review of 7 major cybersecurity training platforms
-\item Analysis of existing laboratory platforms: HackTheBox, TryHackMe, Cisco Academy, SEED Labs, GOAD, VulnHub, Hack4u
-\item Identification of pedagogical gaps and competitive advantages
-\item Comparative analysis matrix across multiple dimensions
-\end{itemize}
+\textbf{Objective}: Develop Lab 4, complete automation scripts, and conduct final validation.
+Activities include privilege escalation lab development (CEH framework), two rounds of
+comprehensive penetration testing across all four labs, utility script development (Bash/Python),
+final pilot validation with the student group, and full bachelor's thesis report writing and
+revision.
 
-\item \textbf{Functional and Non-Functional Requirements} (10h)
-\begin{itemize}
-\item RF1: Design and implement 4 EVE-NG topologies (.unl files)
-\item RF2: Implement vulnerabilities per PTES\cite{ptes}, OWASP\cite{owasp_testing_guide}, NIST\cite{nist_framework}, and CEH\cite{ceh_framework} standards
-\item RF3: Create structured assessment materials and rubrics
-\item NFR1: Performance optimization for deployment and execution
-\item NFR2: Compliance with international security frameworks
-\item NFR3: Institutional sustainability through open-source alignment
-\end{itemize}
-
-\item \textbf{Pentesting Methodology and Validation Framework} (8h)
-\begin{itemize}
-\item Adaptation of PTES (Penetration Testing Execution Standard) for educational context
-\item Definition of ethical hacking principles (EC-Council CEH framework)
-\item Mapping of attack phases to lab objectives
-\item Validation criteria for security effectiveness
-\end{itemize}
-
-\item \textbf{Design Decisions Justification} (5h)
-\begin{itemize}
-\item Rationale for EVE-NG selection vs alternative platforms
-\item Technology stack justification (Parrot OS Security, Metasploit, Burp, OWASP ZAP)
-\item Pedagogical approach: hands-on labs with automation
-\end{itemize}
-
-\item \textbf{Risk Analysis and Mitigation Planning} (15h)
-\begin{itemize}
-\item Identification of 12+ project risks (technical, pedagogical, institutional)
-\item Assessment of impact and probability
-\item Definition of mitigation strategies for each critical risk
-\end{itemize}
-
-\item \textbf{Resource Inventory and Allocation} (5h)
-\begin{itemize}
-\item Hardware requirements: dual-socket server with Proxmox
-\item Software stack: EVE-NG Community Edition, Parrot OS Security images, security tools
-\item Human resources: student (\textasciitilde 820h total project scope), faculty supervisor
-\item Budget considerations and open-source alternatives
-\end{itemize}
-
-\item \textbf{Gantt Chart and Critical Path Analysis} (20h)
-\begin{itemize}
-\item Development of detailed project timeline with 37 tasks
-\item Identification of 13 critical path tasks
-\item CSV export and interactive web-based visualization
-\item Progress tracking and milestone definition
-\end{itemize}
-
-\end{enumerate}
-
-\textbf{Deliverables}:
-\begin{itemize}
-\item Formal project proposal (Avantprojecte/Preliminary Project document)
-\item Detailed Gantt chart with critical paths
-\item Risk register and mitigation plan
-\item Requirements specification document (functional and non-functional)
-\end{itemize}
-
-\textbf{Duration}: 188 hours | \textbf{Status}: Completed
-
-\textbf{Milestone Deadline}: January 16, 2026
-
-\subsection{Phase 2: Implementation and Interim Validation (January-March 2026)}
-
-\textbf{Objective}: Develop the first three laboratories and conduct preliminary validation with pilot users.
-
-\textbf{Key Activities}:
-
-\begin{enumerate}
-
-\item \textbf{Lab 1: Reconnaissance Development} (14h research + 20h dev)
-\begin{itemize}
-\item Scenario: Intelligence gathering phase using PTES framework
-\item Tools: Nmap\cite{nmap}, Shodan, Passive reconnaissance techniques
-\item Topology: Multi-tier network with passive monitoring capabilities
-\item Validation: Successful execution of reconnaissance workflow
-\end{itemize}
-
-\item \textbf{Lab 2: Web Vulnerabilities Development} (14h research + 25h dev)
-\begin{itemize}
-\item Scenario: OWASP Top 10 vulnerability exploitation
-\item Tools: Burp Suite, OWASP ZAP, manual testing techniques
-\item Topology: Web application server with vulnerable services
-\item Validation: Exploitation success and reporting accuracy
-\end{itemize}
-
-\item \textbf{Lab 3: Network Analysis Development} (14h research + 25h dev)
-\begin{itemize}
-\item Scenario: Network segmentation and lateral movement (NIST standards)
-\item Tools: Wireshark\cite{wireshark}, tcpdump, network enumeration tools
-\item Topology: Multi-VLAN network with security monitoring
-\item Validation: Successful network traversal and analysis
-\end{itemize}
-
-\item \textbf{Pilot Validation with Users} (20h + 6h revision)
-\begin{itemize}
-\item Informal testing sessions with a small group of GEISI students (4--5 participants) conducted as each lab is completed
-\item Usability observations and timing notes during sessions
-\item Post-session survey on satisfaction, difficulty, and guide clarity
-\item Adjustments applied based on participant feedback
-\end{itemize}
-
-\item \textbf{Topology Adjustments and Optimization} (30h)
-\begin{itemize}
-\item Performance tuning based on pilot feedback
-\item VM image optimization and deployment time reduction
-\item Network configuration refinement for stability
-\end{itemize}
-
-\item \textbf{Teaching Material} (40h)
-\begin{itemize}
-\item Student lab guide PDF (enunciado) per lab --- task description,
-      objectives, hints, and tool reference
-\item Instructor resolution guide PDF (resolució) per lab --- one possible
-      walkthrough, flag values, assessment rubric, and common errors
-\item Technical configuration reference per lab in the repository
-\end{itemize}
-
-\end{enumerate}
-
-\textbf{Deliverables}:
-\begin{itemize}
-\item 3 fully functional and tested EVE-NG labs
-\item Student lab guides and instructor resolution guides (PDF per lab)
-\item Pilot validation report with observations
-\item Technical configuration references per lab
-\end{itemize}
-
-\textbf{Duration}: 212 hours | \textbf{Status}: In progress
-
-\textbf{Milestone Deadline}: March 20, 2026
-
-\subsection{Phase 3: Completion and Final Validation (March-May 2026)}
-
-\textbf{Objective}: Develop the fourth laboratory, complete automation, and conduct comprehensive final validation.
-
-\textbf{Key Activities}:
-
-\begin{enumerate}
-
-\item \textbf{Lab 4: Privilege Escalation Development} (16h research + 30h dev)
-\begin{itemize}
-\item Scenario: Post-exploitation and privilege escalation (CEH framework)
-\item Tools: Metasploit, manual exploitation, system enumeration
-\item Topology: Hardened systems with privilege escalation vectors
-\item Validation: Successful privilege elevation and system compromise
-\end{itemize}
-
-\item \textbf{Comprehensive Penetration Testing} (30h Round 1 + 25h Round 2)
-\begin{itemize}
-\item Round 1: Sequential testing of Labs 1, 2, and 3
-\item Round 2: Integrated testing across all 4 laboratories
-\item Documentation of all findings and remediation strategies
-\item Validation of security effectiveness
-\end{itemize}
-
-\item \textbf{Automation Scripts Development} (30h)
-\begin{itemize}
-\item Utility scripts (Bash/Python) for recurring lab management tasks
-\item Bridge configuration, ISO upload, and connectivity check scripts
-\item Scripts documented and tested in the project EVE-NG environment
-\end{itemize}
-
-\item \textbf{Final User Validation and Iteration} (18h)
-\begin{itemize}
-\item Final informal validation sessions with the pilot group (4--5 participants)
-\item Collection of post-session survey data and usability notes
-\item Implementation of final adjustments based on feedback
-\end{itemize}
-
-\item \textbf{Bachelor's thesis Report Writing and Finalization} (90h)
-\begin{itemize}
-\item Bachelor's thesis Report Writing Phase I (15h): Introduction, Object, Literature Review
-\item Bachelor's thesis Report Writing Phase II (40h): Methodology, Requirements, Implementation Results
-\item Bachelor's thesis Report Writing Phase III (35h): Validation, Analysis, Conclusions
-\item Final revision and quality assurance (15h)
-\item Formatting, bibliography integration, and publication preparation (20h)
-\end{itemize}
-
-\end{enumerate}
-
-\textbf{Deliverables}:
-\begin{itemize}
-\item 4 fully functional and tested EVE-NG laboratories
-\item Utility automation scripts for common lab management tasks
-\item Final bachelor's thesis report
-\item Pilot validation report with observations and improvements
-\item Deployment package ready for institutional use
-\end{itemize}
-
-\textbf{Duration}: 315 hours | \textbf{Status}: In progress
-
-\textbf{Final Milestone Deadline}: May 27, 2026
+\textbf{Duration}: 315 hours \quad \textbf{Status}: In progress \quad
+\textbf{Final Deadline}: May 27, 2026
 
 \section{Information Search Strategies}
 
-The research methodology employs multiple information gathering techniques:
-
-\subsection{Literature Review Approach}
-
-\begin{enumerate}
-
-\item \textbf{Systematic Review of Academic Databases}
-\begin{itemize}
-\item IEEE Xplore (computer science and engineering)
-\item ACM Digital Library (cybersecurity education)
-\item Scopus (multidisciplinary security research)
-\item Google Scholar (open-access research)
-\end{itemize}
-
-\item \textbf{Industry Standards and Frameworks}
-\begin{itemize}
-\item PTES (Penetration Testing Execution Standard) \cite{ptes}
-\item OWASP (Open Web Application Security Project) documentation \cite{owasp_testing_guide}
-\item NIST (National Institute of Standards and Technology) frameworks \cite{nist_framework,nist_sp800115}
-\item CIS Controls and benchmarks \cite{cis_controls}
-\item EC-Council CEH curriculum \cite{ceh_framework}
-\end{itemize}
-
-\item \textbf{Platform and Tool Documentation}
-\begin{itemize}
-\item Official EVE-NG documentation and community resources \cite{eve_ng_docs}
-\item Parrot OS Security documentation \cite{parrot_os}
-\item Metasploit Framework documentation \cite{metasploit}
-\item OWASP ZAP and Burp Suite user guides \cite{owasp_zap,burp_suite}
-\end{itemize}
-
-\item \textbf{Comparative Analysis}
-\begin{itemize}
-\item Feature comparison matrices for existing platforms
-\item User reviews and community feedback
-\item Educational effectiveness studies
-\item Cost-benefit analysis of solutions
-\end{itemize}
-
-\end{enumerate}
-
-\subsection{Primary Research Methods}
-
-\begin{enumerate}
-
-\item \textbf{User Research and Validation}
-\begin{itemize}
-\item Informal pilot sessions with a small group of GEISI students (4--5 participants) conducted as each lab is completed
-\item Qualitative feedback through interviews
-\item Quantitative metrics collection (time-on-task, completion rates)
-\item Usability assessment using standardized scales
-\end{itemize}
-
-\item \textbf{Technical Experimentation}
-\begin{itemize}
-\item Lab design iteration and refinement
-\item Performance testing and optimization
-\item Security effectiveness validation
-\item Scalability assessment
-\end{itemize}
-
-\end{enumerate}
+Research draws on academic databases (IEEE Xplore, ACM Digital Library, Scopus, Google Scholar)
+and primary industry standards: PTES\cite{ptes}, OWASP\cite{owasp_testing_guide},
+NIST\cite{nist_framework,nist_sp800115}, CIS Controls\cite{cis_controls}, and
+EC-Council CEH\cite{ceh_framework}. Platform and tool documentation was consulted for
+EVE-NG\cite{eve_ng_docs}, Parrot OS\cite{parrot_os}, Metasploit\cite{metasploit},
+OWASP ZAP\cite{owasp_zap}, and Burp Suite\cite{burp_suite}. Primary research uses informal
+pilot sessions with GEISI students, post-session surveys, and quantitative metrics
+(time-on-task, completion rates).
 
 \section{Development Methodology}
 
-The project adopts an iterative, agile-inspired approach with clear phases and milestones:
-
-\subsection{Development Cycle}
+The project adopts an iterative, agile-inspired approach:
 
 \begin{itemize}
-
-\item \textbf{Design}: Conceptual architecture and topology planning
-\item \textbf{Implementation}: Lab creation, vulnerability implementation, tooling
-\item \textbf{Validation}: Security testing, educational effectiveness review
-\item \textbf{Iteration}: Feedback incorporation and refinement
-\item \textbf{Documentation}: Technical and pedagogical material preparation
-
+  \item \textbf{Design}: Conceptual architecture and topology planning
+  \item \textbf{Implementation}: Lab creation, vulnerability implementation, tooling
+  \item \textbf{Validation}: Security testing, educational effectiveness review
+  \item \textbf{Iteration}: Feedback incorporation and refinement
+  \item \textbf{Documentation}: Technical and pedagogical material preparation
 \end{itemize}
 
-\subsection{Quality Assurance}
-
-\begin{enumerate}
-
-\item \textbf{Technical Validation}
-\begin{itemize}
-\item Automated testing of lab deployment and reset
-\item Manual security testing and penetration verification
-\item Performance benchmarking against KPI targets
-\item Compatibility testing across EVE-NG versions
-\end{itemize}
-
-\item \textbf{Pedagogical Validation}
-\begin{itemize}
-\item Alignment with GEISI learning outcomes
-\item Assessment of student understanding through rubrics
-\item Effectiveness in achieving educational objectives
-\item Feedback from faculty and student participants
-\end{itemize}
-
-\item \textbf{Usability Testing}
-\begin{itemize}
-\item User interface and documentation clarity
-\item Accessibility and ease of deployment
-\item Support and documentation adequacy
-\item User satisfaction scoring
-\end{itemize}
-
-\end{enumerate}
-
-\subsection{Documentation and Version Control}
-
-\begin{itemize}
-
-\item GitHub repository for all code, scripts, and documentation
-\item LaTeX for formal project documentation (this bachelor's thesis report)
-\item Versioning system for all deliverables
-\item Change logs and improvement tracking
-\item Deployment guides and runbooks
-
-\end{itemize}
-
+All artefacts are version-controlled in a GitHub repository. Formal documentation is produced
+in LaTeX (this memory, Volume~I) and published as a MkDocs web site for operational reference.
+Instructor deployment references, startup checklists, and credential tables are compiled
+separately in the Annexos (Volume~II).
 
 \section{Platform Selection Rationale}
 
 A detailed comparative analysis of existing cybersecurity training platforms ---
-including HackTheBox, TryHackMe, Cisco NetAcad, SEED Labs, GOAD, VulnHub, and
-Hack4u --- is presented in the State of the Art chapter. That analysis evaluates
-each platform across multiple dimensions (customisation, institutional control,
-automation, cost, and curriculum alignment) and concludes that EVE-NG is the
-optimal choice for this project. Its key advantages --- open-source licensing,
-full topology customisation, local deployability, and automation support ---
-directly address the gaps identified in existing platforms and are discussed in
-detail in that chapter.
+including HackTheBox, TryHackMe, Cisco NetAcad, SEED Labs, GOAD, VulnHub, and Hack4u ---
+is presented in the State of the Art chapter. That analysis evaluates each platform across
+customisation, institutional control, automation, cost, and curriculum alignment, and
+concludes that EVE-NG is the optimal choice. Its key advantages --- open-source licensing,
+full topology customisation, local deployability, and automation support --- directly address
+the gaps identified in existing platforms.
 
 \section{Validation and Success Criteria}
 
-Success is measured against the KPIs defined in the Objectives chapter (Chapter~3),
-which cover three dimensions: technical performance (deployment time, boot success
-rate, reproducibility), educational effectiveness (lab resolution time, completion
-rate, user satisfaction), and sustainability (documentation coverage, open-source
-compliance, institutional readiness). Validation is conducted through pilot sessions
-with a representative group of GEISI students and through automated technical checks
-at each development milestone.
+Success is measured against the KPIs defined in Chapter~4, covering three dimensions:
+technical performance (deployment time, boot success rate, reproducibility), educational
+effectiveness (lab resolution time, completion rate, user satisfaction), and sustainability
+(documentation coverage, open-source compliance, institutional readiness). Validation is
+conducted through pilot sessions with a representative group of GEISI students and through
+automated technical checks at each development milestone.
 
 \section{Risk Management}
-
-Risk mitigation is embedded throughout the project phases:
-
-\subsection{Key Risks and Mitigation}
 
 \begin{table}[H]
 \centering
 \small
 \begin{tabularx}{\textwidth}{lXl}
-	oprule
+\toprule
 \textbf{Risk} & \textbf{Mitigation Strategy} & \textbf{Owner} \\
 \midrule
 Scope creep / Feature additions & Clear scope boundaries and change management & Eloi \\
-
-EVE-NG compatibility issues & Extensive testing on both Community and Pro editions & Eloi \\
-
+EVE-NG compatibility issues & Extensive testing on Community and Pro editions & Eloi \\
 Pilot user dropout & Clear incentives and scheduling flexibility & Pere + Eloi \\
-
-Performance degradation & Early benchmarking and optimization iterations & Eloi \\
-
+Performance degradation & Early benchmarking and optimisation iterations & Eloi \\
 Documentation gaps & Peer review and user feedback cycles & Eloi + Faculty \\
-
 Institutional adoption barriers & Change management plan and training support & Pere \\
-ottomrule
+\bottomrule
 \end{tabularx}
 \caption{Key project risks and mitigation strategies}
 \label{tab:risk_management}
 \end{table}
+
+Full phase activity lists, quality assurance procedures, and documentation
+practices are provided in Appendix~\ref{app:methodology-detail}.

@@ -1,0 +1,180 @@
+% ============================================================
+% Annexos — TFG: Ethical Pentesting in Virtualized Environments
+% Autor: Eloi Egea Rada
+% ============================================================
+
+\documentclass[a4paper, oneside, 12pt, openany]{report}
+
+\usepackage{fontspec}
+\usepackage{verbatim}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage[english]{babel}
+\usepackage{csquotes}
+\usepackage{eurosym}
+\usepackage{fancyhdr}
+\usepackage{geometry}
+\usepackage{setspace}
+\usepackage{titlesec}
+\usepackage[nottoc]{tocbibind}
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{listings}
+\usepackage{amssymb}
+\usepackage{hyperref}
+
+\lstset{
+    basicstyle=\ttfamily\footnotesize,
+    breaklines=true,
+    breakatwhitespace=false,
+    frame=single,
+    numbers=left,
+    numberstyle=\tiny,
+    numbersep=5pt,
+    showstringspaces=false,
+    captionpos=b
+}
+
+\tolerance=2000
+\emergencystretch=3em
+
+% ============================================================
+% FONTS
+% ============================================================
+\setmainfont{OpenDyslexic}[
+    Path = /usr/share/fonts/opentype/opendyslexic/,
+    Extension = .otf,
+    UprightFont = *-Regular,
+    BoldFont = *-Bold,
+    ItalicFont = *-Italic,
+    BoldItalicFont = *-BoldItalic
+]
+\setsansfont{OpenDyslexicAlta}[
+    Path = /usr/share/fonts/opentype/opendyslexic/,
+    Extension = .otf,
+    UprightFont = *-Regular,
+    BoldFont = *-Bold,
+    ItalicFont = *-Italic,
+    BoldItalicFont = *-BoldItalic
+]
+\setmonofont{OpenDyslexicMono}[
+    Path = /usr/share/fonts/opentype/opendyslexic/,
+    Extension = .otf,
+    UprightFont = *-Regular
+]
+
+% ============================================================
+% LAYOUT
+% ============================================================
+\geometry{top=3cm, bottom=2.54cm, left=2.54cm, right=2.54cm}
+\setlength{\headheight}{14.5pt}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{10pt}
+
+\titleformat{\chapter}[block]{\normalfont\fontsize{18pt}{0pt}\bfseries}{\thechapter}{1em}{}
+\titlespacing*{\chapter}{0pt}{0pt}{\baselineskip}
+\titleformat{\section}[block]{\normalfont\fontsize{15pt}{0pt}\bfseries}{\thesection}{1em}{}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=black,
+    citecolor=black,
+    urlcolor=blue,
+    pdftitle={Annexos — Ethical Pentesting in Virtualized Environments with EVE-NG},
+    pdfauthor={Eloi Egea Rada},
+}
+
+\graphicspath{{../../images/}}
+
+\fancypagestyle{plain}{
+    \fancyhf{}
+    \fancyhead[RO,LE]{\fontsize{10}{12}\textit{\thepage}}
+    \fancyhead[RE]{\fontsize{10}{12}\textit{Ethical Pentesting in Virtualized Environments with EVE-NG — Annexos}}
+    \fancyfoot{}
+}
+\pagestyle{plain}
+
+% ============================================================
+% COVER
+% ============================================================
+\title{
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.85\linewidth]{../../images/logo-tecnocampus.png}
+    \end{figure}
+    \fontsize{14pt}{0pt}\textbf{Bachelor in Computer Engineering — Management and Information Systems} \
+    \vspace*{2cm}
+    \textbf{Ethical Pentesting in Virtualized Environments with EVE-NG} \
+    \vspace*{1cm}
+    \textbf{Annexos} \
+    \textbf{Volume II}
+    \vspace*{5cm}
+}
+\author{
+    \fontsize{14pt}{0pt}
+    \textbf{Eloi Egea Rada} \
+    \textbf{Supervisor: Pere Vidiella i Catalan}
+}
+\date{April 2026}
+
+\begin{document}
+
+\maketitle
+\newpage\thispagestyle{empty}\null\newpage
+
+\pagenumbering{Roman}
+\tableofcontents
+\newpage
+
+\onehalfspacing
+\setlength{\parskip}{12pt}
+\pagenumbering{arabic}
+
+% ============================================================
+% APPENDIX A
+% ============================================================
+\input{../../chapters/appendix/app_eve_setup}
+
+% ============================================================
+% APPENDIX B
+% ============================================================
+\input{../../chapters/appendix/app_lab1_ref}
+
+% ============================================================
+% APPENDIX C
+% ============================================================
+\input{../../chapters/appendix/app_lab2_ref}
+
+% ============================================================
+% APPENDIX D
+% ============================================================
+\input{../../chapters/appendix/app_lab3_ref}
+
+% ============================================================
+% APPENDIX E: Detailed Platform Descriptions
+% ============================================================
+\input{../../chapters/appendix/app_platforms}
+
+% ============================================================
+% APPENDIX F: Objectives Detail — Deliverables, KPIs, Audience
+% ============================================================
+\input{../../chapters/appendix/app_objectives_detail}
+
+% ============================================================
+% APPENDIX G: Methodology Detail
+% ============================================================
+\input{../../chapters/appendix/app_methodology_detail}
+
+% ============================================================
+% APPENDIX H: Requirements Detail
+% ============================================================
+\input{../../chapters/appendix/app_requirements_detail}
+
+% ============================================================
+% APPENDIX I: Feasibility Detail
+% ============================================================
+\input{../../chapters/appendix/app_feasibility_detail}
+
+\end{document}
