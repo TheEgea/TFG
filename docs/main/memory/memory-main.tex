@@ -22,6 +22,7 @@
 
 \usepackage{fancyhdr} % Header and footer customization
 \usepackage{etoolbox} % Page numbering style control
+\usepackage{emptypage} % Suppress headers/footers on blank pages inserted by openright
 \usepackage{geometry} % Margin configuration
 \usepackage{setspace} % Line spacing adjustment
 \usepackage{titlesec} % Section and chapter title formatting
@@ -202,8 +203,7 @@
 \glsaddall
 \printglossaries
 
-
-\newpage
+\cleardoublepage  % ensures arabic chapter 1 starts on odd page
 
 \fancypagestyle{plain}{
     \fancyhf{}
@@ -282,7 +282,7 @@
 % ============================================================================
 
 
-\clearpage
+\cleardoublepage
 \phantomsection
 \addcontentsline{toc}{chapter}{Bibliography}
 \printbibliography
@@ -291,7 +291,7 @@
 % Include time log appendix if it exists (avoids build failures if missing)
 
 \appendix
-\clearpage
+\cleardoublepage
 
 % ============================================================
 % APPENDIX A: EVE-NG Installation on Proxmox VE
