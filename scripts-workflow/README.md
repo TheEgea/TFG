@@ -1,69 +1,88 @@
-# 🔧 scripts-workflow/ — Workflow Automation
+# scripts-workflow/ — Build & Workflow Scripts
 
-## Descripción
+All commands are run from the **repo root** (`/home/overleaf/TFG/TFG`).
 
-Conjunto de scripts bash para automatizar el flujo de trabajo del TFG:
-- Git synchronization (sync, push, pull)
-- Environment setup
-- Utility functions (status, stats, clean)
+---
 
-## Estructura
+## Build scripts
 
-'''
-scripts-workflow/
-├── sync.sh # Sincronización completa (pull + commit + push)
-├── push.sh # Push rápido
-├── pull.sh # Pull desde GitHub
-├── utils.sh # Funciones auxiliares
-├── setup-env.sh # Configuración del entorno
-├── build-plantilla.sh # Referencia (deprecated)
-└── README.md # Esta documentación
-
-'''
-
-## Uso Directo
+### `build.sh` — Vol I + Vol II LaTeX
 
 ```bash
-# Sincronización completa
-./scripts-workflow/sync.sh "Commit message"
+make build              # both volumes
+make build-memory       # Vol I only (memory-main.tex)
+make build-annexos      # Vol II only (annexos-main.tex)
 
-# Push rápido
-./scripts-workflow/push.sh "Commit message"
+# or directly:
+bash scripts-workflow/build.sh [all|memory|annexos]
+```
 
-# Pull desde GitHub
-./scripts-workflow/pull.sh
+| Input | Output (local) | Output (web) |
+|-------|---------------|--------------|
+| `docs/main/memory/memory-main.tex` | `docs/main/memory/memory-main.pdf` | `docs/web/docs/assets/official_Documents/memory-main.pdf` |
+| `docs/main/annexos/annexos-main.tex` | `docs/main/annexos/annexos-main.pdf` | `docs/web/docs/assets/official_Documents/annexos-main.pdf` |
 
-# Usar desde Makefile (RECOMENDADO)
-make sync MSG="docs: actualización"
-make push MSG="feat: nuevo laboratorio"
-make pull
-make status
-make stats
-Dependencias
-bash 4.0+
+After running, commit the updated PDFs in `docs/web/docs/assets/official_Documents/`.
 
-git
+---
 
-xelatex, latexmk, biber (para compilación LaTeX)
+### `build-labs.sh` — Lab enunciados + resoluciones
 
-Setup
-'''
-bash
-# Configurar entorno
-make setup
-# o
-./scripts-workflow/setup-env.sh
-'''
-ota sobre Nueva Estructura
-Estos scripts ahora funcionan con:
+```bash
+make build-labs                              # all labs
+bash scripts-workflow/build-labs.sh lab1     # single lab
+bash scripts-workflow/build-labs.sh [all|lab1|lab2|lab3|lab4]
+```
 
-docs/memoria/main.tex (Memoria final)
+| Input | Output |
+|-------|--------|
+| `src/materials/exercises/labX/labX-enunciado.tex` | `src/materials/exercises/labX/build/labX-enunciado.pdf` |
+| `src/materials/exercises/labX/labX-resolucion.tex` | `src/materials/exercises/labX/build/labX-resolucion.pdf` |
 
-docs/avantprojecte/avantprojecte.tex (Propuesta inicial)
+These PDFs are committed to git so instructors can download them directly from the repo.
 
-docs/chapters/ (Capítulos compartidos)
+---
 
-docs/resources/ (Recursos compartidos)
+### `build-web-pdf.sh` — DEPRECATED
 
-Ver ../Makefile para targets de compilación.
+Superseded by the `mkdocs-with-pdf` plugin. The web PDF is now generated
+automatically by GitHub Actions on every push to `main`.
 
+To build locally: `cd docs/web && mkdocs build`
+Output: `docs/web/site/pdf/lab-documentation.pdf`
+Published at: `https://theegea.github.io/TFG/pdf/lab-documentation.pdf`
+
+---
+
+## Git workflow
+
+```bash
+make push MSG="docs: update ch2"   # commit + push
+make pull                           # pull latest
+make status                         # git status + log
+```
+
+> `push.sh` uses `git add -A` — review staged changes with `make status` first.
+
+---
+
+## Utilities
+
+```bash
+make clean    # remove *.aux, *.log, *.out, .DS_Store
+make stats    # line counts + repo size
+make setup    # check xelatex, latexmk, biber are installed
+```
+
+---
+
+## PDF summary
+
+| PDF | How created | Where published |
+|-----|-------------|-----------------|
+| Vol I — Memory | `make build-memory` | `official_Documents/memory-main.pdf` → embedded in web |
+| Vol II — Annexos | `make build-annexos` | `official_Documents/annexos-main.pdf` → embedded in web |
+| Web docs PDF | GitHub Actions (auto) | `https://theegea.github.io/TFG/pdf/lab-documentation.pdf` |
+| Lab enunciados | `make build-labs` | `src/materials/exercises/labX/build/` (in git) |
+| Lab resoluciones | `make build-labs` | `src/materials/exercises/labX/build/` (in git) |
+| Viabilitat | compiled separately | `official_Documents/viabilitat-main.pdf` → embedded in web |

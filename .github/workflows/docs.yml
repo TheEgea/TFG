@@ -21,7 +21,12 @@ jobs:
           python-version: '3.12'
 
       - name: Install system dependencies
-        run: sudo apt-get install -y libpango-1.0-0 libpangoft2-1.0-0
+        run: |
+          sudo apt-get install -y libpango-1.0-0 libpangoft2-1.0-0
+          sudo mkdir -p /usr/share/fonts/opentype/opendyslexic
+          sudo curl -sL "https://github.com/antijingoist/opendyslexic/raw/master/compiled/OpenDyslexic-Regular.otf" -o /usr/share/fonts/opentype/opendyslexic/OpenDyslexic-Regular.otf
+          sudo curl -sL "https://github.com/antijingoist/opendyslexic/raw/master/compiled/OpenDyslexic-Bold.otf" -o /usr/share/fonts/opentype/opendyslexic/OpenDyslexic-Bold.otf
+          sudo fc-cache -f
 
       - name: Install dependencies
         run: pip install -r docs/web/requirements.txt

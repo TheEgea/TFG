@@ -4,15 +4,48 @@
 % ============================================================
 
 \chapter{State of the Art}
-\label{ch:state-of-art}
 
-Cybersecurity education has experienced exponential growth over the past decade, driven by
-increasing industry demand for skilled professionals and the accessibility of online learning
-platforms. While students have unprecedented access to training resources, the fragmentation
-of educational approaches has created gaps between abstract theoretical knowledge and practical,
-integrated system security. This chapter examines existing platforms and methodologies, identifies
-gaps in current offerings, and positions this bachelor's thesis within the broader context of
-cybersecurity pedagogical innovation.
+\section{Context}
+
+The Centre Universitari TecnoCampus~\cite{tecnocampus} offers applied science degrees
+oriented towards professional practice in technology, business, creative industries,
+and health. Affiliated with the Universitat Pompeu Fabra, it carries that university's
+quality seal. Established in 2023 through the merger of three schools --- the Escola
+Superior Politecnica (ESUPT), the Escola Superior de Ciencies Socials i de l'Empresa
+(ESCSET), and the Escola Superior de Ciencies de la Salut (ESCST) --- it is located
+at the technology park of the same name in Mataro, combining academic infrastructure
+with an entrepreneurial ecosystem that facilitates student participation in innovation
+and industry-facing projects.
+
+The primary beneficiary of this project is the Bachelor's Degree in Computer
+Engineering (Management and Information Systems track). Students in this programme
+acquire foundational competencies in networks, operating systems, databases, and
+software engineering, all of which are directly relevant to security practice.
+The \textit{Introduction to Cybersecurity} course is a natural integration point
+for these skills, yet it currently lacks a dedicated hands-on environment.
+
+Three perspectives illustrate the gap this project addresses:
+
+\paragraph{Institutional perspective.}
+The absence of dedicated cybersecurity lab infrastructure limits the institution's
+capacity to offer competitive, hands-on security training aligned with degree learning
+outcomes. Commercial alternatives such as HackTheBox and TryHackMe are externally
+hosted, non-customisable, and not designed to map to specific academic curricula or
+assessment rubrics.
+
+\paragraph{Student perspective.}
+Students encounter security concepts as isolated theoretical constructs rather than
+as failures observable in realistic, integrated environments. Without exposure to
+multi-component systems --- firewalls, routers, servers, and applications working
+together --- they cannot develop the diagnostic reasoning required in professional
+security roles.
+
+\paragraph{Instructor perspective.}
+Designing and maintaining practical security exercises is resource-intensive.
+The absence of reusable, automatable lab environments forces instructors to improvise
+or rely on third-party platforms, reducing pedagogical control and limiting
+reproducibility across cohorts.
+
 
 
 \section{Existing Platforms Overview}
@@ -56,6 +89,15 @@ the \href{https://TheEgea.github.io/TFG/annexos/app-e/}{project online documenta
 
 Several authoritative frameworks inform cybersecurity education and guide both attack
 methodologies and defensive best practices.
+
+\subsection{PTES — Penetration Testing Execution Standard}
+
+The Penetration Testing Execution Standard (PTES)~\cite{ptes} defines a complete methodology
+for professional penetration testing, structured in seven phases: pre-engagement interactions,
+intelligence gathering, threat modelling, vulnerability analysis, exploitation, post-exploitation,
+and reporting. PTES provides the overarching procedural framework for this project: Lab~1
+(reconnaissance and enumeration) maps to the intelligence gathering and vulnerability analysis
+phases, while Labs~2--4 progressively cover exploitation and post-exploitation techniques.
 
 \subsection{OWASP Top 10}
 

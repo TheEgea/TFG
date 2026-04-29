@@ -1,34 +1,62 @@
-#!/bin/bash
-# build.sh - Multi-project builder
+#!/usr/bin/env bash
+# ─────────────────────────────────────────────────────────────────────────────
+# build.sh — Compile LaTeX documents (Vol I + Vol II) and publish to web
+#
+# Usage:
+#   bash scripts-workflow/build.sh [memory|annexos|all]
+#
+# Output:
+#   Vol I  → docs/main/memory/memory-main.pdf
+#            docs/web/docs/assets/official_Documents/memory-main.pdf  ← web
+#   Vol II → docs/main/annexos/annexos-main.pdf
+#            docs/web/docs/assets/official_Documents/annexos-main.pdf ← web
+# ─────────────────────────────────────────────────────────────────────────────
+set -euo pipefail
 
-pathsToBuild=(
-  "/home/overleaf/TFG/TFG/docs/main/memory/memory-main.tex"
-  #"/home/overleaf/TFG/TFG/docs/main/viabilitat/viabilitat-main.tex"
-  #"/home/overleaf/TFG/TFG/docs/main/appendix/avantprojecte-main.tex"
-)
+REPO_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
+WEB_OFFICIAL="$REPO_ROOT/docs/web/docs/assets/official_Documents"
+TARGET="${1:-all}"
 
-for PROJECT_PATH in "${pathsToBuild[@]}"; do
-    PROJECT_DIR=$(dirname "$PROJECT_PATH")
-    PROJECT_FILE=$(basename "$PROJECT_PATH")
-    PROJECT_NAME="${PROJECT_FILE%-main.tex}"
-    BUILD_AUX="$PROJECT_DIR/build/aux"
+compile_doc() {
+    local TEX_PATH="$1"
+    local PROJECT_DIR
+    PROJECT_DIR="$(dirname "$TEX_PATH")"
+    local PROJECT_FILE
+    PROJECT_FILE="$(basename "$TEX_PATH")"
+    local PROJECT_NAME="${PROJECT_FILE%.tex}"
+    local BUILD_AUX="$PROJECT_DIR/build/aux"
 
     mkdir -p "$BUILD_AUX"
-
-    echo "=== Compilando: $PROJECT_NAME ==="
+    echo "=== Compiling: $PROJECT_NAME ==="
     cd "$PROJECT_DIR"
 
-    latexmk -xelatex         -interaction=nonstopmode         -file-line-error         -output-directory="$BUILD_AUX"         "$PROJECT_FILE"
+    latexmk -xelatex \
+        -interaction=nonstopmode \
+        -file-line-error \
+        -output-directory="$BUILD_AUX" \
+        "$PROJECT_FILE"
 
-    PDF="$BUILD_AUX/${PROJECT_FILE%.tex}.pdf"
+    local PDF="$BUILD_AUX/$PROJECT_NAME.pdf"
     if [ -f "$PDF" ]; then
-        cp "$PDF" "$PROJECT_DIR/${PROJECT_FILE%.tex}.pdf"
-        echo "✅ Build exitoso: $PROJECT_NAME"
+        cp "$PDF" "$PROJECT_DIR/$PROJECT_NAME.pdf"
+        cp "$PDF" "$WEB_OFFICIAL/$PROJECT_NAME.pdf"
+        echo "OK $PROJECT_NAME.pdf → $WEB_OFFICIAL/"
     else
-        echo "❌ Build fallido: $PROJECT_NAME"
+        echo "FAIL $PROJECT_NAME — check $BUILD_AUX/"
+        exit 1
     fi
-
     cd - > /dev/null
-done
+}
 
-echo "=== Build completo ==="
+if [ "$TARGET" = "all" ] || [ "$TARGET" = "memory" ]; then
+    compile_doc "$REPO_ROOT/docs/main/memory/memory-main.tex"
+fi
+
+if [ "$TARGET" = "all" ] || [ "$TARGET" = "annexos" ]; then
+    compile_doc "$REPO_ROOT/docs/main/annexos/annexos-main.tex"
+fi
+
+echo ""
+echo "=== Build complete ==="
+echo "  PDFs published to $WEB_OFFICIAL/"
+echo "  Run: git add docs/web/docs/assets/official_Documents/ docs/main/*/memory-main.pdf docs/main/*/annexos-main.pdf"

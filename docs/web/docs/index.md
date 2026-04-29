@@ -8,6 +8,14 @@
 
 [![GitHub Repo](https://img.shields.io/github/stars/TheEgea/TFG?style=social)](https://github.com/TheEgea/TFG)
 
+## Documentation PDF
+
+[:material-file-pdf-box: Download Technical Documentation PDF](../pdf/lab-documentation.pdf){ .md-button .md-button--primary }
+
+*Full technical annex including all appendices and lab reference guides.*
+
+
+
 ## Project Overview { .pb-0 }
 
 > **Design and implementation of a virtual labs for cybersecurity training using EVE-NG** covering reconnaissance, web vulnerabilities, privilege escalation, and cryptography labs aligned with *[Introduction to Cybersecurity](https://www.tecnocampus.cat/en/node/18838)* course.

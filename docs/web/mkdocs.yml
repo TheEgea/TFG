@@ -34,7 +34,7 @@ theme:
 nav:
   - Home: index.md
   - Thesis Documentation:
-      - Memory: assets/Temp.md
+      - Memory (Vol I): assets/official_Documents/memory.md
       - Feasibility Study: assets/official_Documents/feasibility.md
       - Appendices: annexos/index.md
   - Basic Configuration:
@@ -98,7 +98,7 @@ plugins:
       cover_title: Ethical Pentesting with EVE-NG
       cover_subtitle: Bachelor's Thesis Technical Annex
       custom_template_path: pdf_template
-      output_path: ../pdf/lab-documentation.pdf
+      output_path: pdf/lab-documentation.pdf
 
 
 markdown_extensions:

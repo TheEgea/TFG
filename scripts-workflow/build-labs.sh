@@ -1,21 +1,37 @@
-#!/bin/bash
-# build-labs.sh — compile enunciado + resolucion PDFs for all labs
-# Usage: bash build-labs.sh [lab1|lab2|lab3|all]
+#!/usr/bin/env bash
+# ─────────────────────────────────────────────────────────────────────────────
+# build-labs.sh — Compile enunciado + resolucion PDFs for all labs
+#
+# Usage:
+#   bash scripts-workflow/build-labs.sh [lab1|lab2|lab3|lab4|all]
+#
+# Output (per lab):
+#   src/materials/exercises/labX/build/labX-enunciado.pdf
+#   src/materials/exercises/labX/build/labX-resolucion.pdf
+# ─────────────────────────────────────────────────────────────────────────────
+set -euo pipefail
 
-set -e
-
-EXERCISES="/home/overleaf/TFG/TFG/src/materials/exercises"
+REPO_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
+EXERCISES="$REPO_ROOT/src/materials/exercises"
 TARGET="${1:-all}"
 
 build_lab() {
     local LAB="$1"
     local LAB_DIR="$EXERCISES/$LAB"
     local BUILD_DIR="$LAB_DIR/build"
-    mkdir -p "$BUILD_DIR"
 
-    for TEX in "$LAB_DIR/$LAB"-enunciado "$LAB_DIR/$LAB"-resolucion; do
-        local BASE=$(basename "$TEX")
-        if [ ! -f "$TEX.tex" ]; then
+    if [ ! -d "$LAB_DIR" ]; then
+        echo "  SKIP $LAB (directory not found)"
+        return
+    fi
+
+    mkdir -p "$BUILD_DIR"
+    echo "--- $LAB ---"
+
+    for SUFFIX in enunciado resolucion; do
+        local BASE="$LAB-$SUFFIX"
+        local TEX="$LAB_DIR/$BASE.tex"
+        if [ ! -f "$TEX" ]; then
             echo "  SKIP $BASE.tex (not found)"
             continue
         fi
@@ -25,9 +41,10 @@ build_lab() {
             -output-directory="$BUILD_DIR" "$BASE.tex" \
             > "$BUILD_DIR/$BASE.log" 2>&1
         if [ -f "$BUILD_DIR/$BASE.pdf" ]; then
-            echo "  OK $BASE.pdf"
+            echo "  OK  $BASE.pdf"
         else
             echo "  FAIL $BASE — see $BUILD_DIR/$BASE.log"
+            exit 1
         fi
         cd - > /dev/null
     done
@@ -35,19 +52,11 @@ build_lab() {
 
 echo "=== build-labs.sh ==="
 
-if [ "$TARGET" = "all" ] || [ "$TARGET" = "lab1" ]; then
-    echo "--- LAB1 ---"
-    build_lab "lab1"
-fi
-
-if [ "$TARGET" = "all" ] || [ "$TARGET" = "lab2" ]; then
-    echo "--- LAB2 ---"
-    build_lab "lab2"
-fi
-
-if [ "$TARGET" = "all" ] || [ "$TARGET" = "lab3" ]; then
-    echo "--- LAB3 ---"
-    build_lab "lab3"
-fi
+for LAB in lab1 lab2 lab3 lab4; do
+    if [ "$TARGET" = "all" ] || [ "$TARGET" = "$LAB" ]; then
+        build_lab "$LAB"
+    fi
+done
 
 echo "=== Done ==="
+echo "  PDFs in src/materials/exercises/labX/build/"

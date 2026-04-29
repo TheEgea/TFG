@@ -1,5 +1,24 @@
 #!/usr/bin/env bash
 # ─────────────────────────────────────────────────────────────────────────────
+# build-web-pdf.sh — DEPRECATED
+#
+# This script used Pandoc + XeLaTeX to generate the web documentation PDF.
+# It has been superseded by the mkdocs-with-pdf plugin which runs automatically
+# during GitHub Actions (docs.yml) and outputs site/pdf/lab-documentation.pdf.
+#
+# The Pandoc template (pdf_template/tecnocampus.tex) and Lua filter
+# (pdf_template/admonitions.lua) are kept for reference.
+#
+# To manually trigger the web PDF build, run:
+#   cd docs/web && mkdocs build
+#
+# ─────────────────────────────────────────────────────────────────────────────
+echo "DEPRECATED: use mkdocs build instead (or push to main to trigger CI)"
+echo "See docs/web/mkdocs.yml — plugins.with-pdf"
+exit 0
+
+# ──── original script preserved below ────────────────────────────────────────
+# ─────────────────────────────────────────────────────────────────────────────
 # build-web-pdf.sh — Convert MkDocs web docs to PDF via Pandoc + XeLaTeX
 # Reads nav order from mkdocs.yml, concatenates MD files, produces PDF.
 #
