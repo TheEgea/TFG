@@ -1,0 +1,184 @@
+% ============================================================
+% Autor: Eloi Egea Rada
+% Tema: Conclusions, outcomes evaluation, and future work
+% ============================================================
+
+\chapter{Conclusions}
+\label{ch:conclusions}
+
+This chapter evaluates the outcomes of the project against the stated objectives,
+reflects on the lessons learned during development, and outlines directions for
+future work. The overall goal of the project --- to design and implement a reusable,
+curriculum-aligned penetration testing lab package for the \textit{Introduction to
+Cybersecurity} course at TecnoCampus --- has been substantially achieved.
+
+\section{Summary of Achievements}
+
+The project delivered four progressive lab scenarios built on EVE-NG~\cite{eve_ng}
+and deployed on a self-hosted Proxmox~\cite{proxmox} infrastructure:
+
+\begin{itemize}
+    \item \textbf{Lab~1 --- Reconnaissance and Enumeration}: A layered network
+          topology featuring pfSense~\cite{pfsense}, VyOS~\cite{vyos}, and an
+          Ubuntu Server~\cite{ubuntu} target. Students perform passive and active
+          reconnaissance using Nmap, DNS enumeration, and service fingerprinting,
+          mirroring the PTES~\cite{ptes} initial access phase.
+
+    \item \textbf{Lab~2 --- Web Application Vulnerabilities (SYNAPSE)}: A custom
+          two-tier web application aligned with OWASP Top~10~\cite{owasp2021}.
+          The exploitation chain --- stored XSS, SQL injection, and command injection
+          --- guides students through a realistic attack scenario requiring lateral
+          thinking and multi-step reasoning.
+
+    \item \textbf{Lab~3 --- Incident Response and Log Forensics (HELIX Systems)}:
+          An inverted-role lab where students act as security analysts following NIST
+          SP~800-61~\cite{nist_sp80061}. Pre-staged log evidence and a reconstructed
+          attack timeline develop forensic analysis skills alongside offensive concepts.
+
+    \item \textbf{Lab~4 --- Privilege Escalation}: Under development (Phase~3). The
+          topology and scenario design are complete; implementation and validation
+          will be finalised before the May~27, 2026 submission deadline.
+\end{itemize}
+
+Supporting each lab is a student guide, an instructor resolution guide with assessment
+rubric, and automation scripts for deployment and environment reset. All documentation
+is published in three parallel layers: the formal LaTeX report (this volume),
+Volume~II (Annexos), and the project web documentation site at
+\href{https://TheEgea.github.io/TFG/}{TheEgea.github.io/TFG}.
+
+\section{Objectives Evaluation}
+
+Table~\ref{tab:objectives_evaluation} summarises the four specific objectives
+defined in Chapter~\ref{ch:objectives} and their current completion status.
+
+\begin{table}[H]
+  \centering
+  \small
+  \setlength{\tabcolsep}{4pt}
+  \renewcommand{\arraystretch}{1.2}
+  \begin{tabularx}{\textwidth}{l X l}
+    \toprule
+    \textbf{Objective} & \textbf{Description} & \textbf{Status} \\
+    \midrule
+    OE1 & Design and implement 4 EVE-NG labs     & 75\% (3/4 completed) \\
+    OE2 & Develop automation scripts              & Completed \\
+    OE3 & Develop structured teaching materials   & 75\% (3/4 labs documented) \\
+    OE4 & Validate usability and effectiveness    & Partial (pilot pending) \\
+    \bottomrule
+  \end{tabularx}
+  \caption{Specific objectives evaluation at Phase~3 mid-point}
+  \label{tab:objectives_evaluation}
+\end{table}
+
+\textbf{OE1} is on track: Labs~1--3 are fully implemented and validated.
+Lab~4 design is complete; implementation is the primary remaining activity in
+Phase~3. \textbf{OE2} is fully achieved: automation scripts cover ISO upload,
+bridge configuration, and connectivity checks, with at least one utility script
+per lab as required. \textbf{OE3} follows OE1 progress --- three complete student
+and instructor guide pairs are available; Lab~4 materials will be produced in
+parallel with implementation. \textbf{OE4} remains partially open: informal
+pilot observations conducted after Labs~1--3 confirmed usability and flag
+reachability, but formal KPI measurement (time-on-task, satisfaction survey)
+is reserved for the final pilot session in May~2026.
+
+\section{Lessons Learned}
+
+\paragraph{Infrastructure stability precedes content.}
+The migration from VMware to Proxmox early in Phase~0 was the single most impactful
+decision of the project. Attempting to develop lab content on an unstable hypervisor
+would have introduced compounding delays. The lesson is general: validate the
+execution environment thoroughly before investing in content.
+
+\paragraph{Image management is a project in itself.}
+Selecting, importing, and maintaining QEMU images for EVE-NG required significantly
+more effort than anticipated. Naming conventions, permission scripts, and QCOW2
+format validation each required dedicated attention. The \texttt{Iso\_uploader.py}
+script emerged from this experience and reduced future onboarding time substantially.
+
+\paragraph{Flag-based progression is effective for self-paced learning.}
+The flag model --- where students collect verifiable tokens at each milestone ---
+provides immediate feedback and natural progress checkpoints without requiring
+instructor presence. Informal pilot observations confirmed that students find the
+model motivating and that the flags help them self-diagnose when they are stuck
+on the wrong path.
+
+\paragraph{Documentation as a first-class deliverable.}
+Producing documentation in three layers (LaTeX, web, src/) introduced overhead
+but proved valuable: the web documentation became the primary reference during
+informal pilot sessions, while the LaTeX volume serves the formal academic record.
+Future projects of this type should plan the documentation architecture before
+beginning implementation.
+
+\paragraph{Time estimates for realistic EVE-NG scenarios are consistently optimistic.}
+Each lab required approximately 20--30\% more hours than the initial estimate,
+primarily due to unexpected node configuration persistence issues and the need to
+validate flag reachability after each topology change. Build in explicit buffer
+for integration testing in any similar project plan.
+
+\section{Limitations and Future Work}
+
+\subsection{Current Limitations}
+
+\begin{itemize}
+    \item \textbf{Lab~4 not yet complete}: Privilege escalation content is under
+          development. The full four-lab package will be available upon submission.
+
+    \item \textbf{Formal pilot not yet conducted}: KPI validation (time-on-task,
+          satisfaction score, completion rate) requires the scheduled May~2026 pilot
+          session with GEISI students. Results will be incorporated into the final
+          report if completed before the submission deadline.
+
+    \item \textbf{No LMS integration}: The package is self-contained but not
+          integrated with Moodle or any institutional learning management system.
+          Assessment rubrics are PDF-based; submission and grading are manual.
+
+    \item \textbf{Single-group concurrency}: The current infrastructure supports one
+          lab group at a time. Running simultaneous sessions for multiple groups would
+          require either additional server resources or a cloud-based EVE-NG deployment.
+\end{itemize}
+
+\subsection{Directions for Future Work}
+
+\begin{itemize}
+    \item \textbf{Complete Lab~4}: Finalise privilege escalation scenario with SUID,
+          sudo misconfiguration, and cron-based persistence vectors; produce student
+          guide and instructor reference.
+
+    \item \textbf{Expand the OWASP coverage}: Lab~2 currently covers five Top~10
+          categories. Additional modules could address server-side request forgery
+          (SSRF), insecure deserialization, and API security misconfigurations.
+
+    \item \textbf{Moodle integration}: Export assessment rubrics as Moodle-compatible
+          grading forms; implement automated flag submission via a simple REST endpoint.
+
+    \item \textbf{Multi-group support}: Evaluate cloud EVE-NG deployment (AWS or
+          on-premises scale-out) for concurrent execution by multiple student groups
+          within the same course edition.
+
+    \item \textbf{Lab~5 --- Active Directory}: A Windows domain penetration testing
+          scenario (Kerberoasting, Pass-the-Hash, lateral movement) to complement
+          the existing Linux-centric labs and address OSCP-aligned skill gaps.
+\end{itemize}
+
+\section{Personal Reflection}
+
+This project brought together skills from across the Computer Engineering degree ---
+network administration, operating system internals, web security, scripting, and
+technical writing --- within a single coherent artefact. The process of designing
+realistic attack scenarios, implementing them in a reproducible environment, and
+documenting them rigorously to serve as teaching material was more challenging and
+more rewarding than anticipated.
+
+Working within the constraints of academic infrastructure and a fixed timeline
+required constant prioritisation. The decisions that proved most durable were those
+made at the architectural level early in Phase~0: the choice of Proxmox over VMware,
+EVE-NG Community Edition over proprietary alternatives, and an open-source-only tool
+stack. These decisions ensured that the package remains deployable and maintainable
+by any institution with comparable hardware, independent of licensing or vendor
+relationships.
+
+The experience reinforced a conviction that practical, scenario-based learning is
+essential for cybersecurity education, and that the gap between theoretical knowledge
+and professional practice can be narrowed significantly through well-designed lab
+environments. Delivering a package that will be used in a real course is the most
+meaningful validation of the work.
