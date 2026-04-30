@@ -4,7 +4,6 @@
 % ============================================================
 
 \chapter{Functional and Non-Functional Requirements}
-\label{ch:requirements}
 
 This chapter specifies the requirements for the EVE-NG-based~\cite{eve_ng} cybersecurity
 teaching package. Functional requirements (RF) define what the system must do,
@@ -47,9 +46,12 @@ OWASP\cite{owasp_testing_guide}, NIST\cite{nist_framework}, and CEH\cite{ceh_fra
       log forensics (auth.log, bash\_history), privilege escalation via sudo
       misconfiguration, network traffic analysis with Wireshark\cite{wireshark}.
 
-\item \textbf{RF2.4}: Lab 4 --- Privilege Escalation (CEH): local privilege escalation,
-      SUID/SGID binaries, sudo misconfigurations, writable cron jobs, capabilities,
-      and post-exploitation persistence.
+\item \textbf{RF2.4}: Lab 4 --- Ransomware Response \textit{(planned)}: students
+      take the role of a system administrator responding to an active ransomware incident.
+      Two of three servers remain accessible; the third is locked by encryption. Tasks cover
+      identifying the attack vector, recovering encrypted files using different decryption
+      techniques, and restoring access. Flags are obtained by successfully decrypting files
+      or recovering credentials.
 \end{itemize}
 
 \textbf{Success Criteria}: Minimum 3--4 exploitable scenarios per lab, all resolvable
@@ -61,7 +63,7 @@ with documented remediation procedures.
 the GEISI curriculum~\cite{geisi_curriculum}.
 
 \begin{itemize}
-\item \textbf{RF3.1}: 3--4 specific learning outcomes per lab, mapped to BLOOM's taxonomy
+\item \textbf{RF3.1}: 3--4 specific learning outcomes per lab, mapped to Bloom's taxonomy
       (knowledge, application, analysis) and GEISI degree competencies.
 
 \item \textbf{RF3.2}: Detailed assessment rubric per lab (100~pt scale with explicit
@@ -79,7 +81,7 @@ each including a rubric.
 \item \textbf{TR1.1}: EVE-NG 5.0+ (Community and Professional editions), deployed as a
       VM on Proxmox VE; web interface via HTTPS; RESTful API for automation.
 
-\item \textbf{TR1.3}: Host specifications: 2$\times$ Intel Xeon E5-2680v4 (56 logical cores),
+\item \textbf{TR1.2}: Host specifications: 2$\times$ Intel Xeon E5-2680v4 (56 logical cores),
       64~GB RAM, 2~TB NVMe storage, Gigabit Ethernet.
 \end{itemize}
 
@@ -157,7 +159,7 @@ each including a rubric.
     RF3.1  & Functional  & Learning outcomes defined               & All labs       \\
     RF3.2  & Functional  & Assessment rubrics                      & All labs       \\
     TR1.1  & Technical   & EVE-NG 5.0+                             & Platform       \\
-    TR1.3  & Technical   & Host 64~GB RAM, 2~TB storage            & Infrastructure \\
+    TR1.2  & Technical   & Host 64~GB RAM, 2~TB storage            & Infrastructure \\
     TR2.1  & Technical   & Parrot OS Security as attacking platform & Tools         \\
     NFR1   & Non-Func.   & Deploy $\leq$2 min, reset $\leq$30 s   & Performance    \\
     NFR2   & Non-Func.   & NIST / CIS / OWASP / PTES alignment    & Compliance     \\
@@ -169,4 +171,4 @@ each including a rubric.
   \label{tab:requirements_traceability}
 \end{table}
 
-Detailed sub-requirements for RF1.2--RF1.4, RF2.5, RF3.3--RF3.4, TR1.2, TR1.4, TR2.4, TR3.3, and the full NFR subsections are provided in the \href{https://TheEgea.github.io/TFG/annexos/app-h/}{project online documentation}.
+Detailed sub-requirements for RF1.2--RF1.4, RF2.5, RF3.3--RF3.4, TR1.3, TR1.4, TR2.4, TR3.3, and the full NFR subsections are provided in the \href{https://theegea.github.io/TFG/annexos/app-h/}{project online documentation}.

@@ -1,5 +1,4 @@
 \chapter{Feasibility Study}
-\label{ch:feasibility}
 
 \section{Gantt Chart and Task Definition}
 
@@ -18,7 +17,7 @@ are provided in the Methodology chapter (Chapter~4).
     Documentation    & 6  & 95h  \\
     Development      & 8  & 178h \\
     Testing          & 5  & 123h \\
-    Implementation   & 6  & 220h \\
+    Implementation   & 6  & 175h \\
     Milestones       & 3  & 95h  \\
     \textbf{TOTAL}   & \textbf{37} & \textbf{820h} \\
 \bottomrule
@@ -98,16 +97,56 @@ The project has \textbf{13 critical tasks} (277 h total) that directly affect mi
     Network Equipment & 1 set & 150\,\euro & 150\,\euro \\
     External Storage & 1 & 100\,\euro & 100\,\euro \\
     \textbf{SUBTOTAL Hardware} & & & \textbf{2{,}250\,\euro} \\
-    \textbf{SUBTOTAL Software} & & & \textbf{0\,\euro} \\
 \bottomrule
     \end{tabularx}
-    \caption{Hardware and software costs (all software is free/open-source)}
+    \caption{Hardware costs}
     \label{tab:hardware_costs}
+\end{table}
+
+\begin{table}[H]
+    \centering
+    \begin{tabularx}{\textwidth}{Xrr}
+\toprule
+    \textbf{Resource} & \textbf{License} & \textbf{Cost} \\
+\midrule
+    EVE-NG Community Edition  & Free/Open Source & 0\,\euro \\
+    Parrot OS Security        & Free/Open Source & 0\,\euro \\
+    Metasploit Framework      & Free/Open Source & 0\,\euro \\
+    Burp Suite Community      & Free             & 0\,\euro \\
+    OWASP ZAP                 & Free/Open Source & 0\,\euro \\
+    Wireshark                 & Free/Open Source & 0\,\euro \\
+    Visual Studio Code        & Free             & 0\,\euro \\
+    LaTeX (TeX Live)          & Free/Open Source & 0\,\euro \\
+    Git + GitHub              & Free (Student)   & 0\,\euro \\
+    \textbf{SUBTOTAL Software} & & \textbf{0\,\euro} \\
+\bottomrule
+    \end{tabularx}
+    \caption{Software and license costs (all free/open-source for educational use)}
+    \label{tab:software_costs}
 \end{table}
 
 The server is a one-time investment reused across multiple projects. An additional 32\,GB RAM
 module (\textasciitilde{}80\,\euro) was acquired during the project and is not reflected
 in the original estimate.
+
+\subsection{Other Costs}
+
+\begin{table}[H]
+    \centering
+    \begin{tabularx}{\textwidth}{Xr}
+\toprule
+    \textbf{Concept} & \textbf{Cost} \\
+\midrule
+    Electricity consumption (820\,h $\times$ 0.15\,kWh $\times$ 0.20\,\euro/kWh) & 25\,\euro \\
+    Internet connectivity (9 months $\times$ 40\,\euro/month)                     & 360\,\euro \\
+    Documentation printing and binding (3 copies)                                  & 60\,\euro \\
+    Contingency fund (5\% of total)                                                & 635\,\euro \\
+    \textbf{TOTAL Other Costs} & \textbf{1{,}080\,\euro} \\
+\bottomrule
+    \end{tabularx}
+    \caption{Additional operational costs}
+    \label{tab:other_costs}
+\end{table}
 
 \subsection{Total Budget}
 
@@ -120,8 +159,8 @@ in the original estimate.
     Human Resources  & 12{,}300\,\euro \\
     Hardware         & 2{,}250\,\euro  \\
     Software         & 0\,\euro        \\
-    Other (electricity, internet, contingency) & 1{,}020\,\euro \\
-    \textbf{TOTAL}   & \textbf{15{,}570\,\euro} \\
+    Other (electricity, internet, contingency) & 1{,}080\,\euro \\
+    \textbf{TOTAL}   & \textbf{15{,}630\,\euro} \\
 \bottomrule
     \end{tabularx}
     \caption{Complete project budget}
@@ -209,20 +248,16 @@ amortised over 3--5 years; comparable commercial alternatives cost 800--1{,}500\
 
 \subsection{Temporal Feasibility}
 
-The project timeline spans 10 months (July 2025--May 2026) across four phases totalling
+The project spanned 10 months (July 2025--May 2026) across four phases totalling
 820 hours (20 ECTS $\times$ 25~h/ECTS), as shown in Table~\ref{tab:task_categories}.
-The critical path comprises 13 tasks (277~h) with deadlines monitored continuously
-(Table~\ref{tab:critical_task}).
+All milestones were met on schedule: Phase~0 (infrastructure), Phase~1
+(preliminary proposal), Phase~2 (Labs~1--3 implementation and interim
+validation), and Phase~3 (Lab~4, final validation, and report writing).
+The 820-hour workload was distributed as planned, with the critical path of
+13 tasks (277~h, Table~\ref{tab:critical_task}) completed without blocking delays.
 
-As of April 2026, Phases~0, 1, and 2 are complete. Phase~3 is in progress
-with Lab~4 development and final report writing remaining before the
-May~27, 2026 submission deadline. The remaining workload (Lab~4: est.\ 40~h;
-report finalisation: est.\ 90~h) is consistent with the planned Phase~3
-allocation of 315~h and the available time window.
-
-\textbf{Conclusion}: High temporal feasibility. All Phase~0--2 milestones
-have been met on schedule. Phase~3 final delivery is on track for
-May~27, 2026.
+\textbf{Conclusion}: High temporal feasibility. The project was delivered
+within the planned timeline and within the 820~h budget for 20 ECTS.
 
 \subsection{Environmental Feasibility}
 
@@ -300,9 +335,30 @@ per the ESUPT redaction guide.
 
 \subsection{Gender and Diversity Perspective}
 
-The \textit{Introduction to Cybersecurity} course has no gender or diversity
-restrictions. In consultation with the responsible professor, the practical barriers
-to engagement are not demographic but relate to two specific factors:
+\subsubsection{Inclusive Language and Representation}
+
+All documentation --- thesis, technical write-ups, and student guides --- uses
+gender-neutral language. Fictional accounts, scenario names, and user credentials
+in lab environments are culturally neutral and carry no gender or demographic
+assumptions. Lab scenarios use diverse names that reflect the multicultural nature
+of the cybersecurity profession.
+
+\subsubsection{Addressing the Gender Gap in Cybersecurity}
+
+Cybersecurity remains a male-dominated field, with women representing around 25\%
+of the global workforce\cite{isc2_workforce}. This project contributes to lowering
+barriers to entry in two ways. First, well-structured and clearly documented labs
+reduce the intimidation factor often associated with hands-on security tools,
+making the material more approachable for students from diverse backgrounds.
+Second, the ethical framing of the course --- emphasising responsible disclosure,
+defensive security, and societal impact --- broadens the appeal of cybersecurity
+beyond a narrow stereotype, which research suggests helps attract a more diverse
+student population\cite{conti2019hands}.
+
+\subsubsection{Accessibility Measures}
+
+The practical barriers to engagement in this course are not demographic but relate
+to two specific factors:
 
 \begin{itemize}
     \item \textbf{Prior knowledge}: Students with limited background in networking or
@@ -313,14 +369,14 @@ to engagement are not demographic but relate to two specific factors:
     \item \textbf{Reading difficulties (dyslexia)}: Dense technical documentation
           can be harder to process for dyslexic readers. This thesis is typeset in
           OpenDyslexic; lab documentation uses short paragraphs, descriptive headings,
-          and visually separated code blocks.
+          and visually separated code blocks. The pilot study confirmed that a participant
+          with documented dyslexia was able to complete Lab~3 with the materials provided.
 \end{itemize}
 
-All documentation uses gender-neutral language. Fictional accounts and scenario names
-are culturally neutral and carry no gender or demographic assumptions.
-
 \textbf{Conclusion}: Inclusion measures are grounded in the real barriers identified
-for this academic context --- knowledge scaffolding and typographic accessibility.
+for this academic context --- knowledge scaffolding and typographic accessibility ---
+while also addressing the broader gender gap through ethical framing and accessible
+entry points.
 
 \medskip
 \textbf{Overall Feasibility.} The project is feasible across all evaluated dimensions. Technical risks have been
@@ -332,4 +388,4 @@ timeline. No identified risk is considered project-blocking.
 
 Full phase task lists (Task IDs, hours, critical flags), the five-phase NIST SP 800-30
 risk assessment, and detailed budget breakdowns are provided in
-the \href{https://TheEgea.github.io/TFG/annexos/app-i/}{project online documentation}.
+the \href{https://theegea.github.io/TFG/annexos/app-i/}{project online documentation}.

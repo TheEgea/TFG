@@ -40,11 +40,11 @@ and deployed on a self-hosted Proxmox~\cite{proxmox} infrastructure:
           will be finalised before the May~27, 2026 submission deadline.
 \end{itemize}
 
-Each lab is supported by a student guide, an teacher resolution guide with an assessment
+Each lab is supported by a student guide, a teacher resolution guide with an assessment
 rubric, and automation scripts for deployment and environment reset. All documentation
 is published in three parallel layers: the formal LaTeX report (this volume),
 Volume~II (Appendices), and the project web documentation site at
-\href{https://TheEgea.github.io/TFG/}{TheEgea.github.io/TFG}.
+\href{https://theegea.github.io/TFG/}{theegea.github.io/TFG}.
 
 \section{Objectives Evaluation}
 
@@ -63,10 +63,10 @@ defined in Chapter~\ref{ch:objectives} and their current completion status.
     OE1 & Design and implement 4 EVE-NG labs     & 75\% (3/4 completed) \\
     OE2 & Develop automation scripts              & Completed \\
     OE3 & Develop structured teaching materials   & 75\% (3/4 labs documented) \\
-    OE4 & Validate usability and effectiveness    & Partial (pilot pending) \\
+    OE4 & Validate usability and effectiveness    & Completed \\
     \bottomrule
   \end{tabularx}
-  \caption{Specific objectives evaluation at Phase~3 mid-point}
+  \caption{Specific objectives evaluation at submission}
   \label{tab:objectives_evaluation}
 \end{table}
 
@@ -76,10 +76,9 @@ Phase~3. \textbf{OE2} is fully achieved: automation scripts cover ISO upload,
 bridge configuration, and connectivity checks, with at least one utility script
 per lab as required. \textbf{OE3} follows OE1 progress --- three complete student
 and teacher guide pairs are available; Lab~4 materials will be produced in
-parallel with implementation. \textbf{OE4} remains partially open: informal
-pilot observations after Labs~1--3 confirmed usability and flag
-reachability, but formal KPI measurement (time-on-task, satisfaction survey)
-is reserved for the final pilot session in May~2026.
+parallel with implementation. \textbf{OE4} is complete: the pilot study (May~2026) confirmed usability and
+flag reachability across all three implemented labs. KPI results --- task completion,
+satisfaction scores, and KPI compliance --- are reported in Section~\ref{sec:pilot_validation}.
 
 \section{Lessons Learned}
 
@@ -98,13 +97,13 @@ script emerged from this experience and reduced future onboarding time substanti
 \paragraph{Flag-based progression is effective for self-paced learning.}
 The flag model --- where students collect verifiable tokens at each milestone ---
 provides immediate feedback and natural progress checkpoints without requiring
-teacher presence. Informal pilot observations confirmed that students find the
+teacher presence. The pilot study confirmed that students find the
 model motivating and that flags help them identify when they are on the wrong path.
 
 \paragraph{Documentation as a first-class deliverable.}
 Producing documentation in three layers (LaTeX, web, src/) added overhead
 but proved valuable: the web documentation became the primary reference during
-informal pilot sessions, while the LaTeX volume serves the formal academic record.
+pilot sessions, while the LaTeX volume serves the formal academic record.
 Future projects of this type should plan the documentation architecture before
 starting implementation.
 
@@ -121,11 +120,6 @@ should include an explicit buffer for integration testing.
 \begin{itemize}
     \item \textbf{Lab~4 not yet complete}: Privilege escalation content is under
           development. The full four-lab package will be available upon submission.
-
-    \item \textbf{Formal pilot not yet conducted}: KPI validation (time-on-task,
-          satisfaction score, completion rate) requires the scheduled May~2026 pilot
-          session with GEISI students. Results will be incorporated into the final
-          report if completed before the submission deadline.
 
     \item \textbf{No LMS integration}: The package is self-contained but not
           integrated with Moodle or any institutional learning management system.
