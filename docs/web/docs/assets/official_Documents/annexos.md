@@ -18,8 +18,8 @@
 | Appendix | Title |
 |----------|-------|
 | A | EVE-NG Installation on Proxmox VE |
-| B | Lab 1: PEBCAK Corp — Instructor Reference (credentials, startup, flags) |
-| C | Lab 2: SYNAPSE Intelligence Portal — Instructor Reference (vuln chain, startup) |
-| D | Lab 3: HELIX Systems — Instructor Reference (accounts, attack timeline, evidence) |
+| B | Lab 1: PEBCAK Corp — Teacher Reference (credentials, startup, flags) |
+| C | Lab 2: SYNAPSE Intelligence Portal — Teacher Reference (vuln chain, startup) |
+| D | Lab 3: HELIX Systems — Teacher Reference (accounts, attack timeline, evidence) |
 
 > **Source:** Eloi Egea Rada — TFG: Ethical Pentesting in Virtualized Environments with EVE-NG

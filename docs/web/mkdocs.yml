@@ -1,7 +1,7 @@
 site_name: Ethical Pentesting with EVE-NG
 site_description: Bachelor's Thesis - Virtual labs for cybersecurity training
 site_author: Eloi Egea Rada
-site_url: https://TheEgea.github.io/TFG
+site_url: https://theegea.github.io/TFG
 repo_url: https://github.com/TheEgea/TFG
 edit_uri: edit/main/docs/web/docs/
 
@@ -35,8 +35,16 @@ nav:
   - Home: index.md
   - Thesis Documentation:
       - Memory (Vol I): assets/official_Documents/memory.md
-      - Feasibility Study: assets/official_Documents/feasibility.md
-      - Appendices: annexos/index.md
+      - Appendices (Vol II): assets/official_Documents/annexos.md
+      - App A — EVE-NG Installation: annexos/app-a/index.md
+      - App B — Lab 1 Reference: annexos/app-b/index.md
+      - App C — Lab 2 Reference: annexos/app-c/index.md
+      - App D — Lab 3 Reference: annexos/app-d/index.md
+      - App E — Platforms: annexos/app-e/index.md
+      - App F — Objectives & KPIs: annexos/app-f/index.md
+      - App G — Methodology: annexos/app-g/index.md
+      - App H — Requirements: annexos/app-h/index.md
+      - App I — Feasibility: annexos/app-i/index.md
   - Basic Configuration:
       - Selected ISOs: assets/init_configs/selected-isos/index.md
       - Router (VyOS): assets/init_configs/Router.md
@@ -66,17 +74,6 @@ nav:
           - Server-Web (helix-web): labs/lab3/server-web.md
           - Server-DB (helix-db): labs/lab3/server-db.md
           - Evidence Walkthrough: labs/lab3/walkthrough.md
-  - Appendices:
-      - Overview: annexos/index.md
-      - "App A — EVE-NG Installation": annexos/app-a/index.md
-      - "App B — Lab 1 Reference": annexos/app-b/index.md
-      - "App C — Lab 2 Reference": annexos/app-c/index.md
-      - "App D — Lab 3 Reference": annexos/app-d/index.md
-      - "App E — Platforms": annexos/app-e/index.md
-      - "App F — Objectives & KPIs": annexos/app-f/index.md
-      - "App G — Methodology": annexos/app-g/index.md
-      - "App H — Requirements": annexos/app-h/index.md
-      - "App I — Feasibility": annexos/app-i/index.md
 #  - Pentest Labs:
 #      - Reconnaissance: labs/recon.md
 #      - Web Vulns: labs/web-vulns.md
