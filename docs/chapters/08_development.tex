@@ -7,11 +7,11 @@
 \label{ch:development}
 
 This chapter describes the implementation of the penetration testing lab environment
-built on EVE-NG. It covers the platform setup, the management of virtual machine
-images, the lab management interface, the infrastructure problems encountered during
-development, and an overview of the lab topologies designed for the course. Each
-individual lab is then described in its own section, with a summary of the network
-topology, techniques, and problems encountered. Detailed instructor references ---
+built on EVE-NG. It covers the platform setup, virtual machine image management,
+the lab management interface, infrastructure problems encountered during development,
+and an overview of the lab topologies designed for the course. Each lab is described
+in its own section, with a summary of the network topology, techniques, and problems
+encountered. Detailed teacher references ---
 including deployment credentials, startup procedures, and flag locations --- are
 compiled in Volume~II (Appendices~B--D) and the \href{https://TheEgea.github.io/TFG/annexos/}{project online documentation}. The EVE-NG installation
 procedure is documented in the \href{https://TheEgea.github.io/TFG/annexos/app-a/}{project online documentation}.
@@ -23,14 +23,14 @@ procedure is documented in the \href{https://TheEgea.github.io/TFG/annexos/app-a
 
 The development process began with the installation and validation of EVE-NG~\cite{eve_ng} as the
 network emulation platform. Following the official EVE-NG documentation, an initial
-environment was deployed in order to verify basic functionality: creating simple
+environment was deployed to verify basic functionality: creating simple
 network topologies, deploying virtual machines with different operating systems, and
 testing console and remote desktop access before committing to the full lab design.
 
 Several attempts were made to run EVE-NG as a virtual machine on a VMware-based
-infrastructure available in the initial university environment. Despite VMware being
-an officially supported hypervisor, recurrent stability and integration issues
-prevented a reliable setup. After evaluating the available alternatives and in
+infrastructure available in the university environment. Despite VMware being
+an officially supported hypervisor, recurring stability and integration issues
+prevented a reliable setup. After evaluating the available alternatives, and in
 agreement with the project supervisor, the platform was migrated to a dedicated
 Proxmox VE~\cite{proxmox} server. This choice offers better compatibility with the nested
 virtualisation required by EVE-NG and can be replicated on any institutional server
@@ -52,7 +52,7 @@ machine, and was therefore left out of scope for the current version.
 
 Once the platform was stable, a survey of available EVE-NG-compatible images was
 conducted, prioritising free and open-source operating systems suitable for an
-academic context. Starting from a broad list of candidate images, the final selection
+academic context. Starting from a broad list of candidates, the final selection
 was reduced to a minimal, reusable core for the penetration testing scenarios:
 
 \begin{itemize}
@@ -118,9 +118,9 @@ directory structure across deployments.
 % ------------------------------------------------------------
 
 EVE-NG provides a web-based graphical interface through which administrators and
-students can manage lab files independently of each other. The \textit{File Manager},
+students can manage lab files independently. The \textit{File Manager},
 accessible after login, is the main entry point for lab operations and offers several
-features that are relevant to reproducibility and multi-user deployments:
+features relevant to reproducibility and multi-user deployments:
 
 \begin{itemize}
     \item \textbf{Lab import and export}: Topology files (\texttt{.unl}) can be
@@ -161,20 +161,20 @@ within each lab section and relate to the underlying platform and tooling.
 
 The initial deployment target was a VMware-based server available through the
 university. Despite EVE-NG being officially listed as compatible with VMware~\cite{vmware_esxi}
-hypervisors, the environment produced recurrent instability: nodes failed to start
+hypervisors, the environment produced recurring instability: nodes failed to start
 consistently, VNC sessions dropped without warning, and network connectivity between
 virtual bridges was unreliable. No stable configuration was found after several
 iterations. The root cause was not fully identified, but the combination of
 VMware's nested virtualisation restrictions and the specific hardware and software
 versions in the university environment appeared to be contributing factors.
-The decision to migrate to Proxmox resolved all of these issues.
+Migrating to Proxmox resolved all of these issues.
 
 \subsection{Node Configuration Persistence}
 
 A recurring challenge in EVE-NG lab design is ensuring that node configurations
 survive restarts. By default, runtime network settings applied inside guest virtual
 machines are lost when the lab is stopped or the EVE-NG host is rebooted. This
-affected multiple nodes across the lab and required a dedicated solution for each
+affected multiple nodes across the labs and required a dedicated solution for each
 one. The specific mechanisms used are described in the relevant lab sections; the
 general principle adopted throughout the project was to rely on the native
 persistence mechanisms of each operating system --- such as \texttt{systemd-networkd}
@@ -185,7 +185,7 @@ than applying settings interactively at the console.
 
 During a session involving disk operations on guest virtual machine images mounted
 from the EVE-NG host, a naming conflict arose between the host's LVM volume group
-and a guest disk's volume group, both named \texttt{ubuntu-vg}. An attempt to
+and a guest disk's volume group, both named \texttt{ubuntu-vg}. Attempting to
 resolve the conflict by renaming the host volume group caused the EVE-NG host to
 fail on the next restart, dropping into an \texttt{initramfs} prompt because the
 boot configuration still referenced the original group name.
@@ -252,3 +252,4 @@ during development.
 \input{../../chapters/labs/lab1_recon}
 \input{../../chapters/labs/lab2_web_vulns}
 \input{../../chapters/labs/lab3_incident_response}
+\input{../../chapters/labs/pilot_validation}

@@ -6,9 +6,9 @@ framework~\cite{ptes}. Students interact with a fictional target organisation,
 \textit{PEBCAK Corp}, through a layered topology that includes a perimeter firewall
 (pfSense~CE~\cite{pfsense}), an internal router (VyOS~\cite{vyos}), and a target
 Ubuntu~Server~24.04~\cite{ubuntu}. Access is exclusively via DNS hostname
-(\texttt{pebcak.local}) resolved through pfSense's Unbound resolver, forcing students
+(\texttt{pebcak.local}) resolved through pfSense's Unbound resolver, requiring students
 to use proper service enumeration before any exploitation attempt. Full topology
-diagrams, node configuration, student guide, and instructor walkthrough are in the \href{https://TheEgea.github.io/TFG/annexos/app-b/}{project online documentation}; interactive documentation at \path{docs/web/docs/labs/lab1/}.
+diagrams, node configuration, student guide, and teacher walkthrough are in the \href{https://TheEgea.github.io/TFG/annexos/app-b/}{project online documentation}; interactive documentation at \path{docs/web/docs/labs/lab1/}.
 
 \subsubsection*{Network Addressing}
 
@@ -62,7 +62,7 @@ the \texttt{vncdo} command-line tool. The root cause is that vncdo sends key sym
 rather than raw key codes, and the VNC server's key mapping does not cover all
 combinations used in a penetration testing context.
 
-The solution adopted was to inject keystrokes directly via the QEMU monitor socket,
+The solution was to inject keystrokes directly via the QEMU monitor socket,
 using Python's raw socket interface to send \texttt{sendkey} commands. This bypasses
 the VNC protocol entirely and ensures that arbitrary key sequences, including those
 involving modifier keys, are delivered correctly to the guest.
@@ -70,7 +70,7 @@ involving modifier keys, are delivered correctly to the guest.
 \subsubsection{pfSense DNS Resolver WAN Interface}
 
 After initial configuration, DNS queries from the attacker machine were not being
-resolved by pfSense's Unbound resolver. The issue was that Unbound, by default,
+resolved by pfSense's Unbound resolver. The problem was that Unbound, by default,
 only listens on the LAN interface, so queries arriving on the WAN-side interface
 were silently discarded. The fix was to explicitly add the WAN interface to
 Unbound's listening configuration under \textit{Services $\to$ DNS Resolver $\to$
@@ -78,7 +78,7 @@ Network Interfaces}.
 
 \subsubsection{Unbound Startup Configuration Path}
 
-On subsequent restarts, the Unbound configuration that had been applied via the
+On subsequent restarts, the Unbound configuration applied via the
 GUI was not being preserved, causing DNS resolution to fail after every reboot.
 Investigation revealed that pfSense's startup scripts write the Unbound configuration
 to \path{/var/unbound/unbound.conf} at boot time, overwriting any manual edits.

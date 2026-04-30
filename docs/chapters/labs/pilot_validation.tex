@@ -1,0 +1,156 @@
+% =============================================================
+% Pilot Validation
+% =============================================================
+
+\section{Pilot Validation}
+
+A small pilot study was carried out during April--May 2026 to test whether
+the labs work well in practice and whether students can complete them using
+the provided guides.
+
+\subsection{Pilot Design}
+
+Five participants took part in the pilot. All of them are currently studying
+cybersecurity, so they have some technical background, but they are not
+experts in all the topics covered by the labs. The author was available
+during the sessions to answer questions when participants got stuck, so the
+study reflects a guided but realistic classroom setting rather than fully
+independent self-study.
+
+One participant has documented dyslexia. This made it possible to get some
+early feedback on the accessibility features of the guides, such as the use
+of OpenDyslexic font, the structured task layout, and the hint system.
+
+Each participant recorded how long they took to complete their lab and
+reported any technical problems they encountered. After finishing, they
+filled in a short questionnaire with four questions rated on a 1--5 scale
+(clarity of the guide, difficulty, overall experience, and whether the guide
+was enough to complete the lab), plus a few open questions about what was
+hardest and what they would change.
+
+\subsection{Quantitative Results}
+
+Table~\ref{tab:pilot_results} shows the average scores and times for each
+lab.
+
+\begin{table}[H]
+  \centering
+  \small
+  \setlength{\tabcolsep}{5pt}
+  \renewcommand{\arraystretch}{1.15}
+  \begin{tabularx}{\textwidth}{l c c c c c}
+    \toprule
+    \textbf{Lab} & \textbf{\textit{n}} & \textbf{Clarity} &
+    \textbf{Difficulty} & \textbf{Experience} &
+    \textbf{Avg.\ time (min)} \\
+    \midrule
+    Lab~1 --- Reconnaissance      & 3 & 4.33 & 2.33 & 4.67 & 88  \\
+    Lab~2 --- Web Vulnerabilities  & 3 & 5.00 & 3.00 & 4.67 & 95  \\
+    Lab~3 --- Incident Response    & 3 & 4.00 & 3.67 & 4.67 & 122 \\
+    \midrule
+    \textbf{Overall}              & 9 & \textbf{4.44} & \textbf{3.00} &
+                                       \textbf{4.67} & \textbf{102} \\
+    \bottomrule
+  \end{tabularx}
+  \caption{Pilot study results --- mean scores (1--5 Likert) and resolution times}
+  \label{tab:pilot_results}
+\end{table}
+
+All five participants completed their labs. No technical problem stopped
+anyone from finishing. The average satisfaction score was \textbf{4.67 out
+of 5}, which is above the 4/5 target set in OE4 (Section~3). The average
+time across all labs was \textbf{102 minutes}, which is within the 90--120
+minute target.
+
+Lab~1 took an average of 88 minutes, just under the target. This is
+expected since it is the first lab and the most guided one. Lab~3 took an
+average of 122 minutes, just over the target. This makes sense because it
+includes a forensic analysis task and a written incident report, which take
+more time than a purely technical task. Both differences are small and fit
+the planned progression from easier to harder labs.
+
+\subsection{Qualitative Analysis}
+
+The open questions showed some common patterns across the three labs.
+
+\paragraph{Getting started in the environment.}
+Two participants had trouble at the beginning before the technical tasks even
+started. One spent around ten minutes trying to connect via SSH to the
+attacker machine in Lab~1, not knowing it only has a VNC console inside
+EVE-NG. Another participant in Lab~2 sent a payload to the wrong server
+because the guide did not explain upfront that nginx works as a reverse proxy
+in front of two backend servers. Both cases suggest that each student guide
+needs a short section at the beginning explaining how to access the lab and
+what the key parts of the topology are.
+
+\paragraph{Understanding why, not just how.}
+Several participants said they found it more helpful when the guide explained
+the reason behind a step, not just the command to run. In Lab~2, the choice
+of listener IP address was only explained in a late hint, so one participant
+did not understand it until that point. In Lab~3, using \texttt{find} to
+escalate privileges through GTFOBins\footnote{GTFOBins is a list of Unix
+binaries that can be used to bypass local security restrictions:
+\url{https://gtfobins.github.io}.} felt confusing without any context about
+what GTFOBins is. Adding a short explanation in the task body --- not just
+in hints --- would make the labs more educational.
+
+\paragraph{Log readability.}
+The participant with dyslexia found the \texttt{auth.log} output in Lab~3
+very hard to read. Log lines with timestamps, hostnames, PIDs, and messages
+all together are a lot of information at once. The guide assumed students
+already knew how to use \texttt{grep} to filter the relevant lines. Adding
+a short introduction to log structure and showing one example of expected
+output for each \texttt{grep} command would help all students, not just
+those with reading difficulties.
+
+\paragraph{Connecting the three labs.}
+The participant who completed all three labs pointed out that the overall
+flow makes sense (reconnaissance, then web attack, then incident response)
+but felt that the connection between the labs could be stronger. Framing
+Lab~3 as the investigation of an incident caused by the same type of attack
+seen in Labs~1 and~2 would help students see the full picture --- attack and
+defence as two sides of the same chain.
+
+\subsection{KPI Compliance}
+
+\begin{table}[H]
+  \centering
+  \small
+  \renewcommand{\arraystretch}{1.15}
+  \begin{tabularx}{\textwidth}{X c c c}
+    \toprule
+    \textbf{KPI} & \textbf{Target} & \textbf{Result} & \textbf{Status} \\
+    \midrule
+    Mean satisfaction score      & $\geq 4/5$   & 4.67/5  & $\checkmark$ \\
+    Lab completion rate          & 100\%         & 9/9     & $\checkmark$ \\
+    Mean resolution time         & 90--120 min   & 102 min & $\checkmark$ \\
+    Blocking technical incidents & 0             & 0       & $\checkmark$ \\
+    \bottomrule
+  \end{tabularx}
+  \caption{OE4 KPI compliance after pilot study}
+  \label{tab:kpi_compliance}
+\end{table}
+
+All four KPIs from OE4 were met. The small differences in per-lab times are
+not a problem: the overall average is within target, and the pattern matches
+the intended difficulty progression of the lab sequence.
+
+\subsection{Identified Improvements}
+
+The pilot showed a number of small issues. None of them stopped anyone from
+finishing, but fixing them would make the labs clearer and more useful:
+
+\begin{itemize}
+  \item \textbf{All labs}: add a short \textit{Environment Access} section
+        at the start of each student guide explaining console types (VNC
+        vs.\ SSH) and the key parts of the topology.
+  \item \textbf{Lab~2}: explain the listener IP choice in the task body
+        instead of a hint; add a note about the nginx reverse proxy before
+        the task sequence; remind students to check that the listener is
+        active before posting the payload.
+  \item \textbf{Lab~3}: add a note about boot time before the first SSH
+        connection; clarify that the database server is only reachable from
+        inside the web server; add one line of expected \texttt{grep} output
+        per command; add a short description of GTFOBins; add a reflection
+        question at the end of the final task about real-world detection.
+\end{itemize}

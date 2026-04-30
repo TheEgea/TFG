@@ -13,14 +13,14 @@ and health. Affiliated with the Universitat Pompeu Fabra, it carries that univer
 quality seal. Established in 2023 through the merger of three schools --- the Escola
 Superior Politecnica (ESUPT), the Escola Superior de Ciencies Socials i de l'Empresa
 (ESCSET), and the Escola Superior de Ciencies de la Salut (ESCST) --- it is located
-at the technology park of the same name in Mataro, combining academic infrastructure
-with an entrepreneurial ecosystem that facilitates student participation in innovation
-and industry-facing projects.
+at the technology park of the same name in Mataro. This setting combines academic
+infrastructure with an entrepreneurial ecosystem that supports student involvement in
+innovation and industry-facing projects.
 
 The primary beneficiary of this project is the Bachelor's Degree in Computer
 Engineering (Management and Information Systems track). Students in this programme
-acquire foundational competencies in networks, operating systems, databases, and
-software engineering, all of which are directly relevant to security practice.
+build foundational skills in networks, operating systems, databases, and software
+engineering --- all of which are directly relevant to security practice.
 The \textit{Introduction to Cybersecurity} course is a natural integration point
 for these skills, yet it currently lacks a dedicated hands-on environment.
 
@@ -40,10 +40,10 @@ multi-component systems --- firewalls, routers, servers, and applications workin
 together --- they cannot develop the diagnostic reasoning required in professional
 security roles.
 
-\paragraph{Instructor perspective.}
+\paragraph{Teacher perspective.}
 Designing and maintaining practical security exercises is resource-intensive.
-The absence of reusable, automatable lab environments forces instructors to improvise
-or rely on third-party platforms, reducing pedagogical control and limiting
+The absence of reusable, automatable lab environments, teachers must improvise
+or rely on third-party platforms, which reduces pedagogical control and limits
 reproducibility across cohorts.
 
 
@@ -90,7 +90,7 @@ the \href{https://TheEgea.github.io/TFG/annexos/app-e/}{project online documenta
 Several authoritative frameworks inform cybersecurity education and guide both attack
 methodologies and defensive best practices.
 
-\subsection{PTES — Penetration Testing Execution Standard}
+\subsection{PTES \textendash{} Penetration Testing Execution Standard}
 
 The Penetration Testing Execution Standard (PTES)~\cite{ptes} defines a complete methodology
 for professional penetration testing, structured in seven phases: pre-engagement interactions,
@@ -102,7 +102,7 @@ phases, while Labs~2--4 progressively cover exploitation and post-exploitation t
 \subsection{OWASP Top 10}
 
 The OWASP Top 10 is a regularly updated list of the most critical web application security
-vulnerabilities \cite{owasp2021}. For educational purposes it provides a focused, industry-recognised
+vulnerabilities \cite{owasp2021}. For educational purposes, it provides a focused, industry-recognised
 curriculum that prioritises the attack vectors students are most likely to encounter in practice.
 Lab 2 of this project is directly aligned with OWASP Top 10 categories.
 
@@ -126,22 +126,22 @@ understand corresponding protective measures.
 \section{Prior Academic Research}
 
 Academic research consistently validates the effectiveness of hands-on, laboratory-based
-approaches in cybersecurity education. Conti and Di Pietro \cite{conti2019} demonstrate that
+approaches in cybersecurity education. Conti and Di Pietro \cite{conti2019} show that
 challenge-based environments significantly improve skill retention and practical competency
 compared to purely theoretical instruction. Murphy et al.\ \cite{murphy2018} provide a
-structured methodology for designing laboratory exercises that are explicitly aligned with
-curriculum outcomes, validating the need for scenario-specific tasks and integrated
-assessment. Sponj and Heri\v{c}ko \cite{sponj2021} conducted a systematic review of
-cybersecurity education research, identifying hands-on practice and authentic task design as
-the two most influential factors in learner engagement and competency development.
-Al~Mohanadi and Furnell \cite{almohannadi2016} further establish a requirements-driven
-approach to information security assessment laboratories, emphasising that lab tasks must
-map directly to defined learning outcomes to achieve meaningful pedagogical impact.
+structured methodology for designing laboratory exercises explicitly aligned with curriculum
+outcomes, validating the need for scenario-specific tasks and integrated assessment.
+Sponj and Heri\v{c}ko \cite{sponj2021} conducted a systematic review of cybersecurity
+education research and identified hands-on practice and authentic task design as the two
+most influential factors in learner engagement and competency development.
+Al~Mohanadi and Furnell \cite{almohannadi2016} establish a requirements-driven approach to
+information security assessment laboratories, emphasising that lab tasks must map directly
+to defined learning outcomes to achieve meaningful pedagogical impact.
 
 These findings directly inform the design choices in this project: each lab is built around
-scenario-based flags mapped to specific learning objectives, includes an instructor reference
-sheet, and culminates in an automated assessment mechanism, addressing the gap between
-platform availability and curriculum integration identified in the prior literature.
+scenario-based flags mapped to specific learning objectives, includes an teacher reference
+sheet, and culminates in an automated assessment mechanism. Together, these elements address
+the gap between platform availability and curriculum integration identified in the literature.
 
 \section{Gap Analysis: What Existing Solutions Miss}
 
@@ -164,17 +164,17 @@ lateral movement is required.
 
 \textbf{Gap 4: Automation and Scalability.}
 Even classroom-oriented platforms often lack automated deployment, environment reset, and
-assessment mechanisms, increasing instructor workload and limiting large-scale institutional
+assessment mechanisms, which increases teacher workload and limits large-scale institutional
 adoption.
 
 \textbf{Gap 5: Balance of Guidance and Autonomy.}
-Effective labs must balance sufficient structure to keep students on target with sufficient
+Effective labs must balance sufficient structure to keep students on track with enough
 openness to encourage problem-solving and methodology development.
 
 
 \section{The Need for EVE-NG Based Labs}
 
-This analysis reveals that while excellent individual components exist---gamified learning
+This analysis shows that while excellent individual components exist---gamified learning
 (TryHackMe), challenging scenarios (HackTheBox), research-backed content (SEED Labs),
 specialised domains (GOAD)---no existing solution comprehensively addresses the needs of a
 university cybersecurity education programme:
@@ -189,9 +189,9 @@ university cybersecurity education programme:
           professional pentesting practice
 \end{itemize}
 
-The bachelor's thesis project bridges this gap by leveraging EVE-NG \cite{eve_ng} to create a
-comprehensive, reusable, and automatable teaching package for cybersecurity practical labs,
-synthesising the pedagogical strengths of existing platforms while addressing their limitations
+This bachelor's thesis bridges that gap by using EVE-NG \cite{eve_ng} to create a
+comprehensive, reusable, and automatable teaching package for cybersecurity practical labs.
+It draws on the pedagogical strengths of existing platforms while addressing their limitations
 through institutional control, curriculum alignment, and automation.
 
 

@@ -40,9 +40,9 @@ Server-B     & Internal API      & eth0  & 10.0.3.20   & 10.0.3.0/24            
 \toprule
 \textbf{Step} & \textbf{OWASP} & \textbf{Vulnerability} & \textbf{Flag} \\
 \midrule
-1 & A03:2021 & Stored XSS in report field $ightarrow$ session cookie theft & -- \\
-2 & A07:2021 & Cookie injection $ightarrow$ admin panel access & -- \\
-3 & A03:2021 & SQL injection in search $ightarrow$ credential dump & FLAG\{synapse\_sqli\_creds\_dumped\} \\
+1 & A03:2021 & Stored XSS in report field $\rightarrow$ session cookie theft & -- \\
+2 & A07:2021 & Cookie injection $\rightarrow$ admin panel access & -- \\
+3 & A03:2021 & SQL injection in search $\rightarrow$ credential dump & FLAG\{synapse\_sqli\_creds\_dumped\} \\
 4 & A01:2021 & Lateral movement to Server-B via stolen creds & FLAG\{synapse\_pivot\_server\_b\} \\
 5 & A03:2021 & Command injection in monitoring API & FLAG\{synapse\_rce\_achieved\} \\
 \bottomrule
@@ -57,7 +57,7 @@ Server-B     & Internal API      & eth0  & 10.0.3.20   & 10.0.3.0/24            
 
 Two pfSense default behaviours blocked traffic in the lab topology. First, the
 \textit{Block private networks} option on the WAN interface was enabled by default,
-which caused pfSense to silently discard packets arriving from the simulated
+causing pfSense to silently discard packets arriving from the simulated
 attacker network (RFC~1918 space~\cite{rfc1918}). Second, the \textit{Reply-to}
 feature added return routes in \texttt{pf} rules that conflicted with VyOS's
 routing table, causing asymmetric routing. Both were disabled: the private network
@@ -84,15 +84,15 @@ it on the host, then rename it back after dismounting.
 
 During the Server-B installation, the Ubuntu installer defaulted to a Spanish
 keyboard layout due to the locale of the EVE-NG host, causing mismatched characters
-when entering the initial credentials. Corrected by explicitly selecting the
+when entering the initial credentials. This was corrected by explicitly selecting the
 \texttt{en\_US} keyboard layout at the installer prompt and verified with a
 \texttt{/dev/urandom}-seeded password test before proceeding.
 
 \subsubsection{Static Route Gateway Reference}
 
 VyOS rejected a static route configuration that referenced a gateway IP not directly
-reachable on any configured interface. The issue was that the intended next-hop was
-on a subnet not yet assigned to any VyOS interface at the time the route was applied.
-Resolved by defining the interface address before the static route, and by using
+reachable on any configured interface. The intended next-hop was on a subnet not yet
+assigned to any VyOS interface at the time the route was applied. This was resolved
+by defining the interface address before the static route, and by using
 \texttt{commit} and \texttt{save} in the correct order within the VyOS configuration
 session.

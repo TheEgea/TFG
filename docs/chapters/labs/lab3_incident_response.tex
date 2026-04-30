@@ -62,7 +62,7 @@ volume group conflict from Lab~2
 recurred: both the host and the guest disk used \texttt{ubuntu-vg}. The resolution
 procedure was identical --- renaming the guest VG to \texttt{helix-web-vg} before
 activation --- and the naming rule was formally added to the project's infrastructure
-runbook to prevent recurrence across future labs.
+runbook to prevent recurrence in future labs.
 
 \subsubsection{Read-only nbd Device}
 
@@ -78,7 +78,7 @@ to add a pre-mount check to the project's image manipulation scripts.
 The student account (\texttt{analyst}) was created with restricted permissions so
 that it could not read system logs directly as root. However, \texttt{/var/log/auth.log}
 requires membership of the \texttt{adm} group on Ubuntu. The pre-staging script was
-updated to add \texttt{analyst} to \texttt{adm} at image preparation time, keeping
+updated to add \texttt{analyst} to \texttt{adm} at image preparation time, preserving
 the educational constraint (no \texttt{sudo} to \texttt{root}) while allowing access
 to the evidence files that are the focus of the lab.
 
