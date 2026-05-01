@@ -25,24 +25,33 @@ compile_doc() {
     PROJECT_FILE="$(basename "$TEX_PATH")"
     local PROJECT_NAME="${PROJECT_FILE%.tex}"
     local BUILD_AUX="$PROJECT_DIR/build/aux"
+    local LOG_FILE="$PROJECT_DIR/build/build.txt"
 
     mkdir -p "$BUILD_AUX"
     echo "=== Compiling: $PROJECT_NAME ==="
     cd "$PROJECT_DIR"
 
-    latexmk -xelatex \
-        -interaction=nonstopmode \
-        -file-line-error \
-        -output-directory="$BUILD_AUX" \
-        "$PROJECT_FILE"
+    {
+        echo "=== Build: $PROJECT_NAME ==="
+        echo "Date: $(date '+%Y-%m-%d %H:%M:%S')"
+        echo ""
+        latexmk -xelatex \
+            -interaction=nonstopmode \
+            -file-line-error \
+            -output-directory="$BUILD_AUX" \
+            "$PROJECT_FILE"
+        echo ""
+        echo "=== Done: $(date '+%Y-%m-%d %H:%M:%S') ==="
+    } 2>&1 | tee "$LOG_FILE"
 
     local PDF="$BUILD_AUX/$PROJECT_NAME.pdf"
     if [ -f "$PDF" ]; then
         cp "$PDF" "$PROJECT_DIR/$PROJECT_NAME.pdf"
         cp "$PDF" "$WEB_OFFICIAL/$PROJECT_NAME.pdf"
-        echo "OK $PROJECT_NAME.pdf → $WEB_OFFICIAL/"
+        echo "OK $PROJECT_NAME.pdf -> $WEB_OFFICIAL/"
+        echo "   Log guardado en: build/build.txt"
     else
-        echo "FAIL $PROJECT_NAME — check $BUILD_AUX/"
+        echo "FAIL $PROJECT_NAME -- revisar build/build.txt"
         exit 1
     fi
     cd - > /dev/null
