@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+name="LAB3 — Incident Response · HELIX Systems" id="8d1d75f4-3817-448d-a59e-9bf2afc2ffc8" version="1" scripttimeout="300" lock="0">
+  <topology>
+    <nodes>
+      <node id="2" name="VyOS-LAB3" type="qemu" template="vyos" image="vyos-2026.02.13-0029-rolling-generic-amd64" console="telnet" cpu="2" cpulimit="0" ram="4096" ethernet="3" uuid="448bb2be-b48e-4f47-bc36-10ccaf9b0c26" qemu_options="-machine type=pc,accel=kvm -serial mon:stdio -nographic -no-user-config -nodefaults -rtc base=utc" qemu_version="2.12.0" qemu_arch="x86_64" qemu_nic="e1000" delay="0" icon="Router-2D-Gen-Grey-S.svg" config="0" left="993" top="453">
+        <interface id="0" name="eth0" type="ethernet" network_id="1"/>
+        <interface id="1" name="eth1" type="ethernet" network_id="2"/>
+        <interface id="2" name="eth2" type="ethernet" network_id="3"/>
+      </node>
+      <node id="3" name="Server-Web" type="qemu" template="linux" image="linux-ubuntu-server-24.04" console="vnc" cpu="4" cpulimit="0" ram="4096" ethernet="1" uuid="ae65bcb9-69c5-4545-a132-2a23695b3fba" firstmac="00:50:00:00:03:00" qemu_options="-machine type=pc,accel=kvm -vga std -usbdevice tablet -boot order=c -cpu host" qemu_version="2.12.0" qemu_arch="x86_64" qemu_nic="e1000" delay="0" icon="Server-2D-Linux-S.svg" config="0" left="1263" top="258">
+        <interface id="0" name="e0" type="ethernet" network_id="2"/>
+      </node>
+      <node id="4" name="Server-DB" type="qemu" template="linux" image="linux-ubuntu-server-24.04" console="vnc" cpu="4" cpulimit="0" ram="4096" ethernet="1" uuid="a6e500ff-6f7b-4e49-a1ab-36acd2381880" firstmac="00:50:00:00:04:00" qemu_options="-machine type=pc,accel=kvm -vga std -usbdevice tablet -boot order=c -cpu host" qemu_version="2.12.0" qemu_arch="x86_64" qemu_nic="e1000" delay="0" icon="Server-2D-Linux-S.svg" config="0" left="1281" top="693">
+        <interface id="0" name="e0" type="ethernet" network_id="3"/>
+      </node>
+      <node id="1" name="pfSense" type="qemu" template="pfsense" image="pfsense-ce-2.6.0-release-amd64" console="vnc" cpu="2" cpulimit="0" ram="2048" ethernet="2" uuid="57eb9dcf-c846-4b7a-a379-49d0ba970a3e" qemu_options="-machine type=pc,accel=kvm -nographic -usbdevice tablet -boot order=dc -serial mon:stdio" qemu_version="2.12.0" qemu_arch="x86_64" qemu_nic="virtio-net-pci" delay="0" icon="Firewall-2D-Generic-S.svg" config="0" left="510" top="441">
+        <interface id="0" name="e0" type="ethernet" network_id="1"/>
+        <interface id="1" name="e1" type="ethernet" network_id="4"/>
+      </node>
+    </nodes>
+    <networks>
+      <network id="1" type="bridge" name="Net-Link" left="729" top="462" visibility="1" icon="lan.png"/>
+      <network id="2" type="bridge" name="Net-Servers" left="984" top="294" visibility="1" icon="lan.png"/>
+      <network id="3" type="bridge" name="Net-Internal" left="993" top="690" visibility="1" icon="lan.png"/>
+      <network id="4" type="pnet0" name="pnet0-WAN" left="249" top="444" visibility="1" icon="01-Cloud-Default.svg"/>
+    </networks>
+  </topology>
+</lab>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+name="LAB2 — Web Vulnerabilities · SYNAPSE" id="3ee647a2-2017-4a69-b949-45c5ac1c329d" version="1" scripttimeout="300" lock="0">
+  <topology>
+    <nodes>
+      <node id="2" name="VyOS-LAB2" type="qemu" template="vyos" image="vyos-2026.02.13-0029-rolling-generic-amd64" console="telnet" cpu="2" cpulimit="0" ram="4096" ethernet="4" uuid="4fe59b37-2179-464a-92ad-bdeda6ceeac4" qemu_options="-machine type=pc,accel=kvm -serial mon:stdio -nographic -no-user-config -nodefaults -rtc base=utc" qemu_version="2.12.0" qemu_arch="x86_64" qemu_nic="e1000" delay="0" icon="Router-2D-Gen-Grey-S.svg" config="0" left="906" top="429">
+        <interface id="0" name="eth0" type="ethernet" network_id="3"/>
+        <interface id="1" name="eth1" type="ethernet" network_id="2"/>
+        <interface id="2" name="eth2" type="ethernet" network_id="1"/>
+      </node>
+      <node id="3" name="Server-A-SYNAPSE" type="qemu" template="linux" image="linux-ubuntu-server-24.04" console="vnc" cpu="4" cpulimit="0" ram="4096" ethernet="1" uuid="2cc6f8d3-0c7f-4305-a10b-573766a9ae06" firstmac="00:50:00:00:03:00" qemu_options="-machine type=pc,accel=kvm -vga std -usbdevice tablet -boot order=c -cpu host" qemu_version="2.12.0" qemu_arch="x86_64" qemu_nic="e1000" delay="0" icon="Server-2D-Linux-S.svg" config="0" left="1167" top="264">
+        <interface id="0" name="e0" type="ethernet" network_id="2"/>
+      </node>
+      <node id="4" name="Server-B-SYNAPSE" type="qemu" template="linux" image="linux-ubuntu-server-24.04" console="vnc" cpu="4" cpulimit="0" ram="4096" ethernet="1" uuid="4cce305f-3761-4665-9436-7edea8578486" firstmac="00:50:00:00:04:00" qemu_options="-machine type=pc,accel=kvm -vga std -usbdevice tablet -boot order=c -cpu host" qemu_version="2.12.0" qemu_arch="x86_64" qemu_nic="e1000" delay="0" icon="Server-2D-Linux-S.svg" config="0" left="1182" top="552">
+        <interface id="0" name="e0" type="ethernet" network_id="2"/>
+      </node>
+      <node id="5" name="pfSense" type="qemu" template="pfsense" image="pfsense-ce-2.6.0-release-amd64" console="vnc" cpu="2" cpulimit="0" ram="4096" ethernet="2" uuid="f17e2583-bee8-4bb1-a1af-98f0bc972008" qemu_options="-machine type=pc,accel=kvm -nographic -usbdevice tablet -boot order=dc -serial mon:stdio" qemu_version="2.12.0" qemu_arch="x86_64" qemu_nic="virtio-net-pci" delay="0" icon="Firewall-2D-Generic-S.svg" config="0" left="603" top="216">
+        <interface id="0" name="e0" type="ethernet" network_id="3"/>
+        <interface id="1" name="e1" type="ethernet" network_id="4"/>
+      </node>
+      <node id="1" name="Linux" type="qemu" template="linux" image="linux-parrot-security-6.4" console="vnc" cpu="4" cpulimit="0" ram="4096" ethernet="2" uuid="5ede6281-0af7-4267-9619-d4761bcc6e96" firstmac="00:50:00:00:01:00" qemu_options="-machine type=pc,accel=kvm -vga std -usbdevice tablet -boot order=cd -cpu host" qemu_version="2.12.0" qemu_arch="x86_64" qemu_nic="virtio-net-pci" delay="0" icon="Server-2D-Linux-S.svg" config="0" left="429" top="582">
+        <interface id="1" name="e1" type="ethernet" network_id="1"/>
+      </node>
+    </nodes>
+    <networks>
+      <network id="1" type="bridge" name="Net-Attackers" left="642" top="519" visibility="1" icon="lan.png"/>
+      <network id="2" type="bridge" name="Net-DMZ" left="1077" top="441" visibility="1" icon="lan.png"/>
+      <network id="3" type="bridge" name="Net-Link" left="834" top="234" visibility="1" icon="lan.png"/>
+      <network id="4" type="pnet0" name="pnet0-WAN" left="375" top="231" visibility="1" icon="01-Cloud-Default.svg"/>
+    </networks>
+  </topology>
+</lab>

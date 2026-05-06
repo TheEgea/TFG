@@ -1,3 +1,4 @@
+
 :root {
     --md-primary-fg-color: #DC2626;
     --md-primary-fg-color--light: #b94141;
@@ -16,23 +17,66 @@ body {
     --md-footer-bg-color: #1F2937;
 }
 
-/* ── PDF font + color overrides (WeasyPrint) ─────────────────────────────── */
+/* ── OpenDyslexic: rutas relativas para el navegador ─────────────────────── */
 @font-face {
     font-family: 'OpenDyslexic';
-    src: url('file:///usr/share/fonts/opentype/opendyslexic/OpenDyslexic-Regular.otf');
+    src: url('../assets/fonts/OpenDyslexic-Regular.otf') format('opentype');
     font-weight: normal;
+    font-style: normal;
 }
 @font-face {
     font-family: 'OpenDyslexic';
-    src: url('file:///usr/share/fonts/opentype/opendyslexic/OpenDyslexic-Bold.otf');
+    src: url('../assets/fonts/OpenDyslexic-Bold.otf') format('opentype');
     font-weight: bold;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'OpenDyslexic';
+    src: url('../assets/fonts/OpenDyslexic-Italic.otf') format('opentype');
+    font-weight: normal;
+    font-style: italic;
+}
+@font-face {
+    font-family: 'OpenDyslexic';
+    src: url('../assets/fonts/OpenDyslexic-BoldItalic.otf') format('opentype');
+    font-weight: bold;
+    font-style: italic;
 }
 @font-face {
     font-family: 'OpenDyslexicMono';
-    src: url('file:///usr/share/fonts/opentype/opendyslexic/OpenDyslexicMono-Regular.otf');
+    src: url('../assets/fonts/OpenDyslexicMono-Regular.otf') format('opentype');
+    font-weight: normal;
 }
 
+/* ── Aplicar a la web (navegador) ────────────────────────────────────────── */
+body,
+.md-typeset {
+    font-family: 'OpenDyslexic', sans-serif !important;
+}
+
+code, pre, kbd, samp,
+.md-typeset code,
+.md-typeset pre {
+    font-family: 'OpenDyslexicMono', monospace !important;
+}
+
+/* ── PDF (WeasyPrint): file:// absolutos para que resuelva localmente ──────── */
 @media print {
+    @font-face {
+        font-family: 'OpenDyslexic';
+        src: url('file:///usr/share/fonts/opentype/opendyslexic/OpenDyslexic-Regular.otf');
+        font-weight: normal;
+    }
+    @font-face {
+        font-family: 'OpenDyslexic';
+        src: url('file:///usr/share/fonts/opentype/opendyslexic/OpenDyslexic-Bold.otf');
+        font-weight: bold;
+    }
+    @font-face {
+        font-family: 'OpenDyslexicMono';
+        src: url('file:///usr/share/fonts/opentype/opendyslexic/OpenDyslexicMono-Regular.otf');
+    }
+
     * { font-family: 'OpenDyslexic', sans-serif !important; }
 
     pre, code, kbd, samp {
@@ -49,4 +93,47 @@ body {
     a { color: #B41E1E !important; }
 
     th { background-color: #B41E1E !important; color: white !important; }
+
+    /* ── Page breaks para WeasyPrint ─────────────────────────────────────────── */
+    @page {
+        size: A4;
+        margin: 2.5cm 2.54cm;
+    }
+
+    html, body {
+        height: auto !important;
+        overflow: visible !important;
+    }
+
+    .md-content,
+    .md-main,
+    .md-main__inner,
+    .md-container {
+        height: auto !important;
+        overflow: visible !important;
+        display: block !important;
+    }
+
+    /* El plugin convierte articulos hijos a <section> en el HTML combinado.
+       Forzar display:block para que WeasyPrint aplique page-break correctamente. */
+    body > article,
+    body > article > section,
+    body > article > section > section,
+    body > article > section > section > section {
+        display: block !important;
+        page-break-after: always !important;
+        break-after: page !important;
+        overflow: visible !important;
+    }
+
+    h1, h2 {
+        page-break-after: avoid;
+        break-after: avoid;
+    }
+
+    table, figure, pre {
+        page-break-inside: avoid;
+        break-inside: avoid;
+    }
+
 }

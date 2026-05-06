@@ -8,11 +8,11 @@
 
 [![GitHub Repo](https://img.shields.io/github/stars/TheEgea/TFG?style=social)](https://github.com/TheEgea/TFG)
 
-## Documentation PDF
+<!-- ## Documentation PDF
 
 [:material-file-pdf-box: Download Technical Documentation PDF](../pdf/lab-documentation.pdf){ .md-button .md-button--primary }
 
-*Full technical annex including all appendices and lab reference guides.*
+*Full technical annex including all appendices and lab reference guides.* -->
 
 
 
