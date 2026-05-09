@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<lab name="Lab4" id="72c9f3a0-986d-4a4d-88d3-83b862fb4b8c" version="1" scripttimeout="300" lock="0">
+  <topology>
+    <nodes>
+      <node id="1" name="ServerA" type="qemu" template="linux" image="linux-ubuntu-server-24.04" console="vnc" cpu="4" cpulimit="0" ram="4096" ethernet="1" uuid="dfe38dfb-7c78-4ce1-b465-bc44c37d9bce" firstmac="00:50:00:00:01:00" qemu_options="-machine type=pc,accel=kvm -vga std -usbdevice tablet -boot order=c -cpu host" qemu_version="2.12.0" qemu_arch="x86_64" qemu_nic="virtio-net-pci" delay="0" icon="Server-2D-Linux-S.svg" config="0" left="1371" top="357">
+        <interface id="0" name="e0" type="ethernet" network_id="3"/>
+      </node>
+      <node id="2" name="ServerB" type="qemu" template="linux" image="linux-ubuntu-server-24.04" console="vnc" cpu="4" cpulimit="0" ram="4096" ethernet="1" uuid="bd829408-40e8-4ba9-a607-4d4ca98e5987" firstmac="00:50:00:00:02:00" qemu_options="-machine type=pc,accel=kvm -vga std -usbdevice tablet -boot order=c -cpu host" qemu_version="2.12.0" qemu_arch="x86_64" qemu_nic="virtio-net-pci" delay="0" icon="Server-2D-Linux-S.svg" config="0" left="1371" top="522">
+        <interface id="0" name="e0" type="ethernet" network_id="4"/>
+      </node>
+      <node id="3" name="ServerC" type="qemu" template="linux" image="linux-ubuntu-server-24.04" console="vnc" cpu="4" cpulimit="0" ram="4096" ethernet="1" uuid="ed7d2bba-8731-40e2-88c6-ac1494985e33" firstmac="00:50:00:00:03:00" qemu_options="-machine type=pc,accel=kvm -vga std -usbdevice tablet -boot order=c -cpu host" qemu_version="2.12.0" qemu_arch="x86_64" qemu_nic="virtio-net-pci" delay="0" icon="Server-2D-Linux-S.svg" config="0" left="1380" top="813">
+        <interface id="0" name="e0" type="ethernet" network_id="5"/>
+      </node>
+      <node id="4" name="pfSense" type="qemu" template="pfsense" image="pfsense-ce-2.6.0-release-amd64" console="telnet" cpu="1" cpulimit="0" ram="2048" ethernet="2" uuid="1fe51a4f-226b-4b7c-a82f-af6694e559c9" qemu_options="-machine type=pc,accel=kvm -nographic -usbdevice tablet -boot order=dc -serial mon:stdio" qemu_version="2.12.0" qemu_arch="x86_64" qemu_nic="virtio-net-pci" delay="0" icon="Firewall-2D-Generic-S.svg" config="0" left="741" top="336">
+        <interface id="0" name="e0" type="ethernet" network_id="1"/>
+        <interface id="1" name="e1" type="ethernet" network_id="2"/>
+      </node>
+      <node id="5" name="VyOS" type="qemu" template="vyos" image="vyos-switch-lab1" console="telnet" cpu="2" cpulimit="0" ram="2048" ethernet="8" uuid="d0098ef7-51a0-46ef-b735-96bc0abd2410" qemu_options="-machine type=pc,accel=kvm -serial mon:stdio -nographic -no-user-config -nodefaults -rtc base=utc" qemu_version="2.12.0" qemu_arch="x86_64" qemu_nic="e1000" delay="0" icon="Router-2D-Gen-Grey-S.svg" config="1" left="1011" top="525">
+        <interface id="0" name="eth0" type="ethernet" network_id="2"/>
+        <interface id="1" name="eth1" type="ethernet" network_id="3"/>
+        <interface id="2" name="eth2" type="ethernet" network_id="4"/>
+        <interface id="3" name="eth3" type="ethernet" network_id="5"/>
+        <interface id="4" name="eth4" type="ethernet" network_id="6"/>
+      </node>
+      <node id="6" name="Defender" type="qemu" template="linux" image="linux-parrot-security-6.4" console="vnc" cpu="4" cpulimit="0" ram="4096" ethernet="1" uuid="76060413-345b-462b-869d-f5b3c782f997" firstmac="00:50:00:00:06:00" qemu_options="-machine type=pc,accel=kvm -vga std -usbdevice tablet -boot order=cd -cpu host" qemu_version="2.12.0" qemu_arch="x86_64" qemu_nic="virtio-net-pci" delay="0" icon="Laptop.png" config="0" left="495" top="681">
+        <interface id="0" name="e0" type="ethernet" network_id="6"/>
+      </node>
+    </nodes>
+    <networks>
+      <network id="1" type="pnet0" name="Net" left="741" top="177" visibility="1" icon="01-Cloud-Default.svg"/>
+      <network id="2" type="bridge" name="LAN" left="747" top="513" visibility="1" icon="lan.png"/>
+      <network id="3" type="bridge" name="Zone-A" left="1011" top="369" visibility="1" icon="lan.png"/>
+      <network id="4" type="bridge" name="Zone-B" left="1203" top="540" visibility="1" icon="lan.png"/>
+      <network id="5" type="bridge" name="Zone-C" left="1017" top="819" visibility="1" icon="lan.png"/>
+      <network id="6" type="bridge" name="Net" left="771" top="696" visibility="1" icon="lan.png"/>
+    </networks>
+  </topology>
+  <objects>
+    <configs>
+      <config id="5">G1s/MjAwNGxDb21tYW5kICdzaG93JyBub3QgZm91bmQsIGJ1dCBjYW4gYmUgaW5zdGFsbGVkIHdpdGg6CnN1ZG8gYXB0IGluc3RhbGwgbWFpbHV0aWxzLW1oICAjIHZlcnNpb24gMTozLjE2LTFidWlsZDEsIG9yCnN1ZG8gYXB0IGluc3RhbGwgbW1oICAgICAgICAgICAjIHZlcnNpb24gMC40LTYKc3VkbyBhcHQgaW5zdGFsbCBubWggICAgICAgICAgICMgdmVyc2lvbiAxLjgtMQobWz8yMDA0aGRldm9wc0BzZXJ2ZXJj</config>
+    </configs>
+  </objects>
+</lab>
