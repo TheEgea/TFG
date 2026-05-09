@@ -1,0 +1,505 @@
+\documentclass[a4paper, 12pt]{article}
+
+\usepackage{fontspec}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage[english]{babel}
+\usepackage{geometry}
+\usepackage{setspace}
+\usepackage{titlesec}
+\usepackage{hyperref}
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{xcolor}
+\usepackage{mdframed}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{listings}
+\usepackage{amsmath}
+
+\geometry{top=2.5cm, bottom=2.5cm, left=3cm, right=2.5cm}
+
+\setmainfont{OpenDyslexic}[
+    Path = /usr/share/fonts/opentype/opendyslexic/,
+    Extension = .otf,
+    UprightFont = *-Regular,
+    BoldFont = *-Bold,
+    ItalicFont = *-Italic,
+    BoldItalicFont = *-BoldItalic
+]
+\setmonofont{OpenDyslexicMono}[
+    Path = /usr/share/fonts/opentype/opendyslexic/,
+    Extension = .otf,
+    UprightFont = *-Regular
+]
+
+\definecolor{labpurple}{RGB}{90,30,160}
+\definecolor{labgray}{RGB}{245,245,245}
+\definecolor{labred}{RGB}{180,30,30}
+
+\hypersetup{colorlinks=true, linkcolor=black, urlcolor=labpurple}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\textit{Lab 4 -- Cryptography \& Steganography CTF}}
+\fancyhead[R]{\small\textit{Introduction to Cybersecurity}}
+\fancyfoot[C]{\small\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt}
+
+\titleformat{\section}{\large\bfseries\color{labpurple}}{}{0em}{}[\titlerule]
+\titleformat{\subsection}{\normalsize\bfseries}{}{0em}{}
+
+\lstset{
+    basicstyle=\ttfamily\small,
+    backgroundcolor=\color{labgray},
+    frame=single,
+    breaklines=true
+}
+
+\begin{document}
+
+% ---- Cover ------------------------------------------------------------------
+\begin{titlepage}
+\centering
+
+\includegraphics[width=0.6\linewidth]{../../../../docs/images/logo-tecnocampus.png}
+
+\vspace{1.5cm}
+{\small Bachelor in Computer Engineering -- Management and Information Systems}
+
+\vspace{0.5cm}
+{\small Introduction to Cybersecurity}
+
+\vspace{3cm}
+{\LARGE\bfseries Lab 4}\\[0.4cm]
+{\Large\bfseries Cryptography \& Steganography CTF}
+
+\vspace{1cm}
+{\large\color{labpurple} Student Assignment}
+
+\vspace{4cm}
+
+\begin{tabular}{ll}
+\textbf{Course}     & Introduction to Cybersecurity \\
+\textbf{Lab}        & 4 of 4 \\
+\textbf{Topic}      & Cryptography \& Steganography \\
+\textbf{Duration}   & 180--300 minutes \\
+\textbf{Difficulty} & Hard \\
+\textbf{Flags}      & 14 (A1--A5, B1--B5, C1--C4) \\
+\end{tabular}
+
+\vfill
+{\small TecnoCampus \textperiodcentered{} GEISI \textperiodcentered{} 2025--2026}
+
+\end{titlepage}
+
+% ---- Learning Objectives ----------------------------------------------------
+\section{Learning Objectives}
+
+After completing this lab you will be able to:
+
+\begin{itemize}[leftmargin=1.5em]
+  \item Apply classical cryptanalysis techniques (frequency analysis, Kasiski
+        examination, crib-dragging)
+  \item Understand and exploit AES-ECB mode weaknesses using a byte-at-a-time
+        oracle attack
+  \item Exploit an RSA small-exponent vulnerability ($e = 3$, cube root attack)
+  \item Extract hidden data from image EXIF metadata and raw binary structures
+  \item Perform LSB steganography extraction from RGB and alpha channels
+  \item Crack steghide-protected JPEG payloads
+  \item Recognise and exploit ECDSA nonce reuse to recover a private key
+  \item Chain CTF challenges across multiple servers using derived credentials
+\end{itemize}
+
+% ---- Scenario ---------------------------------------------------------------
+\section{Scenario}
+
+\textbf{NovaCorp} has been breached. As a member of the incident response team,
+you have recovered a set of intercepted communications and suspicious image files
+from the attacker's exfiltrated archive.
+
+Your mission is to break the ciphers, extract hidden data from the images, and
+reconstruct the attacker's communication channel step by step.
+
+The investigation is divided into three modules hosted on separate servers:
+
+\begin{itemize}[leftmargin=1.5em]
+  \item \textbf{Module A -- Cryptography} (ServerA, 5 challenges): from simple
+        substitution ciphers to asymmetric key attacks.
+  \item \textbf{Module B -- Steganography} (ServerB, 5 challenges): from EXIF
+        metadata to LSB encoding and password-protected steganography.
+  \item \textbf{Module C -- Advanced Mix} (ServerC, 4 challenges): multilayer
+        techniques combining cryptography and steganography.
+        \textbf{Access to ServerC is gated} -- you need two specific flags from
+        Modules A and B first.
+\end{itemize}
+
+\begin{mdframed}[backgroundcolor=labgray, linecolor=labpurple, linewidth=1pt]
+\textbf{Rules of engagement}
+\begin{itemize}[leftmargin=1.5em, topsep=2pt]
+  \item Only attack nodes within the lab environment
+  \item Do not modify the VyOS or pfSense infrastructure configuration
+  \item Document every step -- commands run, scripts written, output obtained
+  \item The flag format is \texttt{H4U\{...\}} -- capture the exact string
+  \item If the lab breaks, notify your instructor
+\end{itemize}
+\end{mdframed}
+
+% ---- The Gate Mechanism -----------------------------------------------------
+\section{The Gate Mechanism}
+
+\begin{mdframed}[backgroundcolor=labgray, linecolor=labred, linewidth=1pt]
+\textbf{Important -- read before starting}
+
+Access to \textbf{ServerC} is locked. The password is derived from two flags:
+
+\begin{enumerate}[leftmargin=2em]
+  \item Flag \textbf{A5} -- obtained from the RSA challenge on ServerA
+  \item Flag \textbf{B5} -- obtained from the steghide JPEG on ServerB
+\end{enumerate}
+
+Derive the ServerC password using the following formula:
+
+\[
+\text{password} = \text{md5}(\text{flag\_A5} \| \text{flag\_B5})[{:}12]
+\]
+
+Compute the MD5 hash of the concatenated flag strings and take the first 12
+hexadecimal characters. This is the \texttt{devops} account password on ServerC.
+\end{mdframed}
+
+% ---- Topology ---------------------------------------------------------------
+\section{Network Topology}
+
+\begin{verbatim}
+  Homelab LAN (192.168.0.0/24)
+          |
+  [pfSense-LAB4]  WAN: 192.168.0.18
+          |        LAN: 192.168.1.1/24
+  [VyOS-LAB4]
+    eth0: 192.168.1.2/24  -- uplink to pfSense
+    eth1: 10.10.1.1/24    -- Zone-A (ServerA)
+    eth2: 10.10.2.1/24    -- Zone-B (ServerB)
+    eth3: 10.10.3.1/24    -- Zone-C (ServerC) [GATED]
+          |
+  [ServerA]  [ServerB]  [ServerC]
+  10.10.1.10  10.10.2.10  10.10.3.10
+  Crypto      Stego       Advanced Mix
+\end{verbatim}
+
+\begin{table}[H]
+\centering
+\begin{tabularx}{0.92\textwidth}{llXl}
+\toprule
+\textbf{Node} & \textbf{IP} & \textbf{Role} & \textbf{Entry} \\
+\midrule
+ServerA & \texttt{10.10.1.10} & Cryptography module (5 challenges) & \texttt{ssh admin@10.10.1.10} \\
+ServerB & \texttt{10.10.2.10} & Steganography module (5 challenges) & \texttt{ssh sysop@10.10.2.10} \\
+ServerC & \texttt{10.10.3.10} & Advanced mix (4 challenges, gated) & \texttt{ssh devops@10.10.3.10} \\
+\bottomrule
+\end{tabularx}
+\caption{Lab nodes overview}
+\end{table}
+
+% ---- Module A ---------------------------------------------------------------
+\section{Module A -- Cryptography (ServerA)}
+
+\textbf{Entry:} \texttt{ssh admin@10.10.1.10} \quad Password: \texttt{N3xaTech!}
+
+All challenge files are in \texttt{/home/admin/mensajes/}.
+
+\subsection{Challenge A1 -- Classic Substitution}
+
+The file \texttt{A1\_mensaje\_interceptado.txt} contains an intercepted message.
+The text looks like English but every letter has been systematically shifted.
+
+\begin{enumerate}[leftmargin=2em]
+  \item Read the file and observe the structure
+  \item Identify the cipher used (hint: the shift is exactly 13 positions)
+  \item Decode the message and extract the flag
+\end{enumerate}
+
+\textit{Deliverable: the flag string in format \texttt{H4U\{...\}}.}
+
+\subsection{Challenge A2 -- Block Cipher Oracle}
+
+The file \texttt{A2\_admin\_cipher.b64} contains a ciphertext encrypted with AES.
+The script \texttt{A2\_oracle.py} provides an encryption oracle you can query.
+
+\begin{enumerate}[leftmargin=2em]
+  \item Run \texttt{python3 A2\_oracle.py} and study the interface
+  \item Understand why AES-ECB mode is vulnerable to chosen-plaintext attacks
+  \item Craft queries to recover the hidden message byte by byte
+  \item Extract the flag
+\end{enumerate}
+
+\textit{Deliverable: the flag string and a brief explanation of the ECB weakness.}
+
+\subsection{Challenge A3 -- Polyalphabetic Cipher}
+
+The file \texttt{A3\_documento\_clasificado.txt} is encrypted with a polyalphabetic
+substitution cipher. The key is a word, not a number.
+
+\begin{enumerate}[leftmargin=2em]
+  \item Search for repeated trigrams in the ciphertext
+  \item Use the distances between repetitions to estimate the key length (Kasiski examination)
+  \item Once you know the key length, treat each column as a Caesar cipher
+  \item Recover the key and decrypt the full message
+\end{enumerate}
+
+\textit{Deliverable: the key word and the flag string.}
+
+\subsection{Challenge A4 -- XOR Repeating Key}
+
+The file \texttt{A4\_mensaje\_xor.hex} is a hex-encoded XOR-encrypted message.
+The key is shorter than the plaintext and repeats.
+
+\begin{enumerate}[leftmargin=2em]
+  \item Decode the hex string to bytes
+  \item Estimate the key length using the index of coincidence or by trying lengths 1--20
+  \item Apply crib-dragging: XOR a known word against the ciphertext at every position
+  \item Recover the repeating key and decrypt the full message
+\end{enumerate}
+
+\textit{Deliverable: the key and the flag string.}
+
+\subsection{Challenge A5 -- RSA Weak Exponent \emph{(gate key)}}
+
+The file \texttt{A5\_rsa\_challenge.txt} contains an RSA ciphertext and the public
+key parameters $(n, e)$. The public exponent is unusually small.
+
+\begin{enumerate}[leftmargin=2em]
+  \item Read the ciphertext $c$ and the parameters $n$ and $e$
+  \item Check whether $m^e < n$ (i.e., no modular reduction occurred during encryption)
+  \item If so, compute the integer $e$-th root of $c$ to recover $m$
+  \item Convert $m$ from integer to bytes and extract the flag
+\end{enumerate}
+
+\textit{Deliverable: the flag string. \textbf{This flag is required to access ServerC.}}
+
+% ---- Module B ---------------------------------------------------------------
+\section{Module B -- Steganography (ServerB)}
+
+\textbf{Entry:} \texttt{ssh sysop@10.10.2.10} \quad Password: \texttt{S3cure24!}
+
+All challenge files are in \texttt{/srv/public/uploads/}.
+
+\subsection{Challenge B1 -- Metadata}
+
+The file \texttt{B1\_oficina\_novacorp.png} is a photograph of a NovaCorp office.
+
+\begin{enumerate}[leftmargin=2em]
+  \item Run \texttt{exiftool B1\_oficina\_novacorp.png}
+  \item Examine all metadata fields
+  \item Locate the field that contains the hidden flag
+\end{enumerate}
+
+\textit{Deliverable: the flag string.}
+
+\subsection{Challenge B2 -- Binary Structure}
+
+The file \texttt{B2\_network\_diagram.png} appears to be a valid PNG.
+However, something follows the official end of the file.
+
+\begin{enumerate}[leftmargin=2em]
+  \item Find the position of the PNG \texttt{IEND} chunk marker (\texttt{49 45 4E 44})
+  \item Read all bytes that appear after that position
+  \item Interpret those bytes as ASCII text
+\end{enumerate}
+
+\textit{Deliverable: the flag string.}
+
+\subsection{Challenge B3 -- LSB in Red Channel}
+
+The file \texttt{B3\_documento\_escaneado.png} hides data in the
+least-significant bit of the red channel of each pixel.
+
+\begin{enumerate}[leftmargin=2em]
+  \item Open the image with Pillow (\texttt{from PIL import Image})
+  \item Iterate over all pixels in row-major order
+  \item Extract the LSB of the red value of each pixel
+  \item Assemble the bits into bytes (8 bits per byte, MSB first)
+  \item Convert the bytes to ASCII until you reach the end of the flag
+\end{enumerate}
+
+\textit{Deliverable: the flag string.}
+
+\subsection{Challenge B4 -- LSB in Alpha Channel}
+
+The file \texttt{B4\_novacorp\_logo.png} is an RGBA image.
+Data is hidden in the least-significant bit of the alpha channel.
+
+\begin{enumerate}[leftmargin=2em]
+  \item Open the image and select channel \texttt{A} (alpha)
+  \item Apply the same LSB extraction technique as in B3 to the alpha values
+\end{enumerate}
+
+\textit{Deliverable: the flag string.}
+
+\subsection{Challenge B5 -- Steghide JPEG \emph{(gate key)}}
+
+The file \texttt{B5\_camara\_seguridad.jpg} contains a hidden payload embedded
+with \texttt{steghide}. The passphrase is related to the company name in the scenario.
+
+\begin{enumerate}[leftmargin=2em]
+  \item Run \texttt{steghide extract -sf B5\_camara\_seguridad.jpg}
+  \item When prompted for the passphrase, try words related to ``NovaCorp''
+  \item The extracted file contains the flag
+\end{enumerate}
+
+\textit{Deliverable: the flag string. \textbf{This flag is required to access ServerC.}}
+
+% ---- Module C ---------------------------------------------------------------
+\section{Module C -- Advanced Mix (ServerC)}
+
+\begin{mdframed}[backgroundcolor=labgray, linecolor=labred, linewidth=0.5pt]
+Derive the \texttt{devops} password from flags A5 and B5 before attempting
+this module. See Section~3 (The Gate Mechanism).
+\end{mdframed}
+
+\textbf{Entry:} \texttt{ssh devops@10.10.3.10} \quad Password: \textit{derived}
+
+All challenge files are in \texttt{/home/devops/retos/}.
+
+\subsection{Challenge C1 -- Multilayer}
+
+The file \texttt{C1\_backup\_tapes.jpg} requires three sequential steps to reveal the flag.
+
+\begin{enumerate}[leftmargin=2em]
+  \item Run \texttt{exiftool C1\_backup\_tapes.jpg} and look for a hidden clue
+  \item Use the clue as a \texttt{steghide} passphrase to extract an embedded archive
+  \item Open the extracted archive and read the flag inside
+\end{enumerate}
+
+\textit{Deliverable: the flag string.}
+
+\subsection{Challenge C2 -- Onion Encoding}
+
+The file \texttt{C2\_backup\_log.b64} is encoded in multiple nested layers.
+
+\begin{enumerate}[leftmargin=2em]
+  \item Decode the file from base64
+  \item Decompress the result with gzip
+  \item Decode the output from base64 again
+  \item Decompress with bzip2
+  \item Read the plaintext flag
+\end{enumerate}
+
+\textit{Deliverable: the flag string.}
+
+\subsection{Challenge C3 -- Hash Length Extension}
+
+The file \texttt{C3\_api\_token.txt} contains a signed API token.
+The signature is computed as \texttt{SHA1(secret + message)}.
+The verification script \texttt{C3\_verificador.py} accepts a forged token
+if the signature is valid for the extended message.
+
+\begin{enumerate}[leftmargin=2em]
+  \item Read the original message and its MAC from \texttt{C3\_api\_token.txt}
+  \item Use the \texttt{hlextend} library to forge a new signature for the
+        message extended with \texttt{\&access=admin}
+  \item Submit the forged token to the verificator to obtain the flag
+\end{enumerate}
+
+\textit{Deliverable: the flag string and the forged message bytes.}
+
+\subsection{Challenge C4 -- ECDSA Nonce Reuse (Master)}
+
+The file \texttt{C4\_ecdsa\_signatures.txt} contains a set of ECDSA signatures
+over the \texttt{secp256k1} curve. The same nonce $k$ was reused across two
+different messages.
+
+\begin{enumerate}[leftmargin=2em]
+  \item Examine the file and identify two signatures that share the same $r$ value
+  \item Recover the nonce $k$ algebraically from the two $(r, s, h)$ triples
+  \item Use $k$ to recover the private key $d$
+  \item Sign the challenge message with $d$ and submit the signature to
+        \texttt{C4\_verificador.py}
+\end{enumerate}
+
+\textit{Deliverable: the flag string and the recovered private key.}
+
+% ---- Deliverables -----------------------------------------------------------
+\section{Deliverables}
+
+Submit a technical report (3--5 pages) covering:
+
+\begin{itemize}[leftmargin=1.5em]
+  \item \textbf{All 14 flags captured:} paste the exact flag strings for each challenge
+  \item \textbf{Method summary per challenge:} one paragraph per flag explaining
+        what vulnerability was exploited and how
+  \item \textbf{Gate derivation:} show the computation used to derive the ServerC
+        password from flags A5 and B5
+  \item \textbf{Code snippets:} include any Python scripts you wrote
+  \item \textbf{Reflection:} which challenge did you find hardest and why?
+\end{itemize}
+
+% ---- Hints ------------------------------------------------------------------
+\section{Hints}
+
+\begin{mdframed}[backgroundcolor=labgray, linecolor=labpurple, linewidth=0.5pt]
+\textbf{Stuck?} Hints are ordered by how much they reveal.
+
+\textbf{Module A:}
+\begin{enumerate}[leftmargin=2em, topsep=4pt]
+  \item A1: The cipher shifts each letter by 13 positions.
+        \texttt{codecs.decode(text, 'rot\_13')} works in one line.
+  \item A2: ECB encrypts each 16-byte block independently. Control the input
+        so that only one unknown byte sits in your block.
+  \item A3: Find repeated sequences of 3+ letters. Measure the distances.
+        The GCD of the distances is likely the key length.
+  \item A4: Guess a common English word (e.g.\ ``the'') and XOR it against the
+        ciphertext at every offset. A correct placement reveals key bytes.
+  \item A5: \texttt{gmpy2.iroot(c, 3)} returns \texttt{(m, exact)}.
+        If \texttt{exact} is \texttt{True}, you have the message.
+\end{enumerate}
+
+\textbf{Module B:}
+\begin{enumerate}[leftmargin=2em, topsep=4pt]
+  \item B1: \texttt{exiftool} shows all EXIF fields. Look at the \texttt{Artist} field.
+  \item B2: Search for the bytes \texttt{49 45 4E 44 AE 42 60 82} (IEND + CRC).
+        Anything after that is appended data.
+  \item B3: \texttt{img.getpixel((x,y))[0] \& 1} gives the LSB of red.
+  \item B4: \texttt{img.split()[3]} gives the alpha channel as a band.
+  \item B5: The passphrase is the company name in lowercase.
+\end{enumerate}
+
+\textbf{Module C:}
+\begin{enumerate}[leftmargin=2em, topsep=4pt]
+  \item C1: Check the \texttt{Comment} EXIF field for the steghide passphrase.
+  \item C2: Work layer by layer. \texttt{base64.b64decode} then \texttt{gzip.decompress}
+        then \texttt{base64.b64decode} then \texttt{bz2.decompress}.
+  \item C3: \texttt{import hlextend; sha = hlextend.new('sha1')}. The secret length is 16 bytes.
+  \item C4: Two signatures with the same $r$ value share the same $k$.
+        $k = (h_1 - h_2) \cdot (s_1 - s_2)^{-1} \pmod{n}$.
+\end{enumerate}
+\end{mdframed}
+
+% ---- Tools reference --------------------------------------------------------
+\section{Tools Reference}
+
+The following tools are available on the servers:
+
+\begin{table}[H]
+\centering
+\begin{tabularx}{0.92\textwidth}{llX}
+\toprule
+\textbf{Tool} & \textbf{Available on} & \textbf{Use} \\
+\midrule
+\texttt{python3}         & All servers  & Scripting, decoding, cryptanalysis \\
+\texttt{pycryptodome}    & ServerA      & AES, RSA primitives \\
+\texttt{gmpy2}           & ServerA      & Integer cube root for RSA attack \\
+\texttt{exiftool}        & ServerB, ServerC & Read/write image EXIF metadata \\
+\texttt{steghide}        & ServerB, ServerC & Embed/extract steghide payloads \\
+\texttt{python3-pil}     & ServerB, ServerC & Image pixel manipulation \\
+\texttt{hlextend}        & ServerC      & SHA-1 length extension attack \\
+\bottomrule
+\end{tabularx}
+\caption{Tools available on each server}
+\end{table}
+
+\end{document}

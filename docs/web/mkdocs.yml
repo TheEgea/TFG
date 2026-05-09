@@ -75,7 +75,7 @@ nav:
           - Server-Web (helix-web): labs/lab3/server-web.md
           - Server-DB (helix-db): labs/lab3/server-db.md
           - Evidence Walkthrough: labs/lab3/walkthrough.md
-      - LAB4 – Privilege Escalation:
+      - LAB4 – Cryptography & Steganography:
           - Overview: labs/lab4/index.md
 #  - Pentest Labs:
 #      - Reconnaissance: labs/recon.md

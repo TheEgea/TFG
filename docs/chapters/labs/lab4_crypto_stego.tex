@@ -1,0 +1,98 @@
+% Lab 4 — compact version (full docs: docs/web/docs/labs/lab4/)
+\section{Lab 4: Cryptography and Steganography CTF --- CipherStrike}
+
+Lab~4 departs from the previous network-centric scenarios and challenges students
+in the domain of applied cryptography and digital steganography. The fictional
+premise is a forensic investigation at \textit{NovaCorp}: encrypted and steganographically
+concealed communications have been intercepted following a corporate breach, and
+the student acts as an incident response analyst tasked with recovering hidden data
+and reconstructing the attacker's communication channel.
+
+The lab is structured as a three-stage Capture-the-Flag (CTF): ServerA hosts five
+classical and modern cryptography challenges; ServerB hosts five steganography
+challenges; access to ServerC --- which hosts four advanced challenges combining
+both disciplines --- is gated on completing key challenges from the first two modules.
+The gate mechanism derives the ServerC SSH password from the MD5 hash of the
+concatenation of two key flags:
+$\texttt{md5(A5\_flag + B5\_flag)[:12]}$.
+This design enforces a genuine learning dependency between stages rather than a
+purely linear challenge sequence.
+Full credential table, flag inventory, and startup procedure are in Appendix~J;
+interactive documentation at \path{docs/web/docs/labs/lab4/}.
+
+\subsubsection*{Network Addressing}
+
+\begin{table}[H]
+\centering
+\resizebox{\textwidth}{!}{\begin{tabular}{@{}lllll@{}}
+\toprule
+\textbf{Node} & \textbf{Role} & \textbf{Interface} & \textbf{IP} & \textbf{Network} \\
+\midrule
+pfSense-LAB4 & Firewall/NAT   & WAN  & 192.168.0.18 (DHCP) & 192.168.0.0/24 (Homelab) \\
+pfSense-LAB4 & Firewall       & LAN  & 192.168.1.1         & 192.168.1.0/24 \\
+VyOS-LAB4    & Core router    & eth0 & 192.168.1.2         & 192.168.1.0/24 \\
+VyOS-LAB4    & Zone router    & eth1 & 10.10.1.1           & 10.10.1.0/24 (Zone-A) \\
+VyOS-LAB4    & Zone router    & eth2 & 10.10.2.1           & 10.10.2.0/24 (Zone-B) \\
+VyOS-LAB4    & Zone router    & eth3 & 10.10.3.1           & 10.10.3.0/24 (Zone-C) \\
+VyOS-LAB4    & Zone router    & eth4 & 10.10.4.1           & 10.10.4.0/24 (Zone-Defense) \\
+ServerA      & Crypto module  & eth0 & 10.10.1.10          & 10.10.1.0/24 \\
+ServerB      & Stego module   & eth0 & 10.10.2.10          & 10.10.2.0/24 \\
+ServerC      & Advanced mix   & eth0 & 10.10.3.10          & 10.10.3.0/24 \\
+Defender     & SOC monitor    & eth0 & 10.10.4.10          & 10.10.4.0/24 \\
+\bottomrule
+\end{tabular}}
+\caption{Lab~4 IP addressing scheme}
+\label{tab:lab4-ip}
+\end{table}
+
+\subsubsection*{CTF Challenge Progression}
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabularx}{\textwidth}{lllX}
+\toprule
+\textbf{Server} & \textbf{Module} & \textbf{Challenges} & \textbf{Key technique categories} \\
+\midrule
+ServerA & Cryptography  & A1--A5 & ROT13, AES-ECB oracle, Vigen\`{e}re/Kasiski, XOR crib-dragging, RSA $e=3$ \\
+ServerB & Steganography & B1--B5 & EXIF metadata, PNG chunk appending, LSB (RGB + alpha), steghide \\
+ServerC & Advanced Mix  & C1--C4 & Multilayer stego, onion encoding, SHA-1 length extension, ECDSA nonce reuse \\
+\bottomrule
+\end{tabularx}
+\caption{Lab~4 CTF module overview}
+\label{tab:lab4-modules}
+\end{table}
+
+\subsection{Problems Encountered and Solutions}
+
+\subsubsection{gmpy2 and pycryptodome Installation on Ubuntu 24.04}
+
+Installing \texttt{gmpy2}~2.1.5 on Ubuntu Server~24.04 required the
+\texttt{libgmp-dev}, \texttt{libmpfr-dev}, and \texttt{libmpc-dev} development
+headers, which are not part of the default minimal image. The installation failed
+silently when these were absent, producing a wheel build error rather than an
+informative dependency message. The pre-staging script was updated to install the
+native headers via \texttt{apt} before invoking \texttt{pip}, and the
+\texttt{pycryptodome}~3.23.0 wheel was pinned to avoid upstream API changes
+affecting the AES-ECB oracle challenge.
+
+\subsubsection{Defender Node IP Address Persistence}
+
+The Defender node is an Ubuntu Desktop instance used for monitoring. Its static
+IP address (10.10.4.10) was not retained across EVE-NG lab restarts because the
+NetworkManager connection profile was created interactively and not saved as a
+persistent \texttt{.nmconnection} file. The issue was resolved by exporting the
+active connection profile to \path{/etc/NetworkManager/system-connections/} and
+setting the file permissions to \texttt{600}, after which the address survived
+all subsequent restarts.
+
+\subsubsection{hlextend Installation Dependency for ServerC}
+
+The \texttt{hlextend} library required for the SHA-1 length extension challenge
+(C3) is not available on PyPI and must be installed directly from its GitHub
+repository. The pre-staging script therefore clones the repository and installs
+it via \texttt{pip install -e}, which introduces a dependency on network access
+during image preparation. To make image re-staging reproducible without internet
+access on the EVE-NG host, the library source was vendored into the project
+repository at \path{src/eve-ng/configs/nodes/Lab4/serverC/hlextend/} and the
+deployment script installs from that local copy.

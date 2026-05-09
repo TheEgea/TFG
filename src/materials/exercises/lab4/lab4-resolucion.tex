@@ -1,0 +1,547 @@
+\documentclass[a4paper, 12pt]{article}
+
+\usepackage{fontspec}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage[english]{babel}
+\usepackage{geometry}
+\usepackage{titlesec}
+\usepackage{hyperref}
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{xcolor}
+\usepackage{mdframed}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{listings}
+\usepackage{amsmath}
+
+\geometry{top=2.5cm, bottom=2.5cm, left=3cm, right=2.5cm}
+
+\setmainfont{OpenDyslexic}[
+    Path = /usr/share/fonts/opentype/opendyslexic/,
+    Extension = .otf,
+    UprightFont = *-Regular,
+    BoldFont = *-Bold,
+    ItalicFont = *-Italic,
+    BoldItalicFont = *-BoldItalic
+]
+\setmonofont{OpenDyslexicMono}[
+    Path = /usr/share/fonts/opentype/opendyslexic/,
+    Extension = .otf,
+    UprightFont = *-Regular
+]
+
+\definecolor{labpurple}{RGB}{90,30,160}
+\definecolor{labgray}{RGB}{245,245,245}
+\definecolor{labred}{RGB}{180,30,30}
+\definecolor{flagcolor}{RGB}{0,120,0}
+
+\hypersetup{colorlinks=true, linkcolor=black, urlcolor=labpurple}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\textit{Lab 4 -- Solution Guide}}
+\fancyhead[R]{\small\textit{\color{labred}INSTRUCTOR ONLY}}
+\fancyfoot[C]{\small\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt}
+
+\titleformat{\section}{\large\bfseries\color{labpurple}}{}{0em}{}[\titlerule]
+\titleformat{\subsection}{\normalsize\bfseries}{}{0em}{}
+
+\lstset{
+    basicstyle=\small\ttfamily,
+    backgroundcolor=\color{labgray},
+    frame=single,
+    breaklines=true
+}
+
+\newcommand{\flag}[1]{\texttt{\color{flagcolor}\bfseries #1}}
+
+\begin{document}
+
+% ---- Cover ------------------------------------------------------------------
+\begin{titlepage}
+\centering
+\includegraphics[width=0.6\linewidth]{../../../../docs/images/logo-tecnocampus.png}
+\vspace{1.5cm}
+{\small Bachelor in Computer Engineering -- Management and Information Systems}\\[0.5cm]
+{\small Introduction to Cybersecurity}
+\vspace{3cm}
+
+{\LARGE\bfseries Lab 4 -- Solution Guide}\\[0.4cm]
+{\Large\bfseries Cryptography \& Steganography CTF (CipherStrike)}
+
+\vspace{1cm}
+{\large\color{labred}\bfseries INSTRUCTOR ONLY --- DO NOT DISTRIBUTE}
+
+\vspace{4cm}
+\begin{tabular}{ll}
+\textbf{Scenario}    & NovaCorp breach forensic investigation \\
+\textbf{Servers}     & ServerA (10.10.1.10) · ServerB (10.10.2.10) · ServerC (10.10.3.10) \\
+\textbf{Total flags} & 14 (A1--A5, B1--B5, C1--C4) \\
+\textbf{Gate}        & ServerC password = \texttt{md5(A5\_flag + B5\_flag)[:12]} = \texttt{fa681b59855d} \\
+\textbf{Topics}      & Classical ciphers, AES-ECB, RSA, LSB stego, steghide, ECDSA \\
+\end{tabular}
+
+\vfill
+{\small TecnoCampus \textperiodcentered{} GEISI \textperiodcentered{} 2025--2026}
+\end{titlepage}
+
+% ---- Quick flag reference ---------------------------------------------------
+\section{Flag Reference (Instructor Summary)}
+
+\begin{table}[H]
+\centering
+\begin{tabularx}{\textwidth}{llXl}
+\toprule
+\textbf{ID} & \textbf{Server} & \textbf{Technique} & \textbf{Flag} \\
+\midrule
+A1 & ServerA & ROT13 & \texttt{H4U\{r0t\_c1ph3r\_br0k3n\}} \\
+A2 & ServerA & AES-ECB oracle & \texttt{H4U\{4es\_3cb\_bl0ck\_4tt4ck\}} \\
+A3 & ServerA & Vigenere + Kasiski & \texttt{H4U\{v1g3n3r3\_k4s1sk1\_4tt4ck\}} \\
+A4 & ServerA & XOR repeating key & \texttt{H4U\{x0r\_r3p34t1ng\_k3y\}} \\
+A5 & ServerA & RSA $e=3$ cube root & \texttt{H4U\{rsa\_sm4ll\_3xp0n3nt\}} \\
+\midrule
+B1 & ServerB & EXIF Artist field & \texttt{H4U\{3x1f\_m3t4d4t4\_h1dd3n\}} \\
+B2 & ServerB & Data after IEND chunk & \texttt{H4U\{d4t4\_4ft3r\_1end\_chunk\}} \\
+B3 & ServerB & LSB red channel & \texttt{H4U\{lsb\_st3g4n0gr4phy\_r\}} \\
+B4 & ServerB & LSB alpha channel & \texttt{H4U\{4lph4\_ch4nn3l\_h1dd3n\}} \\
+B5 & ServerB & Steghide JPEG (pass=novacorp) & \texttt{H4U\{st3gh1d3\_p4ssw0rd\_cr4ck\}} \\
+\midrule
+C1 & ServerC & EXIF hint + steghide + ZIP & \texttt{H4U\{mult1l4y3r\_st3g0\_4es\}} \\
+C2 & ServerC & Onion: b64(bz2(b64(gz(flag)))) & \texttt{H4U\{0n10n\_l4y3rs\_st3g0\}} \\
+C3 & ServerC & SHA-1 length extension & \texttt{H4U\{l3ngth\_3xt3ns10n\_sh4\}} \\
+C4 & ServerC & ECDSA nonce reuse secp256k1 & \texttt{H4U\{3cc\_n0nc3\_r3us3\_pwn3d\}} \\
+\bottomrule
+\end{tabularx}
+\caption{Complete flag reference -- instructor use only}
+\end{table}
+
+% ---- Gate derivation --------------------------------------------------------
+\section{Gate Derivation (ServerC Password)}
+
+The ServerC password is derived as follows:
+
+\begin{lstlisting}[language=python]
+import hashlib
+flag_a5 = "H4U{rsa_sm4ll_3xp0n3nt}"
+flag_b5 = "H4U{st3gh1d3_p4ssw0rd_cr4ck}"
+combined = flag_a5 + flag_b5
+password = hashlib.md5(combined.encode()).hexdigest()[:12]
+# Result: fa681b59855d
+\end{lstlisting}
+
+The \texttt{devops} account password is \texttt{fa681b59855d}.
+The exercise hint tells students the CTF hint password is \texttt{D3vOps24!} --
+this is a red herring that hints at the derivation mechanism without giving the answer.
+
+% ---- Module A solutions -----------------------------------------------------
+\section{Module A -- Cryptography Solutions (ServerA)}
+
+\textbf{Credentials:} \texttt{ssh admin@10.10.1.10} \quad Password: \texttt{N3xaTech!}\\
+\textbf{Files:} \texttt{/home/admin/mensajes/}
+
+\subsection{A1 -- ROT13}
+
+\textbf{Flag:} \flag{H4U\{r0t\_c1ph3r\_br0k3n\}}
+
+\textbf{Solution:}
+\begin{lstlisting}[language=python]
+import codecs
+with open('A1_mensaje_interceptado.txt') as f:
+    text = f.read()
+decoded = codecs.decode(text, 'rot_13')
+print(decoded)  # Flag is embedded in the decoded message
+\end{lstlisting}
+
+ROT13 is a Caesar cipher with a fixed shift of 13. It is self-inverse: applying
+it twice returns the original text. The flag is embedded in the decoded plaintext.
+
+\subsection{A2 -- AES-ECB Oracle Attack}
+
+\textbf{Flag:} \flag{H4U\{4es\_3cb\_bl0ck\_4tt4ck\}}
+
+\textbf{Technique:} AES-ECB byte-at-a-time oracle.
+
+AES-ECB encrypts each 16-byte block independently. If the oracle encrypts
+\texttt{attacker\_input + secret}, the attacker can align the unknown bytes
+one at a time at the end of a block, then brute-force each byte:
+
+\begin{lstlisting}[language=python]
+# Pseudocode for byte-at-a-time ECB attack
+recovered = b""
+for i in range(len(secret)):
+    block_index = i // 16
+    padding_len = 15 - (i % 16)
+    padding = b"A" * padding_len
+    target_block = oracle(padding)[block_index*16:(block_index+1)*16]
+    for byte in range(256):
+        candidate = oracle(padding + recovered + bytes([byte]))
+        if candidate[block_index*16:(block_index+1)*16] == target_block:
+            recovered += bytes([byte])
+            break
+\end{lstlisting}
+
+\begin{mdframed}[backgroundcolor=labgray, linewidth=0.5pt]
+\textbf{Teaching point:} ECB mode is deterministic and stateless. Identical
+plaintext blocks always produce identical ciphertext blocks. This makes it
+vulnerable to chosen-plaintext attacks in oracle settings. Use CBC or GCM in production.
+\end{mdframed}
+
+\subsection{A3 -- Vigenere Cipher + Kasiski Examination}
+
+\textbf{Flag:} \flag{H4U\{v1g3n3r3\_k4s1sk1\_4tt4ck\}}\\
+\textbf{Key:} \texttt{NEXATECH}
+
+\textbf{Solution steps:}
+\begin{enumerate}[leftmargin=2em]
+  \item Find repeated trigrams and their distances. The GCD of distances is 8,
+        indicating a key length of 8.
+  \item Split the ciphertext into 8 interleaved streams.
+  \item Apply frequency analysis to each stream as a Caesar cipher.
+  \item The most frequent letter in each stream corresponds to `E' in English.
+\end{enumerate}
+
+\begin{lstlisting}[language=python]
+from itertools import cycle
+
+def vigenere_decrypt(ciphertext, key):
+    result = []
+    key_cycle = cycle(key.upper())
+    for char in ciphertext:
+        if char.isalpha():
+            shift = ord(next(key_cycle)) - ord('A')
+            base = ord('A') if char.isupper() else ord('a')
+            result.append(chr((ord(char) - base - shift) % 26 + base))
+        else:
+            result.append(char)
+    return ''.join(result)
+
+plaintext = vigenere_decrypt(open('A3_documento_clasificado.txt').read(), 'NEXATECH')
+\end{lstlisting}
+
+\subsection{A4 -- XOR Repeating Key}
+
+\textbf{Flag:} \flag{H4U\{x0r\_r3p34t1ng\_k3y\}}
+
+\textbf{Solution:}
+\begin{lstlisting}[language=python]
+ciphertext = bytes.fromhex(open('A4_mensaje_xor.hex').read().strip())
+
+# Crib-dragging: try known word 'the' at every position
+crib = b'the'
+for i in range(len(ciphertext) - len(crib)):
+    key_fragment = bytes(c ^ p for c, p in zip(ciphertext[i:], crib))
+    # key_fragment[0] corresponds to key[i % key_len]
+
+# Once key length is determined (use index of coincidence), recover full key
+key_len = 8  # determined by IC analysis
+key = bytearray()
+for i in range(key_len):
+    stream = ciphertext[i::key_len]
+    # frequency analysis: most frequent byte XOR ord('e') = key byte
+    freq = max(range(256), key=lambda k: sum(1 for b in stream if b == k))
+    key.append(freq ^ ord('e'))
+
+plaintext = bytes(b ^ key[i % len(key)] for i, b in enumerate(ciphertext))
+\end{lstlisting}
+
+\subsection{A5 -- RSA Small Exponent ($e = 3$, Cube Root Attack)}
+
+\textbf{Flag:} \flag{H4U\{rsa\_sm4ll\_3xp0n3nt\}}
+
+\textbf{Vulnerability:} When $e = 3$ and $m^3 < n$, the encryption $c = m^3 \bmod n$
+performs no actual modular reduction. Therefore $c = m^3$ as an integer, and
+$m = \sqrt[3]{c}$ exactly.
+
+\begin{lstlisting}[language=python]
+import gmpy2
+
+# Read from A5_rsa_challenge.txt
+n = int(...)   # modulus
+e = 3
+c = int(...)   # ciphertext
+
+m, exact = gmpy2.iroot(c, e)
+assert exact, "Cube root is not exact -- modular reduction occurred"
+
+flag = m.to_bytes((m.bit_length() + 7) // 8, 'big').decode()
+print(flag)
+\end{lstlisting}
+
+\begin{mdframed}[backgroundcolor=labgray, linewidth=0.5pt]
+\textbf{Teaching point:} RSA requires a sufficiently large exponent (typically $e = 65537$)
+or message padding (OAEP) to prevent small-exponent attacks. Textbook RSA with $e = 3$
+and no padding is broken when the plaintext is small relative to the modulus.
+\end{mdframed}
+
+% ---- Module B solutions -----------------------------------------------------
+\section{Module B -- Steganography Solutions (ServerB)}
+
+\textbf{Credentials:} \texttt{ssh sysop@10.10.2.10} \quad Password: \texttt{S3cure24!}\\
+\textbf{Files:} \texttt{/srv/public/uploads/}
+
+\subsection{B1 -- EXIF Metadata}
+
+\textbf{Flag:} \flag{H4U\{3x1f\_m3t4d4t4\_h1dd3n\}}
+
+\begin{lstlisting}[language=bash]
+exiftool B1_oficina_novacorp.png
+# Look for: Artist: H4U{3x1f_m3t4d4t4_h1dd3n}
+\end{lstlisting}
+
+The flag is stored in the EXIF \texttt{Artist} field. EXIF metadata is invisible
+to ordinary image viewers but trivially readable with \texttt{exiftool}.
+
+\subsection{B2 -- Data after PNG IEND Chunk}
+
+\textbf{Flag:} \flag{H4U\{d4t4\_4ft3r\_1end\_chunk\}}
+
+\begin{lstlisting}[language=python]
+with open('B2_network_diagram.png', 'rb') as f:
+    data = f.read()
+
+# PNG IEND chunk signature + CRC (8 bytes total)
+iend_marker = b'\x49\x45\x4e\x44\xae\x42\x60\x82'
+pos = data.find(iend_marker)
+hidden = data[pos + len(iend_marker):]
+print(hidden.decode())  # H4U{d4t4_4ft3r_1end_chunk}
+\end{lstlisting}
+
+PNG parsers stop reading at IEND. Any appended bytes are silently ignored by
+image viewers, making this a trivial but effective hiding technique.
+
+\subsection{B3 -- LSB Steganography in Red Channel}
+
+\textbf{Flag:} \flag{H4U\{lsb\_st3g4n0gr4phy\_r\}}
+
+\begin{lstlisting}[language=python]
+from PIL import Image
+
+img = Image.open('B3_documento_escaneado.png').convert('RGB')
+bits = []
+for y in range(img.height):
+    for x in range(img.width):
+        r, g, b = img.getpixel((x, y))
+        bits.append(r & 1)
+
+chars = []
+for i in range(0, len(bits), 8):
+    byte = int(''.join(str(b) for b in bits[i:i+8]), 2)
+    if byte == 0:
+        break
+    chars.append(chr(byte))
+
+print(''.join(chars))  # H4U{lsb_st3g4n0gr4phy_r}
+\end{lstlisting}
+
+\subsection{B4 -- LSB Steganography in Alpha Channel}
+
+\textbf{Flag:} \flag{H4U\{4lph4\_ch4nn3l\_h1dd3n\}}
+
+\begin{lstlisting}[language=python]
+from PIL import Image
+
+img = Image.open('B4_novacorp_logo.png').convert('RGBA')
+alpha = img.split()[3]   # Channel index 3 = Alpha
+bits = []
+for y in range(img.height):
+    for x in range(img.width):
+        bits.append(alpha.getpixel((x, y)) & 1)
+
+chars = []
+for i in range(0, len(bits), 8):
+    byte = int(''.join(str(b) for b in bits[i:i+8]), 2)
+    if byte == 0:
+        break
+    chars.append(chr(byte))
+
+print(''.join(chars))  # H4U{4lph4_ch4nn3l_h1dd3n}
+\end{lstlisting}
+
+\subsection{B5 -- Steghide JPEG (Passphrase: novacorp)}
+
+\textbf{Flag:} \flag{H4U\{st3gh1d3\_p4ssw0rd\_cr4ck\}}\\
+\textbf{Passphrase:} \texttt{novacorp}
+
+\begin{lstlisting}[language=bash]
+steghide extract -sf B5_camara_seguridad.jpg -p novacorp
+# Outputs: flag.txt containing H4U{st3gh1d3_p4ssw0rd_cr4ck}
+\end{lstlisting}
+
+The passphrase is the company name in lowercase. In a real assessment, this
+would be found via wordlist attack using \texttt{stegseek} or \texttt{steghide}
+with \texttt{rockyou.txt}.
+
+% ---- Module C solutions -----------------------------------------------------
+\section{Module C -- Advanced Mix Solutions (ServerC)}
+
+\textbf{Credentials:} \texttt{ssh devops@10.10.3.10} \quad Password: \texttt{fa681b59855d}\\
+\textbf{Files:} \texttt{/home/devops/retos/}
+
+\subsection{C1 -- Multilayer: EXIF + Steghide + ZIP}
+
+\textbf{Flag:} \flag{H4U\{mult1l4y3r\_st3g0\_4es\}}
+
+\textbf{Step 1:} Extract EXIF comment for steghide passphrase.
+\begin{lstlisting}[language=bash]
+exiftool C1_backup_tapes.jpg
+# Comment: passphrase=cipherstrike2026
+\end{lstlisting}
+
+\textbf{Step 2:} Extract steghide payload.
+\begin{lstlisting}[language=bash]
+steghide extract -sf C1_backup_tapes.jpg -p cipherstrike2026
+# Extracts: payload.zip
+\end{lstlisting}
+
+\textbf{Step 3:} Open ZIP archive.
+\begin{lstlisting}[language=bash]
+unzip payload.zip
+cat flag.txt   # H4U{mult1l4y3r_st3g0_4es}
+\end{lstlisting}
+
+\begin{mdframed}[backgroundcolor=labgray, linewidth=0.5pt]
+\textbf{Implementation note:} The \texttt{piexif} library must re-insert the EXIF
+comment \emph{after} steghide embedding, as steghide strips EXIF on embed.
+The generator script uses \texttt{piexif.insert(exif\_bytes, filename)} after
+\texttt{steghide embed} to restore the hint metadata.
+\end{mdframed}
+
+\subsection{C2 -- Onion Encoding: b64(bz2(b64(gz(flag))))}
+
+\textbf{Flag:} \flag{H4U\{0n10n\_l4y3rs\_st3g0\}}
+
+\begin{lstlisting}[language=python]
+import base64, gzip, bz2
+
+with open('C2_backup_log.b64') as f:
+    data = f.read().strip()
+
+# Layer 1: base64 decode
+data = base64.b64decode(data)
+# Layer 2: bzip2 decompress
+data = bz2.decompress(data)
+# Layer 3: base64 decode
+data = base64.b64decode(data)
+# Layer 4: gzip decompress
+data = gzip.decompress(data)
+
+print(data.decode())  # H4U{0n10n_l4y3rs_st3g0}
+\end{lstlisting}
+
+Note: the encoding order from inside out is gz then b64 then bz2 then b64,
+so the decoding order is b64 then bz2 then b64 then gz.
+
+\subsection{C3 -- SHA-1 Hash Length Extension Attack}
+
+\textbf{Flag:} \flag{H4U\{l3ngth\_3xt3ns10n\_sh4\}}
+
+\textbf{Vulnerability:} The server computes \texttt{MAC = SHA1(secret + message)}.
+SHA-1 (like MD5) uses Merkle-Damgard construction, which allows an attacker who
+knows the MAC to append data and compute a valid MAC for the extended message
+without knowing the secret.
+
+\begin{lstlisting}[language=python]
+import hlextend
+
+# From C3_api_token.txt:
+original_msg = b"user=analyst&role=viewer"
+original_mac = "a3f......"  # 40-hex SHA1 from the file
+secret_len = 16             # hinted in the challenge
+
+sha = hlextend.new('sha1')
+# Forge: extend with &access=admin
+forged_msg = sha.extend(b'&access=admin', original_msg, secret_len, original_mac)
+forged_mac = sha.hexdigest()
+
+# Submit to verificator
+# python3 C3_verificador.py <forged_msg_hex> <forged_mac>
+import subprocess
+result = subprocess.run(
+    ['python3', 'C3_verificador.py', forged_msg.hex(), forged_mac],
+    capture_output=True, text=True
+)
+print(result.stdout)  # H4U{l3ngth_3xt3ns10n_sh4}
+\end{lstlisting}
+
+\begin{mdframed}[backgroundcolor=labgray, linewidth=0.5pt]
+\textbf{Teaching point:} \texttt{SHA1(secret + message)} is not a secure MAC.
+Use HMAC-SHA256 instead. HMAC wraps the hash with two nested applications that
+prevent length extension by design.
+\end{mdframed}
+
+\subsection{C4 -- ECDSA Nonce Reuse (secp256k1)}
+
+\textbf{Flag:} \flag{H4U\{3cc\_n0nc3\_r3us3\_pwn3d\}}
+
+\textbf{Vulnerability:} ECDSA security requires a unique random nonce $k$ for
+every signature. If the same $k$ is reused across two signatures $(r, s_1, h_1)$
+and $(r, s_2, h_2)$ (note: same $r$ implies same $k$), the private key is
+algebraically recoverable.
+
+\textbf{Recovery equations:}
+\[
+k = \frac{h_1 - h_2}{s_1 - s_2} \pmod{n}
+\qquad
+d = \frac{s_1 \cdot k - h_1}{r} \pmod{n}
+\]
+
+\begin{lstlisting}[language=python]
+from sympy import mod_inverse
+
+# secp256k1 curve order
+n = 0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEBAAEDCE6AF48A03BBFD25E8CD0364141
+
+# Read from C4_ecdsa_signatures.txt -- find two entries with same r
+# (r, s1, h1) and (r, s2, h2) share the same k
+
+def modinv(a, m):
+    return pow(a, -1, m)
+
+k = (h1 - h2) * modinv(s1 - s2, n) % n
+d = (s1 * k - h1) * modinv(r, n) % n
+
+print(f"Recovered private key: {hex(d)}")
+
+# Sign the challenge message with d
+# Submit r_hex s_hex to C4_verificador.py
+\end{lstlisting}
+
+\begin{mdframed}[backgroundcolor=labgray, linewidth=0.5pt]
+\textbf{Real-world precedent:} The Sony PlayStation 3 root key was recovered
+in 2010 using exactly this attack. Sony's ECDSA implementation used a constant
+$k$ for all firmware signatures.
+\end{mdframed}
+
+% ---- Grading ----------------------------------------------------------------
+\section{Grading Guide}
+
+\begin{table}[H]
+\centering
+\begin{tabularx}{\textwidth}{lXl}
+\toprule
+\textbf{Item} & \textbf{Criteria} & \textbf{Points} \\
+\midrule
+Flags A1--A4   & Correct flag strings (1 pt each)                  & 4 \\
+Flag A5        & Correct flag + gate derivation shown               & 3 \\
+Flags B1--B4   & Correct flag strings (1 pt each)                   & 4 \\
+Flag B5        & Correct flag + gate derivation shown               & 3 \\
+Flags C1--C4   & Correct flag strings (2 pts each)                  & 8 \\
+Methods        & Clear explanation of technique per flag            & 6 \\
+Code quality   & Working scripts submitted, readable, commented     & 4 \\
+Reflection     & Substantive paragraph on difficulty/learning       & 2 \\
+Bonus          & C4 with detailed algebraic derivation              & +2 \\
+\midrule
+\textbf{Total} &                                                    & \textbf{34 (+2)} \\
+\bottomrule
+\end{tabularx}
+\caption{Grading rubric}
+\end{table}
+
+\end{document}

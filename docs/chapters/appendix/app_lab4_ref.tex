@@ -1,0 +1,230 @@
+% ============================================================
+% Appendix J: Lab 4 — Instructor Reference
+% ============================================================
+
+\chapter{Lab~4: CipherStrike --- Instructor Reference}
+\label{app:lab4}
+
+This appendix provides the deployment and configuration reference for Lab~4
+(Cryptography and Steganography CTF). It is intended for instructors and system
+administrators responsible for setting up, resetting, and grading the lab
+environment. The student-facing challenge guide is available at
+\path{docs/web/docs/labs/lab4/}.
+
+\section*{Credentials and Access}
+
+\begin{table}[H]
+\centering
+\begin{tabularx}{\textwidth}{llXl}
+\toprule
+\textbf{Node} & \textbf{Username} & \textbf{Password} & \textbf{Access method} \\
+\midrule
+pfSense-LAB4 & admin  & \texttt{pfsense}       & Web GUI / SSH \\
+VyOS-LAB4    & vyos   & \texttt{vyos}          & EVE-NG console \\
+ServerA      & admin  & \texttt{N3xaTech!}     & SSH 10.10.1.10 \\
+ServerB      & sysop  & \texttt{S3cure24!}     & SSH 10.10.2.10 \\
+ServerC      & devops & \texttt{fa681b59855d}  & SSH 10.10.3.10 (derived --- see below) \\
+Defender     & ---    & ---                    & Monitoring only \\
+\bottomrule
+\end{tabularx}
+\caption{Lab~4 credentials (instructor reference --- do not distribute to students)}
+\label{tab:lab4-creds}
+\end{table}
+
+\noindent\textbf{ServerC password derivation:} The ServerC password is not given
+directly to students. It is the first 12 hex characters of the MD5 hash of the
+concatenation of flags A5 and B5:
+\texttt{md5(A5\_flag + B5\_flag)[:12] = fa681b59855d}.
+Students must solve modules A and B completely before they can access ServerC.
+The decoy password \texttt{D3vOps24!} appears as a false hint in some challenge
+materials to test attention to detail.
+
+\section*{Network Segments}
+
+\begin{table}[H]
+\centering
+\begin{tabularx}{\textwidth}{lllX}
+\toprule
+\textbf{Segment} & \textbf{Subnet} & \textbf{Gateway} & \textbf{Purpose} \\
+\midrule
+WAN (Homelab) & 192.168.0.0/24   & 192.168.0.1    & pfSense WAN (DHCP, 192.168.0.18) \\
+Net-Link      & 192.168.1.0/24   & 192.168.1.1    & pfSense LAN $\leftrightarrow$ VyOS uplink \\
+Zone-A        & 10.10.1.0/24     & 10.10.1.1      & ServerA (Cryptography) \\
+Zone-B        & 10.10.2.0/24     & 10.10.2.1      & ServerB (Steganography) \\
+Zone-C        & 10.10.3.0/24     & 10.10.3.1      & ServerC (Advanced Mix) \\
+Zone-Defense  & 10.10.4.0/24     & 10.10.4.1      & Defender (monitoring) \\
+\bottomrule
+\end{tabularx}
+\caption{Lab~4 network segments}
+\label{tab:lab4-segments}
+\end{table}
+
+\section*{Challenge Inventory}
+
+\subsection*{ServerA --- Cryptography Module}
+
+All challenge files reside in \path{/home/admin/mensajes/} on ServerA.
+
+\begin{table}[H]
+\centering
+\small
+\resizebox{\textwidth}{!}{\begin{tabular}{@{}llll@{}}
+\toprule
+\textbf{ID} & \textbf{File(s)} & \textbf{Technique} & \textbf{Flag} \\
+\midrule
+A1 & \texttt{A1\_mensaje\_interceptado.txt}        & ROT13 substitution          & \texttt{H4U\{r0t\_c1ph3r\_br0k3n\}} \\
+A2 & \texttt{A2\_oracle.py}, \texttt{A2\_admin\_cipher.b64} & AES-ECB oracle attack & \texttt{H4U\{4es\_3cb\_bl0ck\_4tt4ck\}} \\
+A3 & \texttt{A3\_documento\_clasificado.txt}       & Vigen\`{e}re + Kasiski (key: \texttt{NEXATECH}) & \texttt{H4U\{v1g3n3r3\_k4s1sk1\_4tt4ck\}} \\
+A4 & \texttt{A4\_mensaje\_xor.hex}                 & XOR repeating key (crib-dragging) & \texttt{H4U\{x0r\_r3p34t1ng\_k3y\}} \\
+A5 & \texttt{A5\_rsa\_challenge.txt}     & RSA small exponent ($e=3$), cube root via \texttt{gmpy2.iroot} & \texttt{H4U\{rsa\_sm4ll\_3xp0n3nt\}} \\
+\bottomrule
+\end{tabular}}
+\caption{ServerA cryptography challenges (A5 is a key flag — required for ServerC access)}
+\label{tab:lab4-serverA}
+\end{table}
+
+\noindent\textbf{Required Python packages on ServerA:} \texttt{pycryptodome~3.23.0},
+\texttt{gmpy2~2.1.5}.
+
+\subsection*{ServerB --- Steganography Module}
+
+All challenge files reside in \path{/srv/public/uploads/} on ServerB.
+
+\begin{table}[H]
+\centering
+\small
+\resizebox{\textwidth}{!}{\begin{tabular}{@{}llll@{}}
+\toprule
+\textbf{ID} & \textbf{File(s)} & \textbf{Technique} & \textbf{Flag} \\
+\midrule
+B1 & \texttt{B1\_oficina\_novacorp.png}     & EXIF field \texttt{Artist}                        & \texttt{H4U\{3x1f\_m3t4d4t4\_h1dd3n\}} \\
+B2 & \texttt{B2\_network\_diagram.png}      & Data appended after PNG \texttt{IEND} chunk        & \texttt{H4U\{d4t4\_4ft3r\_1end\_chunk\}} \\
+B3 & \texttt{B3\_documento\_escaneado.png}  & LSB encoding in red channel                       & \texttt{H4U\{lsb\_st3g4n0gr4phy\_r\}} \\
+B4 & \texttt{B4\_novacorp\_logo.png}        & LSB encoding in alpha channel (RGBA)              & \texttt{H4U\{4lph4\_ch4nn3l\_h1dd3n\}} \\
+B5 & \texttt{B5\_camara\_seguridad.jpg}     & Steghide JPEG (passphrase: \texttt{novacorp})     & \texttt{H4U\{st3gh1d3\_p4ssw0rd\_cr4ck\}} \\
+\bottomrule
+\end{tabular}}
+\caption{ServerB steganography challenges (B5 is a key flag --- required for ServerC access)}
+\label{tab:lab4-serverB}
+\end{table}
+
+\noindent\textbf{Required packages on ServerB:} \texttt{exiftool}, \texttt{steghide},
+\texttt{python3-pil}.
+
+\subsection*{ServerC --- Advanced Mix Module}
+
+All challenge files reside in \path{/home/devops/retos/} on ServerC. Access to
+ServerC is gated on obtaining both A5 and B5 flags (see password derivation above).
+
+\begin{table}[H]
+\centering
+\small
+\resizebox{\textwidth}{!}{\begin{tabular}{@{}llll@{}}
+\toprule
+\textbf{ID} & \textbf{File(s)} & \textbf{Technique} & \textbf{Flag} \\
+\midrule
+C1 & \texttt{C1\_backup\_tapes.jpg}              & EXIF hint $\to$ steghide $\to$ ZIP multilayer               & \texttt{H4U\{mult1l4y3r\_st3g0\_4es\}} \\
+C2 & \texttt{C2\_backup\_log.b64}                & Onion encoding: \texttt{b64(bz2(b64(gz(flag))))}            & \texttt{H4U\{0n10n\_l4y3rs\_st3g0\}} \\
+C3 & \texttt{C3\_api\_token.txt}, \texttt{C3\_verificador.py} & SHA-1 length extension attack (\texttt{hlextend}) & \texttt{H4U\{l3ngth\_3xt3ns10n\_sh4\}} \\
+C4 & \texttt{C4\_ecdsa\_signatures.txt}, \texttt{C4\_verificador.py} & ECDSA nonce reuse $\to$ secp256k1 private key recovery & \texttt{H4U\{3cc\_n0nc3\_r3us3\_pwn3d\}} \\
+\bottomrule
+\end{tabular}}
+\caption{ServerC advanced challenges (C4 is the final boss flag)}
+\label{tab:lab4-serverC}
+\end{table}
+
+\noindent\textbf{Required packages on ServerC:} \texttt{piexif}, \texttt{pillow},
+\texttt{steghide}, \texttt{hlextend} (installed from GitHub), Python~3 standard
+library (\texttt{hashlib}, \texttt{struct}, \texttt{zlib}, \texttt{bz2}).
+
+\section*{Flag Summary and Difficulty Map}
+
+\begin{table}[H]
+\centering
+\small
+\resizebox{\textwidth}{!}{\begin{tabular}{@{}llll@{}}
+\toprule
+\textbf{ID} & \textbf{Difficulty} & \textbf{Flag value} & \textbf{Module} \\
+\midrule
+A1 & Easy           & \texttt{H4U\{r0t\_c1ph3r\_br0k3n\}}              & Cryptography \\
+A2 & Easy--Medium   & \texttt{H4U\{4es\_3cb\_bl0ck\_4tt4ck\}}           & Cryptography \\
+A3 & Medium         & \texttt{H4U\{v1g3n3r3\_k4s1sk1\_4tt4ck\}}         & Cryptography \\
+A4 & Medium         & \texttt{H4U\{x0r\_r3p34t1ng\_k3y\}}               & Cryptography \\
+A5 & Medium--Hard   & \texttt{H4U\{rsa\_sm4ll\_3xp0n3nt\}}              & Cryptography \\
+B1 & Easy           & \texttt{H4U\{3x1f\_m3t4d4t4\_h1dd3n\}}            & Steganography \\
+B2 & Easy--Medium   & \texttt{H4U\{d4t4\_4ft3r\_1end\_chunk\}}           & Steganography \\
+B3 & Medium         & \texttt{H4U\{lsb\_st3g4n0gr4phy\_r\}}             & Steganography \\
+B4 & Medium         & \texttt{H4U\{4lph4\_ch4nn3l\_h1dd3n\}}            & Steganography \\
+B5 & Medium         & \texttt{H4U\{st3gh1d3\_p4ssw0rd\_cr4ck\}}         & Steganography \\
+C1 & Hard           & \texttt{H4U\{mult1l4y3r\_st3g0\_4es\}}            & Advanced Mix \\
+C2 & Hard           & \texttt{H4U\{0n10n\_l4y3rs\_st3g0\}}              & Advanced Mix \\
+C3 & Hard           & \texttt{H4U\{l3ngth\_3xt3ns10n\_sh4\}}            & Advanced Mix \\
+C4 & Hard           & \texttt{H4U\{3cc\_n0nc3\_r3us3\_pwn3d\}}          & Advanced Mix \\
+\bottomrule
+\end{tabular}}
+\caption{Lab~4 complete flag list with difficulty ratings}
+\label{tab:lab4-flags}
+\end{table}
+
+\section*{Lab Startup Checklist}
+
+\begin{enumerate}
+    \item Start all nodes from the EVE-NG web interface in order:
+          pfSense $\to$ VyOS $\to$ ServerA $\to$ ServerB $\to$ ServerC $\to$ Defender.
+    \item Verify VyOS routing between zones:
+\begin{lstlisting}[language=bash]
+# From VyOS console
+show ip route
+# Expected: 10.10.1.0/24, 10.10.2.0/24,
+#           10.10.3.0/24, 10.10.4.0/24 all connected
+\end{lstlisting}
+    \item Confirm SSH access to all server nodes:
+\begin{lstlisting}[language=bash]
+ssh admin@10.10.1.10    # ServerA — N3xaTech!
+ssh sysop@10.10.2.10    # ServerB — S3cure24!
+ssh devops@10.10.3.10   # ServerC — fa681b59855d
+\end{lstlisting}
+    \item Verify all challenge files are present on each server:
+\begin{lstlisting}[language=bash]
+# ServerA
+ls /home/admin/mensajes/
+# A1_mensaje_interceptado.txt  A2_oracle.py  A2_admin_cipher.b64
+# A3_documento_clasificado.txt  A4_mensaje_xor.hex  A5_rsa_challenge.txt
+
+# ServerB
+ls /srv/public/uploads/
+# B1_oficina_novacorp.png  B2_network_diagram.png
+# B3_documento_escaneado.png  B4_novacorp_logo.png  B5_camara_seguridad.jpg
+
+# ServerC
+ls /home/devops/retos/
+# C1_backup_tapes.jpg  C2_backup_log.b64
+# C3_api_token.txt  C3_verificador.py
+# C4_ecdsa_signatures.txt  C4_verificador.py
+\end{lstlisting}
+    \item Verify Python dependencies on each server:
+\begin{lstlisting}[language=bash]
+# ServerA
+python3 -c "from Crypto.Cipher import AES; import gmpy2; print('OK')"
+# ServerB
+python3 -c "from PIL import Image; print('OK')" && which exiftool steghide
+# ServerC
+python3 -c "import piexif, hlextend; from PIL import Image; print('OK')"
+\end{lstlisting}
+\end{enumerate}
+
+\section*{Lab Reset Procedure}
+
+To restore the lab to its initial state after a student session, revert each
+server node to its pre-challenge EVE-NG snapshot. The challenge files can
+alternatively be re-deployed using the provisioning scripts at
+\path{src/eve-ng/configs/nodes/Lab4/} in the project repository:
+
+\begin{lstlisting}[language=bash]
+# Re-stage ServerA challenges
+bash src/eve-ng/configs/nodes/Lab4/serverA/deploy.sh
+# Re-stage ServerB challenges
+bash src/eve-ng/configs/nodes/Lab4/serverB/deploy.sh
+# Re-stage ServerC challenges
+bash src/eve-ng/configs/nodes/Lab4/serverC/deploy.sh
+\end{lstlisting}
