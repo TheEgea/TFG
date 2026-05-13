@@ -3,6 +3,7 @@
 # ─────────────────────────────────────────────────────────────────────────────
 .PHONY: help build build-memory build-annexos build-viabilitat build-labs         build-web serve push pull sync status stats clean setup diagnostic
 
+SHELL := /bin/bash
 REPO_ROOT := $(shell pwd)
 
 # ── Help ──────────────────────────────────────────────────────────────────────

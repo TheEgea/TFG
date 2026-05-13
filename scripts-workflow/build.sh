@@ -59,7 +59,7 @@ if [ "$TARGET" = "all" ] || [ "$TARGET" = "annexos" ]; then
     compile_doc "$REPO_ROOT/docs/main/annexos/annexos-main.tex"
 fi
 
-if [ "$TARGET" = "all" ] || [ "$TARGET" = "viabilitat" ]; then
+if [ "$TARGET" = "viabilitat" ]; then
     compile_doc "$REPO_ROOT/docs/main/viabilitat/viabilitat-main.tex"
 fi
 
