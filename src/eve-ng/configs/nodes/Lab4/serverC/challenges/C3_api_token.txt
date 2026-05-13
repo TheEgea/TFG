@@ -1,0 +1,20 @@
+=== NovaCorp API Token Validator ===
+
+El sistema de API de NovaCorp usa MACs para validar tokens.
+El MAC se calcula como: SHA1(secret + message)
+El secret tiene 16 bytes de longitud (desconocido).
+
+=== TOKEN CAPTURADO ===
+message = user=analyst&access=readonly&expires=2026-12-31
+mac     = 46ee14fed47bb0fc48a09885cfc8cbaf06017ac8
+
+=== OBJETIVO ===
+Forja un token valido que contenga "&access=admin" al final del mensaje.
+El sistema acepta cualquier mensaje cuyo MAC sea SHA1(secret + forged_message).
+
+Pista: SHA1 es vulnerable a Length Extension Attack.
+       Conoces el hash SHA1(secret + message) y len(secret)=16.
+       Puedes calcular SHA1(secret + message + padding + extension) sin conocer el secret.
+
+=== VERIFICADOR ===
+Ejecuta: python3 C3_verificador.py <forged_message_hex> <forged_mac>

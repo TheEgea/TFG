@@ -1,0 +1,23 @@
+=== ARCHIVO RECUPERADO: /home/admin/Documents/a5_rsa_challenge.txt ===
+=== SISTEMA: Token de autenticación RSA del servidor de control ===
+
+El servidor de C2 del atacante usa RSA para verificar tokens de identidad.
+Hemos capturado el tráfico y obtenido la clave pública y el token cifrado.
+
+=== CLAVE PÚBLICA ===
+n = 179769313486231590772930519078902473361797697894230657273430081157732675805500963132708477322407536021120113879871393357658789768814416622492847430639476215995804964470013018824201939713241980900521095365451930644423371277531154354802294202931341274098070155654463390063880431544198379969746999978869173262267
+e = 3
+
+=== TOKEN CAPTURADO (ciphertext) ===
+c = 330772374306462554234390007239323020483102648527124502883206975248486478740429778285363739005904626252459138159112389992952223451572045989444384784903082952498350437
+
+=== ANÁLISIS DEL EQUIPO FORENSE ===
+El exponente público e=3 es inusualmente pequeño.
+Nota del analista:
+  "Si el plaintext es corto y e=3, puede que c = m^3 sin reducción modular.
+   En ese caso, la raíz cúbica exacta de c da directamente el plaintext."
+
+=== TAREA ===
+Recupera el token original (m) y conviértelo de entero a ASCII para obtener la flag.
+
+--- FIN DEL ARCHIVO ---

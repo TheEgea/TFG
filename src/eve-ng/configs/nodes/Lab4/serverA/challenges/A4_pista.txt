@@ -1,0 +1,17 @@
+=== PISTA ANÁLISIS — a4_mensaje_xor.hex ===
+
+El mensaje fue cifrado con XOR de clave repetida.
+El sistema de mensajería siempre empieza los mensajes con: "ENCRYPTED"
+
+Para resolver:
+  1. Estima la longitud de la clave (usa IC o coincidencias en el hexdump)
+  2. Usa "crib dragging": XOR el crib conocido contra el ciphertext
+     para recuperar fragmentos de la clave
+  3. Reconstruye la clave completa
+  4. Descifra el mensaje completo
+
+Herramientas útiles:
+  python3 -c "ct=bytes.fromhex(open('a4_mensaje_xor.hex').read().strip()); print(ct[:9])"
+  # El resultado XOR con b'ENCRYPTED' da los primeros 9 bytes de clave (repetida)
+
+Longitud del ciphertext: 724 bytes

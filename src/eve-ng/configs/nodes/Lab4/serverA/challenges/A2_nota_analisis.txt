@@ -1,0 +1,20 @@
+=== ARCHIVO: /home/admin/Documents/nota_analisis.txt ===
+
+ANALISIS DE SEGURIDAD — SISTEMA DE CIFRADO INTERNO
+Fecha: 2026-04-15
+
+He encontrado un problema CRITICO en el sistema de cifrado de NovaCorp.
+El servicio usa AES-ECB sin vector de inicialización.
+
+Script vulnerable: /home/admin/Documents/a2_oracle.py
+Mensaje cifrado del administrador: /home/admin/Documents/a2_admin_cipher.b64
+
+PISTA: En ECB, bloques de plaintext iguales producen bloques de ciphertext iguales.
+Si el mensaje admin_cipher tiene bloques repetidos... algo está oculto dos veces.
+
+Bloques del admin_cipher (referencia):
+  Bloque  0: 38e6607fbeb79e74c2ef64a1377e8d92
+  Bloque  1: c75e5f553a205a1bebdd6e8d8e2e49b4
+  Bloque  2: a713f9b6ed3e462a7302194afad12392
+  Bloque  3: c0ff6337ea53acde4e073c58ad48fc44
+  Bloque  4: e0e5c82b111beed21ea44bed86a3a20c

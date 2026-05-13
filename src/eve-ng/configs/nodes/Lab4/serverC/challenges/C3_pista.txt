@@ -1,0 +1,7 @@
+=== PISTA C3 ===
+Herramienta recomendada: hlextend (pip3 install hlextend)
+
+import hlextend
+sha = hlextend.new('sha1')
+forged_msg, forged_mac = sha.extend(b'&access=admin', b'user=analyst&access=readonly&expires=2026-12-31', 16, '46ee14fed47bb0fc48a09885cfc8cbaf06017ac8')
+print(forged_msg.hex(), forged_mac)
