@@ -35,9 +35,13 @@ and deployed on a self-hosted Proxmox~\cite{proxmox} infrastructure:
           SP~800-61~\cite{nist_sp80061}. Pre-staged log evidence and a reconstructed
           attack timeline develop forensic analysis skills alongside offensive concepts.
 
-    \item \textbf{Lab~4 --- Privilege Escalation}: Under development (Phase~3). The
-          topology and scenario design are complete; implementation and validation
-          will be finalised before the May~27, 2026 submission deadline.
+    \item \textbf{Lab~4 --- Cryptography and Steganography CTF (CipherStrike)}:
+          A three-stage CTF set in the context of a corporate breach at NovaCorp.
+          Students recover hidden data from five cryptography challenges on ServerA,
+          five steganography challenges on ServerB, and four advanced combined
+          challenges on ServerC, whose access is gated on solving key challenges
+          from the first two modules. Full credentials and flag inventory are in
+          Appendix~J.
 \end{itemize}
 
 Each lab is supported by a student guide, a teacher resolution guide with an assessment
@@ -59,9 +63,9 @@ defined in Chapter~\ref{ch:objectives} and their current completion status.
     \toprule
     \textbf{Objective} & \textbf{Description} & \textbf{Status} \\
     \midrule
-    OE1 & Design and implement 4 EVE-NG labs     & 75\% (3/4 completed) \\
+    OE1 & Design and implement 4 EVE-NG labs     & Completed \\
     OE2 & Develop automation scripts              & Completed \\
-    OE3 & Develop structured teaching materials   & 75\% (3/4 labs documented) \\
+    OE3 & Develop structured teaching materials   & Completed \\
     OE4 & Validate usability and effectiveness    & Completed \\
     \bottomrule
   \end{tabularx}
@@ -69,13 +73,9 @@ defined in Chapter~\ref{ch:objectives} and their current completion status.
   \label{tab:objectives_evaluation}
 \end{table}
 
-\textbf{OE1} is on track: Labs~1--3 are fully implemented and validated.
-Lab~4 design is complete; implementation is the main remaining activity in
-Phase~3. \textbf{OE2} is fully achieved: automation scripts cover ISO upload,
+\textbf{OE1} is fully achieved: all four labs are implemented and validated. \textbf{OE2} is fully achieved: automation scripts cover ISO upload,
 bridge configuration, and connectivity checks, with at least one utility script
-per lab as required. \textbf{OE3} follows OE1 progress --- three complete student
-and teacher guide pairs are available; Lab~4 materials will be produced in
-parallel with implementation. \textbf{OE4} is complete: the pilot study (May~2026) confirmed usability and
+per lab as required. \textbf{OE3} is fully achieved: all four labs have complete student and teacher guide pairs. \textbf{OE4} is complete: the pilot study (May~2026) confirmed usability and
 flag reachability across all three implemented labs. KPI results --- task completion,
 satisfaction scores, and KPI compliance --- are reported in Section~\ref{sec:pilot_validation}.
 
@@ -117,9 +117,6 @@ should include an explicit buffer for integration testing.
 \subsection{Current Limitations}
 
 \begin{itemize}
-    \item \textbf{Lab~4 not yet complete}: Privilege escalation content is under
-          development. The full four-lab package will be available upon submission.
-
     \item \textbf{No LMS integration}: The package is self-contained but not
           integrated with Moodle or any institutional learning management system.
           Assessment rubrics are PDF-based; submission and grading are manual.
@@ -132,10 +129,6 @@ should include an explicit buffer for integration testing.
 \subsection{Directions for Future Work}
 
 \begin{itemize}
-    \item \textbf{Complete Lab~4}: Finalise the privilege escalation scenario with SUID,
-          sudo misconfiguration, and cron-based persistence vectors; produce the student
-          guide and teacher reference.
-
     \item \textbf{Expand OWASP coverage}: Lab~2 currently covers five Top~10
           categories. Additional modules could address server-side request forgery
           (SSRF), insecure deserialization, and API security misconfigurations.
