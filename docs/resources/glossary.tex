@@ -120,7 +120,7 @@ description={A vulnerability enabling the injection of malicious client-side scr
 
 \newglossaryentry{privilege_escalation}{
 name={Privilege Escalation},
-description={A technique enabling a user with limited permissions to obtain elevated privileges---such as administrator or root access---thereby executing previously restricted operations. Central focus of Lab~4}
+description={A technique enabling a user with limited permissions to obtain elevated privileges---such as administrator or root access---thereby executing previously restricted operations. A fundamental technique in attack chains, relevant across multiple labs in this thesis}
 }
 
 \newglossaryentry{local_privilege_escalation}{
@@ -131,6 +131,17 @@ description={A privilege escalation technique executed locally on an already-com
 \newglossaryentry{root_access}{
 name={Root Access},
 description={Maximum-level administrative access on Unix/Linux systems, equivalent to Administrator privileges on Windows. A typical objective in attack chains and the culmination of exploitation phases}
+}
+
+
+\newglossaryentry{cryptography}{
+name={Cryptography},
+description={The science of securing information through mathematical transformations, encompassing symmetric encryption (e.g., AES), asymmetric encryption (e.g., RSA), and hashing algorithms (e.g., MD5, SHA-256). Central to Lab~4 (CipherStrike), where students decrypt ciphertexts and crack encoded messages to retrieve flags from ServerA}
+}
+
+\newglossaryentry{steganography}{
+name={Steganography},
+description={The practice of concealing information within non-secret carrier data---such as images or audio files---to avoid detection. One of the two main challenge categories in Lab~4 (CipherStrike), where students extract hidden flags from files using tools such as \texttt{steghide} and \texttt{binwalk} on ServerB}
 }
 
 % ============================================================

@@ -10,7 +10,10 @@ This chapter evaluates the project outcomes against the stated objectives,
 reflects on lessons learned during development, and outlines directions for
 future work. The overall goal --- to design and implement a reusable,
 curriculum-aligned penetration testing lab package for the \textit{Introduction to
-Cybersecurity} course at TecnoCampus --- has been substantially achieved.
+Cybersecurity} course at TecnoCampus --- has been achieved. The scope and design
+evolved iteratively throughout development in response to infrastructure findings,
+pilot feedback, and technical constraints, but all four planned labs were delivered
+and all stated objectives were met.
 
 \section{Summary of Achievements}
 
@@ -121,9 +124,10 @@ should include an explicit buffer for integration testing.
           integrated with Moodle or any institutional learning management system.
           Assessment rubrics are PDF-based; submission and grading are manual.
 
-    \item \textbf{Single-group concurrency}: The current infrastructure supports one
-          lab group at a time. Running simultaneous sessions for multiple groups would
-          require either additional server resources or a cloud-based EVE-NG deployment.
+    \item \textbf{Single-instance concurrency}: EVE-NG Community Edition runs as a
+          single shared instance. If two students or groups need to run labs simultaneously,
+          a separate EVE-NG instance is required for each. Scaling to a full classroom
+          therefore requires either multiple EVE-NG deployments or a cloud-based setup.
 \end{itemize}
 
 \subsection{Directions for Future Work}
@@ -142,7 +146,7 @@ should include an explicit buffer for integration testing.
 
     \item \textbf{Lab~5 --- Active Directory}: A Windows domain penetration testing
           scenario (Kerberoasting, Pass-the-Hash, lateral movement) to complement
-          the existing Linux-centric labs and address OSCP-aligned skill gaps.
+          the existing Linux-centric labs and address OSCP-aligned skill gaps~\cite{oscp_exam}.
 \end{itemize}
 
 \section{Personal Reflection}

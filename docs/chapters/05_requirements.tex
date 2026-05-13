@@ -23,7 +23,7 @@ in EVE-NG format (.unl files) that simulate real-world cybersecurity scenarios.
   \item Lab 1: Reconnaissance (passive intelligence gathering)
   \item Lab 2: Web application security (active vulnerability discovery)
   \item Lab 3: Incident response and network forensics (lateral movement and log analysis)
-  \item Lab 4: Privilege escalation (post-exploitation scenarios)
+  \item Lab 4: Cryptography and steganography CTF (CipherStrike --- applied crypto and stego)
   \end{itemize}
 \end{itemize}
 
@@ -46,12 +46,14 @@ OWASP\cite{owasp_testing_guide}, NIST\cite{nist_framework}, and CEH\cite{ceh_fra
       log forensics (auth.log, bash\_history), privilege escalation via sudo
       misconfiguration, network traffic analysis with Wireshark\cite{wireshark}.
 
-\item \textbf{RF2.4}: Lab 4 --- Ransomware Response \textit{(planned)}: students
-      take the role of a system administrator responding to an active ransomware incident.
-      Two of three servers remain accessible; the third is locked by encryption. Tasks cover
-      identifying the attack vector, recovering encrypted files using different decryption
-      techniques, and restoring access. Flags are obtained by successfully decrypting files
-      or recovering credentials.
+\item \textbf{RF2.4}: Lab 4 --- Cryptography and Steganography CTF (CipherStrike):
+      students act as incident response analysts investigating a breach at NovaCorp.
+      ServerA hosts five classical and modern cryptography challenges (ROT13, AES-ECB oracle,
+      Vigen\`{e}re/Kasiski, XOR crib-dragging, RSA $e=3$); ServerB hosts five steganography
+      challenges (EXIF metadata, PNG chunk appending, LSB red/alpha channels, steghide);
+      ServerC hosts four advanced combined challenges (multilayer stego, onion encoding,
+      SHA-1 length extension, ECDSA nonce reuse). Access to ServerC is gated on solving
+      key challenges from the first two modules.
 \end{itemize}
 
 \textbf{Success Criteria}: Minimum 3--4 exploitable scenarios per lab, all resolvable
@@ -78,7 +80,7 @@ each including a rubric.
 \subsection{TR1: Virtualisation Infrastructure}
 
 \begin{itemize}
-\item \textbf{TR1.1}: EVE-NG 5.0+ (Community and Professional editions), deployed as a
+\item \textbf{TR1.1}: EVE-NG 5.0+ Community Edition, deployed as a
       VM on Proxmox VE; web interface via HTTPS; RESTful API for automation.
 
 \item \textbf{TR1.2}: Host specifications: 2$\times$ Intel Xeon E5-2680v4 (56 logical cores),
@@ -155,7 +157,7 @@ each including a rubric.
     RF2.1  & Functional  & Lab 1 reconnaissance scenarios          & Lab 1          \\
     RF2.2  & Functional  & Lab 2 OWASP vulnerabilities             & Lab 2          \\
     RF2.3  & Functional  & Lab 3 incident response / forensics     & Lab 3          \\
-    RF2.4  & Functional  & Lab 4 privilege escalation              & Lab 4          \\
+    RF2.4  & Functional  & Lab 4 cryptography and steganography CTF & Lab 4         \\
     RF3.1  & Functional  & Learning outcomes defined               & All labs       \\
     RF3.2  & Functional  & Assessment rubrics                      & All labs       \\
     TR1.1  & Technical   & EVE-NG 5.0+                             & Platform       \\
