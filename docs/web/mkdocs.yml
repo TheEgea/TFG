@@ -46,6 +46,7 @@ nav:
           - App G — Methodology: annexos/app-g/methodology.md
           - App H — Requirements: annexos/app-h/requirements.md
           - App I — Feasibility: annexos/app-i/feasibility.md
+          - App J — Lab 4 Reference: annexos/app-j/lab4-reference.md
   - Basic Configuration:
       - Selected ISOs: assets/init_configs/selected-isos/index.md
       - Router (VyOS): assets/init_configs/Router.md

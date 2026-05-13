@@ -71,3 +71,11 @@ NIST SP 800-30 five-phase risk assessment, and detailed budget breakdown.
 ---
 
 > Eloi Egea Rada --- *Ethical Pentesting in Virtualized Environments with EVE-NG*, TecnoCampus 2025--2026
+
+---
+
+**Appendix J — Lab 4: CipherStrike (Teacher Reference)**
+Instructor guide for the Cryptography and Steganography CTF. Covers all 14 challenge
+flags with techniques and solutions, ServerC password derivation, startup checklist,
+and lab reset procedure.
+*Full detail: Vol II, Appendix J*
