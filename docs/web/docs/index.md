@@ -51,12 +51,11 @@ cd TFG
 
 ## Installation
 
-- [Official documentation](https://www.eve-ng.net/index.php/documentation/community-cookbook/)
 - [Install on Proxmox](guides/eve_ng_install_proxmox.md)
 
 **EVE-NG editions:**
 
 | Edition | Link | Notes |
 |---------|------|-------|
-| Community | [eve-ng.net](https://www.eve-ng.net/index.php/community/) | Free · used in this project |
-| Professional | [eve-ng.net](https://www.eve-ng.net/index.php/eve-ng-pro-is-here/) | Commercial · advanced features |
+| Community | [eve-ng.net](https://www.eve-ng.net/index.php/documentation/community-cookbook/) | Free · used in this project |
+| Professional | [eve-ng.net](https://www.eve-ng.net/index.php/documentation/professional-cookbook/) | Commercial · advanced features |

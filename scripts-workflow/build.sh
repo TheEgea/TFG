@@ -1,15 +1,15 @@
 #!/usr/bin/env bash
 # ─────────────────────────────────────────────────────────────────────────────
-# build.sh — Compile LaTeX documents (Vol I + Vol II) and publish to web
+# build.sh — Compile LaTeX documents and publish PDFs to web
 #
 # Usage:
-#   bash scripts-workflow/build.sh [memory|annexos|all]
+#   bash scripts-workflow/build.sh [memory|annexos|viabilitat|all]
 #
 # Output:
-#   Vol I  → docs/main/memory/memory-main.pdf
-#            docs/web/docs/assets/official_Documents/memory-main.pdf  ← web
-#   Vol II → docs/main/annexos/annexos-main.pdf
-#            docs/web/docs/assets/official_Documents/annexos-main.pdf ← web
+#   Vol I       → docs/main/memory/memory-main.pdf
+#   Vol II      → docs/main/annexos/annexos-main.pdf
+#   Viabilitat  → docs/main/viabilitat/viabilitat-main.pdf
+#   All PDFs also copied → docs/web/docs/assets/official_Documents/
 # ─────────────────────────────────────────────────────────────────────────────
 set -euo pipefail
 
@@ -19,10 +19,8 @@ TARGET="${1:-all}"
 
 compile_doc() {
     local TEX_PATH="$1"
-    local PROJECT_DIR
-    PROJECT_DIR="$(dirname "$TEX_PATH")"
-    local PROJECT_FILE
-    PROJECT_FILE="$(basename "$TEX_PATH")"
+    local PROJECT_DIR; PROJECT_DIR="$(dirname "$TEX_PATH")"
+    local PROJECT_FILE; PROJECT_FILE="$(basename "$TEX_PATH")"
     local PROJECT_NAME="${PROJECT_FILE%.tex}"
     local BUILD_AUX="$PROJECT_DIR/build/aux"
     local LOG_FILE="$PROJECT_DIR/build/build.txt"
@@ -35,11 +33,7 @@ compile_doc() {
         echo "=== Build: $PROJECT_NAME ==="
         echo "Date: $(date '+%Y-%m-%d %H:%M:%S')"
         echo ""
-        latexmk -xelatex \
-            -interaction=nonstopmode \
-            -file-line-error \
-            -output-directory="$BUILD_AUX" \
-            "$PROJECT_FILE"
+        latexmk -xelatex             -interaction=nonstopmode             -file-line-error             -output-directory="$BUILD_AUX"             "$PROJECT_FILE"
         echo ""
         echo "=== Done: $(date '+%Y-%m-%d %H:%M:%S') ==="
     } 2>&1 | tee "$LOG_FILE"
@@ -48,10 +42,10 @@ compile_doc() {
     if [ -f "$PDF" ]; then
         cp "$PDF" "$PROJECT_DIR/$PROJECT_NAME.pdf"
         cp "$PDF" "$WEB_OFFICIAL/$PROJECT_NAME.pdf"
-        echo "OK $PROJECT_NAME.pdf -> $WEB_OFFICIAL/"
-        echo "   Log guardado en: build/build.txt"
+        echo "OK  $PROJECT_NAME.pdf -> $WEB_OFFICIAL/"
+        echo "    Log: build/build.txt"
     else
-        echo "FAIL $PROJECT_NAME -- revisar build/build.txt"
+        echo "FAIL $PROJECT_NAME — revisar build/build.txt"
         exit 1
     fi
     cd - > /dev/null
@@ -65,7 +59,11 @@ if [ "$TARGET" = "all" ] || [ "$TARGET" = "annexos" ]; then
     compile_doc "$REPO_ROOT/docs/main/annexos/annexos-main.tex"
 fi
 
+if [ "$TARGET" = "all" ] || [ "$TARGET" = "viabilitat" ]; then
+    compile_doc "$REPO_ROOT/docs/main/viabilitat/viabilitat-main.tex"
+fi
+
 echo ""
 echo "=== Build complete ==="
 echo "  PDFs published to $WEB_OFFICIAL/"
-echo "  Run: git add docs/web/docs/assets/official_Documents/ docs/main/*/memory-main.pdf docs/main/*/annexos-main.pdf"
+echo "  Next: git add docs/web/docs/assets/official_Documents/ && make push MSG=\"docs: update PDFs\""

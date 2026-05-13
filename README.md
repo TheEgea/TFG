@@ -14,14 +14,14 @@ Design and implement a set of practical cybersecurity labs running on EVE-NG, ai
 students of the *Introduction to Cybersecurity* course. Each lab covers a different
 attack/defence scenario and is fully documented across three layers.
 
-**Labs planned:**
+**Labs:**
 
 | Lab | Topic | Status |
 |-----|-------|--------|
-| LAB1 | Network Recon & Enumeration | ✅ Operational |
-| LAB2 | Web Application Vulnerabilities (OWASP Top 10) | Planned |
-| LAB3 | Network Traffic Analysis | Planned |
-| LAB4 | Privilege Escalation | Planned |
+| LAB1 | Network Recon & Enumeration | ✅ Complete |
+| LAB2 | Web Application Vulnerabilities (OWASP Top 10) | ✅ Complete |
+| LAB3 | Incident Response & Log Forensics | 🚧 In Progress |
+| LAB4 | Advanced Threats & Ransomware Defence | 🚧 In Progress |
 
 ---
 
@@ -29,68 +29,11 @@ attack/defence scenario and is fully documented across three layers.
 
 | Layer | Format | Location | Purpose |
 |-------|--------|----------|---------|
-| **Capa 1** | LaTeX → PDF | `docs/` | Official academic thesis (memory + feasibility) |
+| **Capa 1** | LaTeX → PDF | `docs/main/` | Official academic thesis (Vol I memory + Vol II annexos) |
 | **Capa 2** | MkDocs → GitHub Pages | `docs/web/` | Public technical annex — lab guides, config references |
-| **Capa 3** | Markdown / LaTeX | `src/` | Operational material — technical references, student exercises, automation scripts |
+| **Capa 3** | Markdown / LaTeX | `src/` | Operational material — technical references, student exercises |
 
 Live site: [theegea.github.io/TFG](https://theegea.github.io/TFG)
-
----
-
-## Repository structure
-
-```
-TFG/
-├── docs/
-│   ├── main/
-│   │   ├── memory/                  ← Official thesis (XeLaTeX, OpenDyslexic)
-│   │   │   ├── memory-main.tex
-│   │   │   └── build/               ← PDF output (git-ignored)
-│   │   └── viabilitat/              ← Feasibility study
-│   │       ├── viabilitat-main.tex
-│   │       └── build/
-│   ├── chapters/                    ← Shared chapters (01–08 + labs/)
-│   ├── resources/
-│   │   ├── glossary.tex
-│   │   └── references.bib
-│   ├── images/                      ← Logos, diagrams, screenshots
-│   └── web/                         ← MkDocs site (Capa 2)
-│       ├── mkdocs.yml
-│       ├── docs/
-│       │   ├── index.md
-│       │   ├── assets/init_configs/ ← VyOS, pfSense, ISO selection
-│       │   ├── guides/              ← EVE-NG on Proxmox install guide
-│       │   └── labs/lab1/           ← Lab1 node config pages
-│       └── .venv/                   ← Python venv (not committed)
-│
-├── src/
-│   ├── eve-ng/
-│   │   └── configs/
-│   │       ├── LAB1-technical-reference.md  ← Authoritative Lab1 config
-│   │       ├── LAB1-setup-session1.md       ← Historical build notes
-│   │       ├── LAB1-setup-session2.md
-│   │       └── LAB1-setup-session3.md
-│   ├── materials/
-│   │   └── exercises/lab1/
-│   │       ├── lab1-enunciado.tex           ← Student assignment (PDF)
-│   │       ├── lab1-resolucion.tex          ← Instructor solution guide (PDF)
-│   │       └── build/                       ← Compiled PDFs
-│   └── scripts/
-│       └── automation/
-│           ├── Iso_uploader.py              ← GUI tool to add ISOs to EVE-NG
-│           ├── .env.example
-│           └── requirements.txt
-│
-├── scripts-workflow/
-│   ├── build.sh                     ← Build LaTeX docs
-│   ├── build-labs.sh                ← Build lab PDFs
-│   ├── sync.sh / push.sh / pull.sh  ← Git helpers
-│   └── utils.sh                     ← Status, stats, clean
-│
-├── .gitignore
-├── LICENSE                          ← CC BY-NC-SA 4.0
-└── README.md
-```
 
 ---
 
@@ -106,48 +49,114 @@ sudo apt-get install -y texlive-xetex texlive-latex-extra latexmk biber fonts-op
 brew install --cask mactex && brew install latexmk biber
 ```
 
-### Build official documents
+### All commands via `make`
+
+Run from repo root:
 
 ```bash
-./scripts-workflow/build.sh memory       # docs/main/memory/build/memory-main.pdf
-./scripts-workflow/build.sh viabilitat   # docs/main/viabilitat/build/viabilitat-main.pdf
-./scripts-workflow/build.sh all          # build everything
-```
+make help               # show all available targets
 
-### Build lab PDFs
+# Build official documents
+make build              # Vol I + Vol II + viabilitat → PDFs published to web
+make build-memory       # Vol I only
+make build-annexos      # Vol II only
+make build-viabilitat   # Viabilitat/feasibility only
 
-```bash
-./scripts-workflow/build-labs.sh         # src/materials/exercises/lab1/build/*.pdf
-```
+# Build lab PDFs (enunciado + resolucion)
+make build-labs         # all labs
+make build-labs LAB=lab1  # single lab
 
-### Run documentation site locally
+# Web documentation
+make serve              # local preview at http://localhost:8000/TFG/
+make build-web          # build site (also auto-built by CI on push to main)
 
-```bash
-cd docs/web
-source .venv/bin/activate
-mkdocs serve --dev-addr 0.0.0.0:8000
-# open http://localhost:8000/TFG/
-```
+# Git workflow
+make push MSG=docs: update chapter 5   # commit + push
+make pull                                 # pull latest
+make sync MSG=chore: sync              # pull + commit + push
+make status                               # git status + recent commits
 
-### Deploy site to GitHub Pages
-
-```bash
-cd docs/web
-source .venv/bin/activate
-mkdocs gh-deploy
+# Utilities
+make setup              # check tool dependencies
+make clean              # remove LaTeX build artifacts
+make stats              # file counts + repo size
+make diagnostic         # run build-system diagnostic
 ```
 
 ---
 
-## Git workflow
+## Repository structure
 
-```bash
-./scripts-workflow/sync.sh "docs: update chapter 5"   # pull + commit + push
-./scripts-workflow/push.sh "fix: correct typo"         # quick push
-./scripts-workflow/utils.sh status                     # git status + stats
+```
+TFG/
+├── Makefile                         ← All workflow commands (start here)
+├── diagnostic.sh                    ← Build-system diagnostic tool
+│
+├── docs/
+│   ├── main/
+│   │   ├── memory/                  ← Vol I — Official thesis (XeLaTeX)
+│   │   │   ├── memory-main.tex
+│   │   │   └── build/               ← PDF output (git-ignored)
+│   │   ├── annexos/                 ← Vol II — Technical annexes
+│   │   │   ├── annexos-main.tex
+│   │   │   └── build/
+│   │   └── viabilitat/              ← Feasibility study
+│   │       ├── viabilitat-main.tex
+│   │       └── build/
+│   ├── chapters/                    ← Shared LaTeX chapters (01–08 + labs/)
+│   ├── resources/
+│   │   ├── glossary.tex
+│   │   └── references.bib
+│   ├── images/                      ← Logos, diagrams, screenshots
+│   └── web/                         ← MkDocs site (Capa 2)
+│       ├── mkdocs.yml
+│       ├── docs/
+│       │   ├── assets/official_Documents/  ← Published PDFs (committed)
+│       │   ├── guides/
+│       │   └── labs/
+│       └── .venv/                   ← Python venv (not committed)
+│
+├── src/
+│   ├── eve-ng/configs/              ← Authoritative EVE-NG node configs (Capa 3)
+│   ├── materials/exercises/         ← Lab enunciados + resoluciones (LaTeX)
+│   │   ├── lab1/
+│   │   ├── lab2/
+│   │   ├── lab3/
+│   │   └── lab4/
+│   └── scripts/automation/          ← ISO uploader and helpers
+│
+└── scripts-workflow/                ← Build + git scripts (called by Makefile)
+    ├── build.sh                     ← Compile Vol I / Vol II / viabilitat
+    ├── build-labs.sh                ← Compile lab PDFs
+    ├── push.sh / pull.sh / sync.sh  ← Git helpers
+    ├── utils.sh                     ← Status, stats, clean
+    └── setup-env.sh                 ← Dependency check
 ```
 
-Commit convention: `docs:` `feat:` `fix:` `refactor:` `chore:`
+---
+
+## PDF outputs
+
+| PDF | Command | Location |
+|-----|---------|----------|
+| Vol I — Memory | `make build-memory` | `docs/main/memory/memory-main.pdf` |
+| Vol II — Annexos | `make build-annexos` | `docs/main/annexos/annexos-main.pdf` |
+| Viabilitat | `make build-viabilitat` | `docs/main/viabilitat/viabilitat-main.pdf` |
+| Web docs PDF | CI on push to main | [lab-documentation.pdf](https://theegea.github.io/TFG/pdf/lab-documentation.pdf) |
+| Lab enunciados | `make build-labs` | `src/materials/exercises/labX/build/` |
+| Lab resoluciones | `make build-labs` | `src/materials/exercises/labX/build/` |
+
+After running `make build`, commit the updated PDFs:
+
+```bash
+make push MSG="docs: update official PDFs"
+```
+
+---
+
+## Commit convention
+
+`docs:` `feat:` `fix:` `refactor:` `chore:`
 
 ---
 
