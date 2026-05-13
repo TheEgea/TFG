@@ -35,3 +35,17 @@ apt install steghide
 - C2: `H4U{0n10n_l4y3rs_st3g0}`
 - C3: `H4U{l3ngth_3xt3ns10n_sh4}`
 - C4: `H4U{3cc_n0nc3_r3us3_pwn3d}` -- MASTER FLAG
+
+
+## Instructor notes (bugs encontrados en verificacion 2026-05-13)
+
+**C2 — bzip2 no instalado en ServerC:** el binario bzip2 no existe.
+Usar Python3: import base64, gzip, bz2
+Ademas, C2_backup_log.b64 tiene 2 lineas de comentario al inicio — filtrarlas antes de decodificar:
+    lines = [l for l in raw.splitlines() if not l.startswith('#')]
+    data = ''.join(lines)
+
+**C3 — hlextend v0.2 API:** sha.extend() devuelve bytes (no tupla).
+El MAC se obtiene con sha.hexdigest() tras la llamada. Ver C3_pista.txt.
+
+**B5 (serverB) — nombre del archivo extraido:** steghide extrae el flag como b5flag.txt (nombre embebido).

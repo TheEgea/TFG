@@ -1,7 +1,25 @@
-=== PISTA C3 ===
-Herramienta recomendada: hlextend (pip3 install hlextend)
+=== PISTA C3: SHA-1 Length Extension ===
 
-import hlextend
-sha = hlextend.new('sha1')
-forged_msg, forged_mac = sha.extend(b'&access=admin', b'user=analyst&access=readonly&expires=2026-12-31', 16, '46ee14fed47bb0fc48a09885cfc8cbaf06017ac8')
-print(forged_msg.hex(), forged_mac)
+El token actual es:
+  message = b'user=analyst&access=readonly&expires=2026-12-31'
+  MAC = 46ee14fed47bb0fc48a09885cfc8cbaf06017ac8
+  (secret length = 16 bytes)
+
+Tienes que forjar un token que ademas contenga '&access=admin'.
+
+Herramienta: hlextend (ya instalada)
+
+  import hlextend
+  sha = hlextend.new('sha1')
+  forged_msg = sha.extend(
+      b'&access=admin',
+      b'user=analyst&access=readonly&expires=2026-12-31',
+      16,
+      '46ee14fed47bb0fc48a09885cfc8cbaf06017ac8'
+  )
+  forged_mac = sha.hexdigest()   # <-- MAC forjado
+  # forged_msg es bytes -> convertir a hex para el verificador
+  print(forged_msg.hex(), forged_mac)
+
+Verificar con:
+  python3 C3_verificador.py <forged_msg_hex> <forged_mac>
