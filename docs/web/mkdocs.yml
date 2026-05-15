@@ -78,6 +78,10 @@ nav:
           - Evidence Walkthrough: labs/lab3/walkthrough.md
       - LAB4 – Cryptography & Steganography:
           - Overview: labs/lab4/index.md
+          - Infrastructure: labs/lab4/infra.md
+          - Server A (Crypto): labs/lab4/server-a.md
+          - Server B (Stego): labs/lab4/server-b.md
+          - Server C (Advanced): labs/lab4/server-c.md
 #  - Pentest Labs:
 #      - Reconnaissance: labs/recon.md
 #      - Web Vulns: labs/web-vulns.md
