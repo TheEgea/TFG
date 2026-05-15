@@ -9,3 +9,5 @@
 | Server-Web | maint | — | Backdoor account (attacker-created) |
 | Server-DB | analyst | `An@lyst2024` | Internal access |
 | Server-DB | devops | `D3v0ps#2023` | Compromised (password reuse) |
+| Server-Web | ubuntu | `ubuntu` | Admin (direct SSH, teacher only) |
+| Server-DB | ubuntu | `ubuntu` | Admin (direct SSH, teacher only) |

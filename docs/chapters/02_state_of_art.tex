@@ -42,7 +42,7 @@ security roles.
 
 \paragraph{Teacher perspective.}
 Designing and maintaining practical security exercises is resource-intensive.
-The absence of reusable, automatable lab environments, teachers must improvise
+Without reusable, automatable lab environments, teachers must improvise
 or rely on third-party platforms, which reduces pedagogical control and limits
 reproducibility across cohorts.
 
@@ -123,25 +123,24 @@ understand corresponding protective measures.
 
 
 
-\section{Prior Academic Research}
+\section{Pedagogical Evidence from Existing Practice}
 
-Academic research consistently validates the effectiveness of hands-on, laboratory-based
-approaches in cybersecurity education. Conti and Di Pietro \cite{conti2019} show that
-challenge-based environments significantly improve skill retention and practical competency
-compared to purely theoretical instruction. Murphy et al.\ \cite{murphy2018} provide a
-structured methodology for designing laboratory exercises explicitly aligned with curriculum
-outcomes, validating the need for scenario-specific tasks and integrated assessment.
-Sponj and Heri\v{c}ko \cite{sponj2021} conducted a systematic review of cybersecurity
-education research and identified hands-on practice and authentic task design as the two
-most influential factors in learner engagement and competency development.
-Al~Mohanadi and Furnell \cite{almohannadi2016} establish a requirements-driven approach to
-information security assessment laboratories, emphasising that lab tasks must map directly
-to defined learning outcomes to achieve meaningful pedagogical impact.
+The effectiveness of hands-on, challenge-based cybersecurity education is demonstrated by
+the scale and adoption of the platforms reviewed in the previous section.
+HackTheBox~\cite{hackthebox} and TryHackMe~\cite{tryhackme} have each built communities
+of millions of learners around scenario-based flag capture, demonstrating that flag-based
+progression sustains engagement and drives measurable skill development.
+SEED Labs~\cite{seedlabs}, developed at Syracuse University, establishes the feasibility of
+self-contained, curriculum-aligned lab exercises deployable on local infrastructure.
+GOAD~\cite{goad} illustrates that realistic, multi-system topologies can be automated and
+reproduced reliably for repeated instructional use.
 
-These findings directly inform the design choices in this project: each lab is built around
-scenario-based flags mapped to specific learning objectives, includes an teacher reference
-sheet, and culminates in an automated assessment mechanism. Together, these elements address
-the gap between platform availability and curriculum integration identified in the literature.
+These precedents directly inform the design choices in this project: each lab is built around
+scenario-based flags mapped to specific learning objectives, includes a teacher reference
+sheet, and is deployed on self-hosted infrastructure to preserve institutional control.
+The distinguishing contribution relative to existing platforms is integration: rather than
+isolated challenges or vendor-specific simulations, this project combines network realism,
+curriculum alignment, and automation within a single, open-source package.
 
 \section{Gap Analysis: What Existing Solutions Miss}
 

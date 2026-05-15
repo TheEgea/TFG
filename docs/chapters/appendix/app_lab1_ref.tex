@@ -1,5 +1,5 @@
 % ============================================================
-% Appendix B: Lab 1 — Teacher Reference
+% Appendix B: Lab 1 --- Teacher Reference
 % ============================================================
 
 \chapter{Lab~1: PEBCAK Corp --- Teacher Reference}
@@ -8,7 +8,7 @@
 This appendix provides the deployment reference for Lab~1 (Reconnaissance and
 Enumeration). It is intended for teachers and system administrators responsible
 for setting up and resetting the lab environment. The student-facing guide and
-interactive walkthrough are available at \path{docs/web/docs/labs/lab1/}.
+interactive walkthrough are available in the web documentation under Labs/Lab~1.
 
 \section*{Credentials and Access}
 
@@ -18,11 +18,12 @@ interactive walkthrough are available at \path{docs/web/docs/labs/lab1/}.
 \toprule
 \textbf{Node} & \textbf{Username} & \textbf{Password} & \textbf{Access method} \\
 \midrule
-pfSense        & admin      & pfsense         & Web UI / SSH \\
-VyOS           & vyos       & vyos            & EVE-NG console \\
-Server (PEBCAK)& blackmesa  & \texttt{!Bl4kM3s\$} & SSH (via pfSense DNAT) \\
-PC1            & ubuntu     & ubuntu          & EVE-NG console / VNC \\
-Parrot OS      & parrot     & parrot          & EVE-NG console / VNC \\
+pfSense        & admin      & pfsense             & Web UI / SSH (172.16.0.1)           \\
+pfSense        & student    & student             & Web UI (read-only)                  \\
+VyOS           & vyos       & vyos                & EVE-NG console                      \\
+Server (PEBCAK)& blackmesa  & \texttt{!Bl4kM3s\$} & SSH via pfSense DNAT (TCP~22)        \\
+PC1            & skynet     & \texttt{Sk1n3t}     & SSH from Server / EVE-NG console    \\
+Parrot OS      & lab1       & \texttt{L4b1}       & EVE-NG console / VNC                \\
 \bottomrule
 \end{tabularx}
 \caption{Lab~1 credentials (teacher reference --- do not distribute to students)}
@@ -37,10 +38,10 @@ Parrot OS      & parrot     & parrot          & EVE-NG console / VNC \\
 \toprule
 \textbf{Segment} & \textbf{Subnet} & \textbf{Gateway} & \textbf{Purpose} \\
 \midrule
-Homelab / WAN & 192.168.0.0/24  & 192.168.0.1     & Parrot attacker + pfSense WAN \\
-Net-Link      & 172.16.0.0/30   & pfSense vtnet0  & pfSense $\leftrightarrow$ VyOS uplink \\
-Users LAN     & 192.168.10.0/24 & 192.168.10.x    & PC1 internal workstation \\
-Servers LAN   & 192.168.20.0/24 & 192.168.20.1    & PEBCAK Corp server segment \\
+Homelab / WAN & 192.168.0.0/24  & 192.168.0.1  & Parrot attacker + pfSense WAN (192.168.0.29)             \\
+Net-Link      & 172.16.0.0/30   & ---          & pfSense LAN (172.16.0.1) $\leftrightarrow$ VyOS eth0 (172.16.0.2) \\
+Users LAN     & 192.168.10.0/24 & 192.168.10.5 & PC1 (192.168.10.50) via VyOS eth6                        \\
+Servers LAN   & 192.168.20.0/24 & 192.168.20.1 & Server (192.168.20.50) via VyOS eth7                     \\
 \bottomrule
 \end{tabularx}
 \caption{Lab~1 network segments}
@@ -52,23 +53,38 @@ Servers LAN   & 192.168.20.0/24 & 192.168.20.1    & PEBCAK Corp server segment \
 \begin{enumerate}
     \item Start all nodes from the EVE-NG web interface in order:
           pfSense $\to$ VyOS $\to$ Server $\to$ PC1 $\to$ Parrot.
-    \item Run the bridge script on the EVE-NG host (lost on reboot; persistent via
-          \texttt{udev} rule):
+    \item Verify the bridge interfaces on the EVE-NG host are active (persistent via
+          \texttt{udev} rule \texttt{99-lab1-bridges.rules}):
 \begin{lstlisting}[language=bash]
-ip addr add 192.168.20.x/24 dev vnet0_2
-ip addr add 192.168.10.x/24 dev vnet0_3
+ip addr show vnet0_2   # Should show 192.168.20.254/24
+ip addr show vnet0_3   # Should show 192.168.10.254/24
+ip route show 172.16.0.0/30  # Should route via 192.168.20.1
+\end{lstlisting}
+    \item If bridges are missing (e.g.\ after EVE-NG host reboot), restore manually:
+\begin{lstlisting}[language=bash]
+ip addr add 192.168.20.254/24 dev vnet0_2
+ip addr add 192.168.10.254/24 dev vnet0_3
 ip route add 172.16.0.0/30 via 192.168.20.1
 \end{lstlisting}
-    \item Verify DNS resolution from Parrot: the DNS server on Parrot must point to
-          pfSense's WAN IP so that \texttt{lab1} resolves.
+    \item Verify DNS resolution from Parrot (DNS must point to 192.168.0.29):
 \begin{lstlisting}[language=bash]
 # On Parrot:
 curl http://lab1          # Should return PEBCAK Corp HTML
 \end{lstlisting}
-    \item Confirm flag is in place on the Server node:
+    \item Confirm all flags are in place:
 \begin{lstlisting}[language=bash]
-sshpass -p '!Bl4kM3s$' ssh blackmesa@192.168.20.x cat ~/flag.txt
+# Flag 1 (Server)
+sshpass -p '!Bl4kM3s$' ssh blackmesa@192.168.20.50 cat ~/flag.txt
 # Expected: FLAG{p3bc4k_s3rv3r_0wn3d}
+
+# Flag 2 (pfSense) -- from EVE-NG host
+sshpass -p 'pfsense' ssh -o PubkeyAuthentication=no \
+  -o PreferredAuthentications=password admin@172.16.0.1 cat /root/flag.txt
+# Expected: FLAG{d3f4ult_cr3ds_k1ll_s3cur1ty}
+
+# Flag 3 (PC1) -- via Server
+ssh blackmesa@192.168.20.50 "ssh skynet@192.168.10.50 cat ~/flag.txt"
+# Expected: FLAG{sk1n3t_b3c4m3_s3nt13nt}
 \end{lstlisting}
 \end{enumerate}
 
@@ -81,12 +97,13 @@ sshpass -p '!Bl4kM3s$' ssh blackmesa@192.168.20.x cat ~/flag.txt
 \toprule
 \textbf{Step} & \textbf{Action} & \textbf{Tool} \\
 \midrule
-1 & Navigate to \texttt{http://lab1} in Parrot browser & Firefox \\
-2 & Inspect page source; find HTML comment: \texttt{<!\,-\!- sometimes simplify and search -\!->} & Browser devtools \\
-3 & Access \texttt{http://lab1/pebcak.html}; read SSH credentials & Browser \\
-4 & \texttt{ssh blackmesa@lab1} (pfSense DNAT forwards TCP~22) & SSH \\
-5 & \texttt{cat \textasciitilde/flag.txt} --- retrieves Flag~1 and pfSense credentials & Terminal \\
-6 & SSH to pfSense from Server: \texttt{ssh admin@172.16.x.x} & SSH (optional) \\
+1 & Navigate to \texttt{http://lab1} in Parrot browser                                       & Firefox  \\
+2 & Inspect page source; find HTML comment with navigation hint                              & Browser  \\
+3 & Access \texttt{http://lab1/pebcak.html}; read SSH credentials                            & Browser  \\
+4 & \texttt{ssh blackmesa@lab1} (pfSense DNAT forwards TCP~22 to Server)                     & SSH      \\
+5 & \texttt{cat \textasciitilde/flag.txt} --- retrieves Flag~1 and pfSense credentials        & Terminal \\
+6 & \texttt{ssh admin@172.16.0.1} from Server --- retrieves Flag~2 and PC1 credentials       & SSH      \\
+7 & \texttt{ssh skynet@192.168.10.50} from Server --- retrieves Flag~3                       & SSH      \\
 \bottomrule
 \end{tabularx}
 \caption{Lab~1 expected student workflow}
@@ -101,8 +118,9 @@ sshpass -p '!Bl4kM3s$' ssh blackmesa@192.168.20.x cat ~/flag.txt
 \toprule
 \textbf{Flag} & \textbf{Value} & \textbf{Location} \\
 \midrule
-Flag~1 & \texttt{FLAG\{p3bc4k\_s3rv3r\_0wn3d\}} & \texttt{/home/blackmesa/flag.txt} on Server \\
-Flag~2 & \texttt{FLAG\{pebcak\_firewall\_pivot\}} & pfSense admin panel (optional bonus) \\
+Flag~1 & \texttt{FLAG\{p3bc4k\_s3rv3r\_0wn3d\}}         & \texttt{/home/blackmesa/flag.txt} on Server      \\
+Flag~2 & \texttt{FLAG\{d3f4ult\_cr3ds\_k1ll\_s3cur1ty\}} & \texttt{/root/flag.txt} on pfSense (SSH pivot)   \\
+Flag~3 & \texttt{FLAG\{sk1n3t\_b3c4m3\_s3nt13nt\}}       & \texttt{/home/skynet/flag.txt} on PC1            \\
 \bottomrule
 \end{tabularx}
 \caption{Lab~1 flags}

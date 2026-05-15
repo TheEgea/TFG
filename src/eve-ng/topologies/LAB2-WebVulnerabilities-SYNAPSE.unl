@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-name="LAB2 — Web Vulnerabilities · SYNAPSE" id="3ee647a2-2017-4a69-b949-45c5ac1c329d" version="1" scripttimeout="300" lock="0">
+<lab name="LAB2 — Web Vulnerabilities · SYNAPSE" id="3ee647a2-2017-4a69-b949-45c5ac1c329d" version="1" scripttimeout="300" lock="0">
   <topology>
     <nodes>
       <node id="2" name="VyOS-LAB2" type="qemu" template="vyos" image="vyos-2026.02.13-0029-rolling-generic-amd64" console="telnet" cpu="2" cpulimit="0" ram="4096" ethernet="4" uuid="4fe59b37-2179-464a-92ad-bdeda6ceeac4" qemu_options="-machine type=pc,accel=kvm -serial mon:stdio -nographic -no-user-config -nodefaults -rtc base=utc" qemu_version="2.12.0" qemu_arch="x86_64" qemu_nic="e1000" delay="0" icon="Router-2D-Gen-Grey-S.svg" config="0" left="906" top="429">

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-name="LAB1 — Reconnaissance · PEBCAK Corp" id="64c869bb-bdae-4f79-9c38-f126b700b8ca" version="1" scripttimeout="300" lock="0">
+<lab name="LAB1 — Reconnaissance · PEBCAK Corp" id="64c869bb-bdae-4f79-9c38-f126b700b8ca" version="1" scripttimeout="300" lock="0">
   <topology>
     <nodes>
       <node id="1" name="Router" type="qemu" template="vyos" image="vyos-router-lab1" console="telnet" cpu="2" cpulimit="1" ram="4096" ethernet="8" uuid="34832776-7bf0-447d-81b9-b1b77ca34b0a" qemu_options="-machine type=pc,accel=kvm -serial mon:stdio -nographic -no-user-config -nodefaults -rtc base=utc" qemu_version="2.12.0" qemu_arch="x86_64" qemu_nic="e1000" delay="0" icon="Router-2D-Gen-Dark-S.svg" config="1" left="987" top="366">

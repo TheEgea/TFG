@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-name="LAB3 — Incident Response · HELIX Systems" id="8d1d75f4-3817-448d-a59e-9bf2afc2ffc8" version="1" scripttimeout="300" lock="0">
+<lab name="LAB3 — Incident Response · HELIX Systems" id="8d1d75f4-3817-448d-a59e-9bf2afc2ffc8" version="1" scripttimeout="300" lock="0">
   <topology>
     <nodes>
       <node id="2" name="VyOS-LAB3" type="qemu" template="vyos" image="vyos-2026.02.13-0029-rolling-generic-amd64" console="telnet" cpu="2" cpulimit="0" ram="4096" ethernet="3" uuid="448bb2be-b48e-4f47-bc36-10ccaf9b0c26" qemu_options="-machine type=pc,accel=kvm -serial mon:stdio -nographic -no-user-config -nodefaults -rtc base=utc" qemu_version="2.12.0" qemu_arch="x86_64" qemu_nic="e1000" delay="0" icon="Router-2D-Gen-Grey-S.svg" config="0" left="993" top="453">

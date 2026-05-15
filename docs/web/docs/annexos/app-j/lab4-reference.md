@@ -129,9 +129,16 @@ Dependencies: `piexif`, `pillow`, `steghide`, `hlextend` (from GitHub), Python s
 
 1. Start nodes in order: pfSense → VyOS → ServerA → ServerB → ServerC → Defender
 2. Verify VyOS routing: `show ip route` (expect 10.10.1–4.0/24 connected)
-3. Confirm SSH access to ServerA and ServerB
-4. Verify challenge files on each server
-5. Verify Python deps: `python3 -c "from Crypto.Cipher import AES; import gmpy2; print('OK')"`
+3. Ensure the EVE-NG host bridge for Zone-C is active
+   (persistent via udev `99-lab4-bridges.rules`; required for direct SSH to ServerC):
+   ```bash
+   ip addr show vnet0_5   # Should show 10.10.3.253/24
+   # If missing:
+   ip addr add 10.10.3.253/24 dev vnet0_5
+   ```
+4. Confirm SSH access to all server nodes
+5. Verify challenge files on each server
+6. Verify Python deps: `python3 -c "from Crypto.Cipher import AES; import gmpy2; print('OK')"`
 
 ---
 

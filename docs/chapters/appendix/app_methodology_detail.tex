@@ -92,9 +92,10 @@ Validation: exploitation success and reporting accuracy.
 
 \item \textbf{Lab 3: Incident Response Development} (14h research + 25h dev) ---
 Scenario: log forensics and incident response (NIST SP 800-61\cite{nist_sp80061} standards).
-Tools: Wireshark\cite{wireshark}, tcpdump, network enumeration tools.
+Tools: standard Unix log analysis utilities (\texttt{grep}, \texttt{awk},
+\texttt{find}, \texttt{journalctl}, \texttt{cat}).
 Topology: multi-segment network with pre-staged attack artefacts.
-Validation: successful timeline reconstruction and flag recovery.
+Validation: successful timeline reconstruction and IOC identification.
 
 \item \textbf{Pilot Validation with Users} (20h + 6h revision) ---
 Informal testing sessions with 4--5 GEISI students conducted as each lab is completed.
@@ -124,11 +125,12 @@ pilot validation report; technical configuration references.
 
 \begin{enumerate}
 
-\item \textbf{Lab 4: Privilege Escalation Development} (16h research + 30h dev) ---
-Scenario: post-exploitation and privilege escalation (CEH framework).
-Tools: Metasploit, manual exploitation, system enumeration.
-Topology: hardened systems with privilege escalation vectors.
-Validation: successful privilege elevation and system compromise.
+\item \textbf{Lab 4: CipherStrike --- Cryptography and Steganography CTF} (16h research + 30h dev) ---
+Scenario: Capture-the-Flag challenges covering cryptographic attacks and steganography
+analysis across three servers (A: crypto, B: stego, C: combined gate challenges).
+Tools: Python cryptanalysis scripts, steganography tools (\texttt{steghide},
+\texttt{zsteg}, \texttt{stegseek}), hash cracking, encoding/decoding utilities.
+Validation: all 14 flags captured (A1--A5, B1--B5, C1--C4).
 
 \item \textbf{Comprehensive Penetration Testing} (30h Round 1 + 25h Round 2) ---
 Round 1: sequential testing of Labs 1, 2, and 3.

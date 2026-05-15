@@ -1,0 +1,109 @@
+\glossarysection[\glossarytoctitle]{\glossarytitle}\glossarypreamble
+\begin{theglossary}\glossaryheader
+\glsgroupheading{A}\relax \glsresetentrylist %
+\glossentry{api_rest}{\glossaryentrynumbers{\relax 
+		\setentrycounter[]{page}\glsnumberformat{VII}}}\glsgroupskip
+\glsgroupheading{B}\relax \glsresetentrylist %
+\glossentry{burp_suite}{\glossaryentrynumbers{\relax 
+		\setentrycounter[]{page}\glsnumberformat{VII}}}\glsgroupskip
+\glsgroupheading{C}\relax \glsresetentrylist %
+\glossentry{cis_controls}{\glossaryentrynumbers{\relax 
+		\setentrycounter[]{page}\glsnumberformat{VII}}}%
+\glossentry{cross_site_scripting}{\glossaryentrynumbers{\relax 
+		\setentrycounter[]{page}\glsnumberformat{VII}}}%
+\glossentry{ctf}{\glossaryentrynumbers{\relax 
+		\setentrycounter[]{page}\glsnumberformat{VII}}}%
+\glossentry{cvss}{\glossaryentrynumbers{\relax 
+		\setentrycounter[]{page}\glsnumberformat{VII}}}\glsgroupskip
+\glsgroupheading{D}\relax \glsresetentrylist %
+\glossentry{dmz}{\glossaryentrynumbers{\relax 
+		\setentrycounter[]{page}\glsnumberformat{VII}}}%
+\glossentry{dns}{\glossaryentrynumbers{\relax 
+		\setentrycounter[]{page}\glsnumberformat{VII}}}\glsgroupskip
+\glsgroupheading{E}\relax \glsresetentrylist %
+\glossentry{enumeration}{\glossaryentrynumbers{\relax 
+		\setentrycounter[]{page}\glsnumberformat{VII}}}%
+\glossentry{ethical_hacking}{\glossaryentrynumbers{\relax 
+		\setentrycounter[]{page}\glsnumberformat{VII}}}%
+\glossentry{eve_ng}{\glossaryentrynumbers{\relax 
+		\setentrycounter[]{page}\glsnumberformat{VII}}}%
+\glossentry{exploit}{\glossaryentrynumbers{\relax 
+		\setentrycounter[]{page}\glsnumberformat{VII}}}\glsgroupskip
+\glsgroupheading{H}\relax \glsresetentrylist %
+\glossentry{homelab}{\glossaryentrynumbers{\relax 
+		\setentrycounter[]{page}\glsnumberformat{VII}}}\glsgroupskip
+\glsgroupheading{I}\relax \glsresetentrylist %
+\glossentry{incident_response}{\glossaryentrynumbers{\relax 
+		\setentrycounter[]{page}\glsnumberformat{VII}}}\glsgroupskip
+\glsgroupheading{K}\relax \glsresetentrylist %
+\glossentry{kali}{\glossaryentrynumbers{\relax 
+		\setentrycounter[]{page}\glsnumberformat{VII}}}\glsgroupskip
+\glsgroupheading{L}\relax \glsresetentrylist %
+\glossentry{lab_topology}{\glossaryentrynumbers{\relax 
+		\setentrycounter[]{page}\glsnumberformat{VII}}}%
+\glossentry{lateral_movement}{\glossaryentrynumbers{\relax 
+		\setentrycounter[]{page}\glsnumberformat{VII}}}%
+\glossentry{local_privilege_escalation}{\glossaryentrynumbers{\relax 
+		\setentrycounter[]{page}\glsnumberformat{VII}}}\glsgroupskip
+\glsgroupheading{M}\relax \glsresetentrylist %
+\glossentry{metasploit}{\glossaryentrynumbers{\relax 
+		\setentrycounter[]{page}\glsnumberformat{VII}}}\glsgroupskip
+\glsgroupheading{N}\relax \glsresetentrylist %
+\glossentry{nat}{\glossaryentrynumbers{\relax 
+		\setentrycounter[]{page}\glsnumberformat{VII}}}%
+\glossentry{network_scanning}{\glossaryentrynumbers{\relax 
+		\setentrycounter[]{page}\glsnumberformat{VII}}}%
+\glossentry{network_topology}{\glossaryentrynumbers{\relax 
+		\setentrycounter[]{page}\glsnumberformat{VII}}}%
+\glossentry{nginx}{\glossaryentrynumbers{\relax 
+		\setentrycounter[]{page}\glsnumberformat{VII}}}%
+\glossentry{nist_framework}{\glossaryentrynumbers{\relax 
+		\setentrycounter[]{page}\glsnumberformat{VII}}}%
+\glossentry{nmap}{\glossaryentrynumbers{\relax 
+		\setentrycounter[]{page}\glsnumberformat{VII}}}\glsgroupskip
+\glsgroupheading{O}\relax \glsresetentrylist %
+\glossentry{owasp}{\glossaryentrynumbers{\relax 
+		\setentrycounter[]{page}\glsnumberformat{VII}}}%
+\glossentry{owasp_zap}{\glossaryentrynumbers{\relax 
+		\setentrycounter[]{page}\glsnumberformat{VII}}}\glsgroupskip
+\glsgroupheading{P}\relax \glsresetentrylist %
+\glossentry{packet_capture}{\glossaryentrynumbers{\relax 
+		\setentrycounter[]{page}\glsnumberformat{VII}}}%
+\glossentry{parrot_os}{\glossaryentrynumbers{\relax 
+		\setentrycounter[]{page}\glsnumberformat{VII}}}%
+\glossentry{payload}{\glossaryentrynumbers{\relax 
+		\setentrycounter[]{page}\glsnumberformat{VII}}}%
+\glossentry{pentesting}{\glossaryentrynumbers{\relax 
+		\setentrycounter[]{page}\glsnumberformat{VII}}}%
+\glossentry{pfsense}{\glossaryentrynumbers{\relax 
+		\setentrycounter[]{page}\glsnumberformat{VII}}}%
+\glossentry{privilege_escalation}{\glossaryentrynumbers{\relax 
+		\setentrycounter[]{page}\glsnumberformat{VII}}}%
+\glossentry{proxmox}{\glossaryentrynumbers{\relax 
+		\setentrycounter[]{page}\glsnumberformat{VII}}}\glsgroupskip
+\glsgroupheading{R}\relax \glsresetentrylist %
+\glossentry{reconnaissance}{\glossaryentrynumbers{\relax 
+		\setentrycounter[]{page}\glsnumberformat{VII}}}%
+\glossentry{root_access}{\glossaryentrynumbers{\relax 
+		\setentrycounter[]{page}\glsnumberformat{VII}}}\glsgroupskip
+\glsgroupheading{S}\relax \glsresetentrylist %
+\glossentry{sql_injection}{\glossaryentrynumbers{\relax 
+		\setentrycounter[]{page}\glsnumberformat{VII}}}%
+\glossentry{ssh}{\glossaryentrynumbers{\relax 
+		\setentrycounter[]{page}\glsnumberformat{VII}}}\glsgroupskip
+\glsgroupheading{T}\relax \glsresetentrylist %
+\glossentry{tfg}{\glossaryentrynumbers{\relax 
+		\setentrycounter[]{page}\glsnumberformat{VII}}}\glsgroupskip
+\glsgroupheading{V}\relax \glsresetentrylist %
+\glossentry{virtual_machine}{\glossaryentrynumbers{\relax 
+		\setentrycounter[]{page}\glsnumberformat{VII}}}%
+\glossentry{vulnerability}{\glossaryentrynumbers{\relax 
+		\setentrycounter[]{page}\glsnumberformat{VII}}}%
+\glossentry{vulnerability_assessment}{\glossaryentrynumbers{\relax 
+		\setentrycounter[]{page}\glsnumberformat{VII}}}%
+\glossentry{vyos}{\glossaryentrynumbers{\relax 
+		\setentrycounter[]{page}\glsnumberformat{VII}}}\glsgroupskip
+\glsgroupheading{W}\relax \glsresetentrylist %
+\glossentry{wireshark}{\glossaryentrynumbers{\relax 
+		\setentrycounter[]{page}\glsnumberformat{VII}}}%
+\end{theglossary}\glossarypostamble

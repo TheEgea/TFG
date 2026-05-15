@@ -1,4 +1,4 @@
-% Lab 1 — compact version (full docs: docs/web/docs/labs/lab1/)
+% Lab 1 --- compact version (full docs: docs/web/docs/labs/lab1/)
 \section{Lab 1: Reconnaissance and Enumeration}
 
 Lab~1 introduces the reconnaissance phase of a penetration test following the PTES
@@ -7,8 +7,9 @@ framework~\cite{ptes}. Students interact with a fictional target organisation,
 (pfSense~CE~\cite{pfsense}), an internal router (VyOS~\cite{vyos}), and a target
 Ubuntu~Server~24.04~\cite{ubuntu}. Access is exclusively via DNS hostname
 (\texttt{pebcak.local}) resolved through pfSense's Unbound resolver~\cite{unbound_dns}, requiring students
-to use proper service enumeration before any exploitation attempt. Full topology
-diagrams, node configuration, student guide, and teacher walkthrough are in the Appendix~B; interactive documentation at \path{docs/web/docs/labs/lab1/}.
+to use proper service enumeration before any exploitation attempt. A quick teacher reference --- credentials, network table, and startup checklist --- is compiled
+in Appendix~B; the complete topology, configuration files, and step-by-step guide are at
+\path{docs/web/docs/labs/lab1/}.
 
 \subsubsection*{Network Addressing}
 
@@ -18,12 +19,14 @@ diagrams, node configuration, student guide, and teacher walkthrough are in the 
 \toprule
 \textbf{Node} & \textbf{Role} & \textbf{Interface} & \textbf{IP} & \textbf{Network} \\
 \midrule
-Parrot-OS   & Attacker       & eth0 & 10.0.0.10  & 10.0.0.0/24 (WAN-sim) \\
-pfSense     & Firewall/NAT   & WAN  & 10.0.0.1   & 10.0.0.0/24           \\
-pfSense     & Firewall/NAT   & LAN  & 192.168.1.1 & 192.168.1.0/24       \\
-VyOS        & Router/L3      & eth0 & 192.168.1.2 & 192.168.1.0/24       \\
-VyOS        & Router/L3      & eth1 & 10.10.10.1  & 10.10.10.0/24        \\
-Server-PC1  & Target         & eth0 & 10.10.10.10 & 10.10.10.0/24        \\
+Parrot-OS   & Attacker        & eth0 & 192.168.0.x (DHCP) & 192.168.0.0/24 (Homelab)  \\
+pfSense     & Firewall/NAT    & WAN  & 192.168.0.29       & 192.168.0.0/24            \\
+pfSense     & Firewall/NAT    & LAN  & 172.16.0.1         & 172.16.0.0/30             \\
+VyOS        & Router/L3       & eth0 & 172.16.0.2         & 172.16.0.0/30             \\
+VyOS        & Router/L3       & eth6 & 192.168.10.5       & 192.168.10.0/24 (Users)   \\
+VyOS        & Router/L3       & eth7 & 192.168.20.1       & 192.168.20.0/24 (Servers) \\
+Server      & Target (web+SSH)& eth0 & 192.168.20.50      & 192.168.20.0/24           \\
+PC1         & Workstation     & eth0 & 192.168.10.50      & 192.168.10.0/24           \\
 \bottomrule
 \end{tabular}}
 \caption{Lab~1 IP addressing scheme}
@@ -39,12 +42,12 @@ Server-PC1  & Target         & eth0 & 10.10.10.10 & 10.10.10.0/24        \\
 \toprule
 \textbf{Technique} & \textbf{Description} & \textbf{Reference} \\
 \midrule
-DNS resolution      & Hostname-to-IP via Unbound resolver (RFC~1035~\cite{rfc1035}) & PTES Recon \\
-Port scanning       & TCP SYN scan with Nmap (RFC~793~\cite{rfc793})                & PTES Recon \\
-Service enumeration & Banner grabbing, version detection                            & PTES Recon \\
-Web content discovery & Directory brute-force with Gobuster                         & OWASP WSTG \\
-Credential retrieval  & Exposed credentials in web content                          & OWASP A05 \\
-SSH access          & Password-based login (RFC~4252~\cite{rfc4252})                & PTES Exploit \\
+DNS resolution        & Hostname-to-IP via Unbound resolver (RFC~1035~\cite{rfc1035}) & PTES Recon  \\
+Port scanning         & TCP SYN scan with Nmap (RFC~793~\cite{rfc793})                & PTES Recon  \\
+Service enumeration   & Banner grabbing, version detection                            & PTES Recon  \\
+Web content discovery & Directory brute-force with Gobuster                           & OWASP WSTG  \\
+Credential retrieval  & Exposed credentials in web content                            & OWASP A05   \\
+SSH access            & Password-based login (RFC~4252~\cite{rfc4252})                & PTES Exploit\\
 \bottomrule
 \end{tabularx}
 \caption{Lab~1 techniques and framework mapping}
@@ -104,8 +107,9 @@ through the VyOS router.
 \toprule
 \textbf{Flag} & \textbf{Location} & \textbf{Technique} \\
 \midrule
-FLAG\{recon\_enum\_success\}   & \texttt{/flag.txt} on Server-PC1 via SSH & Credential reuse \\
-FLAG\{pebcak\_firewall\_pivot\} & pfSense admin panel (optional) & NAT pivot \\
+\texttt{FLAG\{p3bc4k\_s3rv3r\_0wn3d\}}         & \texttt{\textasciitilde/flag.txt} on Server via SSH        & Credentials from hidden web page \\
+\texttt{FLAG\{d3f4ult\_cr3ds\_k1ll\_s3cur1ty\}} & \texttt{/root/flag.txt} on pfSense via SSH pivot           & Default credentials               \\
+\texttt{FLAG\{sk1n3t\_b3c4m3\_s3nt13nt\}}       & \texttt{\textasciitilde/flag.txt} on PC1 via lateral move  & Credentials found in pfSense flag \\
 \bottomrule
 \end{tabularx}
 \caption{Lab~1 flags and acquisition techniques}

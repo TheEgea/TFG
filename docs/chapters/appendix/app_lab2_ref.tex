@@ -18,18 +18,35 @@ are at \path{docs/web/docs/labs/lab2/}.
 \toprule
 \textbf{System} & \textbf{Username} & \textbf{Password} & \textbf{Role} \\
 \midrule
-pfSense-LAB2  & admin     & pfsense              & Firewall management \\
-VyOS-LAB2     & vyos      & vyos                 & Router console \\
-Server-A OS   & ubuntu    & \texttt{S3rv3rA}     & SSH access \\
-Server-A Portal & admin   & \texttt{Admin@Synapse2024} & Web application admin \\
-Server-A Portal & guest   & guest123             & Web application guest \\
-Server-B OS   & ubuntu    & \texttt{S3rv3rB}     & SSH access \\
-Server-B DataVault & operator & \texttt{D4t4V4ult\#2024} & API access \\
-Parrot-LAB2   & lab2      & L4b2                 & Attacker node \\
+pfSense-LAB2         & admin     & pfsense              & Firewall management \\
+VyOS-LAB2            & vyos      & vyos                 & Router console \\
+Server-A OS          & ubuntu    & \texttt{S3rv3rA}     & SSH access \\
+Server-A Portal      & admin     & \texttt{Admin@Synapse2024} & Web application admin \\
+Server-A Portal      & guest     & guest123             & Web application guest \\
+Server-B OS          & ubuntu    & \texttt{S3rv3rB}     & SSH access \\
+Server-B Monitor     & monitor   & \texttt{M0nit0r2024} & Node Monitor API access \\
+Parrot-LAB2          & lab2      & L4b2                 & Attacker node \\
 \bottomrule
 \end{tabularx}
 \caption{Lab~2 credentials (teacher reference --- do not distribute to students)}
 \label{tab:lab2-creds}
+\end{table}
+
+\section*{Network Segments}
+
+\begin{table}[H]
+\centering
+\begin{tabularx}{\textwidth}{lllX}
+\toprule
+\textbf{Segment} & \textbf{Subnet} & \textbf{Gateway} & \textbf{Purpose} \\
+\midrule
+WAN-sim       & 10.0.2.0/24   & 10.0.2.1  & Parrot (10.0.2.10) $\leftrightarrow$ pfSense WAN (10.0.2.1) \\
+Net-Link      & 192.168.2.0/24 & ---        & pfSense LAN (192.168.2.1) $\leftrightarrow$ VyOS eth0 (192.168.2.2) \\
+DMZ           & 10.0.3.0/24   & 10.0.3.1  & Server-A (10.0.3.10), Server-B (10.0.3.20) via VyOS eth1 \\
+\bottomrule
+\end{tabularx}
+\caption{Lab~2 network segments}
+\label{tab:lab2-segments}
 \end{table}
 
 \section*{Vulnerability Chain and Flag Locations}
@@ -41,13 +58,11 @@ Parrot-LAB2   & lab2      & L4b2                 & Attacker node \\
 \toprule
 \textbf{Step} & \textbf{OWASP} & \textbf{Vuln} & \textbf{Implementation} & \textbf{Flag} \\
 \midrule
-1 & A03:2021 & Stored XSS    & \texttt{|safe} filter in Jinja2 template; \texttt{/comments} endpoint & --- \\
-2 & A07:2021 & Cookie theft  & \texttt{HttpOnly=False}; victim bot (Playwright) auto-visits comments & --- \\
-3 & A07:2021 & Broken auth   & Cookie format \texttt{ID:ROLE:USERNAME}; unsigned; forgeable & --- \\
-4 & A03:2021 & SQL injection & \texttt{/search?q=} uses string concatenation & FLAG~1 \\
-5 & A01:2021 & Admin access  & \texttt{/admin} panel reveals Server-B credentials & FLAG~2 \\
-6 & A08:2021 & YAML deser.   & Server-B \texttt{/preview} uses \texttt{yaml.UnsafeLoader} & --- \\
-7 & A08:2021 & RCE           & \texttt{!!python/object/apply:os.system} payload via POST & FLAG~3 \\
+1 & A03:2021 & Stored XSS    & \texttt{|safe} filter in Jinja2; \texttt{/comments} endpoint; victim bot auto-visits & --- \\
+2 & A07:2021 & Broken auth   & Cookie format \texttt{ID:ROLE:USERNAME}; unsigned; forgeable & --- \\
+3 & A03:2021 & SQL injection & \texttt{/search?q=} uses string concatenation; \texttt{admin\_users} table & \texttt{FLAG\{synapse\_sqli\_creds\_dumped\}} \\
+4 & A01:2021 & Lateral move  & SSH to Server-B with \texttt{monitor/M0nit0r2024} extracted via SQLi & \texttt{FLAG\{synapse\_pivot\_server\_b\}} \\
+5 & A03:2021 & Cmd injection & Server-B \texttt{/ping} uses \texttt{os.popen("ping -c 2 " + host)} & \texttt{FLAG\{synapse\_rce\_achieved\}} \\
 \bottomrule
 \end{tabularx}
 \caption{Lab~2 vulnerability chain and flag locations}
@@ -63,23 +78,38 @@ bash /usr/local/bin/lab2-bridges-up.sh
 \end{lstlisting}
     \item Start the SYNAPSE Portal on Server-A:
 \begin{lstlisting}[language=bash]
-sshpass -p S3rv3rA ssh ubuntu@192.168.30.x
+sshpass -p S3rv3rA ssh ubuntu@10.0.3.10
 cd /opt/synapse && docker-compose up -d
-docker-compose ps   # expect: flask, nginx, victim — all Up
+docker-compose ps   # expect: flask, nginx, victim -- all Up
 \end{lstlisting}
-    \item Start the DataVault on Server-B:
+    \item Start the Node Monitor on Server-B:
 \begin{lstlisting}[language=bash]
-sshpass -p S3rv3rB ssh ubuntu@192.168.30.x   # Server-B IP
-cd /opt/datavault && sudo docker compose up -d
-sudo docker compose ps   # expect: datavault-flask Up on :80
+sshpass -p S3rv3rB ssh ubuntu@10.0.3.20
+cd /opt/synapse-monitor && sudo docker compose up -d
+sudo docker compose ps   # expect: monitor-flask Up on :80
 \end{lstlisting}
     \item Configure Parrot static IP and verify connectivity:
 \begin{lstlisting}[language=bash]
-# On Parrot (10.0.40.x/24, GW 10.0.40.x):
+# On Parrot (10.0.2.10/24, GW 10.0.2.1):
 nmcli con mod "Wired connection 1" ipv4.method manual \
-  ipv4.addresses 10.0.40.x/24 ipv4.gateway 10.0.40.x
+  ipv4.addresses 10.0.2.10/24 ipv4.gateway 10.0.2.1
 nmcli con up "Wired connection 1"
-curl http://192.168.30.x   # Should return SYNAPSE Portal HTML
+curl http://10.0.3.10   # Should return SYNAPSE Portal HTML
+\end{lstlisting}
+    \item Verify all flags are in place:
+\begin{lstlisting}[language=bash]
+# Flag 1 -- SQLi result (in admin_users table on Server-A)
+sshpass -p S3rv3rA ssh ubuntu@10.0.3.10 \
+  "sqlite3 /opt/synapse/db/synapse.db 'SELECT flag FROM admin_users'"
+# Expected: FLAG{synapse_sqli_creds_dumped}
+
+# Flag 2 -- pivot marker on Server-B
+sshpass -p S3rv3rB ssh ubuntu@10.0.3.20 cat /home/monitor/flag.txt
+# Expected: FLAG{synapse_pivot_server_b}
+
+# Flag 3 -- RCE result on Server-B
+sshpass -p S3rv3rB ssh ubuntu@10.0.3.20 cat /root/flag_final.txt
+# Expected: FLAG{synapse_rce_achieved}
 \end{lstlisting}
 \end{enumerate}
 

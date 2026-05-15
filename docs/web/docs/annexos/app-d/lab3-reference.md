@@ -16,6 +16,8 @@ investigation walkthrough is at docs/web/docs/labs/lab3/walkthrough/.
 | Server-Web | maint | — | Backdoor account (attacker-created) |
 | Server-DB | analyst | `An@lyst2024` | Internal access |
 | Server-DB | devops | `D3v0ps#2023` | Compromised (password reuse) |
+| Server-Web | ubuntu | `ubuntu` | Admin (direct SSH, teacher only) |
+| Server-DB | ubuntu | `ubuntu` | Admin (direct SSH, teacher only) |
 
 ## Pre-Staged Attack Timeline
 
@@ -40,6 +42,36 @@ investigation walkthrough is at docs/web/docs/labs/lab3/walkthrough/.
 | Lateral movement log | `/var/log/auth.log` | Server-DB |
 | Exfiltration marker | `/opt/helix/data/.exfil_marker` | Server-DB |
 | Sensitive data | `/opt/helix/data/clients.db` | Server-DB |
+
+## Lab Startup Checklist
+
+1. Start all nodes in order: **pfSense** → **VyOS** → **Server-Web** → **Server-DB**
+2. Verify the EVE-NG host bridge interfaces are active
+   (persistent via udev rule `99-lab3-bridges.rules`):
+   ```bash
+   ip addr show vnet0_2   # Should show 192.168.50.254/24
+   ip addr show vnet0_3   # Should show 192.168.60.254/24
+   ```
+3. If bridges are missing (e.g. after EVE-NG host reboot), restore manually:
+   ```bash
+   ip addr add 192.168.50.254/24 dev vnet0_2
+   ip addr add 192.168.60.254/24 dev vnet0_3
+   ```
+4. Verify evidence artefacts via teacher accounts:
+   ```bash
+   # Server-Web
+   ssh ubuntu@192.168.50.10   # password: ubuntu
+   grep "185.220.101.47" /var/log/auth.log | wc -l  # expect 25+
+   grep "maint" /etc/passwd                          # expect maint entry
+   # Server-DB
+   ssh ubuntu@192.168.60.10   # password: ubuntu
+   ls /opt/helix/data/        # expect clients.db + .exfil_marker
+   ```
+
+!!! warning "Bridge conflict with Lab 1"
+    If Lab 1 is also deployed, `99-lab1-bridges.rules` and `99-lab3-bridges.rules`
+    assign overlapping interface names (`vnet0_2`/`vnet0_3`).
+    Do not run Lab 1 and Lab 3 simultaneously on the same EVE-NG host.
 
 ## Student Entry Point
 

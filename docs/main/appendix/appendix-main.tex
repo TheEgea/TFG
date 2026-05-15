@@ -298,27 +298,25 @@ This project prepares students to meet these professional expectations by provid
 \begin{itemize}
     \item \textbf{Four fully functional EVE-NG lab topologies} (.unl files):
     \begin{itemize}
-        \item Lab 1: Reconnaissance and Enumeration
-        \item Lab 2: Web Application Vulnerabilities (OWASP)
-        \item Lab 3: Network Analysis and Cryptography
-        \item Lab 4: Privilege Escalation
+        \item Lab 1: PEBCAK Corp — Recon & Enumeration
+        \item Lab 2: SYNAPSE Intelligence Portal — Web Vulns
+        \item Lab 3: HELIX Systems — Incident Response
+        \item Lab 4: CipherStrike — Crypto+Stego CTF
     \end{itemize}
-    
-    \item \textbf{8-12 customised virtual machine images} including:
+    \item \textbf{22 EVE-NG nodes across 4 labs}, built from 5 base image types:
     \begin{itemize}
-        \item 3x Kali Linux (attack platforms)
-        \item 1-2x Windows Server (victim systems)
-        \item 2-3x Linux servers (web, database, services)
-        \item 1-2x Network appliances (routers, switches)
-        \item Additional specialised VMs (cryptography, analysis tools)
+        \item 4x pfSense CE (perimeter firewalls, one per lab)
+        \item 4x VyOS (internal routers, one per lab)
+        \item 5x Ubuntu Server 24.04 (target services: web, database, crypto/stego)
+        \item 2x Ubuntu Desktop 24.04 (internal workstation PC1; monitoring Defender)
+        \item 4x Parrot OS (attacker/analyst nodes, one per lab)
     \end{itemize}
-    
-    \item \textbf{Automated deployment and validation scripts}:
+    \item \textbf{Documentation and build workflow scripts}:
     \begin{itemize}
-        \item Bash scripts for environment initialisation
-        \item Python scripts for lab validation and health checks
-        \item Reset scripts for rapid lab re-deployment
-        \item Time to deployment: <2 minutes per lab (KPI target)
+        \item Makefile with targets for LaTeX compilation (Vol~I, Vol~II, labs)
+        \item Shell scripts for PDF generation and GitHub Pages deployment
+        \item Python provisioning scripts for EVE-NG node configuration
+        \item Git-based version control for all topology and documentation files
     \end{itemize}
     
     \item \textbf{Technical documentation} (50-100 pages):
@@ -330,7 +328,7 @@ This project prepares students to meet these professional expectations by provid
         \item Troubleshooting guides for common issues
     \end{itemize}
     
-    \item \textbf{Student learning guides} (20-30 pages per lab):
+    \item \textbf{Student learning guides} (15-30 pages per lab):
     \begin{itemize}
         \item Clear learning objectives aligned with GEISI outcomes
         \item Step-by-step procedures with expected results

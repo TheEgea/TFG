@@ -15,6 +15,7 @@ environment. The student-facing challenge guide is available at
 
 \begin{table}[H]
 \centering
+\small
 \begin{tabularx}{\textwidth}{llXl}
 \toprule
 \textbf{Node} & \textbf{Username} & \textbf{Password} & \textbf{Access method} \\
@@ -24,7 +25,7 @@ VyOS-LAB4    & vyos   & \texttt{vyos}          & EVE-NG console \\
 ServerA      & admin  & \texttt{N3xaTech!}     & SSH 10.10.1.10 \\
 ServerB      & sysop  & \texttt{S3cure24!}     & SSH 10.10.2.10 \\
 ServerC      & devops & \texttt{fa681b59855d}  & SSH 10.10.3.10 (derived --- see below) \\
-Defender     & ---    & ---                    & Monitoring only \\
+Defender     & lab4   & \texttt{L4b4}          & Ubuntu Desktop / EVE-NG console \\
 \bottomrule
 \end{tabularx}
 \caption{Lab~4 credentials (instructor reference --- do not distribute to students)}
@@ -177,6 +178,15 @@ C4 & Hard           & \texttt{H4U\{3cc\_n0nc3\_r3us3\_pwn3d\}}          & Advanc
 show ip route
 # Expected: 10.10.1.0/24, 10.10.2.0/24,
 #           10.10.3.0/24, 10.10.4.0/24 all connected
+\end{lstlisting}
+    \item Ensure the EVE-NG host bridge for Zone-C is active (required for
+          direct SSH to ServerC from the EVE-NG host).
+          Persistent via \texttt{udev} rule \texttt{99-lab4-bridges.rules};
+          restore manually if missing:
+\begin{lstlisting}[language=bash]
+ip addr show vnet0_5   # Should show 10.10.3.253/24
+# If missing:
+ip addr add 10.10.3.253/24 dev vnet0_5
 \end{lstlisting}
     \item Confirm SSH access to all server nodes:
 \begin{lstlisting}[language=bash]
