@@ -45,7 +45,7 @@ grep 'Failed password for devops' /var/log/auth.log | wc -l
 # 25
 ```
 
-25 consecutive failures from `185.220.101.47` within a two-minute window = **brute-force attack**.
+25 consecutive failures from `185.220.101.47` across a sustained window = **brute-force attack**.
 
 ---
 
@@ -57,7 +57,7 @@ grep -E 'Accepted|sudo' /var/log/auth.log
 # Apr 24 03:18:01 helix-web sudo: devops : ... COMMAND=/usr/bin/find
 ```
 
-The 12-minute gap (03:05 last fail → 03:17 success) suggests the attacker paused to use the correct credential.
+The gap between the last failed attempt and the successful login suggests the attacker switched to the correct credential shortly after the brute-force phase ended.
 `sudo /usr/bin/find` by a developer account is anomalous — `find` has no legitimate need for root.
 
 ---
@@ -114,6 +114,9 @@ grep 'Accepted' /var/log/auth.log
 ```
 
 Source `192.168.50.10` = Server-Web. The attacker reused `devops` credentials to reach the database server.
+
+!!! note
+    You connect as `analyst` (your investigator account). The attacker previously moved laterally as `devops` — hence the `auth.log` entry shows `devops`, not `analyst`.
 
 ---
 

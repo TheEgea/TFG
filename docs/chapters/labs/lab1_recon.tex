@@ -7,7 +7,7 @@ framework~\cite{ptes}. Students interact with a fictional target organisation,
 (pfSense~CE~\cite{pfsense}), an internal router (VyOS~\cite{vyos}), and a target
 Ubuntu~Server~24.04~\cite{ubuntu}. Access is exclusively via DNS hostname
 (\texttt{lab1}) resolved through pfSense's Unbound resolver~\cite{unbound_dns}, requiring students
-to use proper service enumeration before any exploitation attempt. A quick teacher reference --- credentials, network table, and startup checklist --- is compiled
+to use proper service enumeration before any exploitation attempt. A teacher reference --- credentials, network table, and startup checklist --- is compiled
 in Appendix~B; the complete topology, configuration files, and step-by-step guide are at
 \path{docs/web/docs/labs/lab1/}.
 
@@ -55,7 +55,7 @@ DNS resolution        & Hostname-to-IP via Unbound resolver (RFC~1035~\cite{rfc1
 Port scanning         & TCP SYN scan with Nmap (RFC~793~\cite{rfc793})                & PTES Recon  \\
 Service enumeration   & Banner grabbing, version detection                            & PTES Recon  \\
 Web content discovery & Directory brute-force with Gobuster                           & OWASP WSTG  \\
-Credential retrieval  & Exposed credentials in web content                            & OWASP A05   \\
+Credential retrieval  & Exposed credentials in web content                            & OWASP A05:2021\\
 SSH access            & Password-based login (RFC~4252~\cite{rfc4252})                & PTES Exploit\\
 \bottomrule
 \end{tabularx}
@@ -70,8 +70,8 @@ SSH access            & Password-based login (RFC~4252~\cite{rfc4252})          
 EVE-NG provides VNC console access to QEMU nodes, but certain key combinations ---
 most notably \texttt{Ctrl+C} and special characters such as \texttt{|}, \texttt{@},
 and \texttt{\{} --- are not reliably forwarded by the browser-based VNC client or by
-the \texttt{vncdo} command-line tool. The root cause is that vncdo sends key symbols
-rather than raw key codes, and the VNC server's key mapping does not cover all
+the \texttt{vncdo} command-line tool. The root cause was that vncdo sent key symbols
+rather than raw key codes, and the VNC server's key mapping did not cover all
 combinations used in a penetration testing context.
 
 The solution was to inject keystrokes directly via the QEMU monitor socket,

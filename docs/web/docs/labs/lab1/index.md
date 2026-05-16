@@ -69,8 +69,8 @@ PEBCAK Corp    internal user
 
 | Segment | Subnet | Gateway | Purpose |
 |---------|--------|---------|---------|
-| Net-Link | 172.16.0.0/30 | pfSense vtnet0 | pfSense ↔ VyOS |
-| Users LAN | 192.168.10.0/24 | 192.168.10.x | PC1 segment |
+| Net-Link | 172.16.1.0/30 | 172.16.1.1 | pfSense ↔ VyOS |
+| Users LAN | 192.168.10.0/24 | 192.168.10.1 | PC1 segment |
 | Servers LAN | 192.168.20.0/24 | 192.168.20.1 | Server segment |
 | Homelab | 192.168.0.0/24 | 192.168.0.1 | WAN · Attacker |
 
@@ -93,7 +93,7 @@ PEBCAK Corp    internal user
 3. http://lab1/pebcak.html   → SSH creds: blackmesa / !Bl4kM3s$
 4. ssh blackmesa@lab1        → Server via pfSense DNAT (TCP 22)
 5. cat ~/flag.txt             → FLAG{p3bc4k_s3rv3r_0wn3d} + pfSense creds
-6. ssh admin@172.16.x.x      → pfSense access (pivot from Server via VyOS)
+6. ssh admin@172.16.1.1      → pfSense access (pivot from Server via VyOS)
 ```
 
 ---
@@ -105,7 +105,7 @@ PEBCAK Corp    internal user
    ```bash
    ip addr add 192.168.20.x/24 dev vnet0_2
    ip addr add 192.168.10.x/24 dev vnet0_3
-   ip route add 172.16.0.0/30 via 192.168.20.1
+   ip route add 172.16.1.0/30 via 192.168.20.1
    ```
 3. Set DNS on Parrot to `192.168.0.x` (pfSense) so `lab1` resolves
 4. Verify: `curl http://lab1` from Parrot Firefox

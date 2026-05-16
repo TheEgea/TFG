@@ -65,7 +65,7 @@ XSS+Auth+SQLi   YAML RCE
 
 | Segment | Subnet | Gateway | Purpose |
 |---------|--------|---------|---------|
-| Net-Link | 172.16.0.0/30 | pfSense vtnet0 | pfSense ↔ VyOS |
+| Net-Link | 172.16.1.0/30 | 172.16.1.1 | pfSense ↔ VyOS |
 | Net-DMZ | 192.168.30.0/24 | 192.168.30.1 | Server-A + Server-B |
 | Net-Attackers | 10.0.40.0/24 | 10.0.40.1 | Parrot attacker |
 | Homelab | 192.168.0.0/24 | 192.168.0.1 | WAN |

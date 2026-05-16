@@ -12,8 +12,8 @@ This project aims to design, implement, and validate a reusable teaching package
 \textbf{Measurable KPIs}:
 \begin{itemize}
 \item 4 fully functional .unl topologies (100\%)
-\item Deployment time $\leq$ 2 minutes per lab (95\% of cases)
-\item VM boot success rate $\geq$ 95\%
+\item Deployment time $\leq$~2 minutes per lab (95\% of cases)
+\item VM boot success rate $\geq$~95\%
 \item Fully replicable on any EVE-NG Community Edition instance with equivalent hardware
 \end{itemize}
 
@@ -44,17 +44,17 @@ This project aims to design, implement, and validate a reusable teaching package
 
 \subsection{OE4: Validate Usability and Educational Effectiveness}
 
-\textbf{Description}: Validated that the package meets educational and technical requirements through a small pilot group representative of the target student population. The following targets were set and subsequently verified (see Section~\ref{sec:pilot_validation}):
+\textbf{Description}: Validate that the package meets educational and technical requirements through a pilot group representative of the target student population. The following targets are set as success criteria (see Section~\ref{sec:pilot_validation}):
 
 \textbf{Measurable KPIs}:
 \begin{itemize}
 \item Average lab resolution time within the 90--120 minute target window
 \item All pilot participants able to complete the lab with the provided guide
-\item User satisfaction score $\geq$ 4/5 (post-session survey)
+\item User satisfaction score $\geq$~4/5 (post-session survey)
 \item Zero blocking technical incidents during pilot sessions
 \end{itemize}
 
-\textbf{Note}: The pilot group comprises 4--5 individuals from the GEISI student
+\textbf{Note}: The pilot group comprises five individuals from the GEISI student
 population, potentially including participants with documented learning
 difficulties (e.g.\ dyslexia), to assess the effectiveness of the
 accessibility measures incorporated into the lab documentation.
@@ -112,20 +112,20 @@ accessibility measures incorporated into the lab documentation.
     \toprule
     \textbf{Category} & \textbf{Metric} & \textbf{Objective} & \textbf{Measurement Method} \\
     \midrule
-    Technical & Lab deployment time      & $\leq$ 2 min     & Automated timing \\
-    Technical & VM boot success rate     & $\geq$ 95\%      & System logs + validation scripts \\
-    Technical & Full reset time          & $\leq$ 30 s      & Scripts with timestamps \\
+    Technical & Lab deployment time      & $\leq$~2 min     & Automated timing \\
+    Technical & VM boot success rate     & $\geq$~95\%      & System logs + validation scripts \\
+    Technical & Full reset time          & $\leq$~30 s      & Scripts with timestamps \\
     Technical & Scenario reproducibility & 100\%            & Automated tests \\
     \midrule
     Educational & Lab resolution time    & 90--120 min      & Time tracking during pilot \\
     Educational & Lab completion (pilot) & All participants & Observation during pilot sessions \\
-    Educational & User satisfaction      & $\geq$ 4/5       & Post-use survey \\
-    Educational & Key concept understanding & $\geq$ 80\% correct & Assessment questionnaire \\
+    Educational & User satisfaction      & $\geq$~4/5       & Post-use survey \\
+    Educational & Key concept understanding & $\geq$~80\% correct & Assessment questionnaire \\
     \midrule
     Quality & Documentation coverage    & 100\% of features & Verification checklist \\
     Quality & Critical errors           & 0                 & Exhaustive testing \\
     Quality & EVE-NG compatibility      & 100\%             & Tests in multiple environments \\
-    Quality & Interface usability       & $\geq$ 4/5        & UX heuristic evaluation \\
+    Quality & Interface usability       & $\geq$~4/5        & UX heuristic evaluation \\
     \bottomrule
   \end{tabularx}
   \caption{Key performance indicators for the lab teaching package}

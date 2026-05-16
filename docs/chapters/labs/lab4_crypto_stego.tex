@@ -1,7 +1,7 @@
-% Lab 4 — compact version (full docs: docs/web/docs/labs/lab4/)
+% Lab 4 --- compact version (full docs: docs/web/docs/labs/lab4/)
 \section{Lab 4: Cryptography and Steganography CTF --- CipherStrike}
 
-Lab~4 departs from the previous network-centric scenarios and challenges students
+Lab~4 differs from the previous network-centric scenarios and challenges students
 in the domain of applied cryptography and digital steganography. The fictional
 premise is a forensic investigation at \textit{NovaCorp}: encrypted and steganographically
 concealed communications have been intercepted following a corporate breach, and
@@ -14,10 +14,10 @@ challenges; access to ServerC --- which hosts four advanced challenges combining
 both disciplines --- is gated on completing key challenges from the first two modules.
 The gate mechanism derives the ServerC SSH password from the MD5 hash of the
 concatenation of two key flags:
-\texttt{md5(A5\_flag + B5\_flag)[:12]}.
+\texttt{md5(A5\_flag + B5\_flag)[:12]}\footnote{Compute in Python as: \texttt{hashlib.md5((a5.strip()+b5.strip()).encode())}\\\texttt{.hexdigest()[:12]}}.
 This design enforces a genuine learning dependency between stages rather than a
 purely linear challenge sequence.
-A quick teacher reference --- credential table, flag inventory, and startup procedure --- is compiled in Appendix~J;
+A teacher reference --- credential table, flag inventory, and startup procedure --- is compiled in Appendix~J;
 complete challenge specifications and deployment guide are at \path{docs/web/docs/labs/lab4/}.
 
 
@@ -99,7 +99,7 @@ all subsequent restarts.
 The \texttt{hlextend} library required for the SHA-1 length extension challenge
 (C3) is not available on PyPI and must be installed directly from its GitHub
 repository. The pre-staging script therefore clones the repository and installs
-it via \texttt{pip install -e}, which introduces a dependency on network access
+it via \texttt{pip install -e .}, which introduces a dependency on network access
 during image preparation. To make image re-staging reproducible without internet
 access on the EVE-NG host, the library source was vendored into the project
 repository at \path{src/eve-ng/configs/nodes/Lab4/serverC/hlextend/} and the

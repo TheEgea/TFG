@@ -10,9 +10,9 @@
 The Centre Universitari TecnoCampus~\cite{tecnocampus} offers applied science degrees
 oriented towards professional practice in technology, business, creative industries,
 and health. Affiliated with the Universitat Pompeu Fabra, it carries that university's
-quality seal. Established in 2023 through the merger of three schools --- the Escola
+quality seal. Established in 2023 through the merger of three schools---the Escola
 Superior Politecnica (ESUPT), the Escola Superior de Ciencies Socials i de l'Empresa
-(ESCSET), and the Escola Superior de Ciencies de la Salut (ESCST) --- it is located
+(ESCSET), and the Escola Superior de Ciencies de la Salut (ESCST)---it is located
 at the technology park of the same name in Mataro. This setting combines academic
 infrastructure with an entrepreneurial ecosystem that supports student involvement in
 innovation and industry-facing projects.
@@ -20,7 +20,7 @@ innovation and industry-facing projects.
 The primary beneficiary of this project is the Bachelor's Degree in Computer
 Engineering (Management and Information Systems track). Students in this programme
 build foundational skills in networks, operating systems, databases, and software
-engineering --- all of which are directly relevant to security practice.
+engineering---all of which are directly relevant to security practice.
 The \textit{Introduction to Cybersecurity} course is a natural integration point
 for these skills, yet it currently lacks a dedicated hands-on environment.
 
@@ -29,15 +29,14 @@ Three perspectives illustrate the gap this project addresses:
 \paragraph{Institutional perspective.}
 The absence of dedicated cybersecurity lab infrastructure limits the institution's
 capacity to offer competitive, hands-on security training aligned with degree learning
-outcomes. Commercial alternatives such as HackTheBox and TryHackMe are externally
-hosted, non-customisable, and not designed to map to specific academic curricula or
-assessment rubrics.
+outcomes. Commercial alternatives are externally hosted, non-customisable, and not designed to map to specific academic curricula or
+assessment rubrics (see Section~\ref{sec:existing_platforms}).
 
 \paragraph{Student perspective.}
 Students encounter security concepts as isolated theoretical constructs rather than
 as failures observable in realistic, integrated environments. Without exposure to
-multi-component systems --- firewalls, routers, servers, and applications working
-together --- they cannot develop the diagnostic reasoning required in professional
+multi-component systems---firewalls, routers, servers, and applications working
+together---they cannot develop the diagnostic reasoning required in professional
 security roles.
 
 \paragraph{Teacher perspective.}
@@ -49,6 +48,7 @@ reproducibility across cohorts.
 
 
 \section{Existing Platforms Overview}
+\label{sec:existing_platforms}
 
 The major platforms used for cybersecurity training share a common limitation: they are designed
 for independent learners or certification preparation rather than curriculum-aligned institutional
@@ -82,8 +82,7 @@ Hack4u Academy & Methodology & External & Strong & Minimal & Limited \\
 \end{table}
 
 Full individual platform descriptions, including detailed discussion of each platform's
-pedagogical approach, deployment model, and specific limitations, are provided in
-the Appendix~E.
+pedagogical approach, deployment model, and specific limitations, are provided in Appendix~ef{app:platforms}.
 
 \section{Security Frameworks and Methodologies}
 
@@ -102,21 +101,21 @@ phases, while Labs~2--4 progressively cover exploitation and post-exploitation t
 \subsection{OWASP Top 10}
 
 The OWASP Top 10 is a regularly updated list of the most critical web application security
-vulnerabilities \cite{owasp2021}. For educational purposes, it provides a focused, industry-recognised
+vulnerabilities~\cite{owasp2021}. For educational purposes, it provides a focused, industry-recognised
 curriculum that prioritises the attack vectors students are most likely to encounter in practice.
-Lab 2 of this project is directly aligned with OWASP Top 10 categories.
+Lab~2 of this project is directly aligned with OWASP Top 10 categories.
 
 \subsection{CIS Critical Controls}
 
 The CIS Critical Controls (v8.0) represent a prioritised set of defensive techniques spanning
-network defence, data protection, and incident response \cite{cis_controls}. Labs 1 and 3
+network defence, data protection, and incident response~\cite{cis_controls}. Labs~1 and~3
 incorporate defensive controls so that students understand not only how to attack but why
 specific security measures are implemented.
 
 \subsection{NIST Cybersecurity Framework}
 
 The NIST Cybersecurity Framework organises security activities into five functions: Identify,
-Protect, Detect, Respond, and Recover \cite{nist_framework}. The lab design follows these
+Protect, Detect, Respond, and Recover~\cite{nist_framework}. The lab design follows these
 principles by enabling students to identify vulnerabilities through hands-on exercises and
 understand corresponding protective measures.
 
@@ -124,6 +123,7 @@ understand corresponding protective measures.
 
 
 \section{Pedagogical Evidence from Existing Practice}
+\label{sec:pedagogical_evidence}
 
 The effectiveness of hands-on, challenge-based cybersecurity education is demonstrated by
 the scale and adoption of the platforms reviewed in the previous section.
@@ -135,7 +135,7 @@ self-contained, curriculum-aligned lab exercises deployable on local infrastruct
 GOAD~\cite{goad} illustrates that realistic, multi-system topologies can be automated and
 reproduced reliably for repeated instructional use.
 
-These precedents directly inform the design choices in this project: each lab is built around
+These precedents directly informed the design choices in this project: each lab is built around
 scenario-based flags mapped to specific learning objectives, includes a teacher reference
 sheet, and is deployed on self-hosted infrastructure to preserve institutional control.
 The distinguishing contribution relative to existing platforms is integration: rather than
@@ -151,7 +151,7 @@ Most platforms target independent learners or certification preparation rather t
 into specific degree programmes. No major platform explicitly maps pentesting scenarios to the
 learning outcomes of a particular computer science curriculum.
 
-\textbf{Gap 2: Institution Control.}
+\textbf{Gap 2: Institutional Control.}
 Effective educational deployment requires institutional control over content, assessment, and
 infrastructure. External platforms introduce dependencies and limit customisation, while
 fully self-hosted solutions often impose high maintenance burdens.
@@ -173,9 +173,9 @@ openness to encourage problem-solving and methodology development.
 
 \section{The Need for EVE-NG Based Labs}
 
-This analysis shows that while excellent individual components exist---gamified learning
-(TryHackMe), challenging scenarios (HackTheBox), research-backed content (SEED Labs),
-specialised domains (GOAD)---no existing solution comprehensively addresses the needs of a
+This analysis shows that while excellent individual components exist across the reviewed platforms---gamified learning,
+scenario-based challenges, research-backed content, and specialised domains (Sections~\ref{sec:existing_platforms} 
+and~\ref{sec:pedagogical_evidence})---no existing solution comprehensively addresses the needs of a
 university cybersecurity education programme:
 
 \begin{itemize}

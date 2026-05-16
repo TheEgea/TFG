@@ -1,5 +1,5 @@
 % ============================================================
-% Appendix D: Lab 3 — Teacher Reference
+% Appendix D: Lab 3 --- Teacher Reference
 % ============================================================
 
 \chapter{Lab~3: HELIX Systems --- Teacher Reference}
@@ -94,11 +94,11 @@ ip addr add 192.168.60.254/24 dev vnet0_3
 \end{lstlisting}
     \item Verify evidence artefacts are in place on both servers:
 \begin{lstlisting}[language=bash]
-# Server-Web (via SSH — teacher account)
+# Server-Web (via SSH -- teacher account)
 ssh ubuntu@192.168.50.10   # password: ubuntu
 grep "185.220.101.47" /var/log/auth.log | wc -l  # expect 25+ lines
 grep "maint" /etc/passwd  # expect maint entry
-# Server-DB (via SSH — teacher account)
+# Server-DB (via SSH -- teacher account)
 ssh ubuntu@192.168.60.10   # password: ubuntu
 ls /opt/helix/data/        # expect clients.db + .exfil_marker
 \end{lstlisting}

@@ -1,4 +1,4 @@
-% Lab 3 — compact version (full docs: docs/web/docs/labs/lab3/)
+% Lab 3 --- compact version (full docs: docs/web/docs/labs/lab3/)
 \section{Lab 3: Incident Response and Log Forensics --- HELIX Systems}
 
 Lab~3 inverts the student's role: instead of attacking, they act as a security
@@ -53,7 +53,7 @@ Server-DB    & Internal DB       & eth0  & 192.168.60.10      & 192.168.60.0/24 
 \midrule
 T1110.001 & Brute Force: Password Guessing & \texttt{auth.log} failed attempts \\
 T1078     & Valid Accounts                 & \texttt{devops} account compromise \\
-T1548.003 & Sudo and Sudo Caching          & \texttt{find} NOPASSWD in sudoers \\
+T1548.003 & Abuse Elevation Control Mechanism: Sudo and Sudo Caching          & NOPASSWD rule for \texttt{find} in \texttt{sudoers.d/devops} \\
 T1136.001 & Create Account: Local          & Backdoor \texttt{maint} account \\
 T1021.004 & Remote Services: SSH           & Lateral movement to Server-DB \\
 T1005     & Data from Local System         & \texttt{/opt/helix/data/} exfil marker \\
@@ -82,7 +82,7 @@ Lateral movement (03:21)     & \texttt{auth.log} \texttt{devops} SSH from \textt
 Data exfiltration (03:22)    & \texttt{/opt/helix/data/.exfil\_marker} + \texttt{clients.db}                               & Server-DB  \\
 \bottomrule
 \end{tabular}}
-\caption{Lab~3 forensic findings and evidence locations}
+\caption{Lab~3 forensic findings and evidence locations (all timestamps UTC as recorded in \texttt{/var/log/auth.log})}
 \label{tab:lab3-findings}
 \end{table}
 
@@ -97,19 +97,18 @@ procedure was identical --- renaming the guest VG to \texttt{helix-web-vg} befor
 activation --- and the naming rule was formally added to the project's infrastructure
 runbook to prevent recurrence in future labs.
 
-\subsubsection{Read-only nbd Device}
+\subsubsection{Read-only NBD Device}
 
 On one occasion, the QCOW2 image mounted via \texttt{qemu-nbd} was presented as
-read-only despite the \texttt{-readwrite} flag. Investigation revealed that a
-previous mount session had not been cleanly disconnected (\texttt{qemu-nbd
-\texttt{-{}-disconnect}}), leaving the kernel's NBD client in an inconsistent state.
+read-only despite the absence of the \texttt{--read-only} flag. Investigation revealed that a
+previous mount session had not been cleanly disconnected (\texttt{qemu-nbd~-{}-disconnect}), leaving the kernel's NBD client in an inconsistent state.
 The fix was to explicitly disconnect any stale NBD device before re-mounting, and
 to add a pre-mount check to the project's image manipulation scripts.
 
-\subsubsection{analyst Group Membership for Log Access}
+\subsubsection{Analyst Group Membership for Log Access}
 
 The student account (\texttt{analyst}) was created with restricted permissions so
-that it could not read system logs directly as root. However, \texttt{/var/log/auth.log}
+that it could not read system logs directly without elevated group membership. However, \texttt{/var/log/auth.log}
 requires membership of the \texttt{adm} group on Ubuntu. The pre-staging script was
 updated to add \texttt{analyst} to \texttt{adm} at image preparation time, preserving
 the educational constraint (no \texttt{sudo} to \texttt{root}) while allowing access

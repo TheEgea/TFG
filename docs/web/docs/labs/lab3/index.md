@@ -66,7 +66,7 @@ bash history      exfil_marker
 
 | Segment | Subnet | Gateway | Purpose |
 |---------|--------|---------|---------|
-| Net-Link | 172.16.2.0/30 | pfSense vtnet0 | pfSense ↔ VyOS |
+| Net-Link | 172.16.2.0/30 | 172.16.2.1 | pfSense ↔ VyOS |
 | Net-Servers | 192.168.50.0/24 | 192.168.50.1 | Server-Web |
 | Net-Internal | 192.168.60.0/24 | 192.168.60.1 | Server-DB |
 | Homelab | 192.168.0.0/24 | 192.168.0.1 | WAN · Student entry |
@@ -102,7 +102,7 @@ bash history      exfil_marker
 
 1. Start all nodes from EVE-NG web UI
 2. Verify pfSense DNAT rule forwards TCP 22 (WAN) → Server-Web (192.168.50.10)
-3. Student entry: `ssh devops@192.168.0.x` (pfSense WAN IP)
+3. Student entry: `ssh analyst@<pfSense-WAN-IP>` — password: `An@lyst2024`
 4. Evidence is pre-staged — no additional setup required
 
 !!! info "Student credentials"

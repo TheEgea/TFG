@@ -1,14 +1,14 @@
-% Lab 2 — compact version (full docs: docs/web/docs/labs/lab2/)
+% Lab 2 --- compact version (full docs: docs/web/docs/labs/lab2/)
 \section{Lab 2: Web Application Vulnerabilities --- SYNAPSE Intelligence Portal}
 
-Lab~2 places students in front of a custom two-tier web application,
+Lab~2 presents students with a custom two-tier web application,
 \textit{SYNAPSE Intelligence Portal}, deployed on a segmented DMZ architecture.
 The scenario is aligned with the OWASP Top~10~\cite{owasp2021} and chains
 multiple vulnerabilities across two servers: Server-A hosts the portal front-end
 with authentication and reporting features; Server-B hosts the DataVault internal
 file management service accessible only after pivoting from Server-A. Students must
 complete a progressive exploitation chain --- stored XSS, cookie theft, SQL injection,
-and YAML deserialization --- to collect all three flags. A quick teacher reference --- credentials, startup procedure, and flag guide --- is compiled in Appendix~C;
+and YAML deserialization --- to collect all three flags. A teacher reference --- credentials, startup procedure, and flag guide --- is compiled in Appendix~C;
 complete source code, topology, and deployment instructions are at \path{docs/web/docs/labs/lab2/}.
 
 
@@ -61,7 +61,7 @@ Server-B     & DataVault         & eth0  & 192.168.30.20    & 192.168.30.0/24   
 \label{tab:lab2-vulns}
 \end{table}
 
-\subsection*{Results}
+\subsubsection*{Results}
 
 All three flags were successfully captured, confirming the complete exploitation
 chain from stored XSS to remote code execution.
@@ -73,7 +73,7 @@ chain from stored XSS to remote code execution.
 \textbf{Flag} & \textbf{Location} & \textbf{Technique} \\
 \midrule
 \texttt{FLAG\{synapse\_sqli\_creds\_dumped\}} & \texttt{/search?q=} UNION dump on Server-A & UNION SQL Injection \\
-\texttt{FLAG\{synapse\_pivot\_server\_b\}}    & \texttt{/admin} classified panel on Server-A & Broken auth + SQLi chain \\
+\texttt{FLAG\{synapse\_pivot\_server\_b\}}    & \texttt{/home/monitor/flag.txt} on Server-B & SSH pivot with SQLi-extracted credentials \\
 \texttt{FLAG\{synapse\_rce\_achieved\}}       & \texttt{/preview} reverse shell on Server-B  & YAML deserialization RCE \\
 \bottomrule
 \end{tabular}}

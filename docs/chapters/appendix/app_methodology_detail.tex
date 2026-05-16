@@ -81,7 +81,7 @@ and non-functional).
 \item \textbf{Lab 1: Reconnaissance Development} (14h research + 20h dev) ---
 Scenario: intelligence gathering phase using PTES framework.
 Tools: Nmap\cite{nmap}, passive reconnaissance techniques.
-Topology: multi-tier network with passive monitoring capabilities.
+Topology: multi-tier segmented network with perimeter firewall, internal router, target server, and internal workstation.
 Validation: successful execution of reconnaissance workflow.
 
 \item \textbf{Lab 2: Web Vulnerabilities Development} (14h research + 25h dev) ---
@@ -128,8 +128,7 @@ pilot validation report; technical configuration references.
 \item \textbf{Lab 4: CipherStrike --- Cryptography and Steganography CTF} (16h research + 30h dev) ---
 Scenario: Capture-the-Flag challenges covering cryptographic attacks and steganography
 analysis across three servers (A: crypto, B: stego, C: combined gate challenges).
-Tools: Python cryptanalysis scripts, steganography tools (\texttt{steghide},
-\texttt{zsteg}, \texttt{stegseek}), hash cracking, encoding/decoding utilities.
+Tools: Python cryptanalysis scripts (\texttt{pycryptodome}, \texttt{gmpy2}), steganography tools (\texttt{steghide}, \texttt{exiftool}, PIL), hash cracking, encoding/decoding utilities.
 Validation: all 14 flags captured (A1--A5, B1--B5, C1--C4).
 
 \item \textbf{Comprehensive Penetration Testing} (30h Round 1 + 25h Round 2) ---

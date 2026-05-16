@@ -1,5 +1,5 @@
 % ============================================================
-% Appendix J: Lab 4 — Instructor Reference
+% Appendix J: Lab 4 --- Instructor Reference
 % ============================================================
 
 \chapter{Lab~4: CipherStrike --- Instructor Reference}
@@ -80,7 +80,7 @@ A4 & \texttt{A4\_mensaje\_xor.hex}                 & XOR repeating key (crib-dra
 A5 & \texttt{A5\_rsa\_challenge.txt}     & RSA small exponent ($e=3$), cube root via \texttt{gmpy2.iroot} & \texttt{H4U\{rsa\_sm4ll\_3xp0n3nt\}} \\
 \bottomrule
 \end{tabular}}
-\caption{ServerA cryptography challenges (A5 is a key flag — required for ServerC access)}
+\caption{ServerA cryptography challenges (A5 is a key flag --- required for ServerC access)}
 \label{tab:lab4-serverA}
 \end{table}
 
@@ -190,9 +190,9 @@ ip addr add 10.10.3.253/24 dev vnet0_5
 \end{lstlisting}
     \item Confirm SSH access to all server nodes:
 \begin{lstlisting}[language=bash]
-ssh admin@10.10.1.10    # ServerA — N3xaTech!
-ssh sysop@10.10.2.10    # ServerB — S3cure24!
-ssh devops@10.10.3.10   # ServerC — fa681b59855d
+ssh admin@10.10.1.10    # ServerA -- N3xaTech!
+ssh sysop@10.10.2.10    # ServerB -- S3cure24!
+ssh devops@10.10.3.10   # ServerC -- fa681b59855d
 \end{lstlisting}
     \item Verify all challenge files are present on each server:
 \begin{lstlisting}[language=bash]
