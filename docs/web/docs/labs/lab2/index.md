@@ -38,15 +38,15 @@ deserialization for a full reverse shell.
 Homelab LAN (192.168.0.0/24)
         |
 [pfSense-LAB2]  WAN: 192.168.0.x (DHCP)
-        |        LAN: 172.16.x.x/30
+        |        LAN: 172.16.1.1/30
 [VyOS-LAB2]
-  eth0: 172.16.x.x/30   ← uplink to pfSense
-  eth1: 192.168.30.x/24 ← Net-DMZ (servers)
-  eth2: 10.0.40.x/24    ← Net-Attackers (Parrot)
+  eth0: 172.16.1.2/30   ← uplink to pfSense
+  eth1: 192.168.30.1/24 ← Net-DMZ (servers)
+  eth2: 10.0.40.1/24    ← Net-Attackers (Parrot)
         |
   +-----+--------+            |
-[Server-A]    [Server-B]   [Parrot]
-192.168.30.x  192.168.30.x  10.0.40.x
+[Server-A]    [Server-B]    [Parrot]
+192.168.30.10 192.168.30.20 10.0.40.10
 SYNAPSE Portal  DataVault    Attacker
 XSS+Auth+SQLi   YAML RCE
 ```
@@ -56,10 +56,10 @@ XSS+Auth+SQLi   YAML RCE
 | Node | OS | IP | Role |
 |------|----|----|------|
 | pfSense-LAB2 | pfSense CE | WAN: 192.168.0.x / LAN: 172.16.x.x | Perimeter firewall · UEFI boot |
-| VyOS-LAB2 | VyOS rolling | 172.16.x.x / 192.168.30.1 / 10.0.40.1 | Router · NAT · DNS |
-| Server-A | Ubuntu Server 24.04 | 192.168.30.x | SYNAPSE Portal — Flask + nginx + victim bot |
-| Server-B | Ubuntu Server 24.04 | 192.168.30.x | DataVault — Flask + PyYAML deserialization |
-| Parrot | Parrot Security 6.4 | 10.0.40.x (static) | Attacker |
+| VyOS-LAB2 | VyOS rolling | 172.16.1.2 / 192.168.30.1 / 10.0.40.1 | Router · NAT · DNS |
+| Server-A | Ubuntu Server 24.04 | 192.168.30.10 | SYNAPSE Portal — Flask + nginx + victim bot |
+| Server-B | Ubuntu Server 24.04 | 192.168.30.20 | DataVault — Flask + PyYAML deserialization |
+| Parrot | Parrot Security 6.4 | 10.0.40.10 (static) | Attacker |
 
 ## Network segments
 
@@ -119,15 +119,15 @@ Stored XSS → Cookie Hijack → Broken Auth → SQLi → Admin Panel → YAML R
    ```
 2. Start SYNAPSE Portal on Server-A:
    ```bash
-   sshpass -p S3rv3rA ssh ubuntu@192.168.30.x
+   sshpass -p S3rv3rA ssh ubuntu@192.168.30.10
    cd /opt/synapse && docker-compose up -d
    ```
 3. Start DataVault on Server-B:
    ```bash
-   sshpass -p S3rv3rB ssh ubuntu@192.168.30.x
+   sshpass -p S3rv3rB ssh ubuntu@192.168.30.20
    cd /opt/datavault && sudo docker compose up -d
    ```
-4. Configure Parrot static IP (`10.0.40.x/24`, GW `10.0.40.x`)
+4. Configure Parrot static IP (`10.0.40.10/24`, GW `10.0.40.1`)
 
 !!! warning "Caveats"
     - pfSense-LAB2 uses **UEFI boot** — use `/usr/local/bin/pfsense-lab2-start.sh`

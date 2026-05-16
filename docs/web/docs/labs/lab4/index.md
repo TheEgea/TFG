@@ -106,6 +106,9 @@ Crypto      Stego       Adv Mix     Monitoring
     ```
     password = md5(flag_A5 + flag_B5)[:12]
     ```
+    Where `flag_A5` and `flag_B5` are the full flag strings (e.g. `FLAG{...}`),
+    concatenated without separator, hashed with MD5 (hex digest),
+    and the first 12 characters used as the password.
 
     You will not be told the password directly. Derive it yourself once you have
     both flags.

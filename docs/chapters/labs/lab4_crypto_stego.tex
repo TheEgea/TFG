@@ -14,11 +14,19 @@ challenges; access to ServerC --- which hosts four advanced challenges combining
 both disciplines --- is gated on completing key challenges from the first two modules.
 The gate mechanism derives the ServerC SSH password from the MD5 hash of the
 concatenation of two key flags:
-$\texttt{md5(A5\_flag + B5\_flag)[:12]}$.
+\texttt{md5(A5\_flag + B5\_flag)[:12]}.
 This design enforces a genuine learning dependency between stages rather than a
 purely linear challenge sequence.
 A quick teacher reference --- credential table, flag inventory, and startup procedure --- is compiled in Appendix~J;
 complete challenge specifications and deployment guide are at \path{docs/web/docs/labs/lab4/}.
+
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.95\textwidth]{lab4-topology.png}
+\caption{Lab~4 network topology}
+\label{fig:lab4-topology}
+\end{figure}
 
 \subsubsection*{Network Addressing}
 

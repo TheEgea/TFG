@@ -6,11 +6,20 @@ framework~\cite{ptes}. Students interact with a fictional target organisation,
 \textit{PEBCAK Corp}, through a layered topology that includes a perimeter firewall
 (pfSense~CE~\cite{pfsense}), an internal router (VyOS~\cite{vyos}), and a target
 Ubuntu~Server~24.04~\cite{ubuntu}. Access is exclusively via DNS hostname
-(\texttt{pebcak.local}) resolved through pfSense's Unbound resolver~\cite{unbound_dns}, requiring students
+(\texttt{lab1}) resolved through pfSense's Unbound resolver~\cite{unbound_dns}, requiring students
 to use proper service enumeration before any exploitation attempt. A quick teacher reference --- credentials, network table, and startup checklist --- is compiled
 in Appendix~B; the complete topology, configuration files, and step-by-step guide are at
 \path{docs/web/docs/labs/lab1/}.
 
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.95\textwidth]{lab1-topology.png}
+\caption{Lab~1 network topology}
+\label{fig:lab1-topology}
+\end{figure}
+
+%\newpage
 \subsubsection*{Network Addressing}
 
 \begin{table}[H]
@@ -102,16 +111,15 @@ through the VyOS router.
 
 \begin{table}[H]
 \centering
-\small
-\begin{tabularx}{\textwidth}{lXl}
+\resizebox{\textwidth}{!}{\begin{tabular}{@{}lll@{}}
 \toprule
 \textbf{Flag} & \textbf{Location} & \textbf{Technique} \\
 \midrule
-\texttt{FLAG\{p3bc4k\_s3rv3r\_0wn3d\}}         & \texttt{\textasciitilde/flag.txt} on Server via SSH        & Credentials from hidden web page \\
-\texttt{FLAG\{d3f4ult\_cr3ds\_k1ll\_s3cur1ty\}} & \texttt{/root/flag.txt} on pfSense via SSH pivot           & Default credentials               \\
-\texttt{FLAG\{sk1n3t\_b3c4m3\_s3nt13nt\}}       & \texttt{\textasciitilde/flag.txt} on PC1 via lateral move  & Credentials found in pfSense flag \\
+\texttt{FLAG\{p3bc4k\_s3rv3r\_0wn3d\}} & \texttt{\textasciitilde/flag.txt} on Server via SSH & Credentials from hidden web page \\
+\texttt{FLAG\{d3f4ult\_cr3ds\_k1ll\_s3cur1ty\}} & \texttt{/root/flag.txt} on pfSense via SSH pivot & Default credentials \\
+\texttt{FLAG\{sk1n3t\_b3c4m3\_s3nt13nt\}} & \texttt{\textasciitilde/flag.txt} on PC1 via lateral move & Credentials found in pfSense flag \\
 \bottomrule
-\end{tabularx}
+\end{tabular}}
 \caption{Lab~1 flags and acquisition techniques}
 \label{tab:lab1-flags}
 \end{table}

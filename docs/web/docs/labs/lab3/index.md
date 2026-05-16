@@ -86,14 +86,14 @@ bash history      exfil_marker
 ## Investigation flow
 
 ```
-1. SSH into Server-Web via pfSense DNAT (student entry point)
+1. SSH into Server-Web via pfSense DNAT (student entry point) — `ssh analyst@<pfSense-WAN-IP>`
 2. Analyse /var/log/auth.log       → brute-force source IP + success timestamp
 3. Review /home/devops/.bash_history → privilege escalation commands
 4. Check /etc/sudoers              → misconfigured entry (sudo find → root)
 5. Find /etc/passwd + shadow       → backdoor account created post-compromise
 6. SSH to Server-DB (192.168.60.10)→ lateral movement confirmed
-7. Locate /opt/data/clients.db     → exfiltrated database
-8. Find /tmp/.exfil_marker         → exfiltration evidence
+7. Locate /opt/helix/data/clients.db → exfiltrated database
+8. Find /opt/helix/data/.exfil_marker → exfiltration evidence
 ```
 
 ---
@@ -106,7 +106,7 @@ bash history      exfil_marker
 4. Evidence is pre-staged — no additional setup required
 
 !!! info "Student credentials"
-    - **Server-Web entry**: `devops` / `devops123` (via pfSense DNAT)
+    - **Server-Web entry**: `analyst` / `An@lyst2024` (via pfSense DNAT)
     - **Server-DB**: reachable from Server-Web once lateral movement path is found
 
 ---
@@ -117,8 +117,8 @@ bash history      exfil_marker
 |----------|----------|---------|
 | `auth.log` | `/var/log/auth.log` (Server-Web) | SSH brute-force + successful login |
 | `bash_history` | `/home/devops/.bash_history` | Post-exploitation commands |
-| `clients.db` | `/opt/data/clients.db` (Server-DB) | Exfiltrated client data |
-| `exfil_marker` | `/tmp/.exfil_marker` (Server-DB) | Exfiltration timestamp |
+| `clients.db` | `/opt/helix/data/clients.db` (Server-DB) | Exfiltrated client data |
+| `exfil_marker` | `/opt/helix/data/.exfil_marker` (Server-DB) | Exfiltration timestamp |
 
 ---
 

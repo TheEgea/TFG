@@ -40,17 +40,17 @@ Homelab LAN (192.168.0.0/24)
 [Parrot — Attacker]  192.168.0.x (DHCP via pnet0 cloud)
         |
 [pfSense — Firewall]
-  WAN vtnet1: 192.168.0.x/24  (static)
-  LAN vtnet0: 172.16.x.x/30
+  WAN vtnet1: 192.168.0.x/24  (DHCP)
+  LAN vtnet0: 172.16.1.1/30
         |
 [VyOS — Router]
-  eth0: 172.16.x.x/30    ← uplink to pfSense
-  eth6: 192.168.10.x/24  ← Users LAN
-  eth7: 192.168.20.x/24  ← Servers LAN
+  eth0: 172.16.1.2/30    ← uplink to pfSense
+  eth6: 192.168.10.1/24  ← Users LAN
+  eth7: 192.168.20.1/24  ← Servers LAN
         |
   ┌─────┴─────┐
 [Server]      [PC1]
-192.168.20.x  192.168.10.x
+192.168.20.10 192.168.10.20
 nginx :80      Ubuntu Desktop
 PEBCAK Corp    internal user
 ```
@@ -59,10 +59,10 @@ PEBCAK Corp    internal user
 
 | Node | OS | IP | Role |
 |------|----|----|------|
-| pfSense | pfSense CE 2.6 | WAN: 192.168.0.x / LAN: 172.16.x.x | Perimeter firewall · DNS · NAT · DNAT |
-| VyOS | VyOS rolling | 172.16.x.x / 192.168.10.1 / 192.168.20.1 | Core router · NAT |
-| Server | Ubuntu Server 24.04 | 192.168.20.x | Target — nginx · hostname: pebcak |
-| PC1 | Ubuntu Desktop 24.04 | 192.168.10.x | Internal user workstation |
+| pfSense | pfSense CE 2.6 | WAN: 192.168.0.x (DHCP) / LAN: 172.16.1.1 | Perimeter firewall · DNS · NAT · DNAT |
+| VyOS | VyOS rolling | 172.16.1.2 / 192.168.10.1 / 192.168.20.1 | Core router · NAT |
+| Server | Ubuntu Server 24.04 | 192.168.20.10 | Target — nginx · hostname: pebcak |
+| PC1 | Ubuntu Desktop 24.04 | 192.168.10.20 | Internal user workstation |
 | Parrot | Parrot Security 6.4 | 192.168.0.x (DHCP) | Attacker |
 
 ## Network segments

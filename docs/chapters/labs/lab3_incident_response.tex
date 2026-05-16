@@ -12,6 +12,14 @@ and impact, following a methodology aligned with NIST SP~800-61~\cite{nist_sp800
 A quick teacher reference --- account table, attack timeline, and startup checklist --- is compiled in Appendix~D;
 the full evidence walkthrough, forensic guide, and deployment instructions are at \path{docs/web/docs/labs/lab3/}.
 
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.95\textwidth]{lab3-topology.png}
+\caption{Lab~3 network topology}
+\label{fig:lab3-topology}
+\end{figure}
+
 \subsubsection*{Network Addressing}
 
 \begin{table}[H]
@@ -20,13 +28,14 @@ the full evidence walkthrough, forensic guide, and deployment instructions are a
 \toprule
 \textbf{Node} & \textbf{Role} & \textbf{Interface} & \textbf{IP} & \textbf{Network} \\
 \midrule
-Parrot-OS    & Analyst station   & eth0  & 10.0.4.10   & 10.0.4.0/24 (WAN-sim) \\
-pfSense-LAB3 & Firewall/DNAT     & WAN   & 10.0.4.1    & 10.0.4.0/24            \\
-pfSense-LAB3 & Firewall          & LAN   & 192.168.3.1 & 192.168.3.0/24         \\
-VyOS-LAB3    & Internal router   & eth0  & 192.168.3.2 & 192.168.3.0/24         \\
-VyOS-LAB3    & Internal router   & eth1  & 10.0.5.1    & 10.0.5.0/24 (corp)     \\
-Server-Web   & Compromised web   & eth0  & 10.0.5.10   & 10.0.5.0/24            \\
-Server-DB    & Internal DB       & eth0  & 10.0.5.20   & 10.0.5.0/24            \\
+Parrot-OS    & Analyst station   & eth0  & 192.168.0.x (DHCP) & 192.168.0.0/24 (Homelab)       \\
+pfSense-LAB3 & Firewall/DNAT     & WAN   & 192.168.0.x (DHCP) & 192.168.0.0/24                 \\
+pfSense-LAB3 & Firewall          & LAN   & 172.16.2.1         & 172.16.2.0/30                  \\
+VyOS-LAB3    & Internal router   & eth0  & 172.16.2.2         & 172.16.2.0/30                  \\
+VyOS-LAB3    & Internal router   & eth1  & 192.168.50.1       & 192.168.50.0/24 (Net-Servers)  \\
+VyOS-LAB3    & Internal router   & eth2  & 192.168.60.1       & 192.168.60.0/24 (Net-Internal) \\
+Server-Web   & Compromised web   & eth0  & 192.168.50.10      & 192.168.50.0/24                \\
+Server-DB    & Internal DB       & eth0  & 192.168.60.10      & 192.168.60.0/24                \\
 \bottomrule
 \end{tabular}}
 \caption{Lab~3 IP addressing scheme}
@@ -45,13 +54,36 @@ Server-DB    & Internal DB       & eth0  & 10.0.5.20   & 10.0.5.0/24            
 T1110.001 & Brute Force: Password Guessing & \texttt{auth.log} failed attempts \\
 T1078     & Valid Accounts                 & \texttt{devops} account compromise \\
 T1548.003 & Sudo and Sudo Caching          & \texttt{find} NOPASSWD in sudoers \\
-T1136.001 & Create Account: Local          & Backdoor \texttt{sysbackup} account \\
+T1136.001 & Create Account: Local          & Backdoor \texttt{maint} account \\
 T1021.004 & Remote Services: SSH           & Lateral movement to Server-DB \\
 T1005     & Data from Local System         & \texttt{/opt/helix/data/} exfil marker \\
 \bottomrule
 \end{tabularx}
 \caption{Lab~3 MITRE ATT\&CK technique coverage}
 \label{tab:lab3-mitre}
+\end{table}
+
+\newpage
+\subsubsection*{Forensic Findings}
+
+\begin{table}[H]
+\centering
+\small
+\resizebox{\textwidth}{!}{\begin{tabular}{@{}lll@{}}
+\toprule
+\textbf{Finding} & \textbf{Artefact / Location} & \textbf{Host} \\
+\midrule
+Brute-force source (\texttt{185.220.101.47}) & \texttt{/var/log/auth.log} --- 25 failed SSH for \texttt{devops} & Server-Web \\
+Initial compromise (03:17)   & \texttt{auth.log} successful login as \texttt{devops}                                        & Server-Web \\
+Privilege escalation (03:18) & \texttt{sudo /usr/bin/find} NOPASSWD; \texttt{auth.log} + \texttt{/etc/sudoers.d/devops}    & Server-Web \\
+Backdoor persistence (03:19) & \texttt{useradd maint}; \texttt{/etc/passwd} + \texttt{/etc/sudoers.d/maint}                 & Server-Web \\
+Attacker commands            & \texttt{/home/devops/.bash\_history}                                                         & Server-Web \\
+Lateral movement (03:21)     & \texttt{auth.log} \texttt{devops} SSH from \texttt{192.168.50.10}                            & Server-DB  \\
+Data exfiltration (03:22)    & \texttt{/opt/helix/data/.exfil\_marker} + \texttt{clients.db}                               & Server-DB  \\
+\bottomrule
+\end{tabular}}
+\caption{Lab~3 forensic findings and evidence locations}
+\label{tab:lab3-findings}
 \end{table}
 
 \subsection{Problems Encountered and Solutions}

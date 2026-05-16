@@ -5,11 +5,19 @@ Lab~2 places students in front of a custom two-tier web application,
 \textit{SYNAPSE Intelligence Portal}, deployed on a segmented DMZ architecture.
 The scenario is aligned with the OWASP Top~10~\cite{owasp2021} and chains
 multiple vulnerabilities across two servers: Server-A hosts the portal front-end
-with authentication and reporting features; Server-B provides an internal monitoring
-API accessible only via Server-A. Students must complete a progressive exploitation
-chain --- stored XSS, cookie theft, SQL injection, and command injection --- to
-collect all three flags. A quick teacher reference --- credentials, startup procedure, and flag guide --- is compiled in Appendix~C;
+with authentication and reporting features; Server-B hosts the DataVault internal
+file management service accessible only after pivoting from Server-A. Students must
+complete a progressive exploitation chain --- stored XSS, cookie theft, SQL injection,
+and YAML deserialization --- to collect all three flags. A quick teacher reference --- credentials, startup procedure, and flag guide --- is compiled in Appendix~C;
 complete source code, topology, and deployment instructions are at \path{docs/web/docs/labs/lab2/}.
+
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.95\textwidth]{lab2-topology.png}
+\caption{Lab~2 network topology}
+\label{fig:lab2-topology}
+\end{figure}
 
 \subsubsection*{Network Addressing}
 
@@ -19,13 +27,14 @@ complete source code, topology, and deployment instructions are at \path{docs/we
 \toprule
 \textbf{Node} & \textbf{Role} & \textbf{Interface} & \textbf{IP} & \textbf{Network} \\
 \midrule
-Parrot-OS    & Attacker          & eth0  & 10.0.2.10   & 10.0.2.0/24 (WAN-sim) \\
-pfSense-LAB2 & Firewall/NAT/DNAT & WAN   & 10.0.2.1    & 10.0.2.0/24            \\
-pfSense-LAB2 & Firewall/NAT      & LAN   & 192.168.2.1 & 192.168.2.0/24         \\
-VyOS-LAB2    & DMZ Router        & eth0  & 192.168.2.2 & 192.168.2.0/24         \\
-VyOS-LAB2    & DMZ Router        & eth1  & 10.0.3.1    & 10.0.3.0/24 (DMZ)      \\
-Server-A     & Web front-end     & eth0  & 10.0.3.10   & 10.0.3.0/24            \\
-Server-B     & Internal API      & eth0  & 10.0.3.20   & 10.0.3.0/24            \\
+Parrot-OS    & Attacker          & eth0  & 10.0.40.10       & 10.0.40.0/24 (Net-Attackers) \\
+pfSense-LAB2 & Firewall/NAT      & WAN   & 192.168.0.x (DHCP) & 192.168.0.0/24 (Homelab)   \\
+pfSense-LAB2 & Firewall/NAT      & LAN   & 172.16.1.1       & 172.16.1.0/30              \\
+VyOS-LAB2    & DMZ Router        & eth0  & 172.16.1.2       & 172.16.1.0/30              \\
+VyOS-LAB2    & DMZ Router        & eth1  & 192.168.30.1     & 192.168.30.0/24 (Net-DMZ)  \\
+VyOS-LAB2    & DMZ Router        & eth2  & 10.0.40.1        & 10.0.40.0/24 (Net-Attackers)\\
+Server-A     & SYNAPSE Portal    & eth0  & 192.168.30.10    & 192.168.30.0/24            \\
+Server-B     & DataVault         & eth0  & 192.168.30.20    & 192.168.30.0/24            \\
 \bottomrule
 \end{tabular}}
 \caption{Lab~2 IP addressing scheme}
@@ -45,11 +54,31 @@ Server-B     & Internal API      & eth0  & 10.0.3.20   & 10.0.3.0/24            
 2 & A07:2021 & Cookie injection $\rightarrow$ admin panel access & -- \\
 3 & A03:2021 & SQL injection in search $\rightarrow$ credential dump & FLAG\{synapse\_sqli\_creds\_dumped\} \\
 4 & A01:2021 & Lateral movement to Server-B via stolen creds & FLAG\{synapse\_pivot\_server\_b\} \\
-5 & A03:2021 & Command injection in monitoring API & FLAG\{synapse\_rce\_achieved\} \\
+5 & A08:2021 & YAML deserialization in DataVault upload $\rightarrow$ RCE & FLAG\{synapse\_rce\_achieved\} \\
 \bottomrule
 \end{tabularx}
 \caption{Lab~2 OWASP Top~10 vulnerability chain}
 \label{tab:lab2-vulns}
+\end{table}
+
+\subsection*{Results}
+
+All three flags were successfully captured, confirming the complete exploitation
+chain from stored XSS to remote code execution.
+
+\begin{table}[H]
+\centering
+\resizebox{\textwidth}{!}{\begin{tabular}{@{}lll@{}}
+\toprule
+\textbf{Flag} & \textbf{Location} & \textbf{Technique} \\
+\midrule
+\texttt{FLAG\{synapse\_sqli\_creds\_dumped\}} & \texttt{/search?q=} UNION dump on Server-A & UNION SQL Injection \\
+\texttt{FLAG\{synapse\_pivot\_server\_b\}}    & \texttt{/admin} classified panel on Server-A & Broken auth + SQLi chain \\
+\texttt{FLAG\{synapse\_rce\_achieved\}}       & \texttt{/preview} reverse shell on Server-B  & YAML deserialization RCE \\
+\bottomrule
+\end{tabular}}
+\caption{Lab~2 flags and acquisition techniques}
+\label{tab:lab2-flags}
 \end{table}
 
 \subsection{Problems Encountered and Solutions}

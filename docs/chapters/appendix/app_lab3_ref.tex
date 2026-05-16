@@ -127,11 +127,5 @@ No offensive tools are required. Students use only standard Unix utilities:
 
 To restore the lab to its initial forensic state after a student session:
 
-\begin{lstlisting}[language=bash]
-# Restore EVE-NG snapshot to pre-exercise state
-# (from EVE-NG host or web interface)
-unl_wrapper -a ...    # see web docs for exact snapshot name
-\end{lstlisting}
-
-\noindent Alternatively, revert both Server-Web and Server-DB QCOW2 images from
+\noindent Revert both Server-Web and Server-DB QCOW2 images from
 the pre-staged backup stored at \path{/opt/unetlab/addons/qemu/lab3-backups/}.
