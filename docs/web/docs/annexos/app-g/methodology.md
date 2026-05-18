@@ -1,4 +1,4 @@
-# App G — Methodology: Activity Detail and QA
+# App G — Activity Detail and QA
 
 This appendix expands the phase summaries in Chapter  with full
 activity lists, quality assurance procedures, and documentation and version control practices.
