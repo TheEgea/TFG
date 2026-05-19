@@ -1,7 +1,7 @@
 # Makefile — TFG workflow
 # Run from repo root: make <target>
 # ─────────────────────────────────────────────────────────────────────────────
-.PHONY: help build build-memory build-annexos build-viabilitat build-labs         build-web serve push pull sync status stats clean setup diagnostic
+.PHONY: help build build-vol1 build-vol2 build-vol3 build-all         build-memory build-annexos build-viabilitat build-labs         build-web serve push pull sync status stats clean setup diagnostic
 
 SHELL := /bin/bash
 REPO_ROOT := $(shell pwd)
@@ -11,14 +11,20 @@ help:
 	@echo 'TFG — available targets'
 	@echo '========================='
 	@echo ''
-	@echo '  BUILD'
-	@echo '    make build              Build Vol I + Vol II + publish PDFs to web'
+	@echo '  VOLUMES (submission)'
+	@echo '    make build-all          Build Vol I + Vol II + Vol III (full submission)'
+	@echo '    make build-vol1         Vol I  — Memoria LaTeX (memory-main.pdf)'
+	@echo '    make build-vol2         Vol II — Lab PDFs enunciado+resolucion (8 PDFs)'
+	@echo '    make build-vol3         Vol III — Web MkDocs PDF (lab-documentation.pdf)'
+	@echo ''
+	@echo '  BUILD (individual)'
+	@echo '    make build              Build Vol I + publish (legacy alias = build-vol1)'
 	@echo '    make build-memory       Build Vol I only  (docs/main/memory/)'
-	@echo '    make build-annexos      Build Vol II only (docs/main/annexos/)'
-	@echo '    make build-viabilitat   Build viabilitat  (docs/main/viabilitat/)'
+	@echo '    make build-annexos      Build Annexos LaTeX (docs/main/annexos/)'
+	@echo '    make build-viabilitat   Build Viabilitat   (docs/main/viabilitat/)'
 	@echo '    make build-labs         Build all lab PDFs (enunciado + resolucion)'
 	@echo '    make build-labs LAB=lab1  Build a single lab'
-	@echo '    make build-web          Build MkDocs site locally'
+	@echo '    make build-web          Build MkDocs site + Vol III PDF'
 	@echo ''
 	@echo '  WEB'
 	@echo '    make serve              Serve MkDocs site at http://localhost:8000/TFG/'
@@ -35,9 +41,28 @@ help:
 	@echo '    make setup              Check tool dependencies'
 	@echo '    make diagnostic         Run build-system diagnostic'
 
+# ── Volumes (submission) ──────────────────────────────────────────────────────
+build-all:
+	@echo '=== Building all volumes ==='
+	@bash scripts-workflow/build.sh memory
+	@bash scripts-workflow/build-labs.sh all
+	@bash scripts-workflow/build.sh vol3
+	@echo ''
+	@echo '=== All volumes built ==='
+	@echo '  Vol I   : docs/main/memory/memory-main.pdf'
+	@echo '  Vol II  : src/materials/exercises/labX/build/ (8 PDFs)'
+	@echo '  Vol III : docs/web/site/pdf/lab-documentation.pdf'
+	@echo '  Published: docs/web/docs/assets/official_Documents/'
+
+build-vol1: build-memory
+
+build-vol2: build-labs
+
+build-vol3:
+	@bash scripts-workflow/build.sh vol3
+
 # ── Build ─────────────────────────────────────────────────────────────────────
-build:
-	@bash scripts-workflow/build.sh all
+build: build-memory
 
 build-memory:
 	@bash scripts-workflow/build.sh memory

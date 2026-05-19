@@ -1,0 +1,87 @@
+% Cover page for labs-all.pdf — same setup as memory-main.tex
+\documentclass[a4paper, twoside, 12pt, openright]{report}
+
+\usepackage{fontspec}
+\usepackage{graphicx}
+\usepackage[english]{babel}
+\usepackage{fancyhdr}
+\usepackage{geometry}
+\usepackage{hyperref}
+
+\setmainfont{OpenDyslexic}[
+    Path = /usr/share/fonts/opentype/opendyslexic/,
+    Extension = .otf,
+    UprightFont = *-Regular,
+    BoldFont = *-Bold,
+    ItalicFont = *-Italic,
+    BoldItalicFont = *-BoldItalic
+]
+\setsansfont{OpenDyslexicAlta}[
+    Path = /usr/share/fonts/opentype/opendyslexic/,
+    Extension = .otf,
+    UprightFont = *-Regular,
+    BoldFont = *-Bold,
+    ItalicFont = *-Italic,
+    BoldItalicFont = *-BoldItalic
+]
+\setmonofont{OpenDyslexicMono}[
+    Path = /usr/share/fonts/opentype/opendyslexic/,
+    Extension = .otf,
+    UprightFont = *-Regular
+]
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=black,
+    citecolor=black,
+    urlcolor=blue,
+    pdftitle={Ethical Pentesting in Virtualized Environments with EVE-NG},
+    pdfauthor={Eloi Egea Rada}
+}
+
+\geometry{top=3cm, bottom=2.54cm, left=2.54cm, right=2.54cm, bindingoffset=0.46cm}
+\setlength{\headheight}{14.5pt}
+\setlength{\parindent}{0pt}
+
+
+\fancypagestyle{plain}{
+    \fancyhf{}
+    \fancyhead[RO,LE]{\fontsize{10}{12}\textit{\thepage}}
+    \fancyhead[RE]{\fontsize{10}{12}\textit{Ethical Pentesting in Virtualized Environments with EVE-NG}}
+    \fancyfoot{}
+}
+\pagestyle{plain}
+
+\title{
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.85\linewidth]{../../../../docs/images/logo-tecnocampus.png}
+    \end{figure}
+
+    \fontsize{14pt}{0pt}\textbf{Bachelor in Computer Engineering — Management and Information Systems} \\
+
+    \vspace*{2cm}
+
+    \textbf{Ethical Pentesting in Virtualized Environments with EVE-NG} \\
+
+    \vspace*{1cm}
+
+    \textbf{Laboratory Exercises} \\
+    \textbf{Volume II}
+
+    \vspace*{5cm}
+}
+
+\author{
+\fontsize{14pt}{0pt}
+    \textbf{Eloi Egea Rada} \\
+    \textbf{Supervisor: Pere Vidiella i Catalan}
+}
+
+\date{April 2026}
+
+\begin{document}
+
+\maketitle
+
+\end{document}

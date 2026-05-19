@@ -61,44 +61,101 @@ accessibility measures incorporated into the lab documentation.
 
 \section{Definition of the Client and Final User}
 
-\subsection{Principal Client}
-\begin{itemize}
-\item \textbf{Responsible professor}: Pere Vidiella i Catalan
-\item \textbf{Course}: Introduction to Cybersecurity (GEISI, TecnoCampus)
-\item \textbf{Context}: Undergraduate teaching in practical cybersecurity
-\end{itemize}
+This project was developed in the context of the \textit{Introduction to
+Cybersecurity} course at TecnoCampus (GEISI programme). The \textbf{client}
+is the course coordination body responsible for the undergraduate cybersecurity
+curriculum --- concretely, the academic staff overseeing the subject --- who
+identified the need for structured, reusable lab material and defined the
+educational requirements that this package must satisfy.
+Although TecnoCampus serves as the initial development and validation context,
+the package is explicitly designed for replicability: any institution operating
+an EVE-NG Community Edition instance on comparable infrastructure (e.g.,
+a Proxmox-based homelab or a dedicated server) can adopt the labs, scripts,
+and documentation without modification beyond local network parameters.
 
-\subsection{Primary End Users}
-\begin{itemize}
-\item \textbf{GEISI Students}: 25--30 students per edition
-\item \textbf{Profile}: Basic knowledge of networks and operating systems
-\item \textbf{Objective}: Learn ethical pentesting in a practical and safe manner
-\end{itemize}
+The \textbf{primary end users} are 4th-year GEISI students (25--30 per
+edition) enrolled in the Introduction to Cybersecurity course. At that stage
+of the degree, students already hold foundational knowledge of networks and
+operating systems, making them ready to engage with the practical pentesting
+scenarios proposed here. Their goal is to develop ethical hacking skills in a
+controlled and repeatable environment.
 
 \section{Scope Boundaries}
 
 \textbf{Included in this bachelor's thesis:}
 
 \begin{itemize}
-    \item Design and implementation of 4 pentesting labs in EVE-NG
+    \item Design and implementation of 4 pentesting labs in EVE-NG, covering
+          the four thematic domains defined by the course coordination as
+          priority learning areas.
     \item Integration of real attack and defence techniques aligned with
-          OWASP Top~10\cite{owasp2021}, NIST SP~800-61\cite{nist_sp80061}, and applied cryptography and steganography
-    \item Utility automation scripts for recurring lab management tasks (e.g.\ bridge configuration, ISO upload, connectivity checks)
-    \item Complete technical documentation for teachers and future maintainers
-    \item Student guides and learning objectives for each lab
-    \item Assessment rubrics for evaluating student lab completion
+          OWASP Top~10\cite{owasp2021}, NIST SP~800-61\cite{nist_sp80061},
+          and applied cryptography and steganography, because these frameworks
+          represent the industry-standard skill set expected at the 4th-year
+          level.
+    \item A set of utility scripts for recurring lab management tasks
+          (e.g.\ bridge configuration, ISO upload, connectivity checks).
+          These scripts are functional but minimal in scope: full automation
+          and cross-environment generalisation were not pursued within this
+          project due to validation complexity and time constraints.
+          Extending this automation layer is identified as future work.
+    \item Complete technical documentation for teachers and future
+          maintainers, so that the package remains operational beyond the
+          scope of this project.
+    \item Student guides and learning objectives for each lab, directly
+          supporting objective O3 and enabling autonomous lab completion.
+    \item Assessment rubrics for evaluating student lab completion,
+          in order to provide teachers with quantifiable grading criteria
+          aligned with course competences.
 \end{itemize}
+
+The specific labs, scripts, and documentation implemented here constitute a
+\emph{representative sample} of what the proposed framework supports, not an
+exhaustive ceiling. The approach is intentionally extensible: additional labs
+covering new attack domains, alternative network topologies, or different target
+operating systems can be integrated by following the same design principles
+applied throughout this project.
 
 \textbf{Explicitly NOT included (out of scope):}
 
 \begin{itemize}
-    \item Integration with third-party Learning Management Systems (LMS) or Moodle
-    \item Development of proprietary lab management software or web interfaces
-    \item Creation of automated grading systems beyond basic script validation
-    \item Commercial licensing or distribution models
+    \item Integration with third-party Learning Management Systems (LMS) or
+          Moodle, because the package is designed to be self-contained and
+          deployable without dependency on any specific institutional platform.
+          LMS integration would require knowledge of each institution's
+          configuration, API credentials, and enrolment policies --- factors
+          that vary widely between universities and are outside the technical
+          scope of this project. Institutions that wish to embed the material
+          in their LMS can do so independently by linking to the generated PDFs
+          or importing them as resources.
+    \item Development of proprietary lab management software or web
+          interfaces, as EVE-NG's built-in interface is sufficient for the
+          intended use and custom tooling would add maintenance overhead.
+    \item Creation of automated grading systems beyond basic script
+          validation, since formal assessment remains the responsibility of
+          the teaching staff and falls outside the technical scope.
+    \item Commercial licensing or distribution models, because the package
+          is developed exclusively for academic use within the institution.
     \item Formal pedagogical evaluation studies
-          (e.g., pre/post learning assessments)
-    \item Creation of labs beyond the four specified domains
+          (e.g., pre/post learning assessments or controlled efficacy trials),
+          because such research requires longitudinal data collection across
+          multiple course editions, institutional ethics approval, and a
+          dedicated research methodology that falls well beyond the scope of
+          an undergraduate capstone project. The pilot validation conducted in
+          this thesis (Section~\ref{sec:pilot_validation}) provides indicative
+          usability evidence, but it does not constitute a rigorous educational
+          research study. A full pedagogical evaluation is left as future work
+          for dedicated academic research.
+    \item Creation of labs beyond the four specified domains, because the
+          four selected topics --- network pentesting and incident response,
+          web application attacks, cryptography and password analysis, and
+          steganography --- cover the priority learning areas identified by
+          the course coordination for the current syllabus. Extending the
+          collection with additional domains (e.g., binary exploitation,
+          cloud security, or IoT attacks) is entirely feasible within the
+          framework but would exceed the workload constraints of a single
+          bachelor's thesis. The framework's modular design explicitly
+          anticipates and supports such growth in future iterations.
 \end{itemize}
 \newpage
 \section{KPIs and Performance Indicators}

@@ -27,12 +27,9 @@ are provided in the Methodology chapter (Chapter~4).
     \label{tab:task_categories}
 \end{table}
 
-The complete Gantt chart was built with a custom interactive web tool available at
-\path{docs/resources/gantt/index.html} in the project repository.
-\newpage
 \subsection{Critical Path}
 
-The project has \textbf{13 critical tasks} (277 h total) that directly affect milestone deadlines:
+%The project has \textbf{13 critical tasks} (277 h total) that directly affect milestone deadlines:
 
 \begin{table}[H]
   \centering
@@ -126,6 +123,8 @@ The project has \textbf{13 critical tasks} (277 h total) that directly affect mi
     \label{tab:software_costs}
 \end{table}
 
+\newpage
+
 The server is a one-time investment reused across multiple projects. An additional 32\,GB RAM
 module (\textasciitilde{}140\,\euro) was acquired during the project and is not reflected
 in the original estimate.
@@ -166,6 +165,8 @@ in the original estimate.
     \caption{Complete project budget}
     \label{tab:total_budget}
 \end{table}
+
+\newpage
 
 \section{Feasibility Analysis}
 
@@ -367,9 +368,16 @@ to two specific factors:
 
     \item \textbf{Reading difficulties (dyslexia)}: Dense technical documentation
           can be harder to process for dyslexic readers. This thesis is typeset in
-          OpenDyslexic; lab documentation uses short paragraphs, descriptive headings,
-          and visually separated code blocks. The pilot study confirmed that a participant
-          with documented dyslexia was able to complete Lab~3 with the materials provided.
+          \href{https://opendyslexic.org}{OpenDyslexic}, an open-source typeface
+          designed by Abelardo Gonz\'{a}lez. The weighted bottom of each letterform
+          acts as a visual anchor, reducing character inversion and rotation errors
+          common in dyslexic reading. For readers without dyslexia, the typeface
+          presents no legibility penalty --- it is an example of universal design:
+          a deliberate accessibility choice that benefits those who need it without
+          inconveniencing anyone else. Lab documentation additionally uses short
+          paragraphs, descriptive headings, and visually separated code blocks.
+          The pilot study confirmed that a participant with documented dyslexia
+          was able to complete Lab~3 with the materials provided.
 \end{itemize}
 
 \textbf{Conclusion}: Inclusion measures are grounded in the real barriers identified
@@ -385,5 +393,6 @@ Legal and ethical obligations are satisfied through open-source licensing and a 
 controlled infrastructure. All planned activities fit within the TecnoCampus normative
 timeline. No identified risk is considered project-blocking.
 
-Full phase task lists (Task IDs, hours, critical flags), the NIST SP~800-30 risk assessment framework (six identified risks), and detailed budget breakdowns are provided in
-Appendix~I.
+Full phase task lists (Task IDs, hours, critical flags), the NIST SP~800-30 risk assessment framework (six identified risks), and detailed budget breakdowns are provided in Appendix~\ref{app:feasibility-detail}.
+
+The project schedule was modelled using a custom interactive Gantt tool included in the repository at \path{docs/resources/gantt/index.html}. The resulting chart covers 37 tasks across Phases~0--4, of which 13 lie on the critical path. It is reproduced as Figure~\ref{fig:gantt} in Appendix~\ref{app:feasibility-detail}.

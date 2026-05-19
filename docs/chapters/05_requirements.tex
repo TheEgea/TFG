@@ -5,10 +5,7 @@
 
 \chapter{Functional and Non-Functional Requirements}
 
-This chapter specifies the requirements for the EVE-NG-based~\cite{eve_ng} cybersecurity
-teaching package. Functional requirements (RF) define what the system must do,
-technological requirements (TR) specify the technical environment, and non-functional
-requirements (NFR) address quality attributes and compliance.
+This chapter specifies the functional (RF), technological (TR), and non-functional (NFR) requirements for the EVE-NG-based cybersecurity teaching package~\cite{eve_ng}; extended sub-requirements and full NFR descriptions are provided in Appendix~H.
 
 \section{Functional Requirements}
 
@@ -47,13 +44,10 @@ OWASP\cite{owasp_testing_guide}, NIST\cite{nist_framework}, and CEH\cite{ceh_fra
       misconfiguration, network traffic analysis with Wireshark\cite{wireshark}.
 
 \item \textbf{RF2.4}: Lab 4 --- Cryptography and Steganography CTF (CipherStrike):
-      students act as incident response analysts investigating a breach at NovaCorp.
-      ServerA hosts five classical and modern cryptography challenges (ROT13, AES-ECB oracle,
-      Vigen\`{e}re/Kasiski, XOR crib-dragging, RSA $e=3$); ServerB hosts five steganography
-      challenges (EXIF metadata, PNG chunk appending, LSB red/alpha channels, steghide);
-      ServerC hosts four advanced combined challenges (multilayer stego, onion encoding,
-      SHA-1 length extension, ECDSA nonce reuse). Access to ServerC is gated on solving
-      key challenges from the first two modules.
+      three-server scenario in which students investigate a simulated breach at NovaCorp,
+      solving 14 challenges across classical and modern cryptography (ServerA), steganography
+      (ServerB), and combined advanced techniques (ServerC). Access to ServerC is gated
+      on prior module completion.
 \end{itemize}
 
 \textbf{Success Criteria}: Minimum 3--4 exploitable scenarios per lab, all resolvable
@@ -142,13 +136,13 @@ each including a rubric.
   \label{tab:nfr_summary}
 \end{table}
 
-\section{Requirements Traceability Matrix}
+\medskip
 
 \begin{table}[H]
   \centering
-  \small
-  \setlength{\tabcolsep}{4pt}
-  \renewcommand{\arraystretch}{1.1}
+  \footnotesize
+  \setlength{\tabcolsep}{3pt}
+  \renewcommand{\arraystretch}{1.0}
   \begin{tabularx}{\textwidth}{l l X l}
     \toprule
     \textbf{ID} & \textbf{Type} & \textbf{Requirement} & \textbf{Scope} \\
@@ -173,4 +167,3 @@ each including a rubric.
   \label{tab:requirements_traceability}
 \end{table}
 
-Additional sub-requirements (RF1.2--RF1.4, RF2.5, RF3.3--RF3.4, TR1.3, TR1.4, TR2.4, TR3.3) extending those defined above, together with the full NFR attribute descriptions, are provided in Appendix~H.

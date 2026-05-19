@@ -67,29 +67,42 @@
 % ---- Cover ------------------------------------------------------------------
 \begin{titlepage}
 \centering
-\includegraphics[width=0.6\linewidth]{../../../../docs/images/logo-tecnocampus.png}
-\vspace{1.5cm}
-{\small Bachelor in Computer Engineering -- Management and Information Systems}\\[0.5cm]
-{\small Introduction to Cybersecurity}
-\vspace{3cm}
 
-{\LARGE\bfseries Lab 4 -- Solution Guide}\\[0.4cm]
-{\Large\bfseries Cryptography \& Steganography CTF (CipherStrike)}
+\includegraphics[width=0.85\linewidth]{../../../../docs/images/logo-tecnocampus.png}
 
-\vspace{1cm}
-{\large\color{labred}\bfseries INSTRUCTOR ONLY --- DO NOT DISTRIBUTE}
+\vspace{0.8cm}
+{\fontsize{14pt}{16pt}\selectfont\textbf{Bachelor in Computer Engineering --- Management and Information Systems}}
 
-\vspace{4cm}
+\vspace{1.2cm}
+\textbf{Ethical Pentesting in Virtualized Environments with EVE-NG}
+
+\vspace{0.8cm}
+{\LARGE\bfseries Lab 4}\\[0.4cm]
+{\Large\bfseries Cryptography \& Steganography CTF}
+
+\vspace{0.7cm}
+{\large\color{labpurple}\bfseries Teacher Reference --- Do Not Distribute}
+
+\vspace{0.5cm}
+\begin{mdframed}[backgroundcolor=labpurple!10, linecolor=labpurple, linewidth=1.5pt]
+\centering
+\textbf{Do not distribute to students.}\\
+This document contains the complete solution including flags and credentials.
+\end{mdframed}
+
+\vspace{0.8cm}
 \begin{tabular}{ll}
 \textbf{Scenario}    & NovaCorp breach forensic investigation \\
-\textbf{Servers}     & ServerA (10.10.1.10) · ServerB (10.10.2.10) · ServerC (10.10.3.10) \\
+\textbf{Servers}     & ServerA \textperiodcentered{} ServerB \textperiodcentered{} ServerC \\
 \textbf{Total flags} & 14 (A1--A5, B1--B5, C1--C4) \\
-\textbf{Gate}        & ServerC password = \texttt{md5(A5\_flag + B5\_flag)[:12]} = \texttt{fa681b59855d} \\
+\textbf{Gate}        & ServerC password = md5(A5 + B5)[:12] = fa681b59855d \\
 \textbf{Topics}      & Classical ciphers, AES-ECB, RSA, LSB stego, steghide, ECDSA \\
 \end{tabular}
-
 \vfill
+{\fontsize{14pt}{16pt}\selectfont\textbf{Eloi Egea Rada}}\\[0.2cm]
+{\fontsize{14pt}{16pt}\selectfont\textbf{Supervisor: Pere Vidiella i Catalan}}\\[0.5cm]
 {\small TecnoCampus \textperiodcentered{} GEISI \textperiodcentered{} 2025--2026}
+
 \end{titlepage}
 
 % ---- Quick flag reference ---------------------------------------------------
