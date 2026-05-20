@@ -69,7 +69,7 @@ if [ "$TARGET" = "all" ] || [ "$TARGET" = "vol3" ]; then
     WEB_DIR="$REPO_ROOT/docs/web"
     cd "$WEB_DIR"
     source .venv/bin/activate
-    mkdocs build 2>&1 | tail -5
+    ENABLE_PDF_EXPORT=1 mkdocs build 2>&1 | tail -5
     deactivate 2>/dev/null || true
     cd "$REPO_ROOT"
     WEB_PDF="$WEB_DIR/site/pdf/lab-documentation.pdf"
