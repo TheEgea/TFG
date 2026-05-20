@@ -6,17 +6,15 @@
 \chapter{Conclusions}
 \label{ch:conclusions}
 
-This chapter evaluates the project outcomes against the stated objectives,
-reflects on lessons learned during development, and outlines directions for
-future work. The overall goal --- to design and implement a reusable,
-curriculum-aligned penetration testing lab package for the \textit{Introduction to
-Cybersecurity} course at TecnoCampus --- has been achieved. The scope and design
-evolved iteratively throughout development in response to infrastructure findings,
-pilot feedback, and technical constraints, but all four planned labs were delivered and all stated objectives were substantially met;
-the formal pilot study covered Labs~1--3, with Lab~4 scheduled for validation
-in a subsequent course edition.
-
-\input{../../chapters/labs/pilot_validation}
+This chapter reflects on the lessons learned during development, summarises the
+project achievements, and outlines directions for future work. The overall goal ---
+to design and implement a reusable, curriculum-aligned penetration testing lab
+package for the \textit{Introduction to Cybersecurity} course at TecnoCampus ---
+has been achieved. The scope and design evolved iteratively throughout development
+in response to infrastructure findings, pilot feedback, and technical constraints,
+but all four planned labs were delivered and all stated objectives were substantially
+met. The results of the pilot validation and the formal objectives evaluation are
+presented in Chapter~\ref{ch:results}.
 
 \section{Summary of Achievements}
 
@@ -54,40 +52,6 @@ Each lab is supported by a student guide, a teacher resolution guide with an ass
 rubric, and automation scripts for deployment and environment reset. All documentation
 is published in three parallel layers: the formal LaTeX report (this volume),
 Volume~II (Appendices), and the project web documentation.
-
-\section{Objectives Evaluation}
-
-Table~\ref{tab:objectives_evaluation} summarises the four specific objectives
-defined in Chapter~\ref{ch:objectives} and their current completion status.
-
-\begin{table}[H]
-  \centering
-  \small
-  \setlength{\tabcolsep}{4pt}
-  \renewcommand{\arraystretch}{1.2}
-  \begin{tabularx}{\textwidth}{l X l}
-    \toprule
-    \textbf{Objective} & \textbf{Description} & \textbf{Status} \\
-    \midrule
-    O1 & Design and implement 4 EVE-NG labs     & Completed \\
-    O2 & Develop automation scripts              & Completed \\
-    O3 & Develop structured teaching materials   & Completed \\
-    O4 & Validate usability and effectiveness    & Completed (Labs~1--3; Lab~4 pending) \\
-    \bottomrule
-  \end{tabularx}
-  \caption{Specific objectives evaluation at submission}
-  \label{tab:objectives_evaluation}
-\end{table}
-
-\textbf{O1} is fully achieved: all four labs are implemented and functional. \textbf{O2} is substantially achieved: automation scripts cover ISO upload,
-bridge configuration, and connectivity checks, with at least one utility script
-per lab as required. These scripts are functional and meet the defined KPIs;
-however, full cross-environment generalisation and robust validation pipelines
-were not implemented within this project due to validation complexity and time
-constraints. This is an intentional scope decision rather than a shortcoming,
-and is identified as a concrete avenue for future work. \textbf{O3} is fully achieved: all four labs have complete student and teacher guide pairs. \textbf{O4} is substantially complete: the pilot study (April--May~2026) confirmed usability and
-flag reachability across Labs~1--3; Lab~4 validation is deferred to a subsequent course edition. KPI results --- task completion,
-satisfaction scores, and KPI compliance --- are reported in Section~\ref{sec:pilot_validation}.
 
 \section{Lessons Learned}
 
