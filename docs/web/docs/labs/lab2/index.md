@@ -85,7 +85,7 @@ XSS+Auth+SQLi   YAML RCE
 ## Vulnerability chain
 
 ```
-Stored XSS → Cookie Hijack → Broken Auth → SQLi → Admin Panel → YAML RCE → Exfil
+Stored XSS → Cookie Hijack → Broken Auth → SQLi → SSH Pivot → YAML RCE → RCE
 ```
 
 | Step | Vulnerability | OWASP | Location | Flag |
@@ -94,7 +94,7 @@ Stored XSS → Cookie Hijack → Broken Auth → SQLi → Admin Panel → YAML R
 | 2 | Cookie theft | A07 | `HttpOnly=False` session cookie | — |
 | 3 | Broken authentication | A07 | Unsigned `ID:ROLE:USERNAME` cookie | — |
 | 4 | UNION SQL Injection | A03 | `/search?q=` — raw string concat | **FLAG 1** |
-| 5 | Admin panel access | A01 | `/admin` — classified intel + Server-B creds | **FLAG 2** |
+| 5 | SSH lateral movement | A01 | Server-B:22 — SSH pivot with `monitor/M0nit0r2024` (SQLi dump) → `/home/monitor/flag.txt` | **FLAG 2** |
 | 6 | YAML deserialization | A08 | Server-B `/preview` — `yaml.UnsafeLoader` | — |
 | 7 | RCE via reverse shell | A08 | YAML `!!python/object/apply:os.system` | **FLAG 3** |
 
