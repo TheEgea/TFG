@@ -124,6 +124,10 @@
 % PAGE MARGINS CONFIGURATION
 % ============================================================================
 
+
+% Euro sign fix: OpenDyslexic lacks U+20AC glyph; fallback to Latin Modern Roman
+\newfontfamily\eurofont{Latin Modern Roman}
+\AtBeginDocument{\renewcommand{\euro}{{\eurofont €}}}
 \geometry{top=3cm, bottom=2.54cm, left=2.54cm, right=2.54cm, bindingoffset=0.46cm}
 \setlength{\headheight}{14.5pt}
 
