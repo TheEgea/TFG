@@ -51,6 +51,8 @@ nav:
       - Selected ISOs: assets/init_configs/selected-isos/index.md
       - Router (VyOS): assets/init_configs/Router.md
       - Firewall (pfSense): assets/init_configs/Firewall.md
+  - Deployment:
+      - Cloud-Init Provisioning: deployment/cloud-init.md
   - EVE-NG Labs:
       - LAB1 – Reconnaissance:
           - Overview: labs/lab1/index.md

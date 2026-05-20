@@ -1,0 +1,145 @@
+% ============================================================
+% SECTION: Automated Lab Provisioning with Cloud-Init
+% ============================================================
+
+\section{Automated Lab Provisioning}
+\label{sec:cloud-init}
+% ------------------------------------------------------------
+
+A key reproducibility requirement for the course is that each student works in an
+identical, isolated EVE-NG environment. Manually cloning and reconfiguring virtual
+machines for each student is error-prone and does not scale. To address this,
+a \textit{cloud-init}-based provisioning system was designed and verified on top
+of Proxmox~\cite{proxmox}, enabling an instructor to deploy a ready-to-use
+EVE-NG instance for each student with a single command.
+
+\subsection{Architecture}
+
+The provisioning model follows the standard Proxmox linked-clone pattern with
+a cloud-init drive:
+
+\begin{itemize}
+    \item \textbf{VM~113 (template)}: A prepared EVE-NG base installation kept in
+          a stopped state. Its disk is stored as a ZFS zvol on the Proxmox pool,
+          which allows efficient copy-on-write linked clones without duplicating the
+          full 200~GB image.
+    \item \textbf{Snippets directory} (\path{/var/lib/vz/snippets/}): Contains one
+          \texttt{cloud-config} YAML file per student. Each snippet sets the
+          hostname, creates the student user with a dedicated SSH key, and configures
+          the \texttt{pnet0} bridge address via a \texttt{runcmd} block.
+    \item \textbf{Student VM (linked clone)}: Created on demand from the template.
+          Proxmox generates a small ISO (\textit{cidata}) at boot from the assigned
+          snippet and mounts it at \path{/dev/sr0}, where cloud-init reads it.
+\end{itemize}
+
+\subsection{Cloud-Init Configuration on the Template}
+
+Three configuration files are placed on VM~113 before it is sealed as a template:
+
+\begin{itemize}
+    \item \textbf{\path{/etc/cloud/ds-identify.cfg}}: Sets
+          \texttt{policy: enabled,found=all} so that cloud-init does not
+          self-disable when no datasource is found on the first second of boot ---
+          a common failure mode in non-cloud images.
+    \item \textbf{\path{99\_proxmox.cfg}}: Configures
+          \texttt{datasource\_list: [NoCloud, ConfigDrive, None]} and sets the
+          \textit{fs\_label} to \texttt{cidata}, which matches the label Proxmox
+          stamps on the generated ISO.
+    \item \textbf{\path{99\_disable\_network.cfg}}: Sets \texttt{network: config:
+          disabled}. This is critical: EVE-NG manages its own \texttt{pnet0--pnet9}
+          bridge stack, and allowing cloud-init to reconfigure the network interface
+          would destroy those bridges on every boot.
+\end{itemize}
+
+\subsection{Student Snippet Structure}
+
+Each per-student YAML snippet follows this structure:
+
+\begin{lstlisting}[caption={Cloud-init user-data snippet for a student VM}, label={lst:cloud-init-yaml}]
+#cloud-config
+hostname: eve-ng-alumno2
+manage_etc_hosts: true
+
+users:
+  - name: alumno2
+    shell: /bin/bash
+    sudo: ALL=(ALL) NOPASSWD:ALL
+    ssh_authorized_keys:
+      - ssh-ed25519 AAAA...key... alumno2@eveng-lab
+
+chpasswd:
+  list: |
+    alumno2:Lab2024!
+  expire: false
+
+runcmd:
+  - /bin/bash -c 'ip addr flush dev pnet0;
+    ip addr add 192.168.0.211/24 dev pnet0;
+    ip route add default via 192.168.0.1 dev pnet0;
+    sed -i "s/address 192.168.0.[0-9]*/address 192.168.0.211/"
+    /etc/network/interfaces'
+
+package_upgrade: false
+\end{lstlisting}
+
+The \texttt{runcmd} block flushes and re-assigns the \texttt{pnet0} bridge IP
+to the student-specific address and persists it in
+\path{/etc/network/interfaces} for subsequent reboots. Using a dedicated SSH
+key per student ensures that no credentials are shared between instances.
+
+\subsection{Provisioning Workflow}
+
+Once the template and snippets are in place, deploying a new student instance
+requires four commands on the Proxmox host:
+
+\begin{lstlisting}[language=bash, caption={Provisioning a student EVE-NG VM from the template}]
+# 1. Linked clone from template (no full disk copy)
+qm clone 113 <VM_ID> --name eve-ng-alumnoN --full 0
+
+# 2. Assign the student snippet and IP
+qm set <VM_ID> --cicustom \
+    'user=local:snippets/userdata_alumnoN.yaml'
+qm set <VM_ID> --ipconfig0 'ip=192.168.0.2XX/24,gw=192.168.0.1'
+qm cloudinit update <VM_ID>
+
+# 3. Start the VM
+qm start <VM_ID>
+
+# 4. Connect after ~40 seconds
+ssh alumnoN@192.168.0.2XX -i /path/to/alumnoN_key
+\end{lstlisting}
+
+The linked-clone model means only the delta from the base image is stored per
+student, keeping storage overhead proportional to actual usage rather than
+multiplying the full image size.
+
+\subsection{Verification}
+
+The complete provisioning pipeline was validated with a fresh VM~114 deployment
+from the sealed template. A checklist of 28 verification points was used, covering:
+template integrity, cloud-init configuration, clone creation, network assignment,
+user creation, SSH access, and EVE-NG service health. All 28 checks passed
+with a VM reaching full operational state --- including a working EVE-NG web
+interface --- within approximately 35 seconds of \texttt{qm start}.
+
+\subsection{Problems Encountered}
+
+\subsubsection{LVM Filter Blocking ZFS Zvol Mount}
+
+Mounting the template disk from the Proxmox host for inspection required
+activating the LVM volume group on the ZFS zvol. Proxmox's default
+\path{lvm.conf} applies a \texttt{global\_filter} that excludes
+\path{/dev/zd.*} devices to prevent conflicts. The workaround was to activate
+the specific volume group using \texttt{vgchange --select 'uuid=<UUID>'}
+instead of modifying the global filter, preserving the host's LVM configuration
+while allowing temporary access to the template disk.
+
+\subsubsection{IP Persistence Across Reboots}
+
+The initial runcmd block updated the in-memory bridge address but did not persist
+the change. On the second boot, the VM reverted to the template's base IP
+(\texttt{192.168.0.133}). The fix was to include a \texttt{sed} command in the
+same runcmd block that replaces the address in
+\path{/etc/network/interfaces} atomically with the student IP, so the correct
+address is applied by \texttt{ifup} on every subsequent boot without requiring
+cloud-init to run again.
