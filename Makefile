@@ -48,18 +48,31 @@ build-all:
 	@bash scripts-workflow/build-labs.sh all
 	@bash scripts-workflow/build.sh vol3
 	@echo ''
-	@echo '=== All volumes built ==='
-	@echo '  Vol I   : docs/main/memory/memory-main.pdf'
-	@echo '  Vol II  : src/materials/exercises/labX/build/ (8 PDFs)'
-	@echo '  Vol III : docs/web/site/pdf/lab-documentation.pdf'
-	@echo '  Published: docs/web/docs/assets/official_Documents/'
+	@echo '========================================'
+	@echo '  BUILD COMPLETE — Submission PDFs'
+	@echo '========================================'
+	@echo '  Vol I   (Memoria)  : docs/main/memory/memory-main.pdf'
+	@echo '  Vol II  (Labs)     : docs/web/docs/assets/official_Documents/labs-all.pdf'
+	@echo '             (split) : src/materials/exercises/lab{1-4}/build/'
+	@echo '  Vol III (Web/Apx)  : docs/web/docs/assets/official_Documents/lab-documentation.pdf'
+	@echo ''
+	@echo '  All 3 volumes also in: docs/web/docs/assets/official_Documents/'
+	@echo '========================================'
 
 build-vol1: build-memory
+	@echo ''
+	@echo '  Vol I output : docs/main/memory/memory-main.pdf'
+	@echo '  Copy also in : docs/web/docs/assets/official_Documents/memory-main.pdf'
 
 build-vol2: build-labs
+	@echo ''
+	@echo '  Vol II output (split) : src/materials/exercises/lab{1-4}/build/'
+	@echo '  Vol II output (all)   : docs/web/docs/assets/official_Documents/labs-all.pdf'
 
 build-vol3:
 	@bash scripts-workflow/build.sh vol3
+	@echo ''
+	@echo '  Vol III output: docs/web/docs/assets/official_Documents/lab-documentation.pdf'
 
 # ── Build ─────────────────────────────────────────────────────────────────────
 build: build-memory
