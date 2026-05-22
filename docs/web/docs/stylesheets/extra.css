@@ -85,14 +85,14 @@ code, pre, kbd, samp,
     }
 
     h1, h2, h3, h4, h5, h6 {
-        color: #B41E1E !important;
+        color: #1a1a1a !important;
     }
 
-    h1 { border-bottom: 1.5pt solid #B41E1E; padding-bottom: 4pt; }
+    h1 { border-bottom: 1.5pt solid #1a1a1a; padding-bottom: 4pt; }
 
-    a { color: #B41E1E !important; }
+    a { color: #1a1a1a !important; }
 
-    th { background-color: #B41E1E !important; color: white !important; }
+    th { background-color: #1a1a1a !important; color: white !important; }
 
     /* ── Page breaks para WeasyPrint ─────────────────────────────────────────── */
     @page {
