@@ -40,10 +40,18 @@ together---they cannot develop the diagnostic reasoning required in professional
 security roles.
 
 \paragraph{Teacher perspective.}
-Designing and maintaining practical security exercises is resource-intensive.
+Designing and maintaining practical security exercises is resource-intensive. A fundamental constraint
+shaping current practice is that labs must run on students' own laptops, which limits
+topologies to one or two virtual machines and forces security tools to operate
+outside the simulated environment rather than within a realistic multi-system network.
 Without reusable, automatable lab environments, teachers must improvise
 or rely on third-party platforms, which reduces pedagogical control and limits
 reproducibility across cohorts.
+
+Although platforms designed for cybersecurity training do exist, they have not been
+adopted in the course for various reasons relating to curriculum alignment,
+institutional control, and deployment constraints --- as examined in
+Section~\ref{sec:existing_platforms}.
 
 
 
@@ -122,11 +130,11 @@ understand corresponding protective measures.
 \subsection*{Note on ISO/IEC~27001}
 
 ISO/IEC~27001 is an internationally recognised standard for
-	extit{information security management systems} (ISMS)---it addresses
+\textit{information security management systems} (ISMS)---it addresses
 organisational governance, risk management, and compliance
 processes~\cite{iso27001}. While highly relevant in enterprise contexts,
 it falls outside the scope of this project, which focuses exclusively on
-	extit{technical} offensive and defensive frameworks applicable in a
+\textit{technical} offensive and defensive frameworks applicable in a
 hands-on educational setting. ISO~27001 does not prescribe specific
 penetration testing methodologies or attack scenarios; consequently,
 PTES, OWASP Top~10, CIS Controls, and the NIST~CSF were selected as the
