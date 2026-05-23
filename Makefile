@@ -1,7 +1,7 @@
 # Makefile — TFG workflow
 # Run from repo root: make <target>
 # ─────────────────────────────────────────────────────────────────────────────
-.PHONY: help build build-vol1 build-vol2 build-vol3 build-all         build-memory build-annexos build-viabilitat build-labs         build-web serve push pull sync status stats clean setup diagnostic
+.PHONY: help build build-vol1 build-vol2 build-vol3 build-all         build-memory build-annexes build-annexos build-viabilitat build-labs         build-web serve push pull sync status stats clean setup diagnostic
 
 SHELL := /bin/bash
 REPO_ROOT := $(shell pwd)
@@ -20,7 +20,8 @@ help:
 	@echo '  BUILD (individual)'
 	@echo '    make build              Build Vol I + publish (legacy alias = build-vol1)'
 	@echo '    make build-memory       Build Vol I only  (docs/main/memory/)'
-	@echo '    make build-annexos      Build Annexos LaTeX (docs/main/annexos/)'
+	@echo '    make build-annexes      Build Annexes English (docs/main/annexes/)'
+	@echo '    make build-annexos      Build Annexos LaTeX  (docs/main/annexos/)'
 	@echo '    make build-viabilitat   Build Viabilitat   (docs/main/viabilitat/)'
 	@echo '    make build-labs         Build all lab PDFs (enunciado + resolucion)'
 	@echo '    make build-labs LAB=lab1  Build a single lab'
@@ -79,6 +80,11 @@ build: build-memory
 
 build-memory:
 	@bash scripts-workflow/build.sh memory
+
+build-annexes:
+	@cd docs/main/annexes && latexmk -xelatex -interaction=nonstopmode annexes-main.tex
+	@echo ''
+	@echo '  Vol II output (Annexes): docs/main/annexes/annexes-main.pdf'
 
 build-annexos:
 	@bash scripts-workflow/build.sh annexos
