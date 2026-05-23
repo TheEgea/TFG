@@ -1,0 +1,197 @@
+\documentclass[a4paper, twoside, 12pt, openright]{report}
+
+\usepackage{fontspec}
+\usepackage{verbatim}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage[english]{babel}
+\usepackage{csquotes}
+\usepackage{eurosym}
+\usepackage{fancyhdr}
+\usepackage{etoolbox}
+\usepackage{geometry}
+\usepackage{setspace}
+\usepackage{titlesec}
+\usepackage[nottoc, numbib]{tocbibind}
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{calc}
+\usepackage{listings}
+\lstset{
+    basicstyle=\ttfamily\small,
+    breaklines=true,
+    breakatwhitespace=false,
+    breakindent=0pt,
+    postbreak=\mbox{\textcolor{gray}{$\hookrightarrow$}\space},
+    frame=single,
+    numbers=none,
+    showstringspaces=false,
+    columns=fullflexible,
+    keepspaces=true,
+}
+\usepackage{amssymb}
+\usepackage{xurl}
+\usepackage{pdfpages}
+\usepackage{hyperref}
+\tolerance=2000
+\emergencystretch=3em
+
+\setmainfont{OpenDyslexic}[
+    Path = /usr/share/fonts/opentype/opendyslexic/,
+    Extension = .otf,
+    UprightFont = *-Regular,
+    BoldFont = *-Bold,
+    ItalicFont = *-Italic,
+    BoldItalicFont = *-BoldItalic
+]
+\setsansfont{OpenDyslexicAlta}[
+    Path = /usr/share/fonts/opentype/opendyslexic/,
+    Extension = .otf,
+    UprightFont = *-Regular,
+    BoldFont = *-Bold,
+    ItalicFont = *-Italic,
+    BoldItalicFont = *-BoldItalic
+]
+\setmonofont{OpenDyslexicMono}[
+    Path = /usr/share/fonts/opentype/opendyslexic/,
+    Extension = .otf,
+    UprightFont = *-Regular
+]
+
+\titleformat{\chapter}[block]{\normalfont\fontsize{18pt}{0pt}\bfseries}{\thechapter}{1em}{}
+\titlespacing*{\chapter}{0pt}{0pt}{\baselineskip}
+\titleformat{\section}[block]{\normalfont\fontsize{16pt}{0pt}\bfseries}{\thesection}{1em}{}
+\titleformat{\subsection}[block]{\normalfont\fontsize{14pt}{0pt}\bfseries}{\thesubsection}{1em}{}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=black,
+    citecolor=black,
+    urlcolor=blue,
+    pdftitle={Ethical Pentesting in Virtualized Environments with EVE-NG -- Technical Annexes},
+    pdfauthor={Eloi Egea Rada},
+}
+
+\newfontfamily\eurofont{Latin Modern Roman}
+\AtBeginDocument{\renewcommand{\euro}{{\eurofont \texteuro}}}
+\geometry{top=3cm, bottom=2.54cm, left=2.54cm, right=2.54cm, bindingoffset=0.46cm}
+\setlength{\headheight}{14.5pt}
+\setlength{\parindent}{0pt}
+\providecommand{\tightlist}{\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\graphicspath{{../../images/}{../../web/docs/assets/images/labs/}{../../web/docs/assets/images/}}
+
+\fancypagestyle{plain}{
+    \fancyhf{}
+    \fancyhead[RO,LE]{\fontsize{10}{12}\textit{\thepage}}
+    \fancyhead[LO]{\fontsize{10}{12}\textit{\nouppercase{\textit{\leftmark}}}}
+    \fancyhead[RE]{\fontsize{10}{12}\textit{Ethical Pentesting in Virtualized Environments with EVE-NG}}
+    \fancyfoot{}
+}
+\pagestyle{plain}
+
+\title{
+    \fontsize{14pt}{0pt}\textbf{Bachelor in Computer Engineering -- Management and Information Systems} \\
+    \vspace*{2cm}
+    \textbf{Ethical Pentesting in Virtualized Environments with EVE-NG} \\
+    \vspace*{1cm}
+    \textbf{Technical Annexes} \\
+    \textbf{Volume II --- Annexes}
+    \vspace*{5cm}
+}
+\author{
+    \fontsize{14pt}{0pt}
+    \textbf{Eloi Egea Rada} \\
+    \textbf{Supervisor: Pere Vidiella i Catalan}
+}
+\date{May 2026}
+
+\begin{document}
+
+\maketitle
+\newpage
+\thispagestyle{empty}
+\null
+\newpage
+
+\pagenumbering{Roman}
+
+% --- Disclaimer page ---
+\thispagestyle{empty}
+\null\vfill
+\begin{flushright}
+\begin{minipage}{0.72\textwidth}
+{\normalfont\large\bfseries Note on this document}\\[0.8em]
+{\itshape
+This document is a LaTeX adaptation of the companion web documentation
+published at \href{https://theegea.github.io/TFG}{theegea.github.io/TFG}.
+The authoritative and fully interactive version --- including navigation,
+search, and live code blocks --- is the web version.
+\\[0.6em]
+This PDF was generated automatically from the same source files
+to provide an offline-readable snapshot. Content is identical;
+only the presentation differs. Minor formatting differences may occur
+--- when in doubt, refer to the web version.
+}
+\end{minipage}
+\end{flushright}
+\vfill\null\cleardoublepage
+
+\tableofcontents
+\cleardoublepage
+
+\onehalfspacing
+\setlength{\parskip}{12pt}
+\pagenumbering{arabic}
+
+\input{ch01.tex}
+\cleardoublepage
+\input{ch02.tex}
+\cleardoublepage
+\input{ch03.tex}
+\cleardoublepage
+\input{ch04.tex}
+\cleardoublepage
+\input{ch05.tex}
+\cleardoublepage
+\input{ch06.tex}
+\cleardoublepage
+\input{ch07.tex}
+\cleardoublepage
+\input{ch08.tex}
+\cleardoublepage
+\input{ch09.tex}
+\cleardoublepage
+\input{ch10.tex}
+\cleardoublepage
+\input{ch11.tex}
+\cleardoublepage
+\input{ch12.tex}
+\cleardoublepage
+\input{ch13.tex}
+\cleardoublepage
+\input{ch14.tex}
+\cleardoublepage
+\input{ch15.tex}
+
+\includepdf[pages=-, scale=0.82, pagecommand={\thispagestyle{plain}}]{/home/overleaf/TFG/TFG/docs/web/docs/assets/official_Documents/lab1-enunciado.pdf}
+\includepdf[pages=-, scale=0.82, pagecommand={\thispagestyle{plain}}]{/home/overleaf/TFG/TFG/docs/web/docs/assets/official_Documents/lab1-resolucion.pdf}
+\cleardoublepage
+\input{ch16.tex}
+
+\includepdf[pages=-, scale=0.82, pagecommand={\thispagestyle{plain}}]{/home/overleaf/TFG/TFG/docs/web/docs/assets/official_Documents/lab2-enunciado.pdf}
+\includepdf[pages=-, scale=0.82, pagecommand={\thispagestyle{plain}}]{/home/overleaf/TFG/TFG/docs/web/docs/assets/official_Documents/lab2-resolucion.pdf}
+\cleardoublepage
+\input{ch17.tex}
+
+\includepdf[pages=-, scale=0.82, pagecommand={\thispagestyle{plain}}]{/home/overleaf/TFG/TFG/docs/web/docs/assets/official_Documents/lab3-enunciado.pdf}
+\includepdf[pages=-, scale=0.82, pagecommand={\thispagestyle{plain}}]{/home/overleaf/TFG/TFG/docs/web/docs/assets/official_Documents/lab3-resolucion.pdf}
+\cleardoublepage
+\input{ch18.tex}
+
+\includepdf[pages=-, scale=0.82, pagecommand={\thispagestyle{plain}}]{/home/overleaf/TFG/TFG/docs/web/docs/assets/official_Documents/lab4-enunciado.pdf}
+\includepdf[pages=-, scale=0.82, pagecommand={\thispagestyle{plain}}]{/home/overleaf/TFG/TFG/docs/web/docs/assets/official_Documents/lab4-resolucion.pdf}
+\cleardoublepage
+
+\end{document}

@@ -7,7 +7,8 @@
 - Task 0.3: Parrot OS Security Setup and Basic Tools (15h)
 - Task 0.4: Home Lab As-Built Documentation (8h)
 
-**Duration**: 105 hours **Status**: Completed (100
+**Duration**: 105 hours **Status**: Completed
+
 ### Phase 1: Avantprojecte (October 2025–January 2026)
 
 - Task 1.0: Thesis Development (22h)

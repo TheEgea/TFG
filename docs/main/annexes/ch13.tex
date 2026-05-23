@@ -1,0 +1,216 @@
+\chapter{Basic Configuration --- pfSense Firewall}
+
+\section{Firewall -- pfSense CE 2.6 Setup}
+
+The firewall configuration in this project was implemented by following the step-by-step procedure shown in the video below, adapted to the EVE-NG lab environment.
+
+\subsection{Reference Video}
+
+\begin{itemize}
+\tightlist
+\item
+  \url{https://youtu.be/sX22a_v2svQ?si=IzMju0KYcMQSE4sZ}
+\end{itemize}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\subsection{Phase 1 -- Image preparation (EVE-NG SSH as root)}
+
+pfSense CE 2.6 requires a disk image before the node can be started. Unlike VyOS, pfSense installs itself to disk during the first-boot wizard --- no manual \texttt{install\ image} step needed.
+
+\begin{lstlisting}
+cd /opt/unetlab/addons/qemu/pfsense-ce-2.6.0-release-amd64/
+
+# List contents -- you should see the ISO
+ls
+# cdrom.iso
+
+# Create the target disk (8G is enough for CE 2.6)
+qemu-img create -f qcow2 virtioa.qcow2 8G
+
+# Fix permissions
+cd /opt/unetlab/addons/qemu/
+/opt/unetlab/wrappers/unl_wrapper -a fixpermissions
+\end{lstlisting}
+
+\begin{lstlisting}
+The disk preparation is identical to the VyOS flow.
+See [Router (VyOS)](Router.md) for reference.
+\end{lstlisting}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\subsection{Phase 2 -- First boot and setup wizard (VNC console)}
+
+Start the node from the EVE-NG web UI and open the console (VNC).
+
+pfSense will boot from the ISO and launch the installer automatically.
+
+\subsubsection{2.1 Install to disk}
+
+When prompted, accept the default options:
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Install pfSense} $\rightarrow$ Continue
+\item
+  \textbf{Auto (ZFS)} or \textbf{Auto (UFS)} --- UFS is simpler for a lab
+\item
+  Select disk: \texttt{vtbd0} (the \texttt{virtioa.qcow2} disk)
+\item
+  Confirm and proceed --- pfSense will copy files and reboot
+\end{itemize}
+
+After reboot the node boots from disk. The ISO is no longer needed but can stay.
+
+\subsubsection{2.2 Interface assignment}
+
+On first boot, pfSense asks which physical interfaces to assign as WAN and LAN.
+
+pfSense sees interfaces in the order EVE-NG/QEMU presents them:
+
+{\footnotesize\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{0.22\linewidth}
+  >{\raggedright\arraybackslash}p{0.22\linewidth}
+  >{\raggedright\arraybackslash}p{0.45\linewidth}@{}}
+\toprule\noalign{}
+\textbf{pfSense NIC} & \textbf{EVE-NG port} & \textbf{Connected to} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+\texttt{vtnet0} (em0) & e0 & LAN network ($\rightarrow$ Router) \\
+\texttt{vtnet1} (em1) & e1 & WAN network (pnet / internet) \\
+\end{longtable}}
+
+Always verify the assignment matches the lab cabling before continuing.
+
+At the console menu:
+
+\begin{lstlisting}
+Should VLANs be set up now? $\rightarrow$ n
+Enter the WAN interface name: vtnet1
+Enter the LAN interface name: vtnet0
+Do you want to proceed?      $\rightarrow$ y
+\end{lstlisting}
+
+pfSense will assign:
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{WAN} (\texttt{vtnet1}): DHCP by default --- gets IP from the upstream network
+\item
+  \textbf{LAN} (\texttt{vtnet0}): \texttt{192.168.1.1/24} by default --- \textbf{change this to match your lab}
+\end{itemize}
+
+\subsubsection{2.3 Set LAN IP from console}
+
+From the pfSense console menu, select option \texttt{2)\ Set\ interface(s)\ IP\ address}:
+
+\begin{lstlisting}
+Select interface to configure: 2 (LAN)
+Enter the new LAN IPv4 address:  172.16.x.x
+Enter the new LAN IPv4 subnet:   30
+For a WAN, enter the upstream gateway: (blank)
+Do you want to enable DHCP on LAN? n
+\end{lstlisting}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\subsection{Phase 3 -- Web GUI access}
+
+pfSense web GUI is only reachable from the \textbf{LAN interface}.
+
+{\footnotesize\begin{longtable}[]{@{}>{\raggedright\arraybackslash}p{0.45\linewidth}
+  >{\raggedright\arraybackslash}p{0.45\linewidth}@{}}
+\toprule\noalign{}
+Parameter & Value \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+URL & \texttt{https://172.16.x.x} \\
+Default user & \texttt{admin} \\
+Default password & \texttt{pfsense} \\
+\end{longtable}}
+
+\begin{lstlisting}
+The web GUI and SSH are blocked on the WAN interface by default.
+Connect from a host that has L2 reachability to the LAN segment
+(e.g. via the Router or a management host on the same bridge).
+\end{lstlisting}
+
+Complete the setup wizard on first login:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Set hostname and DNS
+\item
+  Set timezone
+\item
+  Confirm WAN settings
+\item
+  Confirm LAN IP
+\item
+  Change admin password
+\item
+  Reload --- pfSense is ready
+\end{enumerate}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\subsection{Phase 4 -- Enable SSH management}
+
+Go to \textbf{System $\rightarrow$ Advanced $\rightarrow$ Admin Access}:
+
+\begin{itemize}
+\tightlist
+\item
+  Enable \textbf{Secure Shell}
+\item
+  Set \textbf{SSHd Key Only} to \emph{Password or Public Key} for lab convenience
+\item
+  Click \textbf{Save}
+\end{itemize}
+
+SSH is then available from the LAN segment:
+
+\begin{lstlisting}
+ssh admin@172.16.x.x
+\end{lstlisting}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\subsection{Phase 5 -- Persistence check}
+
+pfSense writes its config to \texttt{/cf/conf/config.xml} on disk. After any change via web GUI or console, it saves automatically.
+
+To verify the disk is being used:
+
+\begin{lstlisting}
+# From pfSense console $\rightarrow$ option 8 (Shell)
+df -h
+# /dev/vtbd0p3 should be mounted at /
+\end{lstlisting}
+
+\begin{quote}
+Use \textbf{Halt System} from the pfSense menu or \texttt{shutdown -h now} from the shell. A hard stop from EVE-NG GUI may corrupt the ZFS/UFS filesystem.
+\end{quote}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\subsection{Key notes from lab experience}
+
+\begin{itemize}
+\tightlist
+\item
+  pfSense console is \textbf{VNC only} in EVE-NG (no serial/telnet access from host).
+\item
+  SSH and web GUI are \textbf{disabled on WAN} by default --- always connect via LAN.
+\item
+  The tap interface connecting pfSense WAN to the \texttt{pnet} bridge may need to be re-added manually after each EVE-NG host reboot (see \href{../../labs/lab1/firewall.md}{LAB1 Firewall}).
+\end{itemize}

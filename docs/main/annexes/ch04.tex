@@ -1,0 +1,139 @@
+\chapter{App D --- Lab 3: HELIX Systems Instructor Reference}
+
+\section{App D --- Lab 3: HELIX Systems Instructor Reference}
+
+This appendix provides the deployment and pre-staging reference for Lab 3 (Incident Response and Log Forensics). It documents all accounts, the pre-staged attack timeline, and the evidence artefacts that students are expected to find. The step-by-step investigation walkthrough is at docs/web/docs/labs/lab3/walkthrough/.
+
+\subsection{Accounts}
+
+{\footnotesize\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{0.22\linewidth}
+  >{\raggedright\arraybackslash}p{0.22\linewidth}
+  >{\raggedright\arraybackslash}p{0.22\linewidth}
+  >{\raggedright\arraybackslash}p{0.22\linewidth}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+\textbf{System}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\textbf{Username}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\textbf{Password}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\textbf{Role}
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+pfSense-LAB3 & admin & pfsense & Firewall management \\
+VyOS-LAB3 & vyos & vyos & Router console \\
+Server-Web & analyst & \texttt{An@lyst2024} & \textbf{Student entry account} \\
+Server-Web & devops & \texttt{D3v0ps\#2023} & Compromised account (brute-forced) \\
+Server-Web & maint & --- & Backdoor account (attacker-created) \\
+Server-DB & analyst & \texttt{An@lyst2024} & Internal access \\
+Server-DB & devops & \texttt{D3v0ps\#2023} & Compromised (password reuse) \\
+Server-Web & ubuntu & \texttt{ubuntu} & Admin (direct SSH, teacher only) \\
+Server-DB & ubuntu & \texttt{ubuntu} & Admin (direct SSH, teacher only) \\
+\end{longtable}}
+
+\subsection{Pre-Staged Attack Timeline}
+
+{\footnotesize\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{0.17\linewidth}
+  >{\raggedright\arraybackslash}p{0.15\linewidth}
+  >{\raggedright\arraybackslash}p{0.58\linewidth}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+\textbf{Time}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\textbf{Host}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\textbf{Event}
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+03:05--03:16 & Server-Web & 25 failed SSH attempts for \texttt{devops} from \path{185.220.101.47} \\
+03:17 & Server-Web & Successful SSH login as \texttt{devops} \\
+03:18 & Server-Web & \path{sudo /usr/bin/find} --- privilege escalation to root via GTFOBins \\
+03:19 & Server-Web & \texttt{useradd\ maint} + \path{/etc/sudoers.d/maint} --- backdoor + persistence \\
+03:21 & Server-DB & SSH login as \texttt{devops} from \path{192.168.50.10} (lateral movement) \\
+03:22 & Server-DB & Access to \texttt{clients.db}; \path{.exfil_marker} created \\
+\end{longtable}}
+
+\subsection{Evidence Artefact Locations}
+
+{\footnotesize\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{0.23\linewidth}
+  >{\raggedright\arraybackslash}p{0.54\linewidth}
+  >{\raggedright\arraybackslash}p{0.13\linewidth}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+\textbf{Artefact}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\textbf{Path}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\textbf{Host}
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+SSH brute-force log & \path{/var/log/auth.log} & Server-Web \\
+Privilege escalation & \path{/var/log/auth.log} (sudo entry) & Server-Web \\
+Backdoor account & \path{/etc/passwd}, \path{/etc/sudoers.d/maint} & Server-Web \\
+Sudoers misconfiguration & \path{/etc/sudoers.d/devops} & Server-Web \\
+Bash history & \path{/home/devops/.bash_history} & Server-Web \\
+Lateral movement log & \path{/var/log/auth.log} & Server-DB \\
+Exfiltration marker & \path{/opt/helix/data/.exfil_marker} & Server-DB \\
+Sensitive data & \path{/opt/helix/data/clients.db} & Server-DB \\
+\end{longtable}}
+
+\subsection{Lab Startup Checklist}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+  Start all nodes in order: \textbf{pfSense} $\rightarrow$ \textbf{VyOS} $\rightarrow$ \textbf{Server-Web} $\rightarrow$ \textbf{Server-DB}
+\item
+  Verify the EVE-NG host bridge interfaces are active (persistent via udev rule \texttt{99-lab3-bridges.rules}):
+
+\begin{lstlisting}
+ip addr show vnet0_2   # Should show 192.168.50.254/24
+ip addr show vnet0_3   # Should show 192.168.60.254/24
+\end{lstlisting}
+\item
+  If bridges are missing (e.g.~after EVE-NG host reboot), restore manually:
+
+\begin{lstlisting}
+ip addr add 192.168.50.254/24 dev vnet0_2
+ip addr add 192.168.60.254/24 dev vnet0_3
+\end{lstlisting}
+\item
+  Verify evidence artefacts via teacher accounts:
+
+\begin{lstlisting}
+# Server-Web
+ssh ubuntu@192.168.50.10   # password: ubuntu
+grep "185.220.101.47" /var/log/auth.log | wc -l  # expect 25+
+grep "maint" /etc/passwd                          # expect maint entry
+# Server-DB
+ssh ubuntu@192.168.60.10   # password: ubuntu
+ls /opt/helix/data/        # expect clients.db + .exfil_marker
+\end{lstlisting}
+
+  If Lab 1 is also deployed, \texttt{99-lab1-bridges.rules} and \texttt{99-lab3-bridges.rules} assign overlapping interface names (\path{vnet0_2}/\path{vnet0_3}). Do not run Lab 1 and Lab 3 simultaneously on the same EVE-NG host.
+\end{enumerate}
+
+\subsection{Student Entry Point}
+
+Students connect via SSH to pfSense's WAN IP; pfSense DNAT forwards TCP 22 directly to Server-Web:
+
+No offensive tools are required. Students use only standard Unix utilities: \texttt{grep}, \texttt{awk}, \texttt{less}, \texttt{cat}, \texttt{find}, \texttt{journalctl}.
+
+\subsection{Lab Reset Procedure}
+
+To restore the lab to its initial forensic state after a student session:
+
+Alternatively, revert both Server-Web and Server-DB QCOW2 images from the pre-staged backup stored at /opt/unetlab/addons/qemu/lab3-backups/.

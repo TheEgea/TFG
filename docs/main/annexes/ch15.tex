@@ -1,0 +1,510 @@
+\chapter{LAB1 --- Reconnaissance: PEBCAK Corp}
+
+\section{LAB1 --- Reconnaissance · PEBCAK Corp}
+
+{\footnotesize\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{0.22\linewidth}
+  >{\raggedright\arraybackslash}p{0.72\linewidth}@{}}
+\toprule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+\textbf{Difficulty} & Easy \\
+\textbf{Category} & Reconnaissance · OSINT · SSH \\
+\textbf{Flags} & 1 \\
+\textbf{Est.\ time} & 45--90 min \\
+\textbf{Key skills} & HTTP source inspection, DNS resolution, SSH, firewall pivoting \\
+\textbf{Nodes} & pfSense · VyOS · Ubuntu Server · Ubuntu Desktop · Parrot OS \\
+\end{longtable}}
+
+\href{https://github.com/TheEgea/TFG/tree/main/src/eve-ng/configs/nodes/Lab1}{Lab folder on GitHub} \href{https://github.com/TheEgea/TFG/raw/main/src/eve-ng/topologies/LAB1-Reconnaissance-PEBCAK.unl}{Download topology (.unl)} \href{../../assets/exercises/lab1-exercise.pdf}{Exercise sheet} \href{../../assets/exercises/lab1-solution.pdf}{Solution guide}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\subsection{Scenario}
+
+\textbf{PEBCAK Corp} has a small internal web server exposed to the homelab network. The student takes the role of an external attacker with no prior credentials. The goal is to enumerate the target, find credentials hidden in the web source, access the server via SSH through the perimeter firewall, and retrieve the flag.
+
+The flag reveals pfSense admin credentials, opening a secondary objective: access the firewall management interface from an internal pivot point.
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\subsection{Topology}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.95\textwidth]{lab1-topology.png}
+\caption{EVE-NG topology --- Lab 1}
+\end{figure}
+
+\begin{lstlisting}
+Homelab LAN (192.168.0.0/24)
+        |
+[Parrot --- Attacker]  192.168.0.x (DHCP via pnet0 cloud)
+        |
+[pfSense --- Firewall]
+  WAN vtnet1: 192.168.0.x/24  (DHCP)
+  LAN vtnet0: 172.16.0.1/30
+        |
+[VyOS --- Router]
+  eth0: 172.16.0.2/30    $\leftarrow$ uplink to pfSense
+  eth6: 192.168.10.5/24  $\leftarrow$ Users LAN
+  eth7: 192.168.20.1/24  $\leftarrow$ Servers LAN
+        |
+  +------+------+
+[Server]      [PC1]
+192.168.20.50 192.168.10.50
+nginx :80      Ubuntu Desktop
+PEBCAK Corp    internal user
+\end{lstlisting}
+
+\subsection{Nodes}
+
+{\footnotesize\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{0.22\linewidth}
+  >{\raggedright\arraybackslash}p{0.22\linewidth}
+  >{\raggedright\arraybackslash}p{0.22\linewidth}
+  >{\raggedright\arraybackslash}p{0.22\linewidth}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Node
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+OS
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+IP
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Role
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+pfSense & pfSense CE 2.6 & WAN: 192.168.0.x (DHCP) / LAN: 172.16.0.1 & Perimeter firewall · DNS · NAT · DNAT \\
+VyOS & VyOS rolling & 172.16.0.2 / 192.168.10.5 / 192.168.20.1 & Core router · NAT \\
+Server & Ubuntu Server 24.04 & 192.168.20.50 & Target --- nginx · hostname: pebcak \\
+PC1 & Ubuntu Desktop 24.04 & 192.168.10.50 & Internal user workstation \\
+Parrot & Parrot Security 6.4 & 192.168.0.x (DHCP) & Attacker \\
+\end{longtable}}
+
+\subsection{Network segments}
+
+{\footnotesize\begin{longtable}[]{@{}>{\raggedright\arraybackslash}p{0.22\linewidth}
+  >{\raggedright\arraybackslash}p{0.22\linewidth}
+  >{\raggedright\arraybackslash}p{0.22\linewidth}
+  >{\raggedright\arraybackslash}p{0.22\linewidth}@{}}
+\toprule\noalign{}
+Segment & Subnet & Gateway & Purpose \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Net-Link & 172.16.0.0/30 & 172.16.0.1 & pfSense $\leftrightarrow$ VyOS \\
+Users LAN & 192.168.10.0/24 & 192.168.10.5 & PC1 segment \\
+Servers LAN & 192.168.20.0/24 & 192.168.20.1 & Server segment \\
+Homelab & 192.168.0.0/24 & 192.168.0.1 & WAN · Attacker \\
+\end{longtable}}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\subsection{Learning objectives}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Apply passive HTTP reconnaissance (page source, hidden paths)
+\item
+  Understand how DNS aliases expose internal naming conventions
+\item
+  Use SSH to access a target through a NAT/DNAT firewall rule
+\item
+  Pivot to a management interface using credentials found post-exploitation
+\end{enumerate}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\subsection{Attack flow}
+
+\begin{lstlisting}
+1. http://lab1                $\rightarrow$ PEBCAK Corp portal (Firefox on Parrot)
+2. View page source           $\rightarrow$ 
+3. http://lab1/pebcak.html   $\rightarrow$ SSH creds: blackmesa / !Bl4kM3s$
+4. ssh blackmesa@lab1        $\rightarrow$ Server via pfSense DNAT (TCP 22)
+5. cat ~/flag.txt             $\rightarrow$ FLAG + pfSense creds
+6. ssh admin@172.16.0.1      $\rightarrow$ pfSense access (pivot from Server via VyOS)
+\end{lstlisting}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\subsection{Lab startup checklist}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+  Start all nodes from EVE-NG web UI
+\item
+  Run bridge script on EVE-NG host (resets on reboot --- persistent via udev):
+
+\begin{lstlisting}
+ip addr add 192.168.20.x/24 dev vnet0_2
+ip addr add 192.168.10.x/24 dev vnet0_3
+ip route add 172.16.0.0/30 via 192.168.20.1
+\end{lstlisting}
+\item
+  Set DNS on Parrot to \texttt{192.168.0.x} (pfSense) so \texttt{lab1} resolves
+\item
+  Verify: \path{curl http://lab1} from Parrot Firefox
+\end{enumerate}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\subsection{Files}
+
+{\footnotesize\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{0.45\linewidth}
+  >{\raggedright\arraybackslash}p{0.45\linewidth}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+File
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Description
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+\href{https://github.com/TheEgea/TFG/raw/main/src/eve-ng/topologies/LAB1-Reconnaissance-PEBCAK.unl}{\nolinkurl{LAB1-Reconnaissance-PEBCAK.unl}} & EVE-NG topology --- import directly \\
+\href{https://github.com/TheEgea/TFG/tree/main/src/eve-ng/configs/nodes/Lab1}{\path{nodes/Lab1/}} & Node configs: VyOS boot, pfSense XML, nginx, web pages \\
+\end{longtable}}
+
+\section{LAB1 -- VyOS Router}
+
+VyOS provides internal routing between the pfSense firewall and the lab segments, plus source NAT for outbound internet access.
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\subsection{Interfaces}
+
+{\footnotesize\begin{longtable}[]{@{}>{\raggedright\arraybackslash}p{0.30\linewidth}
+  >{\raggedright\arraybackslash}p{0.30\linewidth}
+  >{\raggedright\arraybackslash}p{0.30\linewidth}@{}}
+\toprule\noalign{}
+Interface & IP & Description \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+eth0 & 172.16.x.x/30 & OUTSIDE --- uplink to pfSense LAN \\
+eth6 & 192.168.10.x/24 & Users LAN --- gateway for PC1 \\
+eth7 & 192.168.20.x/24 & Servers LAN --- gateway for Server \\
+\end{longtable}}
+
+\subsection{Access}
+
+\subsection{Full running configuration}
+
+\subsection{Connectivity verification}
+
+\section{LAB1 -- Server (PEBCAK Corp)}
+
+The Server node runs Ubuntu 24.04 and hosts the PEBCAK Corp nginx web server --- the primary target for Lab1.
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\subsection{Access}
+
+\begin{lstlisting}
+# From EVE-NG host (bridge vnet0_2 must have IP 192.168.20.x/24):
+sshpass -p '!Bl4kM3s$' ssh blackmesa@192.168.20.x
+
+# Via pfSense NAT (from Parrot / Homelab):
+ssh blackmesa@192.168.0.x   # pfSense DNAT $\rightarrow$ 192.168.20.x:22
+\end{lstlisting}
+
+\subsection{Network configuration}
+
+{\footnotesize\begin{longtable}[]{@{}>{\raggedright\arraybackslash}p{0.45\linewidth}
+  >{\raggedright\arraybackslash}p{0.45\linewidth}@{}}
+\toprule\noalign{}
+Parameter & Value \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Interface & ens3 \\
+IP & 192.168.20.x/24 \\
+Gateway & 192.168.20.x (VyOS eth7) \\
+DNS & 8.8.8.8 / 1.1.1.1 \\
+Network manager & systemd-networkd \\
+\end{longtable}}
+
+File: \path{/etc/systemd/network/10-ens3.network}
+
+\begin{lstlisting}
+[Match]
+Name=ens3
+
+[Network]
+Address=192.168.20.x/24
+Gateway=192.168.20.x
+DNS=8.8.8.8
+DNS=1.1.1.1
+\end{lstlisting}
+
+\subsection{Services}
+
+{\footnotesize\begin{longtable}[]{@{}>{\raggedright\arraybackslash}p{0.30\linewidth}
+  >{\raggedright\arraybackslash}p{0.30\linewidth}
+  >{\raggedright\arraybackslash}p{0.30\linewidth}@{}}
+\toprule\noalign{}
+Service & Status & Port \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+nginx & enabled, active & 80 \\
+openssh-server & enabled, active & 22 \\
+systemd-networkd & enabled & --- \\
+\end{longtable}}
+
+\subsection{Web content}
+
+\subsubsection{/var/www/html/index.html}
+
+The main landing page for \path{http://lab1}. Contains a hidden HTML comment:
+
+\begin{lstlisting}
+\end{lstlisting}
+
+This is the clue that leads students to \texttt{pebcak.html}.
+
+\subsubsection{/var/www/html/pebcak.html}
+
+Hidden page (not linked from index) containing SSH credentials in plain text:
+
+\begin{lstlisting}
+User:     blackmesa
+Password: !Bl4kM3s$
+\end{lstlisting}
+
+\subsection{Flag}
+
+\begin{lstlisting}
+/home/blackmesa/flag.txt
+$\rightarrow$ FLAG
+
+-- PEBCAK Corp Internal Credentials --
+Firewall: 172.16.x.x | admin / pfsense
+\end{lstlisting}
+
+\subsection{nginx configuration}
+
+File: \path{/etc/nginx/sites-enabled/default}
+
+\begin{lstlisting}
+server 
+}
+\end{lstlisting}
+
+\section{LAB1 -- pfSense Firewall}
+
+pfSense sits at the perimeter between the Homelab LAN (WAN) and the internal VyOS router (LAN). It handles NAT port forwarding, DNS resolution for \texttt{lab1}, and SSH management access.
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\subsection{Interfaces}
+
+{\footnotesize\begin{longtable}[]{@{}>{\raggedright\arraybackslash}p{0.30\linewidth}
+  >{\raggedright\arraybackslash}p{0.30\linewidth}
+  >{\raggedright\arraybackslash}p{0.30\linewidth}@{}}
+\toprule\noalign{}
+Interface & Role & IP \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+vtnet0 & LAN & 172.16.x.x/30 \\
+vtnet1 & WAN & 192.168.0.x/24 (static) \\
+\end{longtable}}
+
+\subsection{Access}
+
+\begin{lstlisting}
+# From EVE-NG host (route 172.16.0.0/30 via 192.168.20.1 must exist):
+sshpass -p 'pfsense' ssh -o PubkeyAuthentication=no \
+  -o PreferredAuthentications=password admin@172.16.x.x
+
+# Web UI:
+# http://172.16.x.x  (admin / pfsense)
+\end{lstlisting}
+
+\begin{lstlisting}
+pfSense LAB1 is installed in BIOS mode (SeaBIOS / machine=pc).
+EVE-NG default launcher works correctly --- no custom script needed.
+\end{lstlisting}
+
+\subsection{NAT port forward rules}
+
+{\footnotesize\begin{longtable}[]{@{}>{\raggedright\arraybackslash}p{0.22\linewidth}
+  >{\raggedright\arraybackslash}p{0.22\linewidth}
+  >{\raggedright\arraybackslash}p{0.22\linewidth}
+  >{\raggedright\arraybackslash}p{0.22\linewidth}@{}}
+\toprule\noalign{}
+Rule & Protocol & WAN port & Target \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+LAB1-HTTP & TCP & 80 & 192.168.20.x:80 \\
+LAB1-HTTPS & TCP & 443 & 192.168.20.x:443 \\
+LAB1-SSH & TCP & 22 & 192.168.20.x:22 \\
+\end{longtable}}
+
+All three rules forward WAN traffic on pfSense (192.168.0.x) directly to the Server.
+
+\subsection{DNS Resolver (Unbound)}
+
+Resolves \texttt{lab1} $\rightarrow$ \texttt{192.168.0.x} for clients using pfSense as DNS:
+
+\begin{lstlisting}
+local-zone: "lab1." redirect
+local-data: "lab1. A 192.168.0.x"
+\end{lstlisting}
+
+\begin{itemize}
+\item
+  Listens on: \texttt{0.0.0.0:53} (all interfaces)
+\item
+  WAN firewall rule: \texttt{pass\ in\ quick\ on\ vtnet1\ proto\ udp\ from\ any\ to\ any\ port\ 53}
+
+\begin{lstlisting}
+nmcli con mod "Wired connection 1" ipv4.dns "192.168.0.x" ipv4.ignore-auto-dns yes
+nmcli con up "Wired connection 1"
+\end{lstlisting}
+
+  After this, \path{curl http://lab1} resolves to pfSense and NAT forwards to the Server.
+\end{itemize}
+
+\subsection{Snapshot}
+
+A named snapshot \texttt{lab1-session2} exists on the pfSense disk:
+
+\begin{lstlisting}
+/opt/unetlab/tmp/0/64c869bb-bdae-4f79-9c38-f126b700b8ca/6/virtioa.qcow2
+\end{lstlisting}
+
+Restore: \texttt{qemu-img\ snapshot\ -a\ lab1-session2\ \textless{}disk\textgreater{}} (with pfSense stopped)
+
+\section{LAB1 -- PC1 (Ubuntu Desktop)}
+
+PC1 is an internal user workstation on the Users LAN segment. It is not part of the primary attack chain but represents an internal user that could be targeted in extended exercises.
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\subsection{Access}
+
+\begin{itemize}
+\tightlist
+\item
+  VNC: port 32772 on EVE-NG host
+\item
+  Credentials: skynet / Sk1n3t
+\end{itemize}
+
+\subsection{Network configuration}
+
+{\footnotesize\begin{longtable}[]{@{}>{\raggedright\arraybackslash}p{0.45\linewidth}
+  >{\raggedright\arraybackslash}p{0.45\linewidth}@{}}
+\toprule\noalign{}
+Parameter & Value \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+IP & 192.168.10.x/24 \\
+Gateway & 192.168.10.x (VyOS eth6) \\
+DNS & 8.8.8.8 \\
+Manager & NetworkManager \\
+\end{longtable}}
+
+\begin{lstlisting}
+nmcli con mod "Wired connection 1" \
+  ipv4.method manual \
+  ipv4.addresses 192.168.10.x/24 \
+  ipv4.gateway 192.168.10.x \
+  ipv4.dns 8.8.8.8 \
+  ipv4.ignore-auto-dns yes
+nmcli con up "Wired connection 1"
+\end{lstlisting}
+
+\begin{lstlisting}
+SSH server not installed. Access only via VNC.
+\end{lstlisting}
+
+\section{LAB1 -- Parrot OS (Attacker)}
+
+The Parrot node is the attacker's machine. It sits directly on the Homelab LAN and attacks the Server through pfSense's NAT rules.
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\subsection{Access}
+
+\begin{itemize}
+\tightlist
+\item
+  VNC: port 32773 on EVE-NG host
+\item
+  Credentials: lab1 / L4b1
+\end{itemize}
+
+\subsection{Network}
+
+{\footnotesize\begin{longtable}[]{@{}>{\raggedright\arraybackslash}p{0.45\linewidth}
+  >{\raggedright\arraybackslash}p{0.45\linewidth}@{}}
+\toprule\noalign{}
+Parameter & Value \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+IP & 192.168.0.x (DHCP from home router) \\
+DNS & 192.168.0.x (pfSense --- set manually) \\
+\end{longtable}}
+
+\subsection{DNS setup (required before starting)}
+
+\begin{lstlisting}
+nmcli con mod "Wired connection 1" \
+  ipv4.dns "192.168.0.x" \
+  ipv4.ignore-auto-dns yes
+nmcli con up "Wired connection 1"
+nslookup lab1   # should resolve to 192.168.0.x
+\end{lstlisting}
+
+\subsection{Tools used in Lab1}
+
+{\footnotesize\begin{longtable}[]{@{}>{\raggedright\arraybackslash}p{0.45\linewidth}
+  >{\raggedright\arraybackslash}p{0.45\linewidth}@{}}
+\toprule\noalign{}
+Tool & Purpose \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Firefox & Browse \path{http://lab1}, view page source \\
+ssh client & \texttt{ssh\ blackmesa@lab1} after finding creds \\
+\end{longtable}}
+
+\subsection{Attack flow}
+
+\begin{lstlisting}
+# 1. Browse and find the hidden page
+firefox http://lab1        # $\rightarrow$ view source $\rightarrow$ 
+firefox http://lab1/pebcak.html  # $\rightarrow$ blackmesa / !Bl4kM3s$
+
+# 2. SSH via pfSense DNAT (TCP 22 $\rightarrow$ 192.168.20.x)
+ssh blackmesa@lab1
+
+# 3. Get the flag
+cat ~/flag.txt
+\end{lstlisting}

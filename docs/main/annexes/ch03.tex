@@ -1,0 +1,81 @@
+\chapter{App C --- Lab 2: SYNAPSE Portal Instructor Reference}
+
+\section{App C --- Lab 2: SYNAPSE Portal Instructor Reference}
+
+This appendix provides the deployment reference for Lab 2 (Web Application Vulnerabilities). It is intended for instructors and administrators. The application source code, Docker Compose files, and interactive walkthrough are at docs/web/docs/labs/lab2/.
+
+\subsection{Credentials and Access}
+
+{\footnotesize\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{0.20\linewidth}
+  >{\raggedright\arraybackslash}p{0.20\linewidth}
+  >{\raggedright\arraybackslash}p{0.28\linewidth}
+  >{\raggedright\arraybackslash}p{0.22\linewidth}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+\textbf{System}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\textbf{Username}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\textbf{Password}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\textbf{Role}
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+pfSense-LAB2 & admin & pfsense & Firewall management \\
+VyOS-LAB2 & vyos & vyos & Router console \\
+Server-A OS & ubuntu & \texttt{S3rv3rA} & SSH access \\
+Server-A Portal & admin & \texttt{Admin@Synapse2024} & Web application admin \\
+Server-A Portal & guest & guest123 & Web application guest \\
+Server-B OS & ubuntu & \texttt{S3rv3rB} & SSH access \\
+Server-B DataVault & operator & \texttt{D4t4V4ult\#2024} & API access \\
+Parrot-LAB2 & lab2 & L4b2 & Attacker node \\
+\end{longtable}}
+
+\subsection{Vulnerability Chain and Flag Locations}
+
+{\footnotesize\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{0.03\linewidth}
+  >{\raggedright\arraybackslash}p{0.18\linewidth}
+  >{\raggedright\arraybackslash}p{0.10\linewidth}
+  >{\raggedright\arraybackslash}p{0.41\linewidth}
+  >{\raggedright\arraybackslash}p{0.11\linewidth}@{}}
+\toprule\noalign{}
+\# & \begin{minipage}[b]{\linewidth}\raggedright
+\textbf{OWASP}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\textbf{Vuln}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\textbf{Implementation}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\textbf{Flag}
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+1 & A03:2021 & Stored XSS & \texttt{\textbar{}safe} filter in Jinja2 template; \path{/comments} endpoint & --- \\
+2 & A07:2021 & Cookie theft & \texttt{HttpOnly=False}; victim bot (Playwright) auto-visits comments & --- \\
+3 & A07:2021 & Broken auth & Cookie format \texttt{ID:ROLE:USERNAME}; unsigned; forgeable & --- \\
+4 & A03:2021 & SQL injection & \path{/search?q=} uses string concatenation & FLAG 1 \\
+5 & A01:2021 & Admin access & \path{/admin} panel reveals Server-B credentials & FLAG 2 \\
+6 & A08:2021 & YAML deser. & Server-B \path{/preview} uses \texttt{yaml.UnsafeLoader} & --- \\
+7 & A08:2021 & RCE & \path{!!python/object/apply:os.system} payload via POST & FLAG 3 \\
+\end{longtable}}
+
+\subsection{Lab Startup Procedure}
+
+\begin{itemize}
+\tightlist
+\item
+  After EVE-NG host reboot, restore bridge addresses:
+\item
+  Start the SYNAPSE Portal on Server-A:
+\item
+  Start the DataVault on Server-B:
+\item
+  Configure Parrot static IP and verify connectivity: \textbf{Note:} pfSense-LAB2 is installed in UEFI mode. If it fails to boot, use the start script: \path{/usr/local/bin/pfsense-lab2-start.sh}. Server-A uses \texttt{docker-compose} (v1, hyphen); Server-B uses \texttt{docker\ compose} (v2, space).
+\end{itemize}

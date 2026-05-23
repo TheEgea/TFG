@@ -2,8 +2,7 @@
 
 - GitHub repository (`TheEgea/TFG`) for all code, scripts, and documentation,
       licensed under CC BY-NC-SA 4.0
-- LaTeX (XeLaTeX + OpenDyslexic) for formal academic documentation (Volume I and
-      Volume II)
+- LaTeX (XeLaTeX + OpenDyslexic) for formal academic documentation (Memory and Appendices)
 - MkDocs Material for the operational web documentation site
 - Versioning system for all deliverables with semantic commit messages
 - Change logs and improvement tracking through pull requests

@@ -1,0 +1,117 @@
+\chapter{App B --- Lab 1: PEBCAK Corp Instructor Reference}
+
+\section{App B --- Lab 1: PEBCAK Corp Instructor Reference}
+
+This appendix provides the deployment reference for Lab 1 (Reconnaissance and Enumeration). It is intended for instructors and system administrators responsible for setting up and resetting the lab environment. The student-facing guide and interactive walkthrough are available at docs/web/docs/labs/lab1/.
+
+\subsection{Credentials and Access}
+
+{\footnotesize\begin{longtable}[]{@{}>{\raggedright\arraybackslash}p{0.22\linewidth}
+  >{\raggedright\arraybackslash}p{0.22\linewidth}
+  >{\raggedright\arraybackslash}p{0.22\linewidth}
+  >{\raggedright\arraybackslash}p{0.22\linewidth}@{}}
+\toprule\noalign{}
+\textbf{Node} & \textbf{Username} & \textbf{Password} & \textbf{Access method} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+pfSense & admin & pfsense & Web UI / SSH \\
+VyOS & vyos & vyos & EVE-NG console \\
+Server (PEBCAK) & blackmesa & \texttt{!Bl4kM3s} & SSH (via pfSense DNAT) \\
+PC1 & ubuntu & ubuntu & EVE-NG console / VNC \\
+Parrot OS & parrot & parrot & EVE-NG console / VNC \\
+\end{longtable}}
+
+\subsection{Network Segments}
+
+{\footnotesize\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{0.22\linewidth}
+  >{\raggedright\arraybackslash}p{0.22\linewidth}
+  >{\raggedright\arraybackslash}p{0.22\linewidth}
+  >{\raggedright\arraybackslash}p{0.22\linewidth}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+\textbf{Segment}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\textbf{Subnet}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\textbf{Gateway}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\textbf{Purpose}
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Homelab / WAN & 192.168.0.0/24 & 192.168.0.1 & Parrot attacker + pfSense WAN \\
+Net-Link & 172.16.0.0/30 & pfSense vtnet0 & pfSense VyOS uplink \\
+Users LAN & 192.168.10.0/24 & 192.168.10.x & PC1 internal workstation \\
+Servers LAN & 192.168.20.0/24 & 192.168.20.1 & PEBCAK Corp server segment \\
+\end{longtable}}
+
+\subsection{Lab Startup Checklist}
+
+\begin{itemize}
+\tightlist
+\item
+  Start all nodes from the EVE-NG web interface in order: pfSense VyOS Server PC1 Parrot.
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Run the bridge script on the EVE-NG host (lost on reboot; persistent via \texttt{udev} rule):
+  \end{itemize}
+\item
+  Verify DNS resolution from Parrot: the DNS server on Parrot must point to pfSense's WAN IP so that \texttt{lab1} resolves.
+\item
+  Confirm flag is in place on the Server node:
+\end{itemize}
+
+\subsection{Expected Student Workflow}
+
+{\footnotesize\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{0.30\linewidth}
+  >{\raggedright\arraybackslash}p{0.30\linewidth}
+  >{\raggedright\arraybackslash}p{0.30\linewidth}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+\textbf{Step}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\textbf{Action}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\textbf{Tool}
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+1 & Navigate to \path{http://lab1} in Parrot browser & Firefox \\
+2 & Inspect page source; find HTML comment: \texttt{\textless{}!\,-\textbackslash{}!-\ sometimes\ simplify\ and\ search\ -\textbackslash{}!-\textgreater{}} & Browser devtools \\
+3 & Access \path{http://lab1/pebcak.html}; read SSH credentials & Browser \\
+4 & \texttt{ssh\ blackmesa@lab1} (pfSense DNAT forwards TCP 22) & SSH \\
+5 & \path{cat  /flag.txt} --- retrieves Flag 1 and pfSense credentials & Terminal \\
+6 & SSH to pfSense from Server: \texttt{ssh\ admin@172.16.x.x} & SSH (optional) \\
+\end{longtable}}
+
+\subsection{Flags}
+
+{\footnotesize\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{0.12\linewidth}
+  >{\raggedright\arraybackslash}p{0.47\linewidth}
+  >{\raggedright\arraybackslash}p{0.29\linewidth}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+\textbf{Flag}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\textbf{Value}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\textbf{Location}
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Flag 1 & \path{FLAGp3bc4k_s3rv3r_0wn3d} & \path{/home/blackmesa/flag.txt} on Server \\
+Flag 2 & \path{FLAGpebcak_firewall_pivot} & pfSense admin panel (optional bonus) \\
+\end{longtable}}

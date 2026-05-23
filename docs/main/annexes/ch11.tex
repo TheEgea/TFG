@@ -1,0 +1,95 @@
+\chapter{Basic Configuration --- Selected ISOs}
+
+\section{Selected ISOs}
+
+This page documents the ISO images selected for the TFG lab environment and the rationale behind each choice.
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\subsection{ISO overview}
+
+{\footnotesize\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{0.22\linewidth}
+  >{\raggedright\arraybackslash}p{0.22\linewidth}
+  >{\raggedright\arraybackslash}p{0.22\linewidth}
+  >{\raggedright\arraybackslash}p{0.22\linewidth}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Image
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Version
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Source
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Role in labs
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+\textbf{VyOS} & rolling & \href{https://vyos.io}{vyos.io} & Core router --- routing, NAT, firewall \\
+\textbf{pfSense CE} & 2.7.x & \href{https://www.pfsense.org}{pfsense.org} & Perimeter firewall, DNS resolver \\
+\textbf{Ubuntu Server} & 24.04 LTS & \href{https://ubuntu.com}{ubuntu.com} & Target server --- nginx, SSH \\
+\textbf{Ubuntu Desktop} & 24.04 LTS & \href{https://ubuntu.com}{ubuntu.com} & Victim workstation \\
+\textbf{Parrot OS} & rolling & \href{https://parrotsec.org}{parrotsec.org} & Attacker node \\
+\end{longtable}}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\subsection{Selection criteria}
+
+All ISOs were chosen based on three criteria:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  \textbf{Open source / freely redistributable} --- no licensing cost for students or the institution.
+\item
+  \textbf{EVE-NG compatibility} --- tested boot under QEMU with virtio drivers; added with the \texttt{linux-} prefix under \texttt{/opt/unetlab/addons/qemu/} as required by EVE-NG.
+\item
+  \textbf{Industry relevance} --- tools and OS families students will encounter in real engagements (pfSense/VyOS in SMB network gear, Ubuntu Server as the dominant Linux server target, Parrot/Kali as standard pentesting platforms).
+\end{enumerate}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\subsection{Import into EVE-NG}
+
+\begin{lstlisting}
+# 1. Upload ISO to EVE-NG host
+scp <image>.iso root@<eveng-host>:/tmp/
+
+# 2. Create the image directory (use linux- prefix)
+ssh root@<eveng-host>
+mkdir -p /opt/unetlab/addons/qemu/linux-<name>/
+mv /tmp/<image>.iso /opt/unetlab/addons/qemu/linux-<name>/cdrom.iso
+
+# 3. Create a virtual disk
+qemu-img create -f qcow2 \
+  /opt/unetlab/addons/qemu/linux-<name>/virtioa.qcow2 <size>G
+
+# 4. Fix permissions
+/opt/unetlab/wrappers/unl_wrapper -a fixpermissions
+\end{lstlisting}
+
+\begin{lstlisting}
+The `src/scripts/automation/Iso_uploader.py` script in the repository automates
+all four steps above with a GUI file picker and automatic disk-size suggestions
+based on the OS type.
+\end{lstlisting}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\subsection{Notes per image}
+
+\begin{description}
+\tightlist
+\item[\textbf{VyOS (rolling)}]
+Must be installed to disk from the live ISO before use in labs. Run \texttt{install\ image} from the VyOS shell after first boot.
+\item[\textbf{pfSense CE}]
+On first boot, assign interfaces manually via the console menu (option 1). \texttt{vtnet0} $\rightarrow$ LAN, \texttt{vtnet1} $\rightarrow$ WAN in EVE-NG.
+\item[\textbf{Ubuntu Server / Desktop}]
+Use the \texttt{linux-ubuntu-*} prefix. virtio disk and network drivers are supported out of the box.
+\item[\textbf{Parrot OS}]
+Use the Security edition. The Home edition does not include pentesting tools.
+\end{description}

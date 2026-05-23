@@ -73,5 +73,5 @@ ssh analyst@<pfSense-WAN-IP>
 # Should land on helix-web prompt
 ```
 
-!!! warning "End-to-end verification pending"
-    The full student SSH chain (homelab → pfSense DNAT → Server-Web → Server-DB pivot) has not yet been verified end-to-end in a live session (F5 pending).
+!!! success "End-to-end verification complete"
+    The full student SSH chain (homelab → pfSense DNAT → Server-Web → Server-DB pivot) has been verified end-to-end in a live session.

@@ -1,0 +1,842 @@
+\chapter{LAB4 --- Cryptography and Steganography: CipherStrike}
+
+\section{LAB4 --- Cryptography \& Steganography CTF · CipherStrike}
+
+{\footnotesize\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{0.22\linewidth}
+  >{\raggedright\arraybackslash}p{0.72\linewidth}@{}}
+\toprule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+\textbf{Difficulty} & Hard \\
+\textbf{Category} & Cryptography · Steganography · CTF \\
+\textbf{Flags} & 14 (A1--A5, B1--B5, C1--C4) \\
+\textbf{Est.\ time} & 180--300 min \\
+\textbf{Key skills} & Classical ciphers, AES-ECB oracle, RSA small exponent, LSB stego, steghide, ECDSA nonce reuse \\
+\textbf{Nodes} & pfSense · VyOS · ServerA · ServerB · ServerC · Defender \\
+\end{longtable}}
+
+\href{https://github.com/TheEgea/TFG/tree/main/src/eve-ng/configs/nodes/Lab4}{Lab folder on GitHub} \href{https://github.com/TheEgea/TFG/raw/main/src/eve-ng/topologies/LAB4-CryptoStego-CipherStrike.unl}{Download topology (.unl)} \href{../../assets/exercises/lab4-exercise.pdf}{Exercise sheet} \href{../../assets/exercises/lab4-solution.pdf}{Solution guide}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\subsection{Scenario}
+
+\textbf{NovaCorp} has been breached. As a member of the incident response team, you have recovered a set of intercepted communications and suspicious image files from the attacker's exfiltrated archive.
+
+Your mission is to break the ciphers, extract hidden data from the images, and reconstruct the attacker's communication channel step by step.
+
+The investigation is divided into three modules:
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Module A --- Cryptography} (ServerA, 5 challenges): from simple substitution ciphers to asymmetric key attacks.
+\item
+  \textbf{Module B --- Steganography} (ServerB, 5 challenges): from EXIF metadata to least-significant-bit encoding and password-protected steganography.
+\item
+  \textbf{Module C --- Advanced Mix} (ServerC, 4 challenges): multilayer techniques combining cryptography and steganography. \textbf{Access is gated} --- you need the key flags from modules A and B first.
+\end{itemize}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\subsection{Topology}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.95\textwidth]{lab4-topology.png}
+\caption{EVE-NG topology --- Lab 4}
+\end{figure}
+
+\begin{lstlisting}
+Homelab LAN (192.168.0.0/24)
+        |
+[pfSense-LAB4]  WAN: 192.168.0.18 (DHCP)
+        |        LAN: 192.168.1.1/24
+[VyOS-LAB4]
+  eth0: 192.168.1.2/24   $\leftarrow$ uplink to pfSense
+  eth1: 10.10.1.1/24     $\leftarrow$ Zone-A (ServerA)
+  eth2: 10.10.2.1/24     $\leftarrow$ Zone-B (ServerB)
+  eth3: 10.10.3.1/24     $\leftarrow$ Zone-C (ServerC) [GATED]
+  eth4: 10.10.4.1/24     $\leftarrow$ Zone-Defense (Defender)
+        |
+[ServerA]  [ServerB]  [ServerC]  [Defender]
+10.10.1.10  10.10.2.10  10.10.3.10  10.10.4.10
+Crypto      Stego       Adv Mix     Monitoring
+\end{lstlisting}
+
+\subsection{Nodes}
+
+{\footnotesize\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{0.20\linewidth}
+  >{\raggedright\arraybackslash}p{0.20\linewidth}
+  >{\raggedright\arraybackslash}p{0.28\linewidth}
+  >{\raggedright\arraybackslash}p{0.22\linewidth}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Node
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+OS
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+IP
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Role
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+pfSense-LAB4 & pfSense CE & WAN: 192.168.0.18 / LAN: 192.168.1.1 & Perimeter firewall · NAT \\
+VyOS-LAB4 & VyOS rolling & 192.168.1.2 / 10.10.x.1 & Core router · zone segmentation \\
+ServerA & Ubuntu Server 24.04 & 10.10.1.10 & Cryptography module \\
+ServerB & Ubuntu Server 24.04 & 10.10.2.10 & Steganography module \\
+ServerC & Ubuntu Server 24.04 & 10.10.3.10 & Advanced mix --- \textbf{gated access} \\
+Defender & Ubuntu Desktop 24.04 & 10.10.4.10 & SOC monitoring node \\
+\end{longtable}}
+
+\subsection{Network segments}
+
+{\footnotesize\begin{longtable}[]{@{}>{\raggedright\arraybackslash}p{0.22\linewidth}
+  >{\raggedright\arraybackslash}p{0.22\linewidth}
+  >{\raggedright\arraybackslash}p{0.22\linewidth}
+  >{\raggedright\arraybackslash}p{0.22\linewidth}@{}}
+\toprule\noalign{}
+Segment & Subnet & Gateway & Purpose \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+WAN & 192.168.0.0/24 & 192.168.0.1 & pfSense WAN (Homelab) \\
+Net-Link & 192.168.1.0/24 & 192.168.1.1 & pfSense $\leftrightarrow$ VyOS \\
+Zone-A & 10.10.1.0/24 & 10.10.1.1 & ServerA --- Cryptography \\
+Zone-B & 10.10.2.0/24 & 10.10.2.1 & ServerB --- Steganography \\
+Zone-C & 10.10.3.0/24 & 10.10.3.1 & ServerC --- Advanced Mix \\
+Zone-Defense & 10.10.4.0/24 & 10.10.4.1 & Defender \\
+\end{longtable}}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\subsection{Learning objectives}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Apply classical cryptanalysis techniques (frequency analysis, Kasiski examination)
+\item
+  Execute modern symmetric cipher attacks (AES-ECB oracle, XOR crib-dragging)
+\item
+  Understand and exploit RSA small-exponent vulnerability (\(e=3\), cube root attack)
+\item
+  Extract hidden data from image EXIF metadata and binary structures
+\item
+  Perform LSB steganography extraction from RGB and alpha channels
+\item
+  Crack steghide-protected JPEG payloads
+\item
+  Recognise and exploit ECDSA nonce reuse to recover a private key
+\item
+  Chain CTF challenges across multiple servers using derived credentials
+\end{enumerate}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\subsection{The gate mechanism}
+
+\begin{lstlisting}
+Access to \textbf{ServerC} requires solving \textbf{A5} (RSA challenge on ServerA) and
+\textbf{B5} (steghide JPEG on ServerB). The ServerC password is derived as:
+
+```
+password = md5(flag_A5 + flag_B5)[:12]
+```
+Where `flag_A5` and `flag_B5` are the full flag strings (e.g. `FLAG`),
+concatenated without separator, hashed with MD5 (hex digest),
+and the first 12 characters used as the password.
+
+You will not be told the password directly. Derive it yourself once you have
+both flags.
+\end{lstlisting}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\subsection{Module A --- Cryptography (ServerA)}
+
+\textbf{Entry:} \texttt{ssh\ admin@10.10.1.10} (password: \texttt{N3xaTech!})
+
+All challenge files are in \path{/home/admin/mensajes/}.
+
+{\footnotesize\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{0.05\linewidth}
+  >{\raggedright\arraybackslash}p{0.48\linewidth}
+  >{\raggedright\arraybackslash}p{0.24\linewidth}
+  >{\raggedright\arraybackslash}p{0.12\linewidth}@{}}
+\toprule\noalign{}
+Ch. & \begin{minipage}[b]{\linewidth}\raggedright
+File
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Topic
+\end{minipage} & Diff. \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+A1 & \path{A1_mensaje_interceptado.txt} & ROT13 & Easy \\
+A2 & \path{A2_oracle.py} + \path{A2_admin_cipher.b64} & AES-ECB oracle attack & Easy--Medium \\
+A3 & \path{A3_documento_clasificado.txt} & Vigenère cipher + Kasiski analysis & Medium \\
+A4 & \path{A4_mensaje_xor.hex} & XOR repeating key + crib-dragging & Medium \\
+A5 & \path{A5_rsa_challenge.txt} & RSA small exponent (\(e=3\)) & Medium--Hard \\
+\end{longtable}}
+
+\subsubsection{Hints}
+
+??? hint ``A1 --- not sure where to start?'' The text looks like English but isn't. Every letter has been shifted by a fixed amount. \texttt{python3\ -c\ "import\ codecs;\ print(codecs.decode(open(...).read(),\ \textquotesingle{}rot\_13\textquotesingle{}))"} is one approach.
+
+??? hint ``A2 --- understanding ECB mode'' AES-ECB encrypts each 16-byte block independently. If you can make the oracle encrypt a block you control followed by an unknown block, you can recover the unknown byte-by-byte. The \path{A2_oracle.py} script is your encryption oracle.
+
+??? hint ``A3 --- Kasiski examination'' Look for repeated trigrams in the ciphertext. The distance between repetitions is a multiple of the key length. Once you know the key length, treat each column as a Caesar cipher.
+
+??? hint ``A4 --- crib-dragging'' If you know (or can guess) a word that appears in the plaintext, XOR that word against every position of the ciphertext. A correctly placed crib reveals the key bytes at that position.
+
+??? hint ``A5 --- cube root attack'' When RSA uses \(e=3\) and the message is short enough that \(m^3 < n\), the ciphertext is literally \(m^3\) with no modular reduction. Compute the integer cube root of the ciphertext with \texttt{gmpy2.iroot(c,\ 3)} and convert to bytes.
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\subsection{Module B --- Steganography (ServerB)}
+
+\textbf{Entry:} \texttt{ssh\ sysop@10.10.2.10} (password: \texttt{S3cure24!})
+
+All challenge files are in \path{/srv/public/uploads/}.
+
+{\footnotesize\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{0.20\linewidth}
+  >{\raggedright\arraybackslash}p{0.20\linewidth}
+  >{\raggedright\arraybackslash}p{0.28\linewidth}
+  >{\raggedright\arraybackslash}p{0.22\linewidth}@{}}
+\toprule\noalign{}
+Ch. & \begin{minipage}[b]{\linewidth}\raggedright
+File
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Topic
+\end{minipage} & Diff. \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+B1 & \path{B1_oficina_novacorp.png} & EXIF metadata & Easy \\
+B2 & \path{B2_network_diagram.png} & Data after PNG IEND chunk & Easy--Medium \\
+B3 & \path{B3_documento_escaneado.png} & LSB in red channel & Medium \\
+B4 & \path{B4_novacorp_logo.png} & LSB in alpha channel (RGBA) & Medium \\
+B5 & \path{B5_camara_seguridad.jpg} & Steghide JPEG & Medium \\
+\end{longtable}}
+
+\subsubsection{Hints}
+
+??? hint ``B1 --- where metadata hides'' Images carry EXIF metadata: camera model, GPS coordinates, software, and custom fields. \path{exiftool B1_oficina_novacorp.png} shows all fields.
+
+??? hint ``B2 --- beyond the end'' A valid PNG ends at the IEND chunk. Anything after that is ignored by image viewers but is still present in the file. Read the raw bytes past the IEND marker.
+
+??? hint ``B3 --- LSB basics'' The least-significant bit of each pixel's red channel carries one bit of hidden data. Read the red channel of each pixel in row order and assemble the bits into bytes.
+
+??? hint ``B4 --- transparency channel'' PNG images with transparency have an alpha channel. The LSB of the alpha value of each pixel can carry hidden data. Open with Pillow, select \texttt{\textquotesingle{}A\textquotesingle{}} channel.
+
+??? hint ``B5 --- steghide and passwords'' Steghide embeds data inside a JPEG using a passphrase. The passphrase for this challenge is related to the company name in the scenario. \path{steghide extract -sf B5_camara_seguridad.jpg}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\subsection{Module C --- Advanced Mix (ServerC)}
+
+\begin{lstlisting}
+Derive the ServerC password from flags A5 and B5 before attempting this module.
+\end{lstlisting}
+
+\textbf{Entry:} \texttt{ssh\ devops@10.10.3.10} (password: \emph{derived --- see gate mechanism})
+
+All challenge files are in \path{/home/devops/retos/}.
+
+{\footnotesize\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{0.20\linewidth}
+  >{\raggedright\arraybackslash}p{0.20\linewidth}
+  >{\raggedright\arraybackslash}p{0.28\linewidth}
+  >{\raggedright\arraybackslash}p{0.22\linewidth}@{}}
+\toprule\noalign{}
+Ch. & \begin{minipage}[b]{\linewidth}\raggedright
+File(s)
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Topic
+\end{minipage} & Diff. \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+C1 & \path{C1_backup_tapes.jpg} & Multilayer: EXIF $\rightarrow$ steghide $\rightarrow$ ZIP & Hard \\
+C2 & \path{C2_backup_log.b64} & Onion encoding layers & Hard \\
+C3 & \path{C3_api_token.txt} + \path{C3_verificador.py} & SHA-1 length extension & Hard \\
+C4 & \path{C4_ecdsa_signatures.txt} + \path{C4_verificador.py} & ECDSA nonce reuse & Hard \\
+\end{longtable}}
+
+\subsubsection{Hints}
+
+??? hint ``C1 --- follow the layers'' Start with \texttt{exiftool} to find a clue embedded in the EXIF data. That clue leads to a steghide passphrase. The steghide payload is a ZIP archive containing the final hidden data.
+
+??? hint ``C2 --- peel the onion'' The file is base64 encoded. After decoding: decompress with gzip. After decompressing: base64 again. After decoding: decompress with bzip2. The flag is inside. Work layer by layer.
+
+??? hint ``C3 --- length extension'' Some hash-based authentication schemes compute \texttt{HMAC\ =\ hash(secret\ +\ message)}. For MD5 and SHA-1, an attacker who knows the hash output can append extra data and compute a valid hash for \texttt{secret\ +\ message\ +\ padding\ +\ extra} without knowing the secret. The \texttt{hlextend} Python library automates this.
+
+??? hint ``C4 --- reused nonce in ECDSA'' ECDSA signature security depends entirely on using a unique random nonce \(k\) per signature. If the same \(k\) is used twice with different messages, the private key can be algebraically recovered from the two \((r, s)\) pairs. Check whether any two signatures in the file share the same \(r\) value.
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\subsection{Lab startup checklist}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Start all nodes from EVE-NG web UI in order: pfSense $\rightarrow$ VyOS $\rightarrow$ ServerA $\rightarrow$ ServerB $\rightarrow$ ServerC $\rightarrow$ Defender
+\item
+  Verify zone routing from VyOS console: \texttt{show\ ip\ route}
+\item
+  Confirm SSH access:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \texttt{ssh\ admin@10.10.1.10} --- Module A entry point
+  \item
+    \texttt{ssh\ sysop@10.10.2.10} --- Module B entry point
+  \end{itemize}
+\item
+  Solve A5 and B5, derive ServerC password, then: \texttt{ssh\ devops@10.10.3.10}
+\end{enumerate}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\subsection{Files}
+
+{\footnotesize\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{0.45\linewidth}
+  >{\raggedright\arraybackslash}p{0.45\linewidth}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+File
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Description
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+\path{LAB4-CryptoStego-CipherStrike.unl} & EVE-NG topology --- import directly \\
+\href{https://github.com/TheEgea/TFG/tree/main/src/eve-ng/configs/nodes/Lab4/serverA}{\path{nodes/Lab4/serverA/}} & Challenge files + Python deps for ServerA \\
+\href{https://github.com/TheEgea/TFG/tree/main/src/eve-ng/configs/nodes/Lab4/serverB}{\path{nodes/Lab4/serverB/}} & Challenge files + image assets for ServerB \\
+\href{https://github.com/TheEgea/TFG/tree/main/src/eve-ng/configs/nodes/Lab4/serverC}{\path{nodes/Lab4/serverC/}} & Challenge files + hlextend vendor for ServerC \\
+\href{https://github.com/TheEgea/TFG/tree/main/src/eve-ng/configs/nodes/Lab4/vyos}{\path{nodes/Lab4/vyos/}} & VyOS config.boot \\
+\end{longtable}}
+
+\section{LAB4 --- Infrastructure Reference}
+
+Complete infrastructure reference for LAB4 CipherStrike. For instructor/lab admin use.
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\subsection{Node inventory}
+
+{\footnotesize\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{0.17\linewidth}
+  >{\raggedright\arraybackslash}p{0.17\linewidth}
+  >{\raggedright\arraybackslash}p{0.17\linewidth}
+  >{\raggedright\arraybackslash}p{0.17\linewidth}
+  >{\raggedright\arraybackslash}p{0.17\linewidth}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Node
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+EVE-NG ID
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Console
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Image
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Role
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+pfSense-LAB4 & 1 & VNC (see EVE-NG UI) & pfsense-ce & Perimeter firewall · NAT \\
+VyOS-LAB4 & 2 & Telnet (see EVE-NG UI) & vyos-rolling & Core router · zone segmentation \\
+ServerA & 3 & VNC (see EVE-NG UI) & linux-ubuntu-server-24.04 & Cryptography module \\
+ServerB & 4 & VNC (see EVE-NG UI) & linux-ubuntu-server-24.04 & Steganography module \\
+ServerC & 5 & VNC (see EVE-NG UI) & linux-ubuntu-server-24.04 & Advanced mix (gated) \\
+Defender & 6 & VNC (see EVE-NG UI) & linux-ubuntu-desktop-24.04 & SOC monitoring \\
+\end{longtable}}
+
+\subsection{Network addressing}
+
+{\footnotesize\begin{longtable}[]{@{}>{\raggedright\arraybackslash}p{0.17\linewidth}
+  >{\raggedright\arraybackslash}p{0.17\linewidth}
+  >{\raggedright\arraybackslash}p{0.17\linewidth}
+  >{\raggedright\arraybackslash}p{0.17\linewidth}
+  >{\raggedright\arraybackslash}p{0.17\linewidth}@{}}
+\toprule\noalign{}
+Segment & Subnet & Bridge & Host IP (EVE-NG) & Purpose \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Net-Link & 192.168.1.0/24 & vnet0\_2 & --- & pfSense LAN $\leftrightarrow$ VyOS \\
+Zone-A & 10.10.1.0/24 & vnet0\_3 & 10.10.1.253 & ServerA \\
+Zone-B & 10.10.2.0/24 & vnet0\_4 & 10.10.2.253 & ServerB \\
+Zone-C & 10.10.3.0/24 & vnet0\_5 & 10.10.3.253 & ServerC (gated) \\
+Zone-Defense & 10.10.4.0/24 & vnet0\_6 & --- & Defender \\
+\end{longtable}}
+
+\begin{lstlisting}
+EVE-NG bridge IPs are not persistent by default. Add them before testing SSH access:
+```bash
+ip addr add 10.10.1.253/24 dev vnet0_3
+ip addr add 10.10.2.253/24 dev vnet0_4
+ip addr add 10.10.3.253/24 dev vnet0_5
+```
+\end{lstlisting}
+
+\subsection{Credentials (full reference)}
+
+{\footnotesize\begin{longtable}[]{@{}>{\raggedright\arraybackslash}p{0.22\linewidth}
+  >{\raggedright\arraybackslash}p{0.22\linewidth}
+  >{\raggedright\arraybackslash}p{0.22\linewidth}
+  >{\raggedright\arraybackslash}p{0.22\linewidth}@{}}
+\toprule\noalign{}
+Node & User & Password & Access \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+pfSense-LAB4 & admin & \texttt{pfsense} & Web GUI / SSH (192.168.0.18) \\
+VyOS-LAB4 & vyos & \texttt{vyos} & EVE-NG console \\
+ServerA & admin & \texttt{N3xaTech!} & SSH 10.10.1.10 \\
+ServerA & root & \texttt{eve} & Console only \\
+ServerB & sysop & \texttt{S3cure24!} & SSH 10.10.2.10 \\
+ServerB & root & \texttt{eve} & Console only \\
+ServerC & devops & \texttt{fa681b59855d} & SSH 10.10.3.10 (derived) \\
+ServerC & root & \texttt{eve} & Console only \\
+Defender & lab4 & \texttt{L4b4} & Ubuntu Desktop / EVE-NG console \\
+\end{longtable}}
+
+\begin{lstlisting}
+`password = md5(flag_A5 + flag_B5)[:12]`
+Students must solve modules A and B first. The decoy `D3vOps24!` is intentionally wrong.
+\end{lstlisting}
+
+\subsection{Lab startup procedure}
+
+\begin{lstlisting}
+# 1. Start all nodes from EVE-NG UI
+#    Order: pfSense $\rightarrow$ VyOS $\rightarrow$ ServerA $\rightarrow$ ServerB $\rightarrow$ ServerC $\rightarrow$ Defender
+
+# 2. Add bridge IPs on EVE-NG host
+ip addr add 10.10.1.253/24 dev vnet0_3
+ip addr add 10.10.2.253/24 dev vnet0_4
+ip addr add 10.10.3.253/24 dev vnet0_5
+
+# 3. Verify routing on VyOS console
+show ip route
+
+# 4. Verify student entry points
+ssh admin@10.10.1.10    # Module A --- N3xaTech!
+ssh sysop@10.10.2.10    # Module B --- S3cure24!
+
+# 5. ServerC only after solving A5 + B5
+ssh devops@10.10.3.10   # fa681b59855d (derived)
+\end{lstlisting}
+
+\section{LAB4 --- ServerA (Cryptography Module)}
+
+ServerA hosts the five cryptography challenges of \textbf{Module A}. Challenge files are in \path{/home/admin/mensajes/}.
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\subsection{System}
+
+{\footnotesize\begin{longtable}[]{@{}>{\raggedright\arraybackslash}p{0.45\linewidth}
+  >{\raggedright\arraybackslash}p{0.45\linewidth}@{}}
+\toprule\noalign{}
+Parameter & Value \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Hostname & servera \\
+OS & Ubuntu Server 24.04 LTS \\
+IP & 10.10.1.10/24 \\
+Gateway & 10.10.1.1 (VyOS eth1) \\
+\end{longtable}}
+
+\subsection{\texorpdfstring{Network config ({\ttfamily /etc/netplan/01-lab4.yaml})}{Network config (/etc/netplan/01-lab4.yaml)}}
+
+\begin{lstlisting}
+network:
+  version: 2
+  ethernets:
+    ens3:
+      addresses:
+        - 10.10.1.10/24
+      routes:
+        - to: default
+          via: 10.10.1.1
+\end{lstlisting}
+
+\subsection{Accounts}
+
+{\footnotesize\begin{longtable}[]{@{}>{\raggedright\arraybackslash}p{0.30\linewidth}
+  >{\raggedright\arraybackslash}p{0.30\linewidth}
+  >{\raggedright\arraybackslash}p{0.30\linewidth}@{}}
+\toprule\noalign{}
+Account & Password & Role \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+admin & \texttt{N3xaTech!} & Student entry \\
+root & \texttt{eve} & Console only \\
+\end{longtable}}
+
+\subsection{Installed tools}
+
+{\footnotesize\begin{longtable}[]{@{}>{\raggedright\arraybackslash}p{0.30\linewidth}
+  >{\raggedright\arraybackslash}p{0.30\linewidth}
+  >{\raggedright\arraybackslash}p{0.30\linewidth}@{}}
+\toprule\noalign{}
+Package & Version & Purpose \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+\texttt{pycryptodome} & 3.23.0 & AES oracle (A2), RSA (A5) \\
+\texttt{gmpy2} & 2.1.5 & Integer cube root for RSA (A5) \\
+\texttt{python3} & system & Challenge scripts \\
+\end{longtable}}
+
+\subsection{\texorpdfstring{Challenge files ({\ttfamily /home/admin/mensajes/})}{Challenge files (/home/admin/mensajes/)}}
+
+{\footnotesize\begin{longtable}[]{@{}>{\raggedright\arraybackslash}p{0.52\linewidth}
+  >{\raggedright\arraybackslash}p{0.14\linewidth}
+  >{\raggedright\arraybackslash}p{0.24\linewidth}@{}}
+\toprule\noalign{}
+File & Challenge & Technique \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+\path{A1_mensaje_interceptado.txt} & A1 & ROT13 \\
+\path{A2_oracle.py} & A2 & AES-ECB encryption oracle \\
+\path{A2_admin_cipher.b64} & A2 & Base64-encoded AES-ECB ciphertext \\
+\path{A3_documento_clasificado.txt} & A3 & Vigenère (key: \texttt{NEXATECH}) \\
+\path{A4_mensaje_xor.hex} & A4 & XOR repeating key (hex) \\
+\path{A5_rsa_challenge.txt} & A5 & RSA \texttt{e=3}, cube root attack \\
+\end{longtable}}
+
+\subsection{Flags}
+
+{\footnotesize\begin{longtable}[]{@{}>{\raggedright\arraybackslash}p{0.45\linewidth}
+  >{\raggedright\arraybackslash}p{0.45\linewidth}@{}}
+\toprule\noalign{}
+ID & Flag \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+A1 & \texttt{H4U} \\
+A2 & \texttt{H4U} \\
+A3 & \texttt{H4U} \\
+A4 & \texttt{H4U} \\
+A5 & \texttt{H4U} $\leftarrow$ \textbf{gate flag} \\
+\end{longtable}}
+
+\begin{lstlisting}
+The MD5 gate uses this flag concatenated with B5.
+\end{lstlisting}
+
+\subsection{Admin verification}
+
+\begin{lstlisting}
+ssh admin@10.10.1.10          # N3xaTech!
+ls -la /home/admin/mensajes/
+python3 -c "from Crypto.Cipher import AES; import gmpy2; print('tools OK')"
+python3 /home/admin/mensajes/A2_oracle.py   # should print encrypted block
+\end{lstlisting}
+
+\section{LAB4 --- ServerB (Steganography Module)}
+
+ServerB hosts the five steganography challenges of \textbf{Module B}. Challenge files are in \path{/srv/public/uploads/}.
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\subsection{System}
+
+{\footnotesize\begin{longtable}[]{@{}>{\raggedright\arraybackslash}p{0.45\linewidth}
+  >{\raggedright\arraybackslash}p{0.45\linewidth}@{}}
+\toprule\noalign{}
+Parameter & Value \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Hostname & serverb \\
+OS & Ubuntu Server 24.04 LTS \\
+IP & 10.10.2.10/24 \\
+Gateway & 10.10.2.1 (VyOS eth2) \\
+\end{longtable}}
+
+\subsection{\texorpdfstring{Network config ({\ttfamily /etc/netplan/01-lab4.yaml})}{Network config (/etc/netplan/01-lab4.yaml)}}
+
+\begin{lstlisting}
+network:
+  version: 2
+  ethernets:
+    ens3:
+      addresses:
+        - 10.10.2.10/24
+      routes:
+        - to: default
+          via: 10.10.2.1
+\end{lstlisting}
+
+\subsection{Accounts}
+
+{\footnotesize\begin{longtable}[]{@{}>{\raggedright\arraybackslash}p{0.30\linewidth}
+  >{\raggedright\arraybackslash}p{0.30\linewidth}
+  >{\raggedright\arraybackslash}p{0.30\linewidth}@{}}
+\toprule\noalign{}
+Account & Password & Role \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+sysop & \texttt{S3cure24!} & Student entry \\
+root & \texttt{eve} & Console only \\
+\end{longtable}}
+
+\subsection{Installed tools}
+
+{\footnotesize\begin{longtable}[]{@{}>{\raggedright\arraybackslash}p{0.45\linewidth}
+  >{\raggedright\arraybackslash}p{0.45\linewidth}@{}}
+\toprule\noalign{}
+Package & Purpose \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+\texttt{exiftool} & EXIF metadata (B1) \\
+\texttt{steghide} & Steghide extraction (B5) \\
+\texttt{binwalk} & Binary analysis (B2) \\
+\texttt{python3-pil} (Pillow) & LSB channel extraction (B3, B4) \\
+\texttt{python3} & Scripts \\
+\end{longtable}}
+
+\subsection{\texorpdfstring{Challenge files ({\ttfamily /srv/public/uploads/})}{Challenge files (/srv/public/uploads/)}}
+
+{\footnotesize\begin{longtable}[]{@{}>{\raggedright\arraybackslash}p{0.52\linewidth}
+  >{\raggedright\arraybackslash}p{0.14\linewidth}
+  >{\raggedright\arraybackslash}p{0.24\linewidth}@{}}
+\toprule\noalign{}
+File & Challenge & Technique \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+\path{B1_oficina_novacorp.png} & B1 & EXIF metadata \\
+\path{B2_network_diagram.png} & B2 & Data after PNG IEND chunk \\
+\path{B3_documento_escaneado.png} & B3 & LSB in red channel \\
+\path{B4_novacorp_logo.png} & B4 & LSB in alpha channel (RGBA) \\
+\path{B5_camara_seguridad.jpg} & B5 & Steghide JPEG (pass: \texttt{novacorp}) \\
+\end{longtable}}
+
+\subsection{Flags}
+
+{\footnotesize\begin{longtable}[]{@{}>{\raggedright\arraybackslash}p{0.45\linewidth}
+  >{\raggedright\arraybackslash}p{0.45\linewidth}@{}}
+\toprule\noalign{}
+ID & Flag \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+B1 & \texttt{H4U} \\
+B2 & \texttt{H4U} \\
+B3 & \texttt{H4U} \\
+B4 & \texttt{H4U} \\
+B5 & \texttt{H4U} $\leftarrow$ \textbf{gate flag} \\
+\end{longtable}}
+
+\begin{lstlisting}
+The MD5 gate uses this flag concatenated with A5.
+\end{lstlisting}
+
+\subsection{Admin verification}
+
+\begin{lstlisting}
+ssh sysop@10.10.2.10          # S3cure24!
+ls -la /srv/public/uploads/
+exiftool /srv/public/uploads/B1_oficina_novacorp.png | grep -i flag
+steghide extract -sf /srv/public/uploads/B5_camara_seguridad.jpg -p novacorp -f
+\end{lstlisting}
+
+\section{LAB4 --- ServerC (Advanced Mix --- Gated)}
+
+ServerC hosts four advanced challenges combining cryptography and steganography. Access is \textbf{gated} --- students must derive the SSH password from flags A5 and B5.
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\subsection{Gate mechanism}
+
+\begin{lstlisting}
+password = md5(flag_A5 + flag_B5)[:12]
+         = md5("H4UH4U")[:12]
+         = fa681b59855d
+\end{lstlisting}
+
+The decoy password \texttt{D3vOps24!} is planted in challenge materials. It is intentionally wrong.
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\subsection{System}
+
+{\footnotesize\begin{longtable}[]{@{}>{\raggedright\arraybackslash}p{0.45\linewidth}
+  >{\raggedright\arraybackslash}p{0.45\linewidth}@{}}
+\toprule\noalign{}
+Parameter & Value \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Hostname & serverc \\
+OS & Ubuntu Server 24.04 LTS \\
+IP & 10.10.3.10/24 \\
+Gateway & 10.10.3.1 (VyOS eth3) \\
+\end{longtable}}
+
+\subsection{\texorpdfstring{Network config ({\ttfamily /etc/netplan/01-lab4.yaml})}{Network config (/etc/netplan/01-lab4.yaml)}}
+
+\begin{lstlisting}
+network:
+  version: 2
+  ethernets:
+    ens3:
+      addresses:
+        - 10.10.3.10/24
+      routes:
+        - to: default
+          via: 10.10.3.1
+\end{lstlisting}
+
+\subsection{Accounts}
+
+{\footnotesize\begin{longtable}[]{@{}>{\raggedright\arraybackslash}p{0.30\linewidth}
+  >{\raggedright\arraybackslash}p{0.30\linewidth}
+  >{\raggedright\arraybackslash}p{0.30\linewidth}@{}}
+\toprule\noalign{}
+Account & Password & Role \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+devops & \texttt{fa681b59855d} & Student entry (derived) \\
+root & \texttt{eve} & Console only \\
+\end{longtable}}
+
+\subsection{Installed tools}
+
+{\footnotesize\begin{longtable}[]{@{}>{\raggedright\arraybackslash}p{0.45\linewidth}
+  >{\raggedright\arraybackslash}p{0.45\linewidth}@{}}
+\toprule\noalign{}
+Package & Purpose \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+\texttt{exiftool} & EXIF hint extraction (C1) \\
+\texttt{steghide} & Payload extraction (C1) \\
+\texttt{python3-pil} (Pillow) & EXIF re-insertion after steghide (C1) \\
+\texttt{hlextend} 0.2 & SHA-1 length extension attack (C3) \\
+\texttt{unzip} & ZIP payload inside C1 \\
+\texttt{python3} & All verifier scripts \\
+\end{longtable}}
+
+\begin{lstlisting}
+`steghide` removes EXIF when embedding. The challenge file was reconstructed with
+`piexif.insert()` after embedding. If regenerating C1, apply this step or students
+will not find the steghide passphrase from EXIF.
+
+
+For C2, students must use Python's `bz2` module --- the `bzip2` CLI is absent:
+```python
+python3 -c "import bz2, gzip, base64; ..."
+```
+\end{lstlisting}
+
+\subsection{\texorpdfstring{Challenge files ({\ttfamily /home/devops/retos/})}{Challenge files (/home/devops/retos/)}}
+
+{\footnotesize\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{0.52\linewidth}
+  >{\raggedright\arraybackslash}p{0.14\linewidth}
+  >{\raggedright\arraybackslash}p{0.24\linewidth}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+File
+\end{minipage} & Ch. & \begin{minipage}[b]{\linewidth}\raggedright
+Technique
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+\path{C1_backup_tapes.jpg} & C1 & EXIF $\rightarrow$ steghide $\rightarrow$ ZIP \\
+\path{C2_backup_log.b64} & C2 & Onion: base64 $\rightarrow$ gzip $\rightarrow$ base64 $\rightarrow$ bzip2 \\
+\path{C3_api_token.txt} & C3 & SHA-1 length extension (HMAC bypass) \\
+\path{C3_verificador.py} & C3 & Verifier script \\
+\path{C4_ecdsa_signatures.txt} & C4 & ECDSA nonce reuse --- recover private key \\
+\path{C4_verificador.py} & C4 & Verifier script \\
+\end{longtable}}
+
+\subsection{Flags}
+
+{\footnotesize\begin{longtable}[]{@{}>{\raggedright\arraybackslash}p{0.45\linewidth}
+  >{\raggedright\arraybackslash}p{0.45\linewidth}@{}}
+\toprule\noalign{}
+ID & Flag \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+C1 & \texttt{H4U} \\
+C2 & \texttt{H4U} \\
+C3 & \texttt{H4U} \\
+C4 & \texttt{H4U} \\
+\end{longtable}}
+
+\subsection{hlextend API}
+
+\begin{lstlisting}
+import hlextend
+sha = hlextend.new('sha1')
+forged_msg = sha.extend(additional_data, known_message, secret_len, known_mac)
+forged_mac  = sha.hexdigest()
+# Note: extend() returns only forged_msg, not a tuple
+\end{lstlisting}
+
+\subsection{Admin verification}
+
+\begin{lstlisting}
+# Set bridge first (on EVE-NG host)
+ip addr add 10.10.3.253/24 dev vnet0_5
+
+ssh devops@10.10.3.10          # fa681b59855d
+ls -la /home/devops/retos/
+python3 -c "import hlextend; print('hlextend OK')"
+exiftool /home/devops/retos/C1_backup_tapes.jpg | grep -i comment
+python3 /home/devops/retos/C3_verificador.py
+python3 /home/devops/retos/C4_verificador.py
+\end{lstlisting}

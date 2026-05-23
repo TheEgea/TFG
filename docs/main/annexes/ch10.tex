@@ -1,0 +1,264 @@
+\chapter{App J --- Lab 4: CipherStrike Instructor Reference}
+
+\section{App J --- Lab 4: CipherStrike Instructor Reference}
+
+This appendix provides the deployment and configuration reference for Lab 4 (Cryptography and Steganography CTF). It is intended for instructors and system administrators responsible for setting up, resetting, and grading the lab.
+
+The student-facing challenge guide is at \href{../../labs/lab4/index.md}{EVE-NG Labs $\rightarrow$ LAB4}.
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\subsection{Credentials and Access}
+
+{\footnotesize\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{0.22\linewidth}
+  >{\raggedright\arraybackslash}p{0.22\linewidth}
+  >{\raggedright\arraybackslash}p{0.22\linewidth}
+  >{\raggedright\arraybackslash}p{0.22\linewidth}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Node
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Username
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Password
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Access
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+pfSense-LAB4 & admin & \texttt{pfsense} & Web GUI / SSH \\
+VyOS-LAB4 & vyos & \texttt{vyos} & EVE-NG console \\
+ServerA & admin & \texttt{N3xaTech!} & SSH 10.10.1.10 \\
+ServerB & sysop & \texttt{S3cure24!} & SSH 10.10.2.10 \\
+ServerC & devops & \texttt{fa681b59855d} & SSH 10.10.3.10 (derived --- see below) \\
+Defender & lab4 & \texttt{L4b4} & EVE-NG VNC \\
+\end{longtable}}
+
+\begin{lstlisting}
+The ServerC password is derived from flags A5 and B5.
+Students must solve both modules before accessing ServerC.
+The decoy `D3vOps24!` appears in some materials intentionally.
+\end{lstlisting}
+
+\textbf{Derivation:} \path{md5(A5_flag + B5_flag){[}:12{]} = fa681b59855d}
+
+\begin{lstlisting}
+import hashlib
+a5 = "H4U"
+b5 = "H4U"
+password = hashlib.md5((a5 + b5).encode()).hexdigest()[:12]
+# -> fa681b59855d
+\end{lstlisting}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\subsection{Network Segments}
+
+{\footnotesize\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{0.22\linewidth}
+  >{\raggedright\arraybackslash}p{0.22\linewidth}
+  >{\raggedright\arraybackslash}p{0.22\linewidth}
+  >{\raggedright\arraybackslash}p{0.22\linewidth}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Segment
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Subnet
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Gateway
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Purpose
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+WAN & 192.168.0.0/24 & 192.168.0.1 & pfSense WAN (DHCP $\rightarrow$ 192.168.0.18) \\
+Net-Link & 192.168.1.0/24 & 192.168.1.1 & pfSense $\leftrightarrow$ VyOS \\
+Zone-A & 10.10.1.0/24 & 10.10.1.1 & ServerA --- Cryptography \\
+Zone-B & 10.10.2.0/24 & 10.10.2.1 & ServerB --- Steganography \\
+Zone-C & 10.10.3.0/24 & 10.10.3.1 & ServerC --- Advanced Mix \\
+Zone-Defense & 10.10.4.0/24 & 10.10.4.1 & Defender \\
+\end{longtable}}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\subsection{Challenge Inventory}
+
+\subsubsection{\texorpdfstring{ServerA --- Cryptography ({\ttfamily /home/admin/mensajes/})}{ServerA --- Cryptography (/home/admin/mensajes/)}}
+
+{\footnotesize\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{0.22\linewidth}
+  >{\raggedright\arraybackslash}p{0.22\linewidth}
+  >{\raggedright\arraybackslash}p{0.22\linewidth}
+  >{\raggedright\arraybackslash}p{0.22\linewidth}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+ID
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+File
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Technique
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Flag
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+A1 & \path{A1_mensaje_interceptado.txt} & ROT13 & \texttt{H4U} \\
+A2 & \path{A2_oracle.py} + \path{A2_admin_cipher.b64} & AES-ECB oracle & \texttt{H4U} \\
+A3 & \path{A3_documento_clasificado.txt} & Vigenère + Kasiski (key: NEXATECH) & \texttt{H4U} \\
+A4 & \path{A4_mensaje_xor.hex} & XOR repeating key + crib-dragging & \texttt{H4U} \\
+A5 * & \path{A5_rsa_challenge.txt} & RSA e=3 cube root (\texttt{gmpy2.iroot}) & \texttt{H4U} \\
+\end{longtable}}
+
+Dependencies: \texttt{pycryptodome\ 3.23.0}, \texttt{gmpy2\ 2.1.5}
+
+\subsubsection{\texorpdfstring{ServerB --- Steganography ({\ttfamily /srv/public/uploads/})}{ServerB --- Steganography (/srv/public/uploads/)}}
+
+{\footnotesize\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{0.22\linewidth}
+  >{\raggedright\arraybackslash}p{0.22\linewidth}
+  >{\raggedright\arraybackslash}p{0.22\linewidth}
+  >{\raggedright\arraybackslash}p{0.22\linewidth}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+ID
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+File
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Technique
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Flag
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+B1 & \path{B1_oficina_novacorp.png} & EXIF \texttt{Artist} field & \texttt{H4U} \\
+B2 & \path{B2_network_diagram.png} & Data after PNG IEND chunk & \texttt{H4U} \\
+B3 & \path{B3_documento_escaneado.png} & LSB red channel & \texttt{H4U} \\
+B4 & \path{B4_novacorp_logo.png} & LSB alpha channel (RGBA) & \texttt{H4U} \\
+B5 * & \path{B5_camara_seguridad.jpg} & Steghide JPEG (pass: \texttt{novacorp}) & \texttt{H4U} \\
+\end{longtable}}
+
+Dependencies: \texttt{exiftool}, \texttt{steghide}, \texttt{python3-pil}
+
+\begin{lstlisting}
+`steghide extract -sf B5_camara_seguridad.jpg -p novacorp` writes the flag to `b5flag.txt` (name embedded in the JPEG).
+\end{lstlisting}
+
+\subsubsection{\texorpdfstring{ServerC --- Advanced Mix ({\ttfamily /home/devops/retos/})}{ServerC --- Advanced Mix (/home/devops/retos/)}}
+
+{\footnotesize\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{0.08\linewidth}
+  >{\raggedright\arraybackslash}p{0.44\linewidth}
+  >{\raggedright\arraybackslash}p{0.30\linewidth}
+  >{\raggedright\arraybackslash}p{0.09\linewidth}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+ID
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+File(s)
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Technique
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Flag
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+C1 & \path{C1_backup_tapes.jpg} & EXIF hint $\rightarrow$ steghide $\rightarrow$ ZIP & \texttt{H4U} \\
+C2 & \path{C2_backup_log.b64} & Onion: b64(bz2(b64(gz(flag)))) & \texttt{H4U} \\
+C3 & \path{C3_api_token.txt} + \path{C3_verificador.py} & SHA-1 length extension & \texttt{H4U} \\
+C4 [trophy] & \path{C4_ecdsa_signatures.txt} + \path{C4_verificador.py} & ECDSA nonce reuse $\rightarrow$ secp256k1 key & \texttt{H4U} \\
+\end{longtable}}
+
+Dependencies: \texttt{piexif}, \texttt{pillow}, \texttt{steghide}, \texttt{hlextend} (from GitHub), Python stdlib (\texttt{hashlib}, \texttt{bz2}, \texttt{gzip})
+
+\begin{lstlisting}
+\textbf{C2:} `bzip2` binary not installed on ServerC. Use Python3 `import bz2`.
+Skip comment lines (`#`) at top of file before base64-decoding:
+```python
+lines = [l for l in raw.splitlines() if not l.startswith('#')]
+data = ''.join(lines)
+```
+
+\textbf{C3:} `hlextend v0.2` --- `sha.extend()` returns `bytes` (not a tuple).
+Get MAC with `sha.hexdigest()` after the call. See `C3_pista.txt` on ServerC.
+\end{lstlisting}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\subsection{Complete Flag List}
+
+{\footnotesize\begin{longtable}[]{@{}>{\raggedright\arraybackslash}p{0.22\linewidth}
+  >{\raggedright\arraybackslash}p{0.22\linewidth}
+  >{\raggedright\arraybackslash}p{0.22\linewidth}
+  >{\raggedright\arraybackslash}p{0.22\linewidth}@{}}
+\toprule\noalign{}
+ID & Difficulty & Flag & Module \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+A1 & Easy & \texttt{H4U} & Cryptography \\
+A2 & Easy--Medium & \texttt{H4U} & Cryptography \\
+A3 & Medium & \texttt{H4U} & Cryptography \\
+A4 & Medium & \texttt{H4U} & Cryptography \\
+A5 & Medium--Hard & \texttt{H4U} & Cryptography \\
+B1 & Easy & \texttt{H4U} & Steganography \\
+B2 & Easy--Medium & \texttt{H4U} & Steganography \\
+B3 & Medium & \texttt{H4U} & Steganography \\
+B4 & Medium & \texttt{H4U} & Steganography \\
+B5 & Medium & \texttt{H4U} & Steganography \\
+C1 & Hard & \texttt{H4U} & Advanced Mix \\
+C2 & Hard & \texttt{H4U} & Advanced Mix \\
+C3 & Hard & \texttt{H4U} & Advanced Mix \\
+C4 & Hard & \texttt{H4U} & Advanced Mix \\
+\end{longtable}}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\subsection{Lab Startup Checklist}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+  Start nodes in order: pfSense $\rightarrow$ VyOS $\rightarrow$ ServerA $\rightarrow$ ServerB $\rightarrow$ ServerC $\rightarrow$ Defender
+\item
+  Verify VyOS routing: \texttt{show\ ip\ route} (expect 10.10.1--4.0/24 connected)
+\item
+  Ensure the EVE-NG host bridge for Zone-C is active (persistent via udev \texttt{99-lab4-bridges.rules}; required for direct SSH to ServerC):
+
+\begin{lstlisting}
+ip addr show vnet0_5   # Should show 10.10.3.253/24
+# If missing:
+ip addr add 10.10.3.253/24 dev vnet0_5
+\end{lstlisting}
+\item
+  Confirm SSH access to all server nodes
+\item
+  Verify challenge files on each server
+\item
+  Verify Python deps: \texttt{python3\ -c\ "from\ Crypto.Cipher\ import\ AES;\ import\ gmpy2;\ print(\textquotesingle{}OK\textquotesingle{})"}
+\end{enumerate}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\subsection{Lab Reset}
+
+Revert each server to its EVE-NG snapshot, or re-deploy challenges from the repo:
+
+\begin{lstlisting}
+bash src/eve-ng/configs/nodes/Lab4/serverA/deploy.sh
+bash src/eve-ng/configs/nodes/Lab4/serverB/deploy.sh
+bash src/eve-ng/configs/nodes/Lab4/serverC/deploy.sh
+\end{lstlisting}
+
+Repository: \href{https://github.com/TheEgea/TFG/tree/main/src/eve-ng/configs/nodes/Lab4}{\path{src/eve-ng/configs/nodes/Lab4/}}

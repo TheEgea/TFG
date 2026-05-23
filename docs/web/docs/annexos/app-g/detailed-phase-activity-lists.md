@@ -11,7 +11,8 @@
 **Deliverables**: Fully operational virtualisation infrastructure; development
 environment configuration; baseline documentation of system architecture.
 
-**Duration**: 105 hours **Status**: Completed (100
+**Duration**: 105 hours
+
 ### Phase 1: Avantprojecte and Conceptual Design (October 2025–January 2026)
 
 - **SMART Objectives Definition** (4h) — Specification of Main Objective (MO):
@@ -54,7 +55,7 @@ interactive web-based visualisation. Progress tracking and milestone definition.
 critical paths; risk register and mitigation plan; requirements specification (functional
 and non-functional).
 
-**Duration**: 82 hours **Status**: Completed **Milestone Deadline**: January 16, 2026
+**Duration**: 82 hours
 
 ### Phase 2: Implementation and Interim Validation (January–March 2026)
 
@@ -95,15 +96,12 @@ Technical configuration reference per lab in the repository.
 **Deliverables**: 3 fully functional EVE-NG labs; student and instructor guides;
 pilot validation report; technical configuration references.
 
-**Duration**: 188 hours **Status**: Completed **Milestone Deadline**: March 20, 2026
+**Duration**: 188 hours
 
 ### Phase 3: Completion and Final Validation (March–May 2026)
 
-- **Lab 4: Privilege Escalation Development** (16h research + 30h dev) —
-Scenario: post-exploitation and privilege escalation (CEH framework).
-Tools: Metasploit, manual exploitation, system enumeration.
-Topology: hardened systems with privilege escalation vectors.
-Validation: successful privilege elevation and system compromise.
+- **Lab 4: CipherStrike — Cryptography & Steganography** (16h research + 30h dev)  
+Scenario: multi-server CTF with cryptography (ROT13, AES-ECB, Vigenère, XOR, RSA small exponent) and steganography (EXIF, LSB, steghide) challenges. Tools: Python cryptanalysis, steghide, exiftool, gmpy2. Topology: ServerA (crypto), ServerB (stego), ServerC (gated advanced mix), Defender (SOC monitoring). Validation: 14 flags verified, gate mechanism tested.
 
 - **Comprehensive Penetration Testing** (30h Round 1 + 25h Round 2) —
 Round 1: sequential testing of Labs 1, 2, and 3.
@@ -130,4 +128,4 @@ Final revision, bibliography integration, and publication preparation (35h).
 bachelor's thesis report; pilot validation report; deployment package ready for
 institutional use.
 
-**Duration**: 315 hours **Status**: In progress **Final Milestone Deadline**: May 27, 2026
+**Duration**: 315 hours
