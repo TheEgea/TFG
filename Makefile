@@ -1,84 +1,92 @@
 # Makefile — TFG workflow
-# Run from repo root: make <target>
+# Ejecutar desde la raíz del repo: make <target>
 # ─────────────────────────────────────────────────────────────────────────────
-.PHONY: help build build-vol1 build-vol2 build-vol3 build-all         build-memory build-annexos build-viabilitat build-labs         build-web serve push pull sync status stats clean setup diagnostic
+.PHONY: help build build-vol1 build-vol2 build-vol3 build-all \
+        build-memory build-annexos build-annexes build-viabilitat build-labs \
+        build-web serve push pull sync status stats clean setup diagnostic
 
 SHELL := /bin/bash
 REPO_ROOT := $(shell pwd)
 
-# ── Help ──────────────────────────────────────────────────────────────────────
+# ── Ayuda ─────────────────────────────────────────────────────────────────────
 help:
-	@echo 'TFG — available targets'
-	@echo '========================='
+	@echo 'TFG — objetivos disponibles'
+	@echo '=============================='
 	@echo ''
-	@echo '  VOLUMES (submission)'
-	@echo '    make build-all          Build Vol I + Vol II + Vol III (full submission)'
-	@echo '    make build-vol1         Vol I  — Memoria LaTeX (memory-main.pdf)'
-	@echo '    make build-vol2         Vol II — Lab PDFs enunciado+resolucion (8 PDFs)'
-	@echo '    make build-vol3         Vol III — Web MkDocs PDF (lab-documentation.pdf)'
+	@echo '  VOLÚMENES (entrega final)'
+	@echo '    make build-all          Compila Vol I + Vol II (labs) + Vol III (web)'
+	@echo '    make build-vol1         Vol I   — Memoria LaTeX       (memory-main.pdf)'
+	@echo '    make build-vol2         Vol II  — PDFs de labs         (8 PDFs + labs-all.pdf)'
+	@echo '    make build-vol3         Vol III — Web MkDocs PDF       (lab-documentation.pdf)'
 	@echo ''
 	@echo '  BUILD (individual)'
-	@echo '    make build              Build Vol I + publish (legacy alias = build-vol1)'
-	@echo '    make build-memory       Build Vol I only  (docs/main/memory/)'
-	@echo '    make build-annexos      Build Annexos LaTeX (docs/main/annexos/)'
-	@echo '    make build-viabilitat   Build Viabilitat   (docs/main/viabilitat/)'
-	@echo '    make build-labs         Build all lab PDFs (enunciado + resolucion)'
-	@echo '    make build-labs LAB=lab1  Build a single lab'
-	@echo '    make build-web          Build MkDocs site + Vol III PDF'
+	@echo '    make build              Compila Vol I + publica (alias de build-vol1)'
+	@echo '    make build-memory       Vol I — Memoria LaTeX          (docs/main/memory/)'
+	@echo '    make build-annexes      Vol II — Annexes en inglés     (docs/main/annexes/)'
+	@echo '    make build-annexos      Vol II — Annexes (legacy)      (docs/main/annexos/)'
+	@echo '    make build-labs         Todos los PDFs de lab (enunciado + resolución)'
+	@echo '    make build-labs LAB=lab1  Solo un lab concreto'
+	@echo '    make build-web          Construye site MkDocs + PDF Vol III'
+	@echo '    make build-viabilitat   Viabilitat económica           (docs/main/viabilitat/)'
 	@echo ''
 	@echo '  WEB'
-	@echo '    make serve              Serve MkDocs site at http://localhost:8000/TFG/'
+	@echo '    make serve              Sirve el site en http://localhost:8000/TFG/'
 	@echo ''
 	@echo '  GIT'
-	@echo '    make push MSG="msg"    Commit + push to GitHub'
-	@echo '    make pull               Pull latest from GitHub'
-	@echo '    make sync MSG="msg"    Pull + commit + push'
-	@echo '    make status             Git status + last 5 commits'
+	@echo '    make push MSG="msg"     Commit + push a GitHub'
+	@echo '    make pull               Pull desde GitHub'
+	@echo '    make sync MSG="msg"     Pull + commit + push'
+	@echo '    make status             Estado git + últimos 5 commits'
 	@echo ''
-	@echo '  MISC'
-	@echo '    make stats              File counts + repo size'
-	@echo '    make clean              Remove LaTeX build artifacts'
-	@echo '    make setup              Check tool dependencies'
-	@echo '    make diagnostic         Run build-system diagnostic'
+	@echo '  UTILIDADES'
+	@echo '    make stats              Conteo de ficheros + tamaño del repo'
+	@echo '    make clean              Elimina artefactos de compilación LaTeX'
+	@echo '    make setup              Verifica dependencias del entorno'
+	@echo '    make diagnostic         Diagnóstico del sistema de build'
 
-# ── Volumes (submission) ──────────────────────────────────────────────────────
+# ── Volúmenes (entrega) ───────────────────────────────────────────────────────
 build-all:
-	@echo '=== Building all volumes ==='
+	@echo '=== Compilando todos los volúmenes ==='
 	@bash scripts-workflow/build.sh memory
 	@bash scripts-workflow/build-labs.sh all
 	@bash scripts-workflow/build.sh vol3
 	@echo ''
 	@echo '========================================'
-	@echo '  BUILD COMPLETE — Submission PDFs'
+	@echo '  BUILD COMPLETO — PDFs de entrega'
 	@echo '========================================'
 	@echo '  Vol I   (Memoria)  : docs/main/memory/memory-main.pdf'
 	@echo '  Vol II  (Labs)     : docs/web/docs/assets/official_Documents/labs-all.pdf'
 	@echo '             (split) : src/materials/exercises/lab{1-4}/build/'
 	@echo '  Vol III (Web/Apx)  : docs/web/docs/assets/official_Documents/lab-documentation.pdf'
 	@echo ''
-	@echo '  All 3 volumes also in: docs/web/docs/assets/official_Documents/'
+	@echo '  Todos los volúmenes también en: docs/web/docs/assets/official_Documents/'
 	@echo '========================================'
 
 build-vol1: build-memory
 	@echo ''
-	@echo '  Vol I output : docs/main/memory/memory-main.pdf'
-	@echo '  Copy also in : docs/web/docs/assets/official_Documents/memory-main.pdf'
+	@echo '  Salida Vol I : docs/main/memory/memory-main.pdf'
+	@echo '  Copia en     : docs/web/docs/assets/official_Documents/memory-main.pdf'
 
 build-vol2: build-labs
 	@echo ''
-	@echo '  Vol II output (split) : src/materials/exercises/lab{1-4}/build/'
-	@echo '  Vol II output (all)   : docs/web/docs/assets/official_Documents/labs-all.pdf'
+	@echo '  Salida Vol II (split) : src/materials/exercises/lab{1-4}/build/'
+	@echo '  Salida Vol II (todo)  : docs/web/docs/assets/official_Documents/labs-all.pdf'
 
 build-vol3:
 	@bash scripts-workflow/build.sh vol3
 	@echo ''
-	@echo '  Vol III output: docs/web/docs/assets/official_Documents/lab-documentation.pdf'
+	@echo '  Salida Vol III: docs/web/docs/assets/official_Documents/lab-documentation.pdf'
 
-# ── Build ─────────────────────────────────────────────────────────────────────
+# ── Build (individual) ────────────────────────────────────────────────────────
 build: build-memory
 
 build-memory:
 	@bash scripts-workflow/build.sh memory
+
+build-annexes:
+	@cd docs/main/annexes && latexmk -xelatex -interaction=nonstopmode annexes-main.tex
+	@echo ''
+	@echo '  Salida Vol II — Annexes: docs/main/annexes/annexes-main.pdf'
 
 build-annexos:
 	@bash scripts-workflow/build.sh annexos
@@ -109,7 +117,7 @@ sync:
 status:
 	@bash scripts-workflow/utils.sh status
 
-# ── Misc ──────────────────────────────────────────────────────────────────────
+# ── Utilidades ────────────────────────────────────────────────────────────────
 stats:
 	@bash scripts-workflow/utils.sh stats
 
