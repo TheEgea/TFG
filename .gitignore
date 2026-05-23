@@ -1,26 +1,26 @@
-# Archivos temporales de Office
+# Temporary Office files
 ~$*.docx
 ~$*.pptx
 ~$*.xlsx
 *.tmp
 
-# Archivos de backup
+# Backup files
 *.bak
 *.backup
 *~
 
-# Logs y archivos temporales
+# Logs and temporary files
 *.log
 temp/
 tmp/
 
-# Archivos específicos de EVE-NG
+# EVE-NG specific files
 *.vmdk.lck
 *.vmx.lck
 vmware*.log
 *.nvram
 
-# Archivos compilados LaTeX
+# LaTeX build artifacts
 *.aux
 *.fdb_latexmk
 *.fls
@@ -29,26 +29,36 @@ vmware*.log
 *.out
 *.lof
 *.lot
+*.bbl
+*.blg
+*.bcf
+*.glg
+*.glo
+*.gls
+*.ist
+*.run.xml
+*.xdv
 
-# Directorios de builds
+# Build directories
 build/
 dist/
 output/
+compilacion/
 
-# Archivos sensibles
+# Sensitive files
 /.env
 credentials.txt
 passwords.txt
 config/secrets/
 
-# Archivos grandes de VMs (usar Git LFS)
+# Large VM files (use Git LFS)
 *.qcow2
 *.vmdk
 *.vdi
 *.iso
 *.ova
 
-# Cache de editores
+# Editor cache
 .vscode/
 .idea/
 *.sublime-*
@@ -57,30 +67,17 @@ venv/
 .env/
 .env
 
-# Archivos del sistema
+# OS files
 .DS_Store
 Thumbs.db
 desktop.ini
 
-# Backup local
+# Local backup
 backup*/
 *.backup.*
 
-
-*.aux
-*.log
-*.out
-*.toc
-*.lof
-*.lot
-*.bbl
-*.blg
-*.synctex.gz
-
-compilacion/
-
-docs/avantprojecte/build/
-!docs/avantprojecte/build/*.pdf
-.env
+# Web build output
 docs/web/site/
 docs/web/pdf/
+docs/avantprojecte/build/
+!docs/avantprojecte/build/*.pdf
