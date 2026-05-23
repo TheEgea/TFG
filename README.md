@@ -30,7 +30,7 @@ attack/defence scenario and is fully documented across three layers.
 | Layer | Format | Location | Purpose |
 |-------|--------|----------|---------|
 | **Vol I** | LaTeX → PDF | `docs/main/memory/` | Official academic thesis |
-| **Vol II** | LaTeX → PDF | `docs/main/annexos/` | Teacher reference appendices (A–J) |
+| **Vol II** | LaTeX → PDF | `docs/main/annexes/` | Teacher reference appendices (A–J) |
 | **Web** | MkDocs → GitHub Pages | `docs/web/` | Public lab guides, config references, chatbot |
 | **Materials** | LaTeX / Markdown | `src/materials/` | Student exercise sheets + solution guides |
 | **EVE-NG** | `.unl` + configs | `src/eve-ng/` | Topology files and node configurations |
@@ -62,8 +62,8 @@ make help               # show all available targets
 # Build official PDFs
 make build              # Vol I + Vol II → PDFs
 make build-memory       # Vol I only
-make build-annexos      # Vol II only
-make build-labs         # all lab exercise PDFs (enunciado + resolucion)
+make build-annexes      # Vol II Annexes only
+make build-labs         # all lab exercise + solution PDFs
 make build-labs LAB=lab1  # single lab
 
 # Web
@@ -96,12 +96,12 @@ TFG/
 │   │   └── labs/                    ← Lab compact chapters (lab1–lab4, pilot)
 │   ├── main/
 │   │   ├── memory/memory-main.tex   ← ROOT Vol I
-│   │   └── annexos/annexos-main.tex ← ROOT Vol II
+│   │   └── annexes/annexes-main.tex ← ROOT Vol II
 │   ├── resources/references.bib     ← Bibliography (biber/biblatex IEEE)
 │   └── web/                         ← MkDocs site source
 │       ├── mkdocs.yml
 │       └── docs/
-│           ├── annexos/app-a … app-j/   ← Appendices A–J web version
+│           ├── annexes/app-a … app-j/   ← Appendices A–J web version
 │           ├── labs/lab1 … lab4/        ← Lab guides (index + sub-pages per node)
 │           └── assets/official_Documents/ ← Published PDFs
 │
@@ -111,7 +111,7 @@ TFG/
 │   │   ├── topologies/              ← .unl files (import directly in EVE-NG)
 │   │   ├── configs/                 ← Node configs (VyOS, pfSense, Ubuntu)
 │   │   └── images/                  ← Topology diagrams PNG
-│   └── materials/exercises/         ← Lab enunciados + resoluciones (LaTeX)
+│   └── materials/exercises/         ← Lab exercises + solutions (LaTeX)
 │       ├── lab1/ lab2/ lab3/ lab4/
 │
 └── scripts-workflow/
@@ -153,7 +153,8 @@ Configure with a free [Groq API key](https://console.groq.com/).
 | PDF | Command | Path |
 |-----|---------|------|
 | Vol I Memory | `make build-memory` | `docs/main/memory/memory-main.pdf` |
-| Vol II Annexos | `make build-annexos` | `docs/main/annexos/annexos-main.pdf` |
+| Vol II Annexes | `make build-annexes` | `docs/main/annexes/annexes-main.pdf` |
+| Vol II Annexes (legacy) | `make build-annexos` | `docs/main/annexos/annexos-main.pdf` |
 | Lab sheets | `make build-labs` | `src/materials/exercises/labX/build/` |
 
 ---

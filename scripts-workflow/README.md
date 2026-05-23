@@ -9,8 +9,9 @@ instead of running them directly.
 
 | Script | Called by | Purpose |
 |--------|-----------|---------|
-| `build.sh` | `make build / build-memory / build-annexos / build-viabilitat` | Compile LaTeX → PDF, publish to web |
-| `build-labs.sh` | `make build-labs [LAB=labX]` | Compile lab enunciado + resolucion PDFs |
+| `build.sh` | `make build-memory / build-annexes / build-annexos / build-vol3 / build-viabilitat` | Compile LaTeX → PDF, publish to `official_Documents/` |
+| `build-labs.sh` | `make build-labs [LAB=labX]` | Compile lab exercise + solution PDFs for all 4 labs |
+| `build-labs-cover.py` | `build-labs.sh` (internal) | Generate cover page for consolidated labs PDF |
 | `push.sh` | `make push MSG=…` | `git add -A && commit && push` |
 | `pull.sh` | `make pull` | `git pull origin main` |
 | `sync.sh` | `make sync MSG=…` | pull + commit + push |
@@ -21,24 +22,33 @@ instead of running them directly.
 
 ## Build targets
 
-### `build.sh [memory|annexos|viabilitat|all]`
+### `build.sh [memory|annexes|annexos|viabilitat|vol3|all]`
 
-| Target | Input | Output (local + web) |
-|--------|-------|----------------------|
-| `memory` | `docs/main/memory/memory-main.tex` | `memory-main.pdf` |
-| `annexos` | `docs/main/annexos/annexos-main.tex` | `annexos-main.pdf` |
-| `viabilitat` | `docs/main/viabilitat/viabilitat-main.tex` | `viabilitat-main.pdf` |
-| `all` | all three above | all three PDFs |
+| Target | Input | Output (local + `official_Documents/`) |
+|--------|-------|----------------------------------------|
+| `memory` | `docs/main/memory/memory-main.tex` | `memory-main.pdf` (Vol I, ~98 pp) |
+| `annexes` | `docs/main/annexes/annexes-main.tex` | `annexes-main.pdf` (Vol II — Annexes, English) |
+| `annexos` | `docs/main/annexos/annexos-main.tex` | `annexos-main.pdf` (Vol II — Annexes, legacy) |
+| `viabilitat` | `docs/main/viabilitat/viabilitat-main.tex` | `viabilitat-main.pdf` (feasibility study) |
+| `vol3` | `docs/web/mkdocs.yml` | `lab-documentation.pdf` (Vol III — Web PDF, ~95 pp) |
+| `all` | memory + annexos + vol3 | all three PDFs |
 
 All PDFs are also copied to `docs/web/docs/assets/official_Documents/` for the web site.
 Build logs are saved to `docs/main/<doc>/build/build.txt`.
 
 ### `build-labs.sh [all|lab1|lab2|lab3|lab4]`
 
+Compiles exercise (`-enunciado`) and solution (`-resolucion`) PDFs for each lab.
+
 | Input | Output |
 |-------|--------|
 | `src/materials/exercises/labX/labX-enunciado.tex` | `src/materials/exercises/labX/build/labX-enunciado.pdf` |
 | `src/materials/exercises/labX/labX-resolucion.tex` | `src/materials/exercises/labX/build/labX-resolucion.pdf` |
+
+After compiling all labs, `build-labs-cover.py` generates a cover page and all 8 PDFs are
+merged into `docs/web/docs/assets/official_Documents/labs-all.pdf`.
+
+Individual PDFs are also copied to `official_Documents/` (`lab1-enunciado.pdf`, etc.).
 
 ---
 
@@ -46,9 +56,9 @@ Build logs are saved to `docs/main/<doc>/build/build.txt`.
 
 ```bash
 make status                          # check what changed
-make push MSG=docs: update ch2    # commit + push
+make push MSG="docs: update ch2"     # commit + push
 make pull                            # pull latest
-make sync MSG=chore: sync         # pull + commit + push
+make sync MSG="chore: sync"          # pull + commit + push
 ```
 
 > `push.sh` uses `git add -A` — review staged changes with `make status` first.

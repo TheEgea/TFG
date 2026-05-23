@@ -1,26 +1,27 @@
-# Parrot-Attacker -- LAB2 Status
+# Parrot-Attacker -- LAB2
 
-## Current status (2026-04-24)
-- Node running (QEMU), booting from CD (Parrot OS Security 6.4)
-- No static IP configured -- F5 pending
-- No SSH server installed
+## Current status
+- Static IP configured: 10.0.40.10/24, GW 10.0.40.1 (VyOS eth2)
+- SSH server installed and active
 
-## Current access
+## Access
 - VNC: port 32769 on EVE-NG host (display :26869)
-- Not accessible via SSH from EVE-NG host
+- SSH: `ssh parrot@10.0.40.10` from EVE-NG host (bridge vnet0_3 must be active)
 
-## Pending configuration (F5)
-1. Static IP: 10.0.40.10/24, GW 10.0.40.1 (VyOS eth2)
-2. Install openssh-server
-3. Tools to verify: nmap, curl, python3, netcat, hashcat/john
+## Tools used in the lab
 
-## Tools used in sessions
-- python3 -m http.server 8000  (listener for XSS cookie exfil)
-- curl (HTTP requests to SYNAPSE portal)
-- nc -lvnp 4444  (reverse shell listener)
+```bash
+python3 -m http.server 8000   # listener for XSS cookie exfiltration
+curl                          # HTTP requests to SYNAPSE portal
+nc -lvnp 4444                 # reverse shell listener
+sqlmap                        # SQL injection verification
+```
 
 ## Notes
-- Node boots from CD on each restart -> configuration does not persist
-- For persistence: configure IP via nmcli/NetworkManager before each session,
-  or install to disk (full F5)
-- VyOS DHCP server assigns range 10.0.40.10-50 -- verify VyOS DHCP is active
+
+- Configure static IP via `nmcli` if lost after reboot:
+  ```bash
+  nmcli con mod "Wired connection 1" ipv4.addresses 10.0.40.10/24 ipv4.gateway 10.0.40.1 ipv4.method manual
+  nmcli con up "Wired connection 1"
+  ```
+- EVE-NG host bridge must have `10.0.40.254/24` on `vnet0_3` to reach Parrot from host.
