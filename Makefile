@@ -12,10 +12,11 @@ help:
 	@echo '========================='
 	@echo ''
 	@echo '  VOLUMES (submission)'
-	@echo '    make build-all          Build Vol I + Vol II + Vol III (full submission)'
+	@echo '    make build-all          Build Vol I + II + III + IV (full submission)'
 	@echo '    make build-vol1         Vol I  — Memoria LaTeX (memory-main.pdf)'
 	@echo '    make build-vol2         Vol II — Lab PDFs enunciado+resolucion (8 PDFs)'
 	@echo '    make build-vol3         Vol III — Web MkDocs PDF (lab-documentation.pdf)'
+	@echo '    make build-vol4         Vol IV  -- Annexes English   (annexes-main.pdf)'
 	@echo ''
 	@echo '  BUILD (individual)'
 	@echo '    make build              Build Vol I + publish (legacy alias = build-vol1)'
@@ -48,16 +49,15 @@ build-all:
 	@bash scripts-workflow/build.sh memory
 	@bash scripts-workflow/build-labs.sh all
 	@bash scripts-workflow/build.sh vol3
+	@cd docs/main/annexes && latexmk -xelatex -interaction=nonstopmode -quiet annexes-main.tex
 	@echo ''
 	@echo '========================================'
 	@echo '  BUILD COMPLETE — Submission PDFs'
 	@echo '========================================'
-	@echo '  Vol I   (Memoria)  : docs/main/memory/memory-main.pdf'
-	@echo '  Vol II  (Labs)     : docs/web/docs/assets/official_Documents/labs-all.pdf'
-	@echo '             (split) : src/materials/exercises/lab{1-4}/build/'
-	@echo '  Vol III (Web/Apx)  : docs/web/docs/assets/official_Documents/lab-documentation.pdf'
-	@echo ''
-	@echo '  All 3 volumes also in: docs/web/docs/assets/official_Documents/'
+	@echo '  Vol I   Memory   : docs/main/memory/memory-main.pdf'
+	@echo '  Vol II  Labs     : docs/web/docs/assets/official_Documents/labs-all.pdf'
+	@echo '  Vol III Web      : docs/web/docs/assets/official_Documents/lab-documentation.pdf'
+	@echo '  Vol IV  Annexes  : docs/main/annexes/annexes-main.pdf'
 	@echo '========================================'
 
 build-vol1: build-memory
@@ -75,6 +75,10 @@ build-vol3:
 	@echo ''
 	@echo '  Vol III output: docs/web/docs/assets/official_Documents/lab-documentation.pdf'
 
+build-vol4: build-annexes
+	@echo ''
+	@echo '  Vol IV output: docs/main/annexes/annexes-main.pdf'
+
 # ── Build ─────────────────────────────────────────────────────────────────────
 build: build-memory
 
@@ -84,7 +88,7 @@ build-memory:
 build-annexes:
 	@cd docs/main/annexes && latexmk -xelatex -interaction=nonstopmode annexes-main.tex
 	@echo ''
-	@echo '  Vol II output (Annexes): docs/main/annexes/annexes-main.pdf'
+	@echo '  Vol IV output: docs/main/annexes/annexes-main.pdf'
 
 build-annexos:
 	@bash scripts-workflow/build.sh annexos
