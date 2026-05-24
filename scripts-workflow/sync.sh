@@ -2,31 +2,31 @@
 # ============================================================================
 # TFG SYNC.SH — Git Synchronization Script
 # ============================================================================
-# Sincronización completa: pull + commit + push
-# Estructura: docs/memoria/ + docs/avantprojecte/ + scripts-workflow/
+# Full synchronization: pull + commit + push
+# Structure: docs/memoria/ + docs/avantprojecte/ + scripts-workflow/
 # 
-# Uso: ./scripts-workflow/sync.sh "Commit message"
-# Uso desde Makefile: make sync MSG="tu mensaje"
+# Usage: ./scripts-workflow/sync.sh "Commit message"
+# Usage from Makefile: make sync MSG="your message"
 # ============================================================================
 
 set -e
 
-MSG="${1:-Sincronización TFG}"
+MSG="${1:-TFG sync}"
 
-echo "🔄 Git Sync: $MSG"
+echo "Git Sync: $MSG"
 echo ""
 
-# Pull desde remoto
-echo "📥 Pull desde GitHub..."
-git pull origin main || { echo "❌ Pull fallido"; exit 1; }
+# Pull from remote
+echo "Pull from GitHub..."
+git pull origin main || { echo "Pull failed"; exit 1; }
 
-# Commit cambios
-echo "📝 Commit: $MSG"
+# Commit changes
+echo "Commit: $MSG"
 git add -A
-git commit -m "$MSG" || echo "ℹ️  Nada que commitear"
+git commit -m "$MSG" || echo "Nothing to commit"
 
-# Push a remoto
-echo "📤 Push a GitHub..."
-git push origin main || { echo "❌ Push fallido"; exit 1; }
+# Push to remote
+echo "Push to GitHub..."
+git push origin main || { echo "Push failed"; exit 1; }
 
-echo "✅ Sincronización completada"
+echo "Synchronization complete"

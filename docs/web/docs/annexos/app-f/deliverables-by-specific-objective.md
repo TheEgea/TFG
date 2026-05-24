@@ -1,26 +1,26 @@
 ## Deliverables by Specific Objective
 
-### OE1: Design and Implement EVE-NG Labs
+### O1: Design and Implement EVE-NG Labs
 
 - 4 `.unl` topology files (Lab 1: implemented; Labs 2–4: planned)
 - 8–12 optimised virtual machine images
 - Technical configuration documentation for each lab
 
-### OE2: Develop Automation Scripts
+### O2: Develop Automation Scripts
 
 - Bash/Python utility scripts for common tasks (e.g.\ bridge configuration,
       ISO upload, node connectivity checks)
 - Scripts documented with usage instructions in the repository
 
-### OE3: Develop Structured Teaching Material
+### O3: Develop Structured Teaching Material
 
-- Student lab guide PDF (*enunciado*) per lab — task description, objectives,
+- Student lab guide PDF (*statement*) per lab — task description, objectives,
       hints, and tools reference
-- Instructor resolution guide PDF (*resolució*) per lab — full walkthrough,
+- Instructor resolution guide PDF (*resolution*) per lab — full walkthrough,
       flag values, rubric (100 pts), and common errors
 - Technical configuration reference per lab in the repository
 
-### OE4: Validate Usability and Educational Effectiveness
+### O4: Validate Usability and Educational Effectiveness
 
 - Pilot session report with timing and usability observations
 - Post-session survey results (satisfaction, difficulty, clarity)

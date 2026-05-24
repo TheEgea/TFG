@@ -16,7 +16,7 @@ environment configuration; baseline documentation of system architecture.
 ### Phase 1: Avantprojecte and Conceptual Design (October 2025–January 2026)
 
 - **SMART Objectives Definition** (4h) — Specification of Main Objective (MO):
-develop a reusable teaching package. Definition of 4 Specific Objectives (OE1–OE4) with
+develop a reusable teaching package. Definition of 4 Specific Objectives (O1–O4) with
 measurable KPIs. Alignment with institutional GEISI curriculum requirements.
 
 - **State of the Art Analysis** (15h) — Comprehensive review of 7 major

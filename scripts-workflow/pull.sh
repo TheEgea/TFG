@@ -2,17 +2,17 @@
 # ============================================================================
 # TFG PULL.SH — Pull from Remote
 # ============================================================================
-# Actualizar repositorio desde GitHub
+# Update repository from GitHub
 # 
-# Uso: ./scripts-workflow/pull.sh
-# Uso desde Makefile: make pull
+# Usage: ./scripts-workflow/pull.sh
+# Usage from Makefile: make pull
 # ============================================================================
 
 set -e
 
-echo "📥 Git Pull desde GitHub..."
+echo "Git Pull from GitHub..."
 echo ""
 
-git pull origin main || { echo "❌ Pull fallido"; exit 1; }
+git pull origin main || { echo "Pull failed"; exit 1; }
 
-echo "✅ Pull completado"
+echo "Pull complete"

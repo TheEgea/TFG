@@ -2,43 +2,43 @@
 # ============================================================================
 # TFG UTILS.SH — Utility Functions
 # ============================================================================
-# Funciones auxiliares: status, stats, clean
+# Helper functions: status, stats, clean
 # 
-# Uso: ./scripts-workflow/utils.sh [status|stats|clean]
+# Usage: ./scripts-workflow/utils.sh [status|stats|clean]
 # ============================================================================
 
 set -e
 
 case "$1" in
     "status")
-        echo "📊 Estado del repositorio"
+        echo "Repository status"
         echo ""
         git status --short
         echo ""
         git log --oneline -5
         ;;
     "stats")
-        echo "📈 Estadísticas del proyecto"
+        echo "Project statistics"
         echo ""
-        echo "📝 Archivos LaTeX:"
+        echo "LaTeX files:"
         find docs -name "*.tex" | wc -l
         echo ""
-        echo "📊 Líneas de código (TeX + scripts):"
+        echo "Lines of code (TeX + scripts):"
         find docs -name "*.tex" -o -name "*.sh" | xargs wc -l | tail -1
         echo ""
-        echo "📦 Tamaño repositorio:"
+        echo "Repository size:"
         du -sh . | cut -f1
         ;;
     "clean")
-        echo "🧹 Limpiando archivos temporales..."
+        echo "Cleaning temporary files..."
         find . -name "*.aux" -delete
         find . -name "*.log" -delete
         find . -name "*.out" -delete
         find . -name ".DS_Store" -delete
-        echo "✅ Limpieza completada"
+        echo "Cleanup complete"
         ;;
     *)
-        echo "❌ Comando desconocido: $1"
-        echo "Uso: utils.sh [status|stats|clean]"
+        echo "Unknown command: $1"
+        echo "Usage: utils.sh [status|stats|clean]"
         ;;
 esac

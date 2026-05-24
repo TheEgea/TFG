@@ -2,19 +2,19 @@
 # ============================================================================
 # TFG SETUP-ENV.SH — Dependency Check & Environment Setup
 # ============================================================================
-# Verifica todas las dependencias necesarias para compilar el TFG.
-# Ejecutar en el servidor donde se compila (Overleaf VM u otro Linux con TeX Live).
+# Checks all dependencies required to compile the TFG.
+# Run on the build server (Overleaf VM or any Linux with TeX Live).
 #
-# Uso: ./scripts-workflow/setup-env.sh
-# Uso desde Makefile: make setup
+# Usage: ./scripts-workflow/setup-env.sh
+# Usage from Makefile: make setup
 #
-# Dependencias requeridas:
+# Required dependencies:
 #   LaTeX:   xelatex, latexmk, biber, xdvipdfmx (TeX Live 2022+)
-#   Font:    OpenDyslexic (instalada en el sistema — crítico para XeTeX)
+#   Font:    OpenDyslexic (installed system-wide — critical for XeTeX)
 #   Python:  python3, pip, mkdocs, mkdocs-material, mkdocs-with-pdf
 #   Git:     git
 #
-# Para instalar todo en Ubuntu/Debian:
+# To install everything on Ubuntu/Debian:
 #   sudo apt-get install -y texlive-xetex texlive-latex-extra texlive-bibtex-extra \
 #       texlive-fonts-extra latexmk biber git python3 python3-pip python3-venv
 #   # OpenDyslexic font:

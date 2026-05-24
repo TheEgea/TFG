@@ -42,7 +42,7 @@ and pedagogical assessment for each.
 ---
 
 **Appendix F — Objectives, Deliverables & KPIs**
-Complete deliverable specifications per objective (OE1--OE4), three KPI tables
+Complete deliverable specifications per objective (O1--O4), three KPI tables
 (Technical, Educational, Quality), and extended audience analysis.
 *Full detail: Appendix F*
 

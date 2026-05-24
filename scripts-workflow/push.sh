@@ -2,21 +2,21 @@
 # ============================================================================
 # TFG PUSH.SH — Quick Push Script
 # ============================================================================
-# Push rápido con commit
+# Quick commit + push
 # 
-# Uso: ./scripts-workflow/push.sh "Commit message"
-# Uso desde Makefile: make push MSG="tu mensaje"
+# Usage: ./scripts-workflow/push.sh "Commit message"
+# Usage from Makefile: make push MSG="your message"
 # ============================================================================
 
 set -e
 
 MSG="${1:-Quick push TFG}"
 
-echo "📤 Git Push: $MSG"
+echo "Git Push: $MSG"
 echo ""
 
 git add -A
-git commit -m "$MSG" || echo "ℹ️  Nada que commitear"
-git push origin main || { echo "❌ Push fallido"; exit 1; }
+git commit -m "$MSG" || echo "Nothing to commit"
+git push origin main || { echo "Push failed"; exit 1; }
 
-echo "✅ Push completado"
+echo "Push complete"
