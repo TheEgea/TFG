@@ -81,3 +81,6 @@ docs/web/site/
 docs/web/pdf/
 docs/avantprojecte/build/
 !docs/avantprojecte/build/*.pdf
+
+# Defense slides (not part of deliverable)
+docs/defense/
