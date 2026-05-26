@@ -11,7 +11,7 @@
     | **Nodes** | pfSense · VyOS · ServerA · ServerB · ServerC · Defender |
 
 [:simple-github: Lab folder on GitHub](https://github.com/TheEgea/TFG/tree/main/src/eve-ng/configs/nodes/Lab4){ .md-button }
-[:material-download: Download topology (.unl)](https://github.com/TheEgea/TFG/raw/main/src/eve-ng/topologies/LAB4-CryptoStego-CipherStrike.unl){ .md-button .md-button--primary }
+[:material-download: Download topology (.unl)](https://github.com/TheEgea/TFG/blob/main/src/eve-ng/topologies/LAB4-CryptographySteganography-CipherStrike.unl){ .md-button .md-button--primary }
 [:material-file-pdf-box: Exercise sheet](../../assets/exercises/lab4-exercise.pdf){ .md-button }
 [:material-file-pdf-box: Solution guide](../../assets/exercises/lab4-solution.pdf){ .md-button }
 
