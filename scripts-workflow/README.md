@@ -26,11 +26,11 @@ instead of running them directly.
 
 | Target | Input | Output (local + `official_Documents/`) |
 |--------|-------|----------------------------------------|
-| `memory` | `docs/main/memory/memory-main.tex` | `memory-main.pdf` (Vol I, ~98 pp) |
-| `annexes` | `docs/main/annexes/annexes-main.tex` | `annexes-main.pdf` (Vol II — Annexes, English) |
-| `annexos` | `docs/main/annexos/annexos-main.tex` | `annexos-main.pdf` (Vol II — Annexes, legacy) |
+| `memory` | `docs/main/memory/memory-main.tex` | `memory-main.pdf` (Vol I — Memory, ~100 pp) |
+| `annexes` | `docs/main/annexes/annexes-main.tex` | `annexes-main.pdf` (Vol IV — Annexes, ~210 pp) |
+| `annexos` | `docs/main/annexos/annexos-main.tex` | `annexos-main.pdf` (legacy Catalan annexes) |
 | `viabilitat` | `docs/main/viabilitat/viabilitat-main.tex` | `viabilitat-main.pdf` (feasibility study) |
-| `vol3` | `docs/web/mkdocs.yml` | `lab-documentation.pdf` (Vol III — Web PDF, ~95 pp) |
+| `vol3` | `docs/web/mkdocs.yml` | `lab-documentation.pdf` (Vol III — Web PDF, ~100 pp) |
 | `all` | memory + annexos + vol3 | all three PDFs |
 
 All PDFs are also copied to `docs/web/docs/assets/official_Documents/` for the web site.
